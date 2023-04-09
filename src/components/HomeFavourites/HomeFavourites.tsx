@@ -1,9 +1,15 @@
 import React from 'react'
 
+import {Header} from '../ui/Header'
+
 interface HomeFavouritesProps {}
 
 export function HomeFavourites({}: HomeFavouritesProps) {
-  return <></>
+  return (
+    <>
+      <Header title="Избранное" hideSearch subtitle="0 товаров" />
+    </>
+  )
 }
 
 // const styles = StyleSheet.create({

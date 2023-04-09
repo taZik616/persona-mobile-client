@@ -1,9 +1,15 @@
 import React from 'react'
 
+import {Header} from '../ui/Header'
+
 export type HomeProfileProps = {}
 
 export function HomeProfile({}: HomeProfileProps) {
-  return <></>
+  return (
+    <>
+      <Header hideSearch />
+    </>
+  )
 }
 
 // const styles = StyleSheet.create({

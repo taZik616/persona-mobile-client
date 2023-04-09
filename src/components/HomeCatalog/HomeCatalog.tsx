@@ -1,9 +1,15 @@
 import React from 'react'
 
+import {Header} from '../ui/Header'
+
 interface HomeCatalogProps {}
 
 export function HomeCatalog({}: HomeCatalogProps) {
-  return <></>
+  return (
+    <>
+      <Header />
+    </>
+  )
 }
 
 // const styles = StyleSheet.create({

@@ -7,7 +7,7 @@ import {CategoryInterface} from 'src/types'
 
 import {CardWithImage} from '../ui/CardWithImage'
 import {CategoryCard} from '../ui/CategoryCard'
-import {HomeHeader} from '../ui/HomeHeader'
+import {Header} from '../ui/Header'
 import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
 import {Spacer} from '../ui/Spacer'
 import {Swiper} from '../ui/Swiper'
@@ -18,7 +18,9 @@ interface HomeMainProps {
   womenImgUri: string
   mainSliderImages: string[]
   newProductsInCategoriesWomen: CategoryInterface[]
+  newProductsInCategoriesMen: CategoryInterface[]
   newProductsInBrandsWomen: CategoryInterface[]
+  newProductsInBrandsMen: CategoryInterface[]
 }
 
 export function HomeMain({
@@ -26,7 +28,9 @@ export function HomeMain({
   womenImgUri,
   mainSliderImages,
   newProductsInCategoriesWomen,
+  newProductsInCategoriesMen,
   newProductsInBrandsWomen,
+  newProductsInBrandsMen,
 }: HomeMainProps) {
   const [isMenSelected, setIsMenSelected] = useState(false)
 
@@ -35,7 +39,7 @@ export function HomeMain({
 
   return (
     <>
-      <HomeHeader />
+      <Header />
       <ScrollView>
         <Spacer height={8} />
         <SelectorTwoOptions
@@ -57,7 +61,11 @@ export function HomeMain({
         <Spacer height={12} />
         <RenderList
           onPressItem={item => console.log('Item pressed: ', item)}
-          data={newProductsInCategoriesWomen}
+          data={
+            isMenSelected
+              ? newProductsInCategoriesMen
+              : newProductsInCategoriesWomen
+          }
         />
         <Spacer height={28} />
         <Text center cg2>
@@ -66,7 +74,9 @@ export function HomeMain({
         <Spacer height={12} />
         <RenderList
           onPressItem={item => console.log('Item pressed: ', item)}
-          data={newProductsInBrandsWomen}
+          data={
+            isMenSelected ? newProductsInBrandsMen : newProductsInBrandsWomen
+          }
         />
         <Spacer height={28} />
         <Text center cg2>
@@ -111,10 +121,6 @@ function RenderList({data, onPressItem}: RenderListProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 12,
-  },
   categoryContainer: {
     gap: 16,
   },

@@ -1,9 +1,15 @@
 import React from 'react'
 
+import {Header} from '../ui/Header'
+
 interface HomeNewProductsProps {}
 
 export function HomeNewProducts({}: HomeNewProductsProps) {
-  return <></>
+  return (
+    <>
+      <Header title="Новые поступления" />
+    </>
+  )
 }
 
 // const styles = StyleSheet.create({

@@ -25,13 +25,28 @@ export function HomeMainScreen() {
           uri: 'https://img.alicdn.com/imgextra/i1/1794440690/O1CN01MaePPt1Gy3tpwkGJ2_!!1794440690-2-lubanu-s.png',
           name: 'Платья',
           id: '2',
-          // logoUri: 'http://89.108.71.146:8000/CAT_logo/587/lo234234234go.jpg',
         },
         {
           uri: 'https://i.pinimg.com/originals/1b/49/23/1b4923a54e778fcea0368d1db33319fb.png',
           name: 'босоножки',
           id: '3',
-          // logoUri: 'http://89.108.71.146:8000/CAT_logo/540/aL324234tER.png',
+        },
+      ]}
+      newProductsInCategoriesMen={[
+        {
+          uri: 'https://www.werfstore.ru/wp-content/uploads/2021/06/3.png',
+          name: 'Сумки',
+          id: '1',
+        },
+        {
+          uri: 'https://img.alicdn.com/imgextra/i1/2178635711/O1CN015rM4hh1s3gXVyqEqC_!!0-item_pic.jpg',
+          name: 'Рубашки',
+          id: '2',
+        },
+        {
+          uri: 'https://krasivieremni.ru/wa-data/public/shop/products/83/73/27383/images/3042/3042.970.png',
+          name: 'Ремни',
+          id: '3',
         },
       ]}
       newProductsInBrandsWomen={[
@@ -49,6 +64,14 @@ export function HomeMainScreen() {
           uri: 'https://static.tildacdn.com/tild6138-3330-4364-b631-393730333636/923.png',
           id: '3',
           logoUri: 'http://89.108.71.146:8000/CAT_logo/540/aL324234tER.png',
+        },
+      ]}
+      newProductsInBrandsMen={[
+        {
+          uri: 'https://soho.com.ru/upload/iblock/c76/m24f8g20j7gescp3plbkut38fvgffoa1.png',
+          id: '1',
+          logoUri:
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Stone-Island-Logo.svg/2560px-Stone-Island-Logo.svg.png',
         },
       ]}
       menImgUri="https://vadim-backet.s3.eu-central-1.amazonaws.com/MenAutumn.jpg"

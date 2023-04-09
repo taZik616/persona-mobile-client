@@ -1,9 +1,15 @@
 import React from 'react'
 
+import {Header} from '../ui/Header'
+
 interface HomeBrandsProps {}
 
 export function HomeBrands({}: HomeBrandsProps) {
-  return <></>
+  return (
+    <>
+      <Header title="Бренды" />
+    </>
+  )
 }
 
 // const styles = StyleSheet.create({

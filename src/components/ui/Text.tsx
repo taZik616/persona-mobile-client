@@ -14,6 +14,8 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
   cg3?: boolean
   gp1?: boolean
   gp2?: boolean
+  gp3?: boolean
+  gp4?: boolean
   h4?: boolean
   p1?: boolean
   p2?: boolean
@@ -31,7 +33,9 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
  * @param cg2 - CormorantGaramond-SemiBold 20
  * @param cg3 - CormorantGaramond-Medium 15
  * @param gp1 - GothamPro 11
- * @param gp2 - Headline 20 Bold
+ * @param gp2 - GothamPro 32
+ * @param gp3 - GothamPro-Medium 13
+ * @param gp4 - GothamPro-Regular 13
  * @param h4 - Headline 18 Bold
  * @param p1 - Paragraph 14
  * @param p2 - Paragraph 12
@@ -51,6 +55,8 @@ export function Text({
   cg3,
   gp1,
   gp2,
+  gp3,
+  gp4,
   h4,
   p1,
   p2,
@@ -74,6 +80,8 @@ export function Text({
         cg3 && styles.cg3,
         gp1 && styles.gp1,
         gp2 && styles.gp2,
+        gp3 && styles.gp3,
+        gp4 && styles.gp4,
         h4 && styles.headline4,
         p1 && (bold ? styles.paragraphBold1 : styles.paragraph1),
         p2 && (bold ? styles.paragraphBold2 : styles.paragraph2),
@@ -111,13 +119,13 @@ const styles = StyleSheet.create({
     fontFamily: 'GothamPro',
     fontSize: 32,
   },
-  headline2: {
-    fontFamily: 'Oswald-Bold',
-    fontSize: 26,
+  gp3: {
+    fontFamily: 'GothamPro-Medium',
+    fontSize: 13,
   },
-  headline3: {
-    fontFamily: 'Oswald-Bold',
-    fontSize: 20,
+  gp4: {
+    fontFamily: 'GothamPro',
+    fontSize: 13,
   },
   headline4: {
     fontFamily: 'Oswald-Bold',
