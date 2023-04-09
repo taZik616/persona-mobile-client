@@ -44,16 +44,19 @@ export function SelectorTwoOptions({
       },
       () => {
         runOnJS(setIsActiveTranslate)(false)
+        onChange && runOnJS(onChange)(values[0])
       },
     )
-    onChange?.(values[0])
   }
   const handleChangeRight = () => {
-    translateX.value = withTiming(width / 2 - marginHorizontal + 16, {
-      duration: 450,
-      easing: Easing.inOut(Easing.exp),
-    })
-    onChange?.(values[1])
+    translateX.value = withTiming(
+      width / 2 - marginHorizontal + 16,
+      {
+        duration: 450,
+        easing: Easing.inOut(Easing.exp),
+      },
+      () => onChange && runOnJS(onChange)(values[1]),
+    )
   }
 
   const animFocusRect = useAnimatedStyle(() => ({
@@ -64,12 +67,12 @@ export function SelectorTwoOptions({
       <View style={styles.container}>
         <Pressable style={styles.optionContainer} onPress={handleChangeLeft}>
           <Text numberOfLines={1} cg1>
-            {values[0]}
+            {values[0].toUpperCase()}
           </Text>
         </Pressable>
         <Pressable style={styles.optionContainer} onPress={handleChangeRight}>
           <Text numberOfLines={1} cg1>
-            {values[1]}
+            {values[1].toUpperCase()}
           </Text>
         </Pressable>
         <Animated.View style={[styles.focusRectContainer, animFocusRect]}>

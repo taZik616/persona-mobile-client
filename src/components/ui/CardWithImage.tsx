@@ -14,9 +14,10 @@ import {CARD_ASPECT_RATIO} from 'src/variables'
 interface CardWithImageProps {
   uri: string
   style?: StyleProp<ViewStyle>
+  borderRadius?: number
 }
 
-export function CardWithImage({style, uri}: CardWithImageProps) {
+export function CardWithImage({style, uri, borderRadius}: CardWithImageProps) {
   const {width} = useWindowDimensions()
   return (
     <View style={[styles.imageContainer, {width}, style]}>
@@ -24,7 +25,8 @@ export function CardWithImage({style, uri}: CardWithImageProps) {
         source={{
           uri,
         }}
-        style={styles.image}
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={[styles.image, {borderRadius: borderRadius ? borderRadius : 10}]}
       />
     </View>
   )
@@ -39,7 +41,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     maxHeight: 300,
     maxWidth: 300 * CARD_ASPECT_RATIO,
-    borderRadius: 10,
     overflow: 'hidden',
     aspectRatio: `${CARD_ASPECT_RATIO}/1`,
   },

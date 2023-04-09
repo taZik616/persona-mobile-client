@@ -24,7 +24,7 @@ export type RootStackParamList = {
 export interface CategoryInterface {
   id: string
   uri: string
-  name: string
+  name?: string
   logoUri?: string
 }
 
