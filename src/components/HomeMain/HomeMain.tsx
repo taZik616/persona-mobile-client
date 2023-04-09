@@ -24,13 +24,13 @@ export function HomeMain({}: HomeMainProps) {
       uri: 'https://img.alicdn.com/imgextra/i1/1794440690/O1CN01MaePPt1Gy3tpwkGJ2_!!1794440690-2-lubanu-s.png',
       name: 'Платья',
       id: '2',
-      logoUri: 'http://89.108.71.146:8000/CAT_logo/587/lo234234234go.jpg',
+      // logoUri: 'http://89.108.71.146:8000/CAT_logo/587/lo234234234go.jpg',
     },
     {
       uri: 'https://i.otzovik.com/objects/b/160000/158796.png',
       name: 'босоножки',
       id: '3',
-      logoUri: 'http://89.108.71.146:8000/CAT_logo/540/aL324234tER.png',
+      // logoUri: 'http://89.108.71.146:8000/CAT_logo/540/aL324234tER.png',
     },
   ]
   return (
@@ -46,7 +46,10 @@ export function HomeMain({}: HomeMainProps) {
         <Swiper
           images={[
             'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
+            'https://vadim-backet.s3.eu-central-1.amazonaws.com/DiscountBaner.jpg',
             'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
+            'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
+            'https://vadim-backet.s3.eu-central-1.amazonaws.com/DiscountBaner.jpg',
             'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
           ]}
         />

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 import {StyleSheet, View, useWindowDimensions} from 'react-native'
+import Orientation, {OrientationType} from 'react-native-orientation-locker'
 import Animated, {
   Extrapolate,
   SharedValue,
@@ -11,7 +12,9 @@ import Animated, {
 } from 'react-native-reanimated'
 
 import {Color} from 'src/themes'
+import {IS_ANDROID, SCREEN_H, SCREEN_W} from 'src/variables'
 
+import {CardWithImage} from './CardWithImage'
 import {Spacer} from './Spacer'
 
 interface SwiperProps {
@@ -21,32 +24,65 @@ interface SwiperProps {
 
 export function Swiper({images, horizontalMargins = 24}: SwiperProps) {
   const currentIndex = useSharedValue(0)
+  const scrollRef = useRef<Animated.ScrollView>(null)
+  const [orientation, setOrientation] = useState(OrientationType.UNKNOWN)
 
   const {width} = useWindowDimensions()
   const activeWidth = width - horizontalMargins * 2
 
   const handleScroll = useAnimatedScrollHandler(event => {
-    currentIndex.value = event.contentOffset.x / activeWidth
+    currentIndex.value =
+      event.contentOffset.x / (activeWidth + horizontalMargins)
   })
+
+  useEffect(() => {
+    const index = Math.round(currentIndex.value)
+    // Без этого никак из за handleScroll вон там 👆
+    setTimeout(
+      () => {
+        currentIndex.value = index
+        switch (orientation) {
+          case OrientationType.PORTRAIT:
+          case OrientationType['PORTRAIT-UPSIDEDOWN']:
+            scrollRef.current?.scrollTo({
+              x: index * (SCREEN_W - horizontalMargins),
+              y: 0,
+              animated: false,
+            })
+            break
+          default:
+            scrollRef.current?.scrollTo({
+              x: index * (SCREEN_H - horizontalMargins),
+              y: 0,
+              animated: false,
+            })
+            break
+        }
+      },
+
+      IS_ANDROID ? 100 : 30,
+    )
+  }, [orientation])
+  useEffect(() => Orientation.addOrientationListener(setOrientation), [])
 
   return (
     <View style={styles.container}>
       <Animated.ScrollView
+        ref={scrollRef}
         horizontal
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
-        pagingEnabled
         scrollEventThrottle={16}
         snapToInterval={activeWidth + horizontalMargins}
         decelerationRate="fast">
         <Spacer width={horizontalMargins} />
         <View style={[styles.flexRow, {gap: horizontalMargins}]}>
           {images.map((image, index) => (
-            <View
+            <CardWithImage
               key={index}
-              style={[styles.imageContainer, {width: activeWidth}]}>
-              <Animated.Image source={{uri: image}} style={styles.image} />
-            </View>
+              uri={image}
+              style={{width: activeWidth}}
+            />
           ))}
         </View>
         <Spacer width={horizontalMargins} />
@@ -91,14 +127,6 @@ function DotIndicator({index, currentIndex}: DotIndicatorProps) {
 
 const styles = StyleSheet.create({
   container: {},
-  imageContainer: {
-    height: 200,
-  },
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
-    borderRadius: 10,
-  },
   flexRow: {
     flexDirection: 'row',
   },

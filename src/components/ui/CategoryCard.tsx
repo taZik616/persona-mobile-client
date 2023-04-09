@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {Image, StyleSheet, View} from 'react-native'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import Animated, {
   runOnJS,
@@ -19,8 +19,8 @@ interface CategoryCardProps extends CategoryInterface {
 }
 
 const withSpringConfig = {
-  stiffness: 500, // Умеренное значение жёсткости пружины
-  damping: 20, // Умеренное значение демпфирования
+  stiffness: 500,
+  damping: 20,
   mass: 1,
   velocity: 0,
 }
@@ -38,6 +38,9 @@ export function CategoryCard({uri, name, logoUri, onPress}: CategoryCardProps) {
           scale.value = withSpring(0.9, withSpringConfig)
         })
         .onTouchesUp(() => {
+          scale.value = withSpring(1, withSpringConfig)
+        })
+        .onTouchesCancelled(() => {
           scale.value = withSpring(1, withSpringConfig)
         })
         .onEnd(() => {
