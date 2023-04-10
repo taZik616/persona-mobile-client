@@ -1,20 +1,29 @@
 import React from 'react'
 
-import {ActivityIndicator, StyleSheet, View} from 'react-native'
+import {
+  ActivityIndicator,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import {Color} from 'src/themes'
 
+import {Spacer} from './Spacer'
 import {Text} from './Text'
 
 interface LoadingProps {
   text?: string
+  style?: StyleProp<ViewStyle>
 }
 
-export function Loading({text}: LoadingProps) {
+export function Loading({text, style}: LoadingProps) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <ActivityIndicator size="large" color={Color.primary} />
-      <Text gp1 color={Color.textBase1}>
+      <Spacer height={28} />
+      <Text cg1 color={Color.textBase1}>
         {text}
       </Text>
     </View>

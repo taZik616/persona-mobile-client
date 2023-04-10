@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import {FlatList, ScrollView, StyleSheet} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
+import {useGender} from 'src/hooks/useGender'
 import {CategoryInterface} from 'src/types'
 
 import {CardWithImage} from '../ui/CardWithImage'
@@ -32,21 +33,14 @@ export function HomeMain({
   newProductsInBrandsWomen,
   newProductsInBrandsMen,
 }: HomeMainProps) {
-  const [isMenSelected, setIsMenSelected] = useState(false)
-
-  const onChangeGender = (str: 'женское' | 'мужское') =>
-    setIsMenSelected(str === 'мужское')
+  const {isMenSelected, onChangeGender, values} = useGender()
 
   return (
     <>
       <Header />
       <ScrollView>
         <Spacer height={8} />
-        <SelectorTwoOptions
-          marginHorizontal={24}
-          onChange={onChangeGender}
-          values={['женское', 'мужское']}
-        />
+        <SelectorTwoOptions onChange={onChangeGender} values={values} />
         <Spacer height={16} />
         <Swiper images={mainSliderImages} />
         <Spacer height={16} />

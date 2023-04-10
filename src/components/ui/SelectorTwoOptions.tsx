@@ -22,7 +22,7 @@ interface SelectorTwoOptionsProps {
 export function SelectorTwoOptions({
   onChange,
   values,
-  marginHorizontal = 0,
+  marginHorizontal = 24,
 }: SelectorTwoOptionsProps) {
   const translateX = useSharedValue(0)
   const [isActiveTranslate, setIsActiveTranslate] = useState(false)

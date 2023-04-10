@@ -5,16 +5,20 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 interface SafeLandscapeViewProps {
   children: JSX.Element | JSX.Element[]
+  additionalPadding?: number
 }
 
-export function SafeLandscapeView({children}: SafeLandscapeViewProps) {
+export function SafeLandscapeView({
+  children,
+  additionalPadding = 0,
+}: SafeLandscapeViewProps) {
   const {left, right} = useSafeAreaInsets()
 
   return (
     <View
       style={{
-        paddingLeft: left,
-        paddingRight: right,
+        paddingLeft: left + additionalPadding,
+        paddingRight: right + additionalPadding,
       }}>
       {children}
     </View>

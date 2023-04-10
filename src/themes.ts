@@ -10,6 +10,7 @@ export const Color = {
   secondaryGray: '#F2F2F2',
 
   bg: '#FFFFFF',
+  border: '#C4C4C4',
 
   secondary: '#0DECDE',
 

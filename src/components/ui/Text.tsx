@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   gp2: {
-    fontFamily: 'GothamPro',
-    fontSize: 32,
+    fontFamily: 'GothamPro-Medium',
+    fontSize: 15,
   },
   gp3: {
     fontFamily: 'GothamPro-Medium',
