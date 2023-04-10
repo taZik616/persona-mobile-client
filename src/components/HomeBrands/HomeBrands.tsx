@@ -12,8 +12,9 @@ import {IS_IOS} from 'src/variables'
 
 import {TopBrandItem} from './TopBrandItem'
 
+import {BrandGroupTitle} from '../ui/BrandGroupTitle'
+import {BrandRowItem} from '../ui/BrandRowItem'
 import {Header} from '../ui/Header'
-import {Loading} from '../ui/Loading'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
 import {Spacer} from '../ui/Spacer'
@@ -117,26 +118,16 @@ export function HomeBrands({onPressBrand}: HomeBrandsProps) {
             </Text>
           </SafeLandscapeView>
         )}
-        renderItem={({item}) =>
-          allBrands.isLoading ? (
-            <Loading />
-          ) : (
-            <SafeLandscapeView additionalPadding={24}>
-              <View style={styles.brandItemContainer}>
-                <Text numberOfLines={1} gp4>
-                  {item.name}
-                </Text>
-              </View>
-            </SafeLandscapeView>
-          )
-        }
+        renderItem={({item}) => (
+          <BrandRowItem
+            onPress={onPressBrand}
+            isLoading={allBrands.isLoading}
+            item={item}
+          />
+        )}
         showsVerticalScrollIndicator={false}
         renderSectionHeader={({section: {title}}) => (
-          <SafeLandscapeView additionalPadding={24}>
-            <Spacer height={20} />
-            <Text gp2>{title}</Text>
-            <Spacer height={10} />
-          </SafeLandscapeView>
+          <BrandGroupTitle title={title} />
         )}
         ListFooterComponent={() => <Spacer height={46} />}
         keyExtractor={item => item.id}
@@ -165,12 +156,5 @@ const styles = StyleSheet.create({
   },
   topBrandGap: {
     gap: 8,
-  },
-  brandItemContainer: {
-    paddingBottom: 12,
-    width: '100%',
-    borderBottomWidth: 1,
-    borderColor: Color.border,
-    paddingTop: 16,
   },
 })
