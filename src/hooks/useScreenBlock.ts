@@ -6,8 +6,6 @@ import Orientation, {
   useDeviceOrientationChange,
 } from 'react-native-orientation-locker'
 
-import {IS_IOS} from 'src/variables'
-
 export const useScreenBlockPortrait = () => {
   const isFocused = useIsFocused()
 
@@ -22,36 +20,38 @@ export const useScreenBlockPortrait = () => {
 }
 
 export const useScreenBlockCurrent = () => {
-  const isFocused = useIsFocused()
   const [orientation, setOrientation] = useState(OrientationType.UNKNOWN)
+  const isFocused = useIsFocused()
 
   useDeviceOrientationChange(setOrientation)
 
   useEffect(() => {
+    console.log('🚀 - isFocused:', isFocused)
     if (isFocused) {
-      switch (orientation) {
-        case OrientationType['LANDSCAPE-LEFT']:
-          Orientation.lockToLandscapeLeft()
-          break
-        case OrientationType['LANDSCAPE-RIGHT']:
-          Orientation.lockToLandscapeRight()
-          break
-        case OrientationType.PORTRAIT:
-          Orientation.lockToPortrait()
-          break
-        case OrientationType['PORTRAIT-UPSIDEDOWN']:
-          Orientation.lockToPortraitUpsideDown()
-          break
-        case OrientationType['FACE-DOWN']:
-        case OrientationType['FACE-UP']:
-          Orientation.lockToLandscape()
-          break
-      }
+      // Типо чтобы в микротаску закинулось а пока до него дойдет уже очередь orientation обновиться
+      // :D
+      setTimeout(() => {
+        switch (orientation) {
+          case OrientationType['LANDSCAPE-LEFT']:
+            Orientation.lockToLandscapeLeft()
+            break
+          case OrientationType['LANDSCAPE-RIGHT']:
+            Orientation.lockToLandscapeRight()
+            break
+          case OrientationType.PORTRAIT:
+            Orientation.lockToPortrait()
+            break
+          case OrientationType['PORTRAIT-UPSIDEDOWN']:
+            Orientation.lockToPortraitUpsideDown()
+            break
+          case OrientationType['FACE-DOWN']:
+          case OrientationType['FACE-UP']:
+            Orientation.lockToLandscape()
+            break
+        }
+      }, 0)
     } else {
       Orientation.unlockAllOrientations()
-    }
-    return () => {
-      IS_IOS && Orientation.unlockAllOrientations()
     }
   }, [isFocused])
 }

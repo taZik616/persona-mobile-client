@@ -1,11 +1,10 @@
 import React from 'react'
 
-import {FlatList, StyleSheet, useWindowDimensions} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {FlatList, StyleSheet} from 'react-native'
 
-import {getNumColumnsByWidth} from 'src/helpers'
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
+import {useProductListHelper} from 'src/hooks/useProductListHelper'
 import {useGetProductsQuery} from 'src/store/shopApi'
 import {ProductPreviewInfo} from 'src/types'
 
@@ -20,12 +19,8 @@ interface HomeNewProductsProps {
 
 export function HomeNewProducts({onPressProduct}: HomeNewProductsProps) {
   const {isMenSelected, onChangeGender, values} = useGender()
-  const {width} = useWindowDimensions()
-  const {left, right} = useSafeAreaInsets()
-  useScreenBlockCurrent()
 
-  const activeWidth = width - (left + right)
-  const numColumns = getNumColumnsByWidth(activeWidth)
+  useScreenBlockCurrent()
 
   const products = useGetProductsQuery({
     end: 20,
@@ -34,7 +29,7 @@ export function HomeNewProducts({onPressProduct}: HomeNewProductsProps) {
     sortedValues: '1',
   })
 
-  const cardWidth = numColumns === 2 ? (activeWidth - 48 - 10 * 2) / 2 : 200
+  const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
 
   return (
     <>
@@ -45,10 +40,7 @@ export function HomeNewProducts({onPressProduct}: HomeNewProductsProps) {
         key={numColumns}
         numColumns={numColumns}
         columnWrapperStyle={styles.columnWrapper}
-        contentContainerStyle={{
-          paddingLeft: left + 24,
-          paddingRight: right + 24,
-        }}
+        contentContainerStyle={contentPaddingsStyle}
         renderItem={({item}) => (
           <ProductCard width={cardWidth} onPress={onPressProduct} {...item} />
         )}
