@@ -15,15 +15,21 @@ import {Spacer} from '../ui/Spacer'
 
 interface HomeNewProductsProps {
   onPressProduct?: (item: ProductPreviewInfo) => void
+  onPressAddToBasket?: (item: ProductPreviewInfo) => void
+  onPressTopRightIcon?: (item: ProductPreviewInfo) => void
 }
 
-export function HomeNewProducts({onPressProduct}: HomeNewProductsProps) {
+export function HomeNewProducts({
+  onPressProduct,
+  onPressAddToBasket,
+  onPressTopRightIcon,
+}: HomeNewProductsProps) {
   const {isMenSelected, onChangeGender, values} = useGender()
 
   useScreenBlockCurrent()
 
   const products = useGetProductsQuery({
-    end: 20,
+    end: 100,
     start: 0,
     sortBy: 'stock',
     sortedValues: '1',
@@ -35,14 +41,19 @@ export function HomeNewProducts({onPressProduct}: HomeNewProductsProps) {
     <>
       <Header title="Новые поступления" />
       <SelectorTwoOptions onChange={onChangeGender} values={values} />
-
       <FlatList
         key={numColumns}
         numColumns={numColumns}
         columnWrapperStyle={styles.columnWrapper}
         contentContainerStyle={contentPaddingsStyle}
         renderItem={({item}) => (
-          <ProductCard width={cardWidth} onPress={onPressProduct} {...item} />
+          <ProductCard
+            width={cardWidth}
+            onPressTopRightIcon={onPressTopRightIcon}
+            onPressAddToBasket={onPressAddToBasket}
+            onPress={onPressProduct}
+            {...item}
+          />
         )}
         ListHeaderComponent={() => <Spacer height={12} />}
         keyExtractor={item => item.productId}

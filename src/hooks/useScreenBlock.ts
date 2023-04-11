@@ -26,7 +26,6 @@ export const useScreenBlockCurrent = () => {
   useDeviceOrientationChange(setOrientation)
 
   useEffect(() => {
-    console.log('🚀 - isFocused:', isFocused)
     if (isFocused) {
       // Типо чтобы в микротаску закинулось а пока до него дойдет уже очередь orientation обновиться
       // :D
@@ -49,7 +48,7 @@ export const useScreenBlockCurrent = () => {
             Orientation.lockToLandscape()
             break
         }
-      }, 0)
+      }, 50)
     } else {
       Orientation.unlockAllOrientations()
     }

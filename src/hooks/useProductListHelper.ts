@@ -19,6 +19,7 @@ export function useProductListHelper() {
     contentPaddingsStyle: {
       paddingLeft: left + 24,
       paddingRight: right + 24,
+      rowGap: 20,
     },
   }
 }

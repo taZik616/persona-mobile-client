@@ -1,6 +1,12 @@
 import React, {useMemo} from 'react'
 
-import {Image, Pressable, StyleSheet, View} from 'react-native'
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
 import Carousel from 'react-native-snap-carousel'
@@ -26,21 +32,21 @@ export function ProductCard({
   onPress,
   onPressTopRightIcon,
   onPressAddToBasket,
-  topRightIcon = 'cross',
+  topRightIcon,
   showAddToBasket,
   width = 200,
   ...item
 }: ProductCardProps) {
   const {
     title,
-    largeImages,
+    // largeImages,
     previewImages,
     price,
     brandImage,
     collection,
     isAvailable,
     priceGroup,
-    productId,
+    // productId,
     brandName,
   } = item
 
@@ -58,9 +64,12 @@ export function ProductCard({
   }, [topRightIcon])
 
   return (
-    <View>
+    <View style={!isAvailable && styles.disabledCard}>
       {topRightIcon && (
-        <Pressable hitSlop={10} style={styles.topIconContainer}>
+        <Pressable
+          onPress={() => onPressTopRightIcon?.(item)}
+          hitSlop={10}
+          style={styles.topIconContainer}>
           {icon}
         </Pressable>
       )}
@@ -81,6 +90,7 @@ export function ProductCard({
             keyExtractor={(a, id) => String(id)}
             data={previewImages}
             loop
+            loopClonesPerSide={previewImages.length}
             inactiveSlideOpacity={1}
             inactiveSlideScale={1}
             slideStyle={{width}}
@@ -107,13 +117,15 @@ export function ProductCard({
           )}
           <Spacer height={10} />
           <View style={styles.textContentContainer}>
-            {title && (
+            {title ? (
               <>
                 <Text numberOfLines={1} center gp4>
                   {capitalize(title)}
                 </Text>
                 <Spacer height={6} />
               </>
+            ) : (
+              <></>
             )}
             {priceGroup && (
               <>
@@ -123,18 +135,29 @@ export function ProductCard({
                 <Spacer height={6} />
               </>
             )}
-            {price && (
+            {price ? (
               <>
                 <Text numberOfLines={1} center gp5>
                   {cleanNumber(price, ' ', 0)} ₽
                 </Text>
                 <Spacer height={6} />
               </>
+            ) : (
+              <></>
             )}
             <Spacer height={4} />
           </View>
         </View>
       </GestureDetector>
+      {showAddToBasket ? (
+        <TouchableOpacity
+          onPress={() => onPressAddToBasket?.(item)}
+          style={styles.addToCartButton}>
+          <Text gp1>Добавить в корзину</Text>
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
     </View>
   )
 }
@@ -143,6 +166,9 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     aspectRatio: '140/180',
+  },
+  disabledCard: {
+    opacity: 0.7,
   },
   image: {
     flex: 1,
@@ -170,5 +196,14 @@ const styles = StyleSheet.create({
     right: 6,
     top: 6,
     zIndex: 1,
+  },
+  addToCartButton: {
+    width: '100%',
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    borderColor: Color.primaryGray,
+    borderRadius: 8,
+    borderWidth: 1,
   },
 })
