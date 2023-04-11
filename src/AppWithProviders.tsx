@@ -20,7 +20,7 @@ export function AppWithProviders() {
     <Provider store={store}>
       <GestureHandlerRootView style={styles.flexOne}>
         <SafeAreaProvider>
-          <StatusBar backgroundColor={Color.bg} barStyle={'light-content'} />
+          <StatusBar backgroundColor={Color.bg} barStyle={'dark-content'} />
           <App />
         </SafeAreaProvider>
       </GestureHandlerRootView>

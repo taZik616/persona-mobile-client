@@ -28,6 +28,19 @@ export interface CategoryInterface {
   logoUri?: string
 }
 
+export interface ProductPreviewInfo {
+  productId: string
+  title: string
+  price: number
+  previewImages: string[]
+  priceGroup: string
+  isAvailable: boolean
+  largeImages: string[]
+  brandImage?: string
+  collection?: string
+  brandName?: string
+}
+
 // UTILS
 
 export type InputNameType =

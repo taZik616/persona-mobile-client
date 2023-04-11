@@ -1,8 +1,11 @@
 import {NUM_PRECISION} from 'src/variables/common'
 
-export function cleanNumber(number: string | number, delimiter = ' ') {
+export function cleanNumber(
+  number: string | number,
+  delimiter = ' ',
+  precision = NUM_PRECISION,
+) {
   const num = parseFloat(String(number).trim().replace(/ /g, ''))
-  let precision = NUM_PRECISION
   if (num < 1 / Math.pow(10, NUM_PRECISION)) {
     precision += 1
   }
@@ -12,6 +15,7 @@ export function cleanNumber(number: string | number, delimiter = ' ') {
   const raw = Math.floor(num * prec) / prec
   const [a, f] = String(raw.toFixed(precision)).split('.')
   const aFormatted = a.replace(/\B(?=(\d{3})+(?!\d))/g, delimiter)
+  if (precision <= 0) return `${aFormatted}`
   return `${aFormatted}.${f}`
 }
 

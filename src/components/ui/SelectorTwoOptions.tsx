@@ -11,6 +11,7 @@ import Animated, {
 
 import {Color} from 'src/themes'
 
+import {Spacer} from './Spacer'
 import {Text} from './Text'
 
 interface SelectorTwoOptionsProps {
@@ -79,6 +80,7 @@ export function SelectorTwoOptions({
           <View style={styles.focusRect} />
         </Animated.View>
       </View>
+      <Spacer height={2} />
     </View>
   )
 }

@@ -10,6 +10,6 @@ export const {width: SCREEN_W, height: SCREEN_H} = Dimensions.get('window')
 export const ANIMATION_DURATION = 300
 export const ANIMATION_TYPE = Easing.bezierFn(0.42, 0, 0.58, 0)
 
-export const NUM_PRECISION = 2
+export const NUM_PRECISION = 1
 
 export const CARD_ASPECT_RATIO = 1.68

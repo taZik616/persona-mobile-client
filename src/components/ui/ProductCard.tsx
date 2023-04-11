@@ -1,0 +1,174 @@
+import React, {useMemo} from 'react'
+
+import {Image, Pressable, StyleSheet, View} from 'react-native'
+import {Gesture, GestureDetector} from 'react-native-gesture-handler'
+import {runOnJS} from 'react-native-reanimated'
+import Carousel from 'react-native-snap-carousel'
+
+import {capitalize, cleanNumber} from 'src/helpers'
+import {Color} from 'src/themes'
+import {ProductPreviewInfo} from 'src/types'
+
+import {CrossIcon, StarEmptyIcon, StarFilledIcon} from './icons/common'
+import {Spacer} from './Spacer'
+import {Text} from './Text'
+
+interface ProductCardProps extends ProductPreviewInfo {
+  onPress?: (item: ProductPreviewInfo) => void
+  onPressTopRightIcon?: (item: ProductPreviewInfo) => void
+  onPressAddToBasket?: (item: ProductPreviewInfo) => void
+  topRightIcon?: 'star' | 'starFilled' | 'cross'
+  showAddToBasket?: boolean
+  width?: number
+}
+
+export function ProductCard({
+  onPress,
+  onPressTopRightIcon,
+  onPressAddToBasket,
+  topRightIcon = 'cross',
+  showAddToBasket,
+  width = 200,
+  ...item
+}: ProductCardProps) {
+  const {
+    title,
+    largeImages,
+    previewImages,
+    price,
+    brandImage,
+    collection,
+    isAvailable,
+    priceGroup,
+    productId,
+    brandName,
+  } = item
+
+  const icon = useMemo(() => {
+    switch (topRightIcon) {
+      case 'cross':
+        return <CrossIcon />
+      case 'star':
+        return <StarEmptyIcon />
+      case 'starFilled':
+        return <StarFilledIcon />
+      default:
+        return <></>
+    }
+  }, [topRightIcon])
+
+  return (
+    <View>
+      {topRightIcon && (
+        <Pressable hitSlop={10} style={styles.topIconContainer}>
+          {icon}
+        </Pressable>
+      )}
+      <GestureDetector
+        gesture={Gesture.Tap().onEnd(() => onPress && runOnJS(onPress)(item))}>
+        <View style={{width}}>
+          <Carousel
+            renderItem={({item: uri}) => (
+              <View style={[styles.imageContainer, {width}]}>
+                <Image
+                  style={styles.image}
+                  resizeMode="contain"
+                  source={{uri}}
+                />
+              </View>
+            )}
+            bounces={false}
+            keyExtractor={(a, id) => String(id)}
+            data={previewImages}
+            loop
+            inactiveSlideOpacity={1}
+            inactiveSlideScale={1}
+            slideStyle={{width}}
+            activeAnimationType="spring"
+            windowSize={6}
+            layout="default"
+            horizontal
+            sliderWidth={width}
+            itemWidth={width}
+          />
+          <Spacer height={8} />
+          {brandImage ? (
+            <Image
+              style={styles.brandImage}
+              resizeMode="contain"
+              source={{uri: brandImage}}
+            />
+          ) : (
+            <View style={styles.brandName}>
+              <Text numberOfLines={1} center gp1>
+                {brandName?.toUpperCase()}
+              </Text>
+            </View>
+          )}
+          <Spacer height={10} />
+          <View style={styles.textContentContainer}>
+            {title && (
+              <>
+                <Text numberOfLines={1} center gp4>
+                  {capitalize(title)}
+                </Text>
+                <Spacer height={6} />
+              </>
+            )}
+            {priceGroup && (
+              <>
+                <Text color={Color.primary} numberOfLines={1} center gp4>
+                  {capitalize(collection ? collection : priceGroup)}
+                </Text>
+                <Spacer height={6} />
+              </>
+            )}
+            {price && (
+              <>
+                <Text numberOfLines={1} center gp5>
+                  {cleanNumber(price, ' ', 0)} ₽
+                </Text>
+                <Spacer height={6} />
+              </>
+            )}
+            <Spacer height={4} />
+          </View>
+        </View>
+      </GestureDetector>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    flex: 1,
+    aspectRatio: '140/180',
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  brandImage: {
+    width: '100%',
+    aspectRatio: '100/40',
+    height: 30,
+    alignSelf: 'center',
+  },
+  brandName: {
+    width: '100%',
+    height: 30,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+  },
+  textContentContainer: {
+    width: '100%',
+    height: 60,
+    paddingHorizontal: 10,
+  },
+  topIconContainer: {
+    position: 'absolute',
+    right: 6,
+    top: 6,
+    zIndex: 1,
+  },
+})

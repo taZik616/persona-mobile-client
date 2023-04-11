@@ -83,11 +83,12 @@ export function HomeBrands({onPressBrand}: HomeBrandsProps) {
         </View>
       )}
       <SelectorTwoOptions onChange={onChangeGender} values={values} />
+      <Spacer height={8} />
       <SectionList
         ref={listRef}
         ListHeaderComponent={() => (
           <SafeLandscapeView additionalPadding={24}>
-            <Spacer height={24} />
+            <Spacer height={16} />
             <Text center cg2>
               ТОП-БРЕНДЫ
             </Text>
