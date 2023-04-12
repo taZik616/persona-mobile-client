@@ -15,14 +15,14 @@ export type BadgeProps = {
   center?: boolean
   text: string
 }
-export function Badge({
+export const Badge = ({
   text,
   center,
   iconLeftName,
   labelColor,
   textColor = Color.textBase3,
   style,
-}: BadgeProps) {
+}: BadgeProps) => {
   const {styles, colors} = useThematicStyles(rawStyles)
   const container = useMemo(
     () => [

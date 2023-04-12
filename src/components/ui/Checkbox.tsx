@@ -5,7 +5,7 @@ import Svg, {Circle, Path} from 'react-native-svg'
 
 import {useTheme} from 'src/hooks'
 
-function CheckboxEmpty({color}: {color: string}) {
+const CheckboxEmpty = ({color}: {color: string}) => {
   return (
     <Svg width="24" height="24" viewBox="0 0 24 24" fill="none" color={color}>
       <Circle cx="12" cy="12" r="11.5" stroke="currentColor" />
@@ -13,7 +13,7 @@ function CheckboxEmpty({color}: {color: string}) {
   )
 }
 
-function CheckboxFilled({color}: {color: string}) {
+const CheckboxFilled = ({color}: {color: string}) => {
   return (
     <Svg width="24" height="24" viewBox="0 0 24 24" fill="none" color={color}>
       <Circle cx="12" cy="12" r="12" fill="currentColor" />
@@ -31,7 +31,7 @@ export type CheckboxProps = {
   children: React.ReactNode
 }
 
-export function Checkbox({value, onPress, children}: CheckboxProps) {
+export const Checkbox = ({value, onPress, children}: CheckboxProps) => {
   const {color} = useTheme()
   const onPressCheckbox = useCallback(() => {
     onPress(!value)

@@ -29,10 +29,10 @@ const timingInAnimationConfig: WithTimingConfig = {
   easing: Easing.out(Easing.back()),
 }
 
-export function ActionsSheet({
+export const ActionsSheet = ({
   onPressDiscard,
   onPressKeepEditing,
-}: ActionsSheetProps) {
+}: ActionsSheetProps) => {
   const {height: H} = useWindowDimensions()
   const {bottom} = useSafeAreaInsets()
   const {styles} = useThematicStyles(rawStyles)

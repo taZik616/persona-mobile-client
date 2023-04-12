@@ -10,7 +10,7 @@ export type CheckmarkProps = {
   style?: StyleProp<ViewStyle>
 }
 
-export function Checkmark({isFilled, style}: CheckmarkProps) {
+export const Checkmark = ({isFilled, style}: CheckmarkProps) => {
   const {colors} = useTheme()
   return isFilled ? (
     <CheckboxFilled style={style} width={28} color={colors.primary} />
@@ -23,7 +23,7 @@ export function Checkmark({isFilled, style}: CheckmarkProps) {
 //   container: {},
 // });
 
-function CheckboxEmpty({color, ...props}: SvgProps) {
+const CheckboxEmpty = ({color, ...props}: SvgProps) => {
   return (
     <Svg viewBox="0 0 28 28" fill="none" {...props}>
       <G clipPath="url(#a)" fill={color}>
@@ -43,7 +43,7 @@ function CheckboxEmpty({color, ...props}: SvgProps) {
   )
 }
 
-function CheckboxFilled({color, ...props}: SvgProps) {
+const CheckboxFilled = ({color, ...props}: SvgProps) => {
   return (
     <Svg viewBox="0 0 28 28" fill="none" {...props}>
       <G clipPath="url(#a)">

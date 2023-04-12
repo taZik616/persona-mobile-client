@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import Svg, {Path, SvgProps} from 'react-native-svg'
 
-export function Logo({color = '#000', ...props}: SvgProps) {
+export const Logo = ({color = '#000', ...props}: SvgProps) => {
   return (
     <Svg width={100} height={37} viewBox="0 0 100 37" fill="none" {...props}>
       <Path

@@ -18,7 +18,7 @@ interface TextSumProps {
   style?: StyleProp<ViewStyle>
 }
 
-export function TextSum({
+export const TextSum = ({
   sum,
   rightText,
   color = Color.textBase1,
@@ -26,7 +26,7 @@ export function TextSum({
   right,
   suffix = '',
   style,
-}: TextSumProps) {
+}: TextSumProps) => {
   const hasRightText = typeof rightText !== 'undefined'
   const text = hasRightText ? rightText : 'ZLATO' + suffix
 

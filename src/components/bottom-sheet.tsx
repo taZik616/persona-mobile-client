@@ -39,12 +39,12 @@ export type BottomSheetProps = {
 
 const AnimatedStatusBar = RNAnimated.createAnimatedComponent(StatusBar)
 
-export function BottomSheet({
+export const BottomSheet = ({
   children,
   onClose,
   title,
   closeDistance,
-}: BottomSheetProps) {
+}: BottomSheetProps) => {
   const {styles} = useThematicStyles(rawStyles)
   const {height} = useWindowDimensions()
   const {bottom: bottomInsets, top: topInsets} = useSafeAreaInsets()

@@ -27,14 +27,14 @@ export type InfoBlockAmountProps = {
   isLarge?: boolean
 }
 
-export function InfoBlockAmount({
+export const InfoBlockAmount = ({
   style,
   values = [],
   value = 0,
   text,
   amountColor = Color.textBase1,
   isLarge,
-}: InfoBlockAmountProps) {
+}: InfoBlockAmountProps) => {
   const [isShow, setIsShow] = useState(false)
   const {styles} = useThematicStyles(rawStyles)
 

@@ -13,13 +13,13 @@ interface SettingsProps {
   onPressBack: () => void
   onPressThemes: () => void
 }
-export function Settings({
+export const Settings = ({
   onPressEdit,
   onPressWallet,
   onPressDisconnect,
   onPressThemes,
   onPressBack,
-}: SettingsProps) {
+}: SettingsProps) => {
   return (
     <>
       <CustomHeader

@@ -25,14 +25,14 @@ interface FormFieldProps {
 /**
  * USE WITH HOOK FORM PROVIDER
  */
-export function FormField({
+export const FormField = ({
   title,
   fieldType,
   autoCapitalize,
   nextField,
   name,
   placeholder,
-}: FormFieldProps) {
+}: FormFieldProps) => {
   const {styles} = useThematicStyles(rawStyles)
   const {
     formState: {errors},

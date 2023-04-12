@@ -19,7 +19,7 @@ interface TabBarProps {
   stateIndex: number
 }
 
-export function TabBar({routes, stateIndex}: TabBarProps) {
+export const TabBar = ({routes, stateIndex}: TabBarProps) => {
   const {bottom} = useSafeAreaInsets()
   const {navigate} = useTypedNavigation()
   const handlePress = (name: keyof TabParamList, isFocused: boolean) => {

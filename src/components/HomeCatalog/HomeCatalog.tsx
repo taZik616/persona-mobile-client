@@ -4,7 +4,7 @@ import {Header} from '../ui/Header'
 
 interface HomeCatalogProps {}
 
-export function HomeCatalog({}: HomeCatalogProps) {
+export const HomeCatalog = ({}: HomeCatalogProps) => {
   return (
     <>
       <Header />

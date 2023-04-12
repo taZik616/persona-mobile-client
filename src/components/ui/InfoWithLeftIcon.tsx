@@ -13,7 +13,7 @@ interface InfoWithLeftIconProps {
   content: JSX.Element
 }
 
-export function InfoWithLeftIcon({icon, content}: InfoWithLeftIconProps) {
+export const InfoWithLeftIcon = ({icon, content}: InfoWithLeftIconProps) => {
   const {styles, colors} = useThematicStyles(rawStyles)
   return (
     <View style={styles.container}>

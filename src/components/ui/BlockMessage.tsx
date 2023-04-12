@@ -34,14 +34,14 @@ interface BlockMessageProps {
   customBgColor?: Color
 }
 
-export function BlockMessage({
+export const BlockMessage = ({
   blockType = 'info',
   style,
   hideIcon,
   customBgColor,
   children,
   numberOfLines,
-}: BlockMessageProps) {
+}: BlockMessageProps) => {
   const {styles, colors} = useThematicStyles(rawStyles)
   const {component: IconComponent, color, bgColor} = Icons[blockType]
 
@@ -79,11 +79,11 @@ const rawStyles = StyleSheet.create({
 
 export type SvgIconProps = SvgProps & {size?: number}
 
-export function InfoIcon({
+export const InfoIcon = ({
   size = 16,
   color = '#007AFF',
   ...props
-}: SvgIconProps) {
+}: SvgIconProps) => {
   return (
     <Svg viewBox="0 0 16 16" width={size} height={size} fill="none" {...props}>
       <Path
@@ -98,11 +98,11 @@ export function InfoIcon({
   )
 }
 
-export function WarningIcon({
+export const WarningIcon = ({
   size = 16,
   color = '#B26F1D',
   ...props
-}: SvgIconProps) {
+}: SvgIconProps) => {
   return (
     <Svg viewBox="0 0 16 16" width={size} height={size} fill="none" {...props}>
       <Path
@@ -115,11 +115,11 @@ export function WarningIcon({
   )
 }
 
-export function ErrorIcon({
+export const ErrorIcon = ({
   size = 16,
   color = '#E16363',
   ...props
-}: SvgIconProps) {
+}: SvgIconProps) => {
   return (
     <Svg viewBox="0 0 16 16" width={size} height={size} fill="none" {...props}>
       <Path

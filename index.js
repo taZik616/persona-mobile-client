@@ -1,7 +1,8 @@
-import {AppRegistry} from 'react-native';
+import {AppRegistry} from 'react-native'
 
-import {AppWithProviders} from 'src/AppWithProviders';
+import './ignoreConsole'
+import {AppWithProviders} from 'src/AppWithProviders'
 
-import {name as appName} from './app.json';
+import {name as appName} from './app.json'
 
-AppRegistry.registerComponent(appName, () => AppWithProviders);
+AppRegistry.registerComponent(appName, () => AppWithProviders)

@@ -5,12 +5,12 @@ import Animated from 'react-native-reanimated'
 
 import {KeyboardSafeAreaProps} from '.'
 
-export function KeyboardSafeArea({
+export const KeyboardSafeArea = ({
   children,
   style,
   //isNumeric,
   ...props
-}: KeyboardSafeAreaProps) {
+}: KeyboardSafeAreaProps) => {
   // const {bottom} = useSafeAreaInsets();
   // const paddingBottom = useSharedValue(0);
   // const prevHeight = useRef(0);

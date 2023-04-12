@@ -16,13 +16,13 @@ interface CategoriesProps {
   defaultSelection?: string
 }
 
-export function Categories({
+export const Categories = ({
   list,
   onSelect,
   onlyList,
   canPress,
   defaultSelection,
-}: CategoriesProps) {
+}: CategoriesProps) => {
   const [selectItem, setSelectItem] = useState(defaultSelection)
   const renderList = (
     <FlatList

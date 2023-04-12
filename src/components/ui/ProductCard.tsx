@@ -28,7 +28,7 @@ interface ProductCardProps extends ProductPreviewInfo {
   width?: number
 }
 
-export function ProductCard({
+export const ProductCard = ({
   onPress,
   onPressTopRightIcon,
   onPressAddToBasket,
@@ -36,7 +36,7 @@ export function ProductCard({
   showAddToBasket,
   width = 200,
   ...item
-}: ProductCardProps) {
+}: ProductCardProps) => {
   const {
     title,
     // largeImages,

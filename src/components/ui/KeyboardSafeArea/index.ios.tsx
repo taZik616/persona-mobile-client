@@ -5,11 +5,11 @@ import {KeyboardAvoidingView, StyleSheet} from 'react-native'
 
 import {KeyboardSafeAreaProps} from '.'
 
-export function KeyboardSafeArea({
+export const KeyboardSafeArea = ({
   children,
   style,
   ...props
-}: KeyboardSafeAreaProps) {
+}: KeyboardSafeAreaProps) => {
   const header = useHeaderHeight()
 
   return (

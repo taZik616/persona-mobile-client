@@ -51,7 +51,7 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
  * @param children - Text
  */
 
-export function Text({
+export const Text = ({
   cg1,
   cg2,
   cg3,
@@ -72,7 +72,7 @@ export function Text({
   style,
   children,
   ...props
-}: TextProps) {
+}: TextProps) => {
   return (
     <RNText
       allowFontScaling={false}

@@ -18,13 +18,13 @@ export type HeaderButtonProps = {
   /* i18n?: I18N; */
 }
 
-export function HeaderButton({
+export const HeaderButton = ({
   onPress,
   disabled,
   iconColor,
   icon,
   text,
-}: HeaderButtonProps) {
+}: HeaderButtonProps) => {
   if (icon) {
     return (
       <IconButton

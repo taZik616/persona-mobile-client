@@ -2,7 +2,7 @@ import React from 'react'
 
 import {HomeMain} from 'src/components/HomeMain'
 
-export function HomeMainScreen() {
+export const HomeMainScreen = () => {
   // const {navigate} = useTypedNavigation()
 
   // const onPressCard = (item: TicketInfo) => {

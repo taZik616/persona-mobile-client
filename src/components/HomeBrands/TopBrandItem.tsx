@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import {Image, TouchableOpacity} from 'react-native'
 import {StyleSheet, View} from 'react-native'
@@ -11,25 +11,27 @@ interface TopBrandItemProps {
   onPress?: (item: any) => void
 }
 
-export function TopBrandItem({item, isLoading, onPress}: TopBrandItemProps) {
-  return (
-    <TouchableOpacity
-      onPress={() => !isLoading && onPress?.(item)}
-      style={styles.topBrandContainer}>
-      {!isLoading ? (
-        <Image
-          style={styles.flexOne}
-          resizeMode="center"
-          source={{uri: item.logo}}
-        />
-      ) : (
-        <View style={styles.skeletonContainer}>
-          <></>
-        </View>
-      )}
-    </TouchableOpacity>
-  )
-}
+export const TopBrandItem = memo(
+  ({item, isLoading, onPress}: TopBrandItemProps) => {
+    return (
+      <TouchableOpacity
+        onPress={() => !isLoading && onPress?.(item)}
+        style={styles.topBrandContainer}>
+        {!isLoading ? (
+          <Image
+            style={styles.flexOne}
+            resizeMode="center"
+            source={{uri: item.logo}}
+          />
+        ) : (
+          <View style={styles.skeletonContainer}>
+            <></>
+          </View>
+        )}
+      </TouchableOpacity>
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   flexOne: {

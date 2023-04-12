@@ -14,12 +14,12 @@ interface CategoryItemProps {
   onPress: () => void
 }
 
-export function CategoryItem({
+export const CategoryItem = ({
   title,
   isSelected,
   onPress,
   canPress,
-}: CategoryItemProps) {
+}: CategoryItemProps) => {
   const {styles, colors} = useThematicStyles(useStyles)
   const color = isSelected ? Color.card : Color.primary
   const background = isSelected ? colors.primary : colors.card

@@ -12,7 +12,7 @@ interface ButtonT {
   disabled?: boolean
   onPress: () => void
 }
-export function Button({children, style, onPress, disabled}: ButtonT) {
+export const Button = ({children, style, onPress, disabled}: ButtonT) => {
   return (
     <TouchableOpacity
       onPress={onPress}

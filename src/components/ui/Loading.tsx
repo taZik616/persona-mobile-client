@@ -18,7 +18,7 @@ interface LoadingProps {
   style?: StyleProp<ViewStyle>
 }
 
-export function Loading({text, style}: LoadingProps) {
+export const Loading = ({text, style}: LoadingProps) => {
   return (
     <View style={[styles.container, style]}>
       <ActivityIndicator size="large" color={Color.primary} />

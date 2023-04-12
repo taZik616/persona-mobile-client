@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import {Pressable} from 'react-native'
 import {StyleSheet} from 'react-native'
@@ -14,19 +14,21 @@ interface BrandRowItemProps {
   onPress?: (brand: any) => void
 }
 
-export function BrandRowItem({item, isLoading, onPress}: BrandRowItemProps) {
-  return (
-    <SafeLandscapeView additionalPadding={24}>
-      <Pressable
-        onPress={() => !isLoading && onPress?.(item)}
-        style={styles.brandItemContainer}>
-        <Text numberOfLines={1} gp4>
-          {item.name}
-        </Text>
-      </Pressable>
-    </SafeLandscapeView>
-  )
-}
+export const BrandRowItem = memo(
+  ({item, isLoading, onPress}: BrandRowItemProps) => {
+    return (
+      <SafeLandscapeView additionalPadding={24}>
+        <Pressable
+          onPress={() => !isLoading && onPress?.(item)}
+          style={styles.brandItemContainer}>
+          <Text numberOfLines={1} gp4>
+            {item.name}
+          </Text>
+        </Pressable>
+      </SafeLandscapeView>
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   brandItemContainer: {

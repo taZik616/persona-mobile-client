@@ -15,12 +15,12 @@ interface IconWithCounterBadgeProps {
   color?: string
 }
 
-export function IconWithCounterBadge({
+export const IconWithCounterBadge = ({
   IconComponent,
   iconName,
   badgeCount,
   color = Color.primaryBlack,
-}: IconWithCounterBadgeProps) {
+}: IconWithCounterBadgeProps) => {
   const displayCount = badgeCount
     ? badgeCount > 99
       ? '99+'

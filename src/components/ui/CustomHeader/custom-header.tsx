@@ -26,7 +26,7 @@ interface CustomHeaderProps {
   style?: StyleProp<ViewStyle>
 }
 
-export function CustomHeader({
+export const CustomHeader = ({
   onPressLeft,
   onPressRight,
   disabledLeft,
@@ -41,7 +41,7 @@ export function CustomHeader({
   style,
 }: /* i18nTextRight,
   i18nTextLeft, */
-CustomHeaderProps) {
+CustomHeaderProps) => {
   const {top} = useSafeAreaInsets()
 
   return (

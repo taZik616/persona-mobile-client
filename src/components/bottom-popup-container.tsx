@@ -40,12 +40,12 @@ interface BottomPopupContainerProps {
   closeOnPressOut?: boolean
 }
 
-export function BottomPopupContainer({
+export const BottomPopupContainer = ({
   children,
   transparent,
   onPressOutContent,
   closeOnPressOut,
-}: BottomPopupContainerProps) {
+}: BottomPopupContainerProps) => {
   const {height: H} = useWindowDimensions()
   const {styles} = useThematicStyles(rawStyles)
   const fullyOpen = 0

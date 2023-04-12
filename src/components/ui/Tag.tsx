@@ -10,7 +10,7 @@ interface TagT {
   name: string
   withMarginLeft?: boolean
 }
-export function Tag({name, withMarginLeft}: TagT) {
+export const Tag = ({name, withMarginLeft}: TagT) => {
   return (
     <View
       style={[

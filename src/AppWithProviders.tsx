@@ -11,7 +11,7 @@ import {App} from 'src/App'
 import {store} from './store'
 import {Color} from './themes'
 
-export function AppWithProviders() {
+export const AppWithProviders = () => {
   useEffect(() => {
     SplashScreen.hide()
   }, [])

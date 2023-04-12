@@ -24,7 +24,7 @@ interface HomeMainProps {
   newProductsInBrandsMen: CategoryInterface[]
 }
 
-export function HomeMain({
+export const HomeMain = ({
   menImgUri,
   womenImgUri,
   mainSliderImages,
@@ -32,7 +32,7 @@ export function HomeMain({
   newProductsInCategoriesMen,
   newProductsInBrandsWomen,
   newProductsInBrandsMen,
-}: HomeMainProps) {
+}: HomeMainProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
 
   return (
@@ -95,7 +95,7 @@ interface RenderListProps {
   onPressItem?: (item: CategoryInterface) => void
 }
 
-function RenderList({data, onPressItem}: RenderListProps) {
+const RenderList = ({data, onPressItem}: RenderListProps) => {
   const {left, right} = useSafeAreaInsets()
   return (
     <FlatList

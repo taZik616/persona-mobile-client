@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
@@ -14,7 +14,7 @@ import {Text} from './Text'
 interface HeaderProps {
   onPressSearch?: () => void
   onPressBack?: () => void
-  onPressScan?: () => void
+  onPressBasket?: () => void
   showBack?: boolean
   hideBasket?: boolean
   hideSearch?: boolean
@@ -22,68 +22,70 @@ interface HeaderProps {
   subtitle?: string
 }
 
-export function Header({
-  onPressSearch,
-  onPressBack,
-  onPressScan,
-  showBack,
-  hideBasket,
-  hideSearch,
-  title,
-  subtitle,
-}: HeaderProps) {
-  const {top} = useSafeAreaInsets()
+export const Header = memo(
+  ({
+    onPressSearch,
+    onPressBack,
+    onPressBasket,
+    showBack,
+    hideBasket,
+    hideSearch,
+    title,
+    subtitle,
+  }: HeaderProps) => {
+    const {top} = useSafeAreaInsets()
 
-  return (
-    <View style={styles.container}>
-      <Spacer height={top} />
-      <View style={styles.rowContainer}>
-        <View style={styles.flexOne}>
-          {showBack && (
-            <TouchableOpacity onPress={onPressBack} activeOpacity={0.5}>
-              <BackArrowIcon />
-            </TouchableOpacity>
-          )}
-        </View>
-        {title ? (
-          <View style={styles.textContainer}>
-            <Text gp3>{title}</Text>
-            <Spacer height={6} />
-            {subtitle && (
-              <Text center color={Color.primaryGray} gp4>
-                {subtitle}
-              </Text>
-            )}
-          </View>
-        ) : (
-          <View style={styles.logoContainer}>
-            <Logo />
-          </View>
-        )}
-        <View style={styles.flexOne}>
-          <View style={styles.rightButtons}>
-            {!hideSearch && (
-              <TouchableOpacity onPress={onPressSearch} activeOpacity={0.5}>
-                <IconWithCounterBadge iconName="search" />
+    return (
+      <View style={styles.container}>
+        <Spacer height={top} />
+        <View style={styles.rowContainer}>
+          <View style={styles.flexOne}>
+            {showBack && (
+              <TouchableOpacity onPress={onPressBack} activeOpacity={0.5}>
+                <BackArrowIcon />
               </TouchableOpacity>
             )}
-            {!hideBasket && (
-              <>
-                <Spacer width={8} />
-                <TouchableOpacity onPress={onPressScan} activeOpacity={0.5}>
-                  <IconWithCounterBadge
-                    iconName="shopping-bag"
-                    badgeCount={5}
-                  />
+          </View>
+          {title ? (
+            <View style={styles.textContainer}>
+              <Text gp3>{title}</Text>
+              <Spacer height={6} />
+              {subtitle && (
+                <Text center color={Color.primaryGray} gp4>
+                  {subtitle}
+                </Text>
+              )}
+            </View>
+          ) : (
+            <View style={styles.logoContainer}>
+              <Logo />
+            </View>
+          )}
+          <View style={styles.flexOne}>
+            <View style={styles.rightButtons}>
+              {!hideSearch && (
+                <TouchableOpacity onPress={onPressSearch} activeOpacity={0.5}>
+                  <IconWithCounterBadge iconName="search" />
                 </TouchableOpacity>
-              </>
-            )}
+              )}
+              {!hideBasket && (
+                <>
+                  <Spacer width={8} />
+                  <TouchableOpacity onPress={onPressBasket} activeOpacity={0.5}>
+                    <IconWithCounterBadge
+                      iconName="shopping-bag"
+                      badgeCount={5}
+                    />
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
           </View>
         </View>
       </View>
-    </View>
-  )
-}
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   container: {

@@ -22,7 +22,7 @@ const gestureEnabled = {
   gestureEnabled: true,
 }
 
-export function App() {
+export const App = () => {
   const isDark = useColorScheme() === 'dark'
   return (
     <NavigationContainer

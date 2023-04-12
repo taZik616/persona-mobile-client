@@ -1,35 +1,21 @@
-import {useEffect, useState} from 'react'
+import {useCallback} from 'react'
 
-import {useIsFocused} from '@react-navigation/native'
-import Orientation, {
-  OrientationType,
-  useDeviceOrientationChange,
-} from 'react-native-orientation-locker'
+import {useFocusEffect} from '@react-navigation/native'
+import Orientation, {OrientationType} from 'react-native-orientation-locker'
 
 export const useScreenBlockPortrait = () => {
-  const isFocused = useIsFocused()
-
-  useEffect(() => {
-    if (isFocused) {
+  useFocusEffect(
+    useCallback(() => {
       Orientation.lockToPortrait()
-    } else {
-      Orientation.unlockAllOrientations()
-    }
-    return () => Orientation.unlockAllOrientations()
-  }, [isFocused])
+      return () => Orientation.unlockAllOrientations()
+    }, []),
+  )
 }
 
 export const useScreenBlockCurrent = () => {
-  const [orientation, setOrientation] = useState(OrientationType.UNKNOWN)
-  const isFocused = useIsFocused()
-
-  useDeviceOrientationChange(setOrientation)
-
-  useEffect(() => {
-    if (isFocused) {
-      // Типо чтобы в микротаску закинулось а пока до него дойдет уже очередь orientation обновиться
-      // :D
-      setTimeout(() => {
+  useFocusEffect(
+    useCallback(() => {
+      Orientation.getDeviceOrientation(orientation => {
         switch (orientation) {
           case OrientationType['LANDSCAPE-LEFT']:
             Orientation.lockToLandscapeLeft()
@@ -48,9 +34,9 @@ export const useScreenBlockCurrent = () => {
             Orientation.lockToLandscape()
             break
         }
-      }, 50)
-    } else {
-      Orientation.unlockAllOrientations()
-    }
-  }, [isFocused])
+      })
+
+      return () => Orientation.unlockAllOrientations()
+    }, []),
+  )
 }

@@ -22,7 +22,7 @@ interface SwiperProps {
   horizontalMargins?: number
 }
 
-export function Swiper({images, horizontalMargins = 24}: SwiperProps) {
+export const Swiper = ({images, horizontalMargins = 24}: SwiperProps) => {
   const currentIndex = useSharedValue(0)
   const scrollRef = useRef<Animated.ScrollView>(null)
   const [orientation, setOrientation] = useState(OrientationType.UNKNOWN)
@@ -102,7 +102,7 @@ interface DotIndicatorProps {
   currentIndex: SharedValue<number>
 }
 
-function DotIndicator({index, currentIndex}: DotIndicatorProps) {
+const DotIndicator = ({index, currentIndex}: DotIndicatorProps) => {
   const animatedStyle = useAnimatedStyle(() => {
     const width = interpolate(
       currentIndex.value,

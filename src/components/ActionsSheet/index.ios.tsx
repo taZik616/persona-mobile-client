@@ -4,10 +4,10 @@ import {ActionSheetIOS} from 'react-native'
 
 import {ActionsSheetProps} from './index'
 
-export function ActionsSheet({
+export const ActionsSheet = ({
   onPressDiscard,
   onPressKeepEditing,
-}: ActionsSheetProps) {
+}: ActionsSheetProps) => {
   useEffect(() => {
     ActionSheetIOS.showActionSheetWithOptions(
       {

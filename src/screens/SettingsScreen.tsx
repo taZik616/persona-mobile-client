@@ -2,7 +2,7 @@ import React from 'react'
 
 import {Settings} from 'src/components/Settings'
 
-export function SettingsScreen({navigation}: any) {
+export const SettingsScreen = ({navigation}: any) => {
   return (
     <Settings
       onPressDisconnect={() => {}}

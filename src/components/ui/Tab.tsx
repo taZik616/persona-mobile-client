@@ -27,14 +27,14 @@ const navLabelsById = [
   'Профиль',
 ]
 
-export function Tab({
+export const Tab = ({
   onPress,
   isFocused,
   tabId,
   color = Color.primaryBlack,
   activeColor = Color.primary,
   badgeCount,
-}: TabProps) {
+}: TabProps) => {
   const Icon = tabBarIcons[tabId]
   return (
     <Pressable onPress={onPress} style={styles.container}>
@@ -52,30 +52,7 @@ export function Tab({
 }
 
 const styles = StyleSheet.create({
-  ico: {
-    width: 24,
-    height: 24,
-  },
   container: {
     flex: 1,
-  },
-  icoContainer: {
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  badgeContainer: {
-    position: 'absolute',
-    top: -8,
-    right: -12,
-    backgroundColor: Color.primary,
-    borderRadius: 50,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeBigContainer: {
-    width: 26,
-    height: 23,
   },
 })

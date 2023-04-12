@@ -19,12 +19,12 @@ interface FormDateTimeProps {
   isTime: boolean
 }
 
-export function FormDateTime({
+export const FormDateTime = ({
   style,
   name,
   placeholder,
   isTime,
-}: FormDateTimeProps) {
+}: FormDateTimeProps) => {
   const [showPicker, setShowPicker] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
 

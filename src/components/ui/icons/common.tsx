@@ -4,10 +4,10 @@ import Svg, {Path, SvgProps} from 'react-native-svg'
 
 import {Color} from 'src/themes'
 
-export function BackArrowIcon({
+export const BackArrowIcon = ({
   color = Color.primaryBlack,
   ...props
-}: SvgProps) {
+}: SvgProps) => {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
       <Path
@@ -27,7 +27,10 @@ export function BackArrowIcon({
   )
 }
 
-export function StarEmptyIcon({color = Color.primaryGray, ...props}: SvgProps) {
+export const StarEmptyIcon = ({
+  color = Color.primaryGray,
+  ...props
+}: SvgProps) => {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
       <Path
@@ -41,7 +44,7 @@ export function StarEmptyIcon({color = Color.primaryGray, ...props}: SvgProps) {
   )
 }
 
-export function StarFilledIcon({color = Color.primary, ...props}: SvgProps) {
+export const StarFilledIcon = ({color = Color.primary, ...props}: SvgProps) => {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
       <Path
@@ -54,7 +57,7 @@ export function StarFilledIcon({color = Color.primary, ...props}: SvgProps) {
   )
 }
 
-export function CrossIcon({color = Color.primaryBlack, ...props}: SvgProps) {
+export const CrossIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
       <Path

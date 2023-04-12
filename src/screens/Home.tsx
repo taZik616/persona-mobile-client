@@ -25,7 +25,7 @@ export const screenOptions = ({}: {
   headerShadowVisible: false,
 })
 
-export function Home() {
+export const Home = () => {
   return (
     <Tab.Navigator
       tabBar={props => {

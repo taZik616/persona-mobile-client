@@ -25,7 +25,12 @@ const withSpringConfig = {
   velocity: 0,
 }
 
-export function CategoryCard({uri, name, logoUri, onPress}: CategoryCardProps) {
+export const CategoryCard = ({
+  uri,
+  name,
+  logoUri,
+  onPress,
+}: CategoryCardProps) => {
   const scale = useSharedValue(1)
   const anim = useAnimatedStyle(() => ({
     transform: [{scale: scale.value}],

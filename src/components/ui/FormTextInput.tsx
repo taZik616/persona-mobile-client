@@ -24,14 +24,14 @@ interface FormTextInputProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
 }
 
-export function FormTextInput({
+export const FormTextInput = ({
   isPrice,
   style,
   name,
   nextField,
   autoCapitalize,
   placeholder,
-}: FormTextInputProps) {
+}: FormTextInputProps) => {
   const {styles, colors} = useThematicStyles(rawStyles)
   const {control, setFocus} = useFormContext()
   return (

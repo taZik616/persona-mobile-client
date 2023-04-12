@@ -13,7 +13,7 @@ interface SettingsButtonProps {
   icon: string
 }
 
-export function SettingsButton({onPress, title, icon}: SettingsButtonProps) {
+export const SettingsButton = ({onPress, title, icon}: SettingsButtonProps) => {
   return (
     <TouchableOpacity
       style={styles.buttonStyle}

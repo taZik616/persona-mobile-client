@@ -17,7 +17,11 @@ interface CardWithImageProps {
   borderRadius?: number
 }
 
-export function CardWithImage({style, uri, borderRadius}: CardWithImageProps) {
+export const CardWithImage = ({
+  style,
+  uri,
+  borderRadius,
+}: CardWithImageProps) => {
   const {width} = useWindowDimensions()
   return (
     <View style={[styles.imageContainer, {width}, style]}>

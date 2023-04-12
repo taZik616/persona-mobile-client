@@ -8,13 +8,13 @@ export type IconButtonProps = ViewProps & {
   disabled?: boolean
 }
 
-export function IconButton({
+export const IconButton = ({
   style,
   children,
   disabled,
   onPress,
   ...props
-}: IconButtonProps) {
+}: IconButtonProps) => {
   const containerStyle = useMemo(
     () => [page.container, style, disabled && page.disabled],
     [style, disabled],

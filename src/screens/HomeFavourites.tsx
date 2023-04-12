@@ -2,6 +2,6 @@ import React from 'react'
 
 import {HomeFavourites} from 'src/components/HomeFavourites'
 
-export function HomeFavouritesScreen() {
+export const HomeFavouritesScreen = () => {
   return <HomeFavourites />
 }

@@ -4,13 +4,13 @@ import {StyleSheet, View, ViewProps} from 'react-native'
 
 export type SpacerProps = ViewProps & {height?: number; width?: number}
 
-export function Spacer({
+export const Spacer = ({
   children,
   style,
   height,
   width,
   ...props
-}: SpacerProps) {
+}: SpacerProps) => {
   const container = useMemo(() => {
     const hasSizeProp = !!height || !!width
     return [hasSizeProp ? {height, width} : styles.flexOne, style].filter(

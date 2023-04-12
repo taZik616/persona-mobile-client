@@ -8,10 +8,10 @@ interface SafeLandscapeViewProps {
   additionalPadding?: number
 }
 
-export function SafeLandscapeView({
+export const SafeLandscapeView = ({
   children,
   additionalPadding = 0,
-}: SafeLandscapeViewProps) {
+}: SafeLandscapeViewProps) => {
   const {left, right} = useSafeAreaInsets()
 
   return (

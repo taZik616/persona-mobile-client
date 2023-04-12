@@ -19,11 +19,11 @@ interface HomeNewProductsProps {
   onPressTopRightIcon?: (item: ProductPreviewInfo) => void
 }
 
-export function HomeNewProducts({
+export const HomeNewProducts = ({
   onPressProduct,
   onPressAddToBasket,
   onPressTopRightIcon,
-}: HomeNewProductsProps) {
+}: HomeNewProductsProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
 
   useScreenBlockCurrent()

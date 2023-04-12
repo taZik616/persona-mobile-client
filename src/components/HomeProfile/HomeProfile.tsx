@@ -4,7 +4,7 @@ import {Header} from '../ui/Header'
 
 export type HomeProfileProps = {}
 
-export function HomeProfile({}: HomeProfileProps) {
+export const HomeProfile = ({}: HomeProfileProps) => {
   return (
     <>
       <Header hideSearch />

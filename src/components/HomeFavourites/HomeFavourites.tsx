@@ -4,7 +4,7 @@ import {Header} from '../ui/Header'
 
 interface HomeFavouritesProps {}
 
-export function HomeFavourites({}: HomeFavouritesProps) {
+export const HomeFavourites = ({}: HomeFavouritesProps) => {
   return (
     <>
       <Header title="Избранное" hideSearch subtitle="0 товаров" />
