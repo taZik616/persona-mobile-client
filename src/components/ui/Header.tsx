@@ -18,6 +18,7 @@ interface HeaderProps {
   showBack?: boolean
   hideBasket?: boolean
   hideSearch?: boolean
+  hideLogo?: boolean
   title?: string
   subtitle?: string
 }
@@ -30,6 +31,7 @@ export const Header = memo(
     showBack,
     hideBasket,
     hideSearch,
+    hideLogo,
     title,
     subtitle,
   }: HeaderProps) => {
@@ -56,10 +58,12 @@ export const Header = memo(
                 </Text>
               )}
             </View>
-          ) : (
+          ) : !hideLogo ? (
             <View style={styles.logoContainer}>
               <Logo />
             </View>
+          ) : (
+            <></>
           )}
           <View style={styles.flexOne}>
             <View style={styles.rightButtons}>

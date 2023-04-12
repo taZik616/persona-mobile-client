@@ -70,3 +70,30 @@ export const CrossIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
     </Svg>
   )
 }
+
+export const ShareIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="m14.575 6.163-4.3-4.33-4.3 4.33"
+      />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeWidth={2}
+        d="M10.107 2.75v8.833"
+      />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M3 11.533v3.334a5 5 0 0 0 5 5h4.167a5 5 0 0 0 5-5v-3.334"
+      />
+    </Svg>
+  )
+}

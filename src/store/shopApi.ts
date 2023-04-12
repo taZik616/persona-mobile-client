@@ -114,6 +114,16 @@ export const shopApi = createApi({
           : []
       },
     }),
+    getProductById: build.query({
+      query: (id: string) => ({
+        url: 'products/',
+        method: 'PATCH',
+        body: {
+          IdProduct: id,
+        },
+      }),
+      transformResponse: (data: any) => data ?? [],
+    }),
   }),
 })
 
@@ -132,4 +142,5 @@ export const {
   useGetBrandsBySexQuery,
   useGetTopBrandsQuery,
   useGetProductsQuery,
+  useGetProductByIdQuery,
 } = shopApi

@@ -14,9 +14,7 @@ export type TabParamList = {
 export type RootStackParamList = {
   home?: NavigatorScreenParams<TabParamList>
   settings: undefined
-  productDetail: {
-    ticketId: number
-  }
+  productDetail: Partial<ProductPreviewInfo> & {productId: string}
 }
 
 // INTERFACES
@@ -33,6 +31,26 @@ export interface ProductPreviewInfo {
   title: string
   price: number
   previewImages: string[]
+  priceGroup: string
+  isAvailable: boolean
+  largeImages: string[]
+  brandImage?: string
+  collection?: string
+  brandName?: string
+}
+
+export interface ProductDetailInfo {
+  productId: string
+  title: string
+  description: string
+  code: string
+  brand: string
+  specifications: {
+    [name: string]: {name: string; value: string}
+    // manufacturer?: {name: 'Мануфактура'; value: 'хорошая'}
+    // country?: {name: 'Страна'; value: 'Россия'}
+  }
+  price: number
   priceGroup: string
   isAvailable: boolean
   largeImages: string[]

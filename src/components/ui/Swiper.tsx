@@ -15,81 +15,98 @@ import {Color} from 'src/themes'
 import {IS_ANDROID, SCREEN_H, SCREEN_W} from 'src/variables'
 
 import {CardWithImage} from './CardWithImage'
+import {Img} from './Img'
 import {Spacer} from './Spacer'
 
 interface SwiperProps {
+  type?: 'card-image' | 'big-image'
   images: string[]
   horizontalMargins?: number
 }
 
-export const Swiper = memo(({images, horizontalMargins = 24}: SwiperProps) => {
-  const currentIndex = useSharedValue(0)
-  const scrollRef = useRef<Animated.ScrollView>(null)
-  const {isPortrait} = useIsPortrait()
+export const Swiper = memo(
+  ({images, type = 'card-image', horizontalMargins = 24}: SwiperProps) => {
+    const currentIndex = useSharedValue(0)
+    const scrollRef = useRef<Animated.ScrollView>(null)
+    const {isPortrait} = useIsPortrait()
 
-  const {width} = useWindowDimensions()
-  const activeWidth = width - horizontalMargins * 2
+    const {width, height} = useWindowDimensions()
+    const activeWidth = width - horizontalMargins * 2
 
-  const handleScroll = useAnimatedScrollHandler(event => {
-    currentIndex.value =
-      event.contentOffset.x / (activeWidth + horizontalMargins)
-  })
+    const handleScroll = useAnimatedScrollHandler(event => {
+      currentIndex.value =
+        event.contentOffset.x / (activeWidth + horizontalMargins)
+    })
 
-  useEffect(() => {
-    const index = Math.round(currentIndex.value)
-    // Без этого никак из за handleScroll вон там 👆
-    setTimeout(
-      () => {
-        currentIndex.value = index
-        if (isPortrait) {
-          scrollRef.current?.scrollTo({
-            x: index * (SCREEN_W - horizontalMargins),
-            y: 0,
-            animated: false,
-          })
-        } else {
-          scrollRef.current?.scrollTo({
-            x: index * (SCREEN_H - horizontalMargins),
-            y: 0,
-            animated: false,
-          })
-        }
-      },
-      IS_ANDROID ? 100 : 30,
-    )
-  }, [isPortrait])
+    useEffect(() => {
+      const index = Math.round(currentIndex.value)
+      // Без этого никак из за handleScroll вон там 👆
+      setTimeout(
+        () => {
+          currentIndex.value = index
+          if (isPortrait) {
+            scrollRef.current?.scrollTo({
+              x: index * (SCREEN_W - horizontalMargins),
+              y: 0,
+              animated: false,
+            })
+          } else {
+            scrollRef.current?.scrollTo({
+              x: index * (SCREEN_H - horizontalMargins),
+              y: 0,
+              animated: false,
+            })
+          }
+        },
+        IS_ANDROID ? 100 : 30,
+      )
+    }, [isPortrait])
 
-  return (
-    <View style={styles.container}>
-      <Animated.ScrollView
-        ref={scrollRef}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        snapToInterval={activeWidth + horizontalMargins}
-        decelerationRate="fast">
-        <Spacer width={horizontalMargins} />
-        <View style={[styles.flexRow, {gap: horizontalMargins}]}>
-          {images.map((image, index) => (
-            <CardWithImage
+    return (
+      <View style={styles.container}>
+        <Animated.ScrollView
+          ref={scrollRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          snapToInterval={activeWidth + horizontalMargins}
+          decelerationRate="fast">
+          <Spacer width={horizontalMargins} />
+          <View style={[styles.flexRow, {gap: horizontalMargins}]}>
+            {images.map((image, index) =>
+              type === 'card-image' ? (
+                <CardWithImage
+                  key={index}
+                  uri={image}
+                  style={{width: activeWidth}}
+                />
+              ) : (
+                <Img
+                  key={index}
+                  style={{width: activeWidth}}
+                  maxHeight={height / 1.75}
+                  uri={image}
+                />
+              ),
+            )}
+          </View>
+          <Spacer width={horizontalMargins} />
+        </Animated.ScrollView>
+        <Spacer height={16} />
+        <View style={styles.dotContainer}>
+          {images.map((_, index) => (
+            <DotIndicator
               key={index}
-              uri={image}
-              style={{width: activeWidth}}
+              index={index}
+              currentIndex={currentIndex}
             />
           ))}
         </View>
-        <Spacer width={horizontalMargins} />
-      </Animated.ScrollView>
-      <Spacer height={16} />
-      <View style={styles.dotContainer}>
-        {images.map((_, index) => (
-          <DotIndicator key={index} index={index} currentIndex={currentIndex} />
-        ))}
       </View>
-    </View>
-  )
-})
+    )
+  },
+)
 interface DotIndicatorProps {
   index: number
   currentIndex: SharedValue<number>
@@ -124,6 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dotContainer: {
+    marginLeft: 4,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

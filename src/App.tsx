@@ -8,6 +8,7 @@ import {navigator} from 'src/navigator'
 import {Home} from 'src/screens/Home'
 import {RootStackParamList} from 'src/types'
 
+import {ProductDetailScreen} from './screens/ProductDetail'
 import {SettingsScreen} from './screens/SettingsScreen'
 import {Color} from './themes'
 
@@ -42,9 +43,9 @@ export const App = () => {
         initialRouteName="home"
         screenOptions={basicScreenOptions}>
         <Stack.Screen name="home" component={Home} />
-
         <Stack.Group screenOptions={gestureEnabled}>
           <Stack.Screen name="settings" component={SettingsScreen} />
+          <Stack.Screen name="productDetail" component={ProductDetailScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

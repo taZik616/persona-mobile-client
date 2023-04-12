@@ -1,7 +1,13 @@
 import React, {memo} from 'react'
 
-import {Image, StyleSheet, View, useWindowDimensions} from 'react-native'
-import {s} from 'react-native-size-matters'
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+  useWindowDimensions,
+} from 'react-native'
 
 import {useImageAspect} from 'src/hooks'
 
@@ -9,10 +15,11 @@ interface ImgT {
   maxHeight?: number
   uri: string
   widthCoefficient?: number
+  style?: StyleProp<ViewStyle>
 }
 
 export const Img = memo<ImgT>(
-  ({maxHeight = 370, uri = '', widthCoefficient = 1}) => {
+  ({maxHeight = 370, style, uri = '', widthCoefficient = 1}) => {
     const aspect = useImageAspect(uri)
     const {width: W} = useWindowDimensions()
 
@@ -24,7 +31,7 @@ export const Img = memo<ImgT>(
     }
 
     return (
-      <View style={[mainBlock, {maxHeight}]}>
+      <View style={[mainBlock, {maxHeight}, style]}>
         <Image
           style={[
             img,
@@ -44,7 +51,6 @@ export const Img = memo<ImgT>(
 
 const styles = StyleSheet.create({
   img: {
-    borderRadius: s(12),
     overflow: 'hidden',
   },
   mainBlock: {
