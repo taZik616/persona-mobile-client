@@ -64,7 +64,7 @@ export const ProductCard = ({
   }, [topRightIcon])
 
   return (
-    <View style={!isAvailable && styles.disabledCard}>
+    <View style={[styles.container, !isAvailable && styles.disabledCard]}>
       {topRightIcon && (
         <Pressable
           onPress={() => onPressTopRightIcon?.(item)}
@@ -101,7 +101,7 @@ export const ProductCard = ({
             sliderWidth={width}
             itemWidth={width}
           />
-          <Spacer height={8} />
+          <Spacer height={6} />
           {brandImage ? (
             <Image
               style={styles.brandImage}
@@ -115,7 +115,7 @@ export const ProductCard = ({
               </Text>
             </View>
           )}
-          <Spacer height={10} />
+          <Spacer height={8} />
           <View style={styles.textContentContainer}>
             {title ? (
               <>
@@ -145,24 +145,28 @@ export const ProductCard = ({
             ) : (
               <></>
             )}
-            <Spacer height={4} />
           </View>
         </View>
       </GestureDetector>
       {showAddToBasket ? (
         <TouchableOpacity
           onPress={() => onPressAddToBasket?.(item)}
-          style={styles.addToCartButton}>
+          style={[styles.addToCartButton, {width}]}>
           <Text gp1>Добавить в корзину</Text>
         </TouchableOpacity>
       ) : (
         <></>
       )}
+      <Spacer height={16} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
   imageContainer: {
     flex: 1,
     aspectRatio: '140/180',
@@ -189,6 +193,7 @@ const styles = StyleSheet.create({
   textContentContainer: {
     width: '100%',
     height: 60,
+    justifyContent: 'center',
     paddingHorizontal: 10,
   },
   topIconContainer: {
@@ -198,7 +203,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   addToCartButton: {
-    width: '100%',
     paddingVertical: 8,
     paddingHorizontal: 10,
     alignItems: 'center',

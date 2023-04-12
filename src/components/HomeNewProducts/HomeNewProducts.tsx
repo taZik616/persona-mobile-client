@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {FlatList, StyleSheet} from 'react-native'
+import {FlashList} from '@shopify/flash-list'
 
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
@@ -29,8 +29,8 @@ export const HomeNewProducts = ({
   useScreenBlockCurrent()
 
   const products = useGetProductsQuery({
-    end: 100,
-    start: 0,
+    end: 200,
+    start: 100,
     sortBy: 'stock',
     sortedValues: '1',
   })
@@ -41,10 +41,10 @@ export const HomeNewProducts = ({
     <>
       <Header title="Новые поступления" />
       <SelectorTwoOptions onChange={onChangeGender} values={values} />
-      <FlatList
+      <FlashList
         key={numColumns}
         numColumns={numColumns}
-        columnWrapperStyle={styles.columnWrapper}
+        estimatedItemSize={351} // if showAddToBasket - 379
         contentContainerStyle={contentPaddingsStyle}
         renderItem={({item}) => (
           <ProductCard
@@ -63,8 +63,4 @@ export const HomeNewProducts = ({
   )
 }
 
-const styles = StyleSheet.create({
-  columnWrapper: {
-    justifyContent: 'space-between',
-  },
-})
+// const styles = StyleSheet.create({})

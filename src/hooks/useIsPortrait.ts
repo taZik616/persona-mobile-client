@@ -18,7 +18,7 @@ export function useIsPortrait() {
           setIsPortrait(true)
         }
       }
-      Orientation.addDeviceOrientationListener(listener)
+      Orientation.addOrientationListener(listener)
       return () => Orientation.removeDeviceOrientationListener(listener)
     }, []),
   )

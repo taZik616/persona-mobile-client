@@ -15,7 +15,7 @@ export const useScreenBlockPortrait = () => {
 export const useScreenBlockCurrent = () => {
   useFocusEffect(
     useCallback(() => {
-      Orientation.getDeviceOrientation(orientation => {
+      Orientation.getOrientation(orientation => {
         switch (orientation) {
           case OrientationType['LANDSCAPE-LEFT']:
             Orientation.lockToLandscapeLeft()
@@ -29,6 +29,7 @@ export const useScreenBlockCurrent = () => {
           case OrientationType['PORTRAIT-UPSIDEDOWN']:
             Orientation.lockToPortraitUpsideDown()
             break
+          // it's only DeviceOrientation, not Orientation
           case OrientationType['FACE-DOWN']:
           case OrientationType['FACE-UP']:
             Orientation.lockToLandscape()
