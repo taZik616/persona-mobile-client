@@ -35,6 +35,11 @@ export const SelectorTwoOptions = memo(
     const isHasTranslate = useSharedValue(!isSecondActive)
 
     useEffect(() => {
+      translateX.value = isSecondActive ? translateValue : 0
+      isHasTranslate.value = !isSecondActive
+    }, [isSecondActive])
+
+    useEffect(() => {
       if (translateX.value > 0 && !isHasTranslate.value) {
         translateX.value = translateValue
       }

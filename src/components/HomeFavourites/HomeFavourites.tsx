@@ -2,6 +2,7 @@ import React from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 
+import {useScreenBlockCurrent} from 'src/hooks'
 import {useProductListHelper} from 'src/hooks/useProductListHelper'
 import {useGetProductsQuery} from 'src/store/shopApi'
 
@@ -21,6 +22,7 @@ export const HomeFavourites = ({
   onPressAddToBasket,
   onPressRemove,
 }: HomeFavouritesProps) => {
+  useScreenBlockCurrent()
   const products = useGetProductsQuery({
     end: 1600,
     start: 1500,

@@ -1,7 +1,6 @@
-import React, {memo, useEffect, useRef, useState} from 'react'
+import React, {memo, useEffect, useRef} from 'react'
 
 import {StyleSheet, View, useWindowDimensions} from 'react-native'
-import Orientation, {OrientationType} from 'react-native-orientation-locker'
 import Animated, {
   Extrapolate,
   SharedValue,
@@ -11,6 +10,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated'
 
+import {useIsPortrait} from 'src/hooks/useIsPortrait'
 import {Color} from 'src/themes'
 import {IS_ANDROID, SCREEN_H, SCREEN_W} from 'src/variables'
 
@@ -25,7 +25,7 @@ interface SwiperProps {
 export const Swiper = memo(({images, horizontalMargins = 24}: SwiperProps) => {
   const currentIndex = useSharedValue(0)
   const scrollRef = useRef<Animated.ScrollView>(null)
-  const [orientation, setOrientation] = useState(OrientationType.UNKNOWN)
+  const {isPortrait} = useIsPortrait()
 
   const {width} = useWindowDimensions()
   const activeWidth = width - horizontalMargins * 2
@@ -41,29 +41,23 @@ export const Swiper = memo(({images, horizontalMargins = 24}: SwiperProps) => {
     setTimeout(
       () => {
         currentIndex.value = index
-        switch (orientation) {
-          case OrientationType.PORTRAIT:
-          case OrientationType['PORTRAIT-UPSIDEDOWN']:
-            scrollRef.current?.scrollTo({
-              x: index * (SCREEN_W - horizontalMargins),
-              y: 0,
-              animated: false,
-            })
-            break
-          default:
-            scrollRef.current?.scrollTo({
-              x: index * (SCREEN_H - horizontalMargins),
-              y: 0,
-              animated: false,
-            })
-            break
+        if (isPortrait) {
+          scrollRef.current?.scrollTo({
+            x: index * (SCREEN_W - horizontalMargins),
+            y: 0,
+            animated: false,
+          })
+        } else {
+          scrollRef.current?.scrollTo({
+            x: index * (SCREEN_H - horizontalMargins),
+            y: 0,
+            animated: false,
+          })
         }
       },
-
       IS_ANDROID ? 100 : 30,
     )
-  }, [orientation])
-  useEffect(() => Orientation.addOrientationListener(setOrientation), [])
+  }, [isPortrait])
 
   return (
     <View style={styles.container}>
