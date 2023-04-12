@@ -1,12 +1,18 @@
-import {useCallback, useState} from 'react'
+import {useCallback} from 'react'
+
+import {selectGender, useTypedDispatch, useTypedSelector} from 'src/store'
+import {toggleGender} from 'src/store/genderSlice'
 
 const values: [string, string] = ['женское', 'мужское']
 
 export function useGender() {
-  const [isMenSelected, setIsMenSelected] = useState(false)
+  const gender = useTypedSelector(selectGender)
+  const dispatch = useTypedDispatch()
+  const isMenSelected = gender === 'men'
 
   const onChangeGender = useCallback(
-    (str: string) => setIsMenSelected(str === 'мужское'),
+    (str: string) =>
+      dispatch(toggleGender(str === 'женское' ? 'women' : 'men')),
     [],
   )
 

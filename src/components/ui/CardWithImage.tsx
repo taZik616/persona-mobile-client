@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import {
   Image,
@@ -17,24 +17,26 @@ interface CardWithImageProps {
   borderRadius?: number
 }
 
-export const CardWithImage = ({
-  style,
-  uri,
-  borderRadius,
-}: CardWithImageProps) => {
-  const {width} = useWindowDimensions()
-  return (
-    <View style={[styles.imageContainer, {width}, style]}>
-      <Image
-        source={{
-          uri,
-        }}
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={[styles.image, {borderRadius: borderRadius ? borderRadius : 10}]}
-      />
-    </View>
-  )
-}
+export const CardWithImage = memo(
+  ({style, uri, borderRadius}: CardWithImageProps) => {
+    const {width} = useWindowDimensions()
+
+    return (
+      <View style={[styles.imageContainer, {width}, style]}>
+        <Image
+          source={{
+            uri,
+          }}
+          style={[
+            styles.image,
+            // eslint-disable-next-line react-native/no-inline-styles
+            {borderRadius: borderRadius ? borderRadius : 10},
+          ]}
+        />
+      </View>
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   imageContainer: {

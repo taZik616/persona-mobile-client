@@ -17,24 +17,31 @@ import {Text} from './Text'
 interface SelectorTwoOptionsProps {
   onChange?(option: string): void
   values: [string, string]
+  isSecondActive?: boolean
   marginHorizontal?: number
 }
 
 export const SelectorTwoOptions = memo(
-  ({onChange, values, marginHorizontal = 24}: SelectorTwoOptionsProps) => {
-    const translateX = useSharedValue(0)
-    const isActiveTranslate = useSharedValue(false)
-
+  ({
+    onChange,
+    values,
+    isSecondActive,
+    marginHorizontal = 24,
+  }: SelectorTwoOptionsProps) => {
     const {width} = useWindowDimensions()
+    const translateValue = width / 2 - marginHorizontal + 16
+
+    const translateX = useSharedValue(isSecondActive ? translateValue : 0)
+    const isHasTranslate = useSharedValue(!isSecondActive)
 
     useEffect(() => {
-      if (translateX.value > 0 && !isActiveTranslate.value) {
-        translateX.value = width / 2 - marginHorizontal + 16
+      if (translateX.value > 0 && !isHasTranslate.value) {
+        translateX.value = translateValue
       }
     }, [width])
 
     const handleChangeLeft = () => {
-      isActiveTranslate.value = true
+      isHasTranslate.value = true
       translateX.value = withTiming(
         0,
         {
@@ -42,14 +49,14 @@ export const SelectorTwoOptions = memo(
           easing: Easing.inOut(Easing.exp),
         },
         () => {
-          isActiveTranslate.value = false
+          isHasTranslate.value = false
           onChange && runOnJS(onChange)(values[0])
         },
       )
     }
     const handleChangeRight = () => {
       translateX.value = withTiming(
-        width / 2 - marginHorizontal + 16,
+        translateValue,
         {
           duration: 450,
           easing: Easing.inOut(Easing.exp),

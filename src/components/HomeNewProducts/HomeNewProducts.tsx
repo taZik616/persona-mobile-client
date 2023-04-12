@@ -40,7 +40,11 @@ export const HomeNewProducts = ({
   return (
     <>
       <Header title="Новые поступления" />
-      <SelectorTwoOptions onChange={onChangeGender} values={values} />
+      <SelectorTwoOptions
+        isSecondActive={isMenSelected}
+        onChange={onChangeGender}
+        values={values}
+      />
       <FlashList
         key={numColumns}
         numColumns={numColumns}

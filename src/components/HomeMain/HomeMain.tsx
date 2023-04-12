@@ -22,6 +22,7 @@ interface HomeMainProps {
   newProductsInCategoriesMen: CategoryInterface[]
   newProductsInBrandsWomen: CategoryInterface[]
   newProductsInBrandsMen: CategoryInterface[]
+  onPressAnyListItem?: (item: CategoryInterface) => void
 }
 
 export const HomeMain = ({
@@ -32,6 +33,7 @@ export const HomeMain = ({
   newProductsInCategoriesMen,
   newProductsInBrandsWomen,
   newProductsInBrandsMen,
+  onPressAnyListItem,
 }: HomeMainProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
 
@@ -40,7 +42,11 @@ export const HomeMain = ({
       <Header />
       <ScrollView>
         <Spacer height={8} />
-        <SelectorTwoOptions onChange={onChangeGender} values={values} />
+        <SelectorTwoOptions
+          isSecondActive={isMenSelected}
+          onChange={onChangeGender}
+          values={values}
+        />
         <Spacer height={16} />
         <Swiper images={mainSliderImages} />
         <Spacer height={16} />
@@ -54,7 +60,7 @@ export const HomeMain = ({
         </Text>
         <Spacer height={12} />
         <RenderList
-          onPressItem={item => console.log('Item pressed: ', item)}
+          onPressItem={onPressAnyListItem}
           data={
             isMenSelected
               ? newProductsInCategoriesMen
@@ -67,7 +73,7 @@ export const HomeMain = ({
         </Text>
         <Spacer height={12} />
         <RenderList
-          onPressItem={item => console.log('Item pressed: ', item)}
+          onPressItem={onPressAnyListItem}
           data={
             isMenSelected ? newProductsInBrandsMen : newProductsInBrandsWomen
           }
@@ -105,9 +111,7 @@ const RenderList = ({data, onPressItem}: RenderListProps) => {
         styles.categoryContainer,
         {paddingLeft: left + 24, paddingRight: right + 24},
       ]}
-      renderItem={({item}) => (
-        <CategoryCard onPress={() => onPressItem?.(item)} {...item} />
-      )}
+      renderItem={({item}) => <CategoryCard onPress={onPressItem} {...item} />}
       keyExtractor={i => i.id}
       data={data}
     />

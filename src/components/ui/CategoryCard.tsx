@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import {Image, StyleSheet, View} from 'react-native'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
@@ -15,7 +15,7 @@ import {Spacer} from './Spacer'
 import {Text} from './Text'
 
 interface CategoryCardProps extends CategoryInterface {
-  onPress?: () => void
+  onPress?: (item: CategoryInterface) => void
 }
 
 const withSpringConfig = {
@@ -25,12 +25,9 @@ const withSpringConfig = {
   velocity: 0,
 }
 
-export const CategoryCard = ({
-  uri,
-  name,
-  logoUri,
-  onPress,
-}: CategoryCardProps) => {
+export const CategoryCard = memo(({onPress, ...item}: CategoryCardProps) => {
+  const {uri, name, logoUri} = item
+
   const scale = useSharedValue(1)
   const anim = useAnimatedStyle(() => ({
     transform: [{scale: scale.value}],
@@ -49,7 +46,7 @@ export const CategoryCard = ({
           scale.value = withSpring(1, withSpringConfig)
         })
         .onEnd(() => {
-          onPress && runOnJS(onPress)()
+          onPress && runOnJS(onPress)(item)
         })}>
       <Animated.View style={[styles.containerForHorizontalScroll, anim]}>
         <Image style={styles.img} source={{uri}} />
@@ -63,14 +60,14 @@ export const CategoryCard = ({
             />
           ) : (
             <Text center cg3>
-              {name.toUpperCase()}
+              {(name ?? '').toUpperCase()}
             </Text>
           )}
         </View>
       </Animated.View>
     </GestureDetector>
   )
-}
+})
 
 const styles = StyleSheet.create({
   containerForHorizontalScroll: {

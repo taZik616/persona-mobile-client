@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {memo, useEffect, useRef, useState} from 'react'
 
 import {StyleSheet, View, useWindowDimensions} from 'react-native'
 import Orientation, {OrientationType} from 'react-native-orientation-locker'
@@ -22,7 +22,7 @@ interface SwiperProps {
   horizontalMargins?: number
 }
 
-export const Swiper = ({images, horizontalMargins = 24}: SwiperProps) => {
+export const Swiper = memo(({images, horizontalMargins = 24}: SwiperProps) => {
   const currentIndex = useSharedValue(0)
   const scrollRef = useRef<Animated.ScrollView>(null)
   const [orientation, setOrientation] = useState(OrientationType.UNKNOWN)
@@ -95,8 +95,7 @@ export const Swiper = ({images, horizontalMargins = 24}: SwiperProps) => {
       </View>
     </View>
   )
-}
-
+})
 interface DotIndicatorProps {
   index: number
   currentIndex: SharedValue<number>

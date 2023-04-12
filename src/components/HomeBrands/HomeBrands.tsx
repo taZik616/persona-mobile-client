@@ -61,7 +61,11 @@ export const HomeBrands = memo(({onPressBrand}: HomeBrandsProps) => {
         data={allBrands.currentData}
         onChangeLetter={handleScrollToLetter}
       />
-      <SelectorTwoOptions onChange={onChangeGender} values={values} />
+      <SelectorTwoOptions
+        isSecondActive={isMenSelected}
+        onChange={onChangeGender}
+        values={values}
+      />
       <Spacer height={8} />
       <SectionList
         ref={listRef}

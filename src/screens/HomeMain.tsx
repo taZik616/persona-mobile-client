@@ -1,20 +1,23 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 
 import {HomeMain} from 'src/components/HomeMain'
+
+const mainSliderImages = [
+  'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
+  'https://vadim-backet.s3.eu-central-1.amazonaws.com/DiscountBaner.jpg',
+  'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
+]
 
 export const HomeMainScreen = () => {
   // const {navigate} = useTypedNavigation()
 
-  // const onPressCard = (item: TicketInfo) => {
-  //   navigate('ticketDetail', {ticketId: item.id})
-  // }
+  const onPressAnyListItem = useCallback((item: any) => {
+    console.log('onPressAnyListItem - HomeMainScreen:', item)
+  }, [])
   return (
     <HomeMain
-      mainSliderImages={[
-        'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
-        'https://vadim-backet.s3.eu-central-1.amazonaws.com/DiscountBaner.jpg',
-        'https://s0.rbk.ru/v6_top_pics/media/img/6/11/756789425072116.jpg',
-      ]}
+      mainSliderImages={mainSliderImages}
+      onPressAnyListItem={onPressAnyListItem}
       newProductsInCategoriesWomen={[
         {
           uri: 'https://sc04.alicdn.com/kf/U582bf0a50ba8468cb2da7d2d6a0114aaz.png',
