@@ -1,4 +1,11 @@
-import React, {memo, useCallback, useMemo, useRef} from 'react'
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from 'react'
 
 import {FlatList, SectionList, StyleSheet} from 'react-native'
 
@@ -29,6 +36,7 @@ export const HomeBrands = memo(({onPressBrand}: HomeBrandsProps) => {
   const allBrands = useGetBrandsBySexQuery(isMenSelected ? 'men' : 'women')
 
   const listRef = useRef<SectionList>(null)
+  const topBrandsRef = useRef<any>(null)
 
   const handleScrollToLetter = useMemo(() => {
     let prevId: number
@@ -57,8 +65,15 @@ export const HomeBrands = memo(({onPressBrand}: HomeBrandsProps) => {
       <Spacer height={8} />
       <SectionList
         ref={listRef}
+        removeClippedSubviews
+        refreshing={allBrands.isFetching && !!allBrands.currentData}
+        onRefresh={() => {
+          allBrands.refetch()
+          topBrandsRef.current.refetch()
+        }}
         ListHeaderComponent={() => (
           <TopBrandsHeader
+            ref={topBrandsRef}
             onPressBrand={onPressBrand}
             isMenSelected={isMenSelected}
           />
@@ -89,9 +104,15 @@ interface TopBrandsHeaderProps {
 }
 
 const TopBrandsHeader = memo(
-  ({isMenSelected, onPressBrand}: TopBrandsHeaderProps) => {
+  forwardRef(({isMenSelected, onPressBrand}: TopBrandsHeaderProps, ref) => {
     const topBrands = useGetTopBrandsQuery(isMenSelected)
     const topBrandIsLoading = topBrands.isLoading && topBrands.isFetching
+
+    useImperativeHandle(ref, () => ({
+      refetch: () => {
+        topBrands.refetch()
+      },
+    }))
 
     const renderTopBrand = useCallback(({item}: any) => {
       return <TopBrandItem onPress={onPressBrand} item={item} />
@@ -122,7 +143,7 @@ const TopBrandsHeader = memo(
         </Text>
       </SafeLandscapeView>
     )
-  },
+  }),
 )
 
 const _brandKeyExtractor = (item: any, id: number) => item.id ?? id
