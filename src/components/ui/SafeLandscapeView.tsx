@@ -1,26 +1,26 @@
 import React from 'react'
 
-import {View} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {View, ViewProps} from 'react-native'
 
-interface SafeLandscapeViewProps {
-  children: JSX.Element | JSX.Element[]
-  additionalPadding?: number
+import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
+
+interface SafeLandscapeViewProps extends ViewProps {
+  safeArea?: boolean
+  type?: 'margin' | 'padding'
 }
 
 export const SafeLandscapeView = ({
-  children,
-  additionalPadding = 0,
+  type = 'padding',
+  safeArea,
+  style,
+  ...viewProps
 }: SafeLandscapeViewProps) => {
-  const {left, right} = useSafeAreaInsets()
+  const {paddingHorizontal, marginHorizontal} = useHorizontalMargins({safeArea})
 
   return (
     <View
-      style={{
-        paddingLeft: left + additionalPadding,
-        paddingRight: right + additionalPadding,
-      }}>
-      {children}
-    </View>
+      style={[style, type === 'margin' ? marginHorizontal : paddingHorizontal]}
+      {...viewProps}
+    />
   )
 }

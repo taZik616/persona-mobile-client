@@ -15,22 +15,20 @@ import {Spacer} from '../ui/Spacer'
 
 interface HomeNewProductsProps {
   onPressProduct?: (item: ProductPreviewInfo) => void
-  onPressAddToBasket?: (item: ProductPreviewInfo) => void
-  onPressTopRightIcon?: (item: ProductPreviewInfo) => void
+  onPressStarIcon?: (item: ProductPreviewInfo) => void
 }
 
 export const HomeNewProducts = ({
   onPressProduct,
-  onPressAddToBasket,
-  onPressTopRightIcon,
+  onPressStarIcon,
 }: HomeNewProductsProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
 
   useScreenBlockCurrent()
 
   const products = useGetProductsQuery({
-    end: 200,
-    start: 100,
+    end: 1600,
+    start: 1500,
     sortBy: 'stock',
     sortedValues: '1',
   })
@@ -45,26 +43,28 @@ export const HomeNewProducts = ({
         onChange={onChangeGender}
         values={values}
       />
+      <Spacer height={8} />
       <FlashList
         key={numColumns}
         numColumns={numColumns}
+        refreshing={products.isFetching && !!products.currentData}
+        onRefresh={products.refetch}
         estimatedItemSize={351} // if showAddToBasket - 379
         contentContainerStyle={contentPaddingsStyle}
         renderItem={({item}) => (
           <ProductCard
             width={cardWidth}
-            onPressTopRightIcon={onPressTopRightIcon}
-            onPressAddToBasket={onPressAddToBasket}
+            topRightIcon="star"
+            onPressTopRightIcon={onPressStarIcon}
             onPress={onPressProduct}
             {...item}
           />
         )}
-        ListHeaderComponent={() => <Spacer height={12} />}
+        ListHeaderComponent={renderListHeader}
         keyExtractor={item => item.productId}
         data={!products.isLoading ? products.currentData : []}
       />
     </>
   )
 }
-
-// const styles = StyleSheet.create({})
+const renderListHeader = () => <Spacer height={12} />

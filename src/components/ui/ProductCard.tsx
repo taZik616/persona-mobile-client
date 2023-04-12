@@ -65,99 +65,104 @@ export const ProductCard = ({
 
   return (
     <View style={[styles.container, !isAvailable && styles.disabledCard]}>
-      {topRightIcon && (
-        <Pressable
-          onPress={() => onPressTopRightIcon?.(item)}
-          hitSlop={10}
-          style={styles.topIconContainer}>
-          {icon}
-        </Pressable>
-      )}
-      <GestureDetector
-        gesture={Gesture.Tap().onEnd(() => onPress && runOnJS(onPress)(item))}>
-        <View style={{width}}>
-          <Carousel
-            renderItem={({item: uri}) => (
-              <View style={[styles.imageContainer, {width}]}>
-                <Image
-                  style={styles.image}
-                  resizeMode="contain"
-                  source={{uri}}
-                />
+      <View style={{width}}>
+        {topRightIcon && (
+          <Pressable
+            onPress={() => onPressTopRightIcon?.(item)}
+            hitSlop={10}
+            style={styles.topIconContainer}>
+            {icon}
+          </Pressable>
+        )}
+
+        <GestureDetector
+          gesture={Gesture.Tap().onEnd(
+            () => onPress && runOnJS(onPress)(item),
+          )}>
+          <View style={{width}}>
+            <Carousel
+              renderItem={({item: uri}) => (
+                <View style={[styles.imageContainer, {width}]}>
+                  <Image
+                    style={styles.image}
+                    resizeMode="cover"
+                    source={{uri}}
+                  />
+                </View>
+              )}
+              bounces={false}
+              keyExtractor={(a, id) => String(id)}
+              data={previewImages}
+              loop
+              loopClonesPerSide={previewImages.length}
+              inactiveSlideOpacity={1}
+              inactiveSlideScale={1}
+              slideStyle={{width}}
+              activeAnimationType="spring"
+              windowSize={6}
+              layout="default"
+              horizontal
+              sliderWidth={width}
+              itemWidth={width}
+            />
+            <Spacer height={6} />
+            {brandImage ? (
+              <Image
+                style={styles.brandImage}
+                resizeMode="contain"
+                source={{uri: brandImage}}
+              />
+            ) : (
+              <View style={styles.brandName}>
+                <Text numberOfLines={1} center gp1>
+                  {brandName?.toUpperCase()}
+                </Text>
               </View>
             )}
-            bounces={false}
-            keyExtractor={(a, id) => String(id)}
-            data={previewImages}
-            loop
-            loopClonesPerSide={previewImages.length}
-            inactiveSlideOpacity={1}
-            inactiveSlideScale={1}
-            slideStyle={{width}}
-            activeAnimationType="spring"
-            windowSize={6}
-            layout="default"
-            horizontal
-            sliderWidth={width}
-            itemWidth={width}
-          />
-          <Spacer height={6} />
-          {brandImage ? (
-            <Image
-              style={styles.brandImage}
-              resizeMode="contain"
-              source={{uri: brandImage}}
-            />
-          ) : (
-            <View style={styles.brandName}>
-              <Text numberOfLines={1} center gp1>
-                {brandName?.toUpperCase()}
-              </Text>
+            <Spacer height={8} />
+            <View style={styles.textContentContainer}>
+              {title ? (
+                <>
+                  <Text numberOfLines={1} center gp4>
+                    {capitalize(title)}
+                  </Text>
+                  <Spacer height={6} />
+                </>
+              ) : (
+                <></>
+              )}
+              {priceGroup && (
+                <>
+                  <Text color={Color.primary} numberOfLines={1} center gp4>
+                    {capitalize(collection ? collection : priceGroup)}
+                  </Text>
+                  <Spacer height={6} />
+                </>
+              )}
+              {price ? (
+                <>
+                  <Text numberOfLines={1} center gp5>
+                    {cleanNumber(price, ' ', 0)} ₽
+                  </Text>
+                  <Spacer height={6} />
+                </>
+              ) : (
+                <></>
+              )}
             </View>
-          )}
-          <Spacer height={8} />
-          <View style={styles.textContentContainer}>
-            {title ? (
-              <>
-                <Text numberOfLines={1} center gp4>
-                  {capitalize(title)}
-                </Text>
-                <Spacer height={6} />
-              </>
-            ) : (
-              <></>
-            )}
-            {priceGroup && (
-              <>
-                <Text color={Color.primary} numberOfLines={1} center gp4>
-                  {capitalize(collection ? collection : priceGroup)}
-                </Text>
-                <Spacer height={6} />
-              </>
-            )}
-            {price ? (
-              <>
-                <Text numberOfLines={1} center gp5>
-                  {cleanNumber(price, ' ', 0)} ₽
-                </Text>
-                <Spacer height={6} />
-              </>
-            ) : (
-              <></>
-            )}
           </View>
-        </View>
-      </GestureDetector>
-      {showAddToBasket ? (
-        <TouchableOpacity
-          onPress={() => onPressAddToBasket?.(item)}
-          style={[styles.addToCartButton, {width}]}>
-          <Text gp1>Добавить в корзину</Text>
-        </TouchableOpacity>
-      ) : (
-        <></>
-      )}
-      <Spacer height={16} />
+        </GestureDetector>
+        {showAddToBasket ? (
+          <TouchableOpacity
+            onPress={() => onPressAddToBasket?.(item)}
+            style={[styles.addToCartButton, {width}]}>
+            <Text gp1>Добавить в корзину</Text>
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
+        <Spacer height={16} />
+      </View>
     </View>
   )
 }

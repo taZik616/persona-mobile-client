@@ -86,7 +86,7 @@ export const SelectorTwoOptions = memo(
             <View style={styles.focusRect} />
           </Animated.View>
         </View>
-        <Spacer height={2} />
+        <Spacer height={1} />
       </View>
     )
   },
