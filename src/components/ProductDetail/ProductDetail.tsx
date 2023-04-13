@@ -6,20 +6,27 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {Color} from 'src/themes'
 import {ProductDetailInfo} from 'src/types'
 
+import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
-import {ShareIcon, StarEmptyIcon} from '../ui/icons/common'
+import {ShareIcon, ShopBagLightIcon, StarEmptyIcon} from '../ui/icons/common'
 import {Img} from '../ui/Img'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 import {Swiper} from '../ui/Swiper'
 import {Text} from '../ui/Text'
 import {ViewToggler} from '../ui/ViewToggler'
-
 interface ProductDetailProps extends Partial<ProductDetailInfo> {
   onPressBack?: () => void
+  onPressFastBuy?: () => void
+  onPressAddToBasket?: () => void
 }
 
-export const ProductDetail = ({onPressBack, ...item}: ProductDetailProps) => {
+export const ProductDetail = ({
+  onPressBack,
+  onPressFastBuy,
+  onPressAddToBasket,
+  ...item
+}: ProductDetailProps) => {
   const {largeImages, priceGroup, collection, brandImage, title, price} = item
   const {bottom} = useSafeAreaInsets()
   return (
@@ -52,6 +59,24 @@ export const ProductDetail = ({onPressBack, ...item}: ProductDetailProps) => {
           <Spacer height={16} />
         </SafeLandscapeView>
         <ViewToggler options={options} />
+        <SafeLandscapeView safeArea>
+          <Spacer height={22} />
+          <Text center cg2>
+            С ЧЕМ НОСИТЬ
+          </Text>
+          <Spacer height={18} />
+          <View style={styles.flexRow}>
+            <Button onPress={onPressFastBuy} variant="outline">
+              Быстрая покупка
+            </Button>
+            <Spacer width={16} />
+            <Button
+              onPress={onPressAddToBasket}
+              rightIcon={<ShopBagLightIcon />}>
+              В корзину
+            </Button>
+          </View>
+        </SafeLandscapeView>
         <Spacer height={bottom + 14} />
       </ScrollView>
     </>
@@ -82,6 +107,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: 20,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headInfoContainer: {
     flex: 1,

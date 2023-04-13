@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   gp4: {
     fontFamily: 'GothamPro',
     fontSize: 13,
+    lineHeight: 16,
   },
   gp5: {
     fontFamily: 'GothamPro',

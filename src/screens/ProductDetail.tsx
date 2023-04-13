@@ -10,7 +10,7 @@ export const ProductDetailScreen = () => {
   const {goBack} = useTypedNavigation()
   const productDetail = useGetProductByIdQuery(productId)
 
-  const mixedItem = Object.assign(item, productDetail.currentData[0])
+  const mixedItem = Object.assign(item, productDetail.currentData?.[0] ?? {})
 
   return <ProductDetail onPressBack={goBack} {...mixedItem} />
 }

@@ -97,3 +97,15 @@ export const ShareIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
     </Svg>
   )
 }
+
+export const ShopBagLightIcon = ({color = Color.white, ...props}: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path
+        stroke={color}
+        d="M2.464 4.444A2 2 0 0 0 2 5.724V20a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V5.724a2 2 0 0 0-.464-1.28l-2.27-2.724A2 2 0 0 0 17.73 1H6.27a2 2 0 0 0-1.536.72l-2.27 2.724ZM2 5.5h20"
+      />
+      <Path stroke={color} strokeLinecap="round" d="M16 10a4 4 0 0 1-8 0" />
+    </Svg>
+  )
+}
