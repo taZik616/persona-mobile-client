@@ -11,6 +11,7 @@ export const Color = {
 
   bg: '#FFFFFF',
   border: '#C4C4C4',
+  darkOpacity: 'rgba(0, 0, 0, 0.3)',
 
   secondary: '#0DECDE',
 

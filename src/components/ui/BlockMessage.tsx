@@ -3,9 +3,9 @@ import React from 'react'
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native'
 import Svg, {Path, SvgProps} from 'react-native-svg'
 
-import {Text} from 'src/components/ui'
-import {useThematicStyles} from 'src/hooks'
-import {Color} from 'src/themeTypes'
+import {Color} from 'src/themes'
+
+import {Text} from './Text'
 
 const Icons = {
   error: {
@@ -31,7 +31,7 @@ interface BlockMessageProps {
   style?: StyleProp<ViewStyle>
   children?: React.ReactNode
   numberOfLines?: number
-  customBgColor?: Color
+  customBgColor?: string
 }
 
 export const BlockMessage = ({
@@ -42,20 +42,19 @@ export const BlockMessage = ({
   children,
   numberOfLines,
 }: BlockMessageProps) => {
-  const {styles, colors} = useThematicStyles(rawStyles)
   const {component: IconComponent, color, bgColor} = Icons[blockType]
 
   const textStyle = [!hideIcon ? styles.iconText : null]
   const containerStyle = [
     styles.container,
-    {backgroundColor: colors[customBgColor ? customBgColor : bgColor]},
+    {backgroundColor: customBgColor ? customBgColor : bgColor},
   ]
 
   return (
     <View style={[containerStyle, style]}>
-      {!hideIcon && <IconComponent size={18} color={colors[color]} />}
+      {!hideIcon && <IconComponent size={18} color={color} />}
       <View style={styles.textContainer}>
-        <Text numberOfLines={numberOfLines} p1 style={textStyle} color={color}>
+        <Text numberOfLines={numberOfLines} gp1 style={textStyle} color={color}>
           {children}
         </Text>
       </View>
@@ -63,7 +62,7 @@ export const BlockMessage = ({
   )
 }
 
-const rawStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     borderRadius: 8,

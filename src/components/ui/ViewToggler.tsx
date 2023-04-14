@@ -14,7 +14,7 @@ import {Color} from 'src/themes'
 import {SafeLandscapeView} from './SafeLandscapeView'
 import {Text} from './Text'
 
-type valueType = string | number
+type valueType = string
 
 interface ViewTogglerProps {
   options: {

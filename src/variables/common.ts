@@ -12,4 +12,6 @@ export const ANIMATION_TYPE = Easing.bezierFn(0.42, 0, 0.58, 0)
 
 export const NUM_PRECISION = 1
 
+export const PHONE_VALIDATION_REGEXP =
+  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
 export const CARD_ASPECT_RATIO = 1.68

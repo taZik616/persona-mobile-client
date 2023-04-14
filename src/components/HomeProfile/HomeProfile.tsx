@@ -1,15 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
+
+import {HomeAuth} from './HomeAuth'
 
 import {Header} from '../ui/Header'
-import {Spacer} from '../ui/Spacer'
 
 export type HomeProfileProps = {}
 
 export const HomeProfile = ({}: HomeProfileProps) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   return (
     <>
       <Header hideSearch />
-      <Spacer height={20} />
+      {isAuthenticated ? <></> : <HomeAuth />}
     </>
   )
 }

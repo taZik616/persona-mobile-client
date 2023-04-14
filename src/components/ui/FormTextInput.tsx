@@ -1,41 +1,41 @@
 import React from 'react'
 
 import {Controller, useFormContext} from 'react-hook-form'
-import {
-  StyleProp,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from 'react-native'
+import {StyleSheet, TextInput, TextInputProps, View} from 'react-native'
 
-import {useThematicStyles} from 'src/hooks'
-import {Color} from 'src/themeTypes'
+import {Color} from 'src/themes'
 
-import {Text} from '.'
+import {Text} from './Text'
 
-interface FormTextInputProps {
-  style?: StyleProp<ViewStyle>
-  isPrice: boolean
-  placeholder?: string
+interface FormTextInputProps
+  extends Omit<
+    TextInputProps,
+    | 'ref'
+    | 'onBlur'
+    | 'blurOnSubmit'
+    | 'onChangeText'
+    | 'onSubmitEditing'
+    | 'value'
+    | 'returnKeyType'
+  > {
   name: string
   nextField?: string
-  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
 }
 
 export const FormTextInput = ({
-  isPrice,
   style,
   name,
   nextField,
-  autoCapitalize,
-  placeholder,
+  ...textInputProps
 }: FormTextInputProps) => {
-  const {styles, colors} = useThematicStyles(rawStyles)
-  const {control, setFocus} = useFormContext()
+  const {
+    control,
+    setFocus,
+    formState: {errors},
+  } = useFormContext()
+  const error = errors[name]
   return (
-    <View style={styles.row}>
+    <View>
       <Controller
         name={name}
         render={({field: {onChange, onBlur, ref, value}}) => {
@@ -43,69 +43,46 @@ export const FormTextInput = ({
             <TextInput
               ref={ref}
               onBlur={onBlur}
-              style={[
-                styles.input,
-                isPrice && styles.inputAlternate,
-                style,
-                {color: colors.primary},
-              ]}
-              autoCapitalize={autoCapitalize}
-              placeholder={placeholder}
+              style={[styles.input, style]}
               blurOnSubmit={true}
               onChangeText={onChange}
               onSubmitEditing={() => nextField && setFocus(nextField)}
               value={value}
-              selectionColor={colors.primary}
-              keyboardType={isPrice ? 'phone-pad' : 'default'}
-              placeholderTextColor={colors.primaryOpacity1}
+              selectionColor={Color.primary}
+              keyboardType="default"
+              placeholderTextColor={Color.primaryGray}
               returnKeyType={nextField ? 'next' : 'default'}
+              {...textInputProps}
             />
           )
         }}
         control={control}
       />
-      {isPrice && (
-        <TouchableOpacity style={styles.part2}>
-          <Text h4 color={Color.primary}>
-            ETH
-          </Text>
-        </TouchableOpacity>
+      {error && (
+        <Text gp1 style={styles.errorText} color={Color.textRed1}>
+          {error.message as string}
+        </Text>
       )}
     </View>
   )
 }
 
-const rawStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   input: {
-    height: 50,
+    height: 45,
     width: '100%',
-    borderRadius: 12,
+    borderRadius: 10,
     paddingHorizontal: 16,
     backgroundColor: Color.inputBg,
-    fontFamily: 'PTSans-Regular',
-    fontSize: 16,
-    lineHeight: 22,
+    fontFamily: 'GothamPro',
+    fontSize: 13,
+    color: Color.primaryBlack,
   },
-  inputAlternate: {
-    height: 50,
-    width: '80%',
-    alignItems: 'center',
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    paddingLeft: 16,
-    backgroundColor: Color.inputBg,
-    flexDirection: 'row',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  part2: {
-    width: '20%',
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Color.inputBg,
-    borderTopRightRadius: 12,
-    borderBottomRightRadius: 12,
+  errorText: {
+    width: '100%',
+    marginHorizontal: 10,
+    marginTop: 6,
+    lineHeight: 14,
+    flexWrap: 'wrap',
   },
 })

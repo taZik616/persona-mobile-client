@@ -21,6 +21,7 @@ interface HeaderProps {
   hideLogo?: boolean
   title?: string
   subtitle?: string
+  withoutSafeAreaTop?: boolean
 }
 
 export const Header = memo(
@@ -34,12 +35,13 @@ export const Header = memo(
     hideLogo,
     title,
     subtitle,
+    withoutSafeAreaTop,
   }: HeaderProps) => {
     const {top} = useSafeAreaInsets()
 
     return (
       <View style={styles.container}>
-        <Spacer height={top} />
+        <Spacer height={withoutSafeAreaTop ? 0 : top} />
         <View style={styles.rowContainer}>
           <View style={styles.flexOne}>
             {showBack && (
