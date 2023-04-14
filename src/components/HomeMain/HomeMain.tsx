@@ -1,14 +1,13 @@
 import React from 'react'
 
-import {FlatList, ScrollView, StyleSheet} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import {ScrollView, StyleSheet} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
 import {CategoryInterface} from 'src/types'
 
 import {CardWithImage} from '../ui/CardWithImage'
-import {CategoryCard} from '../ui/CategoryCard'
 import {Header} from '../ui/Header'
+import {RenderHorizontalList} from '../ui/RenderHorizontalList'
 import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
 import {Spacer} from '../ui/Spacer'
 import {Swiper} from '../ui/Swiper'
@@ -59,7 +58,7 @@ export const HomeMain = ({
           НОВЫЕ ПОСТУПЛЕНИЯ
         </Text>
         <Spacer height={12} />
-        <RenderList
+        <RenderHorizontalList
           onPressItem={onPressAnyListItem}
           data={
             isMenSelected
@@ -72,7 +71,7 @@ export const HomeMain = ({
           {'новое в брендах'.toUpperCase()}
         </Text>
         <Spacer height={12} />
-        <RenderList
+        <RenderHorizontalList
           onPressItem={onPressAnyListItem}
           data={
             isMenSelected ? newProductsInBrandsMen : newProductsInBrandsWomen
@@ -96,32 +95,7 @@ export const HomeMain = ({
   )
 }
 
-interface RenderListProps {
-  data: CategoryInterface[]
-  onPressItem?: (item: CategoryInterface) => void
-}
-
-const RenderList = ({data, onPressItem}: RenderListProps) => {
-  const {left, right} = useSafeAreaInsets()
-  return (
-    <FlatList
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={[
-        styles.categoryContainer,
-        {paddingLeft: left + 24, paddingRight: right + 24},
-      ]}
-      renderItem={({item}) => <CategoryCard onPress={onPressItem} {...item} />}
-      keyExtractor={i => i.id}
-      data={data}
-    />
-  )
-}
-
 const styles = StyleSheet.create({
-  categoryContainer: {
-    gap: 16,
-  },
   marginHorizontal: {
     paddingHorizontal: 24,
   },

@@ -11,6 +11,8 @@ import {PHONE_VALIDATION_REGEXP} from 'src/variables'
 
 import {Button} from '../ui/Button'
 import {FormTextInput} from '../ui/FormTextInput'
+import {Spacer} from '../ui/Spacer'
+import {Text} from '../ui/Text'
 
 const loginSchema = yup
   .object({
@@ -25,10 +27,11 @@ const loginSchema = yup
 export type LoginFormType = yup.InferType<typeof loginSchema>
 
 interface LoginFormProps {
+  requestError?: string
   onSubmit?: (formData: LoginFormType) => void
 }
 
-export const LoginForm = memo(({onSubmit}: LoginFormProps) => {
+export const LoginForm = memo(({onSubmit, requestError}: LoginFormProps) => {
   const form = useForm<LoginFormType>({
     resolver: yupResolver(loginSchema),
   })
@@ -45,18 +48,32 @@ export const LoginForm = memo(({onSubmit}: LoginFormProps) => {
       exiting={FadeOut}
       style={[styles.formContainer]}>
       <FormProvider {...form}>
-        <FormTextInput name="telephone" placeholder="Номер телефона" />
         <FormTextInput
-          keyboardType="numeric"
+          name="telephone"
+          keyboardType="phone-pad"
+          placeholder="Номер телефона"
+        />
+        <Spacer height={16} />
+        <FormTextInput
           name="password"
+          autoCorrect={false}
           placeholder="Пароль"
         />
+        <Spacer height={16} />
         <Button
           gp5
           fullWidth
           onPress={form.handleSubmit(onSubmitForm, onInvalid)}>
           Войти
         </Button>
+        {requestError && (
+          <>
+            <Spacer height={8} />
+            <Text gp1 center style={styles.errorText} color={Color.textRed1}>
+              {requestError}
+            </Text>
+          </>
+        )}
       </FormProvider>
     </Animated.View>
   )
@@ -71,6 +88,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 16,
-    rowGap: 16,
+  },
+  errorText: {
+    width: '100%',
+    marginHorizontal: 10,
+    marginTop: 6,
+    lineHeight: 14,
+    flexWrap: 'wrap',
   },
 })

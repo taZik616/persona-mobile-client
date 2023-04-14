@@ -12,7 +12,7 @@ interface ButtonT {
   style?: StyleProp<ViewStyle>
   disabled?: boolean
   fullWidth?: boolean
-  variant?: 'outline' | 'filled'
+  variant?: 'outline' | 'filled' | 'secondaryFilled'
   rightIcon?: JSX.Element
   onPress?: () => void
   gp4?: boolean
@@ -49,7 +49,13 @@ export const Button = ({
         gp5={gp5}
         center
         numberOfLines={2}
-        color={variant === 'outline' ? Color.primaryBlack : Color.white}>
+        color={
+          variant === 'outline'
+            ? Color.primaryBlack
+            : variant === 'secondaryFilled'
+            ? Color.primaryBlack
+            : Color.white
+        }>
         {children}
       </Text>
       {rightIcon ? (
@@ -80,6 +86,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   // eslint-disable-next-line react-native/no-unused-styles
+  secondaryFilled: {
+    backgroundColor: Color.secondaryGray,
+  },
   filled: {
     backgroundColor: Color.primary,
   },

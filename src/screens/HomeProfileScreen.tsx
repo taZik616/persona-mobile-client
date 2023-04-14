@@ -1,9 +1,14 @@
 import React from 'react'
 
 import {HomeProfile} from 'src/components/HomeProfile'
+import {useTypedNavigation} from 'src/hooks'
 
 export const HomeProfileScreen = () => {
-  // const navigation = useTypedNavigation()
+  const {navigate} = useTypedNavigation()
 
-  return <HomeProfile />
+  const onPressAddCard = () => {
+    navigate('loyaltyCardAdd')
+  }
+
+  return <HomeProfile onPressAddCard={onPressAddCard} />
 }

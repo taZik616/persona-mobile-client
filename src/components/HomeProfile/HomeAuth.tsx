@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   memo,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -9,14 +10,20 @@ import React, {
 
 import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
-// @ts-ignore
-import OTPTextInput from 'react-native-otp-textinput'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 import {Keyframe} from 'react-native-reanimated'
 
-import {formatSecondsTimer} from 'src/helpers'
+import {captureException, formatSecondsTimer} from 'src/helpers'
 import {useScreenBlockPortrait} from 'src/hooks'
+import {useTypedDispatch} from 'src/store'
+import {setIsAuthenticated} from 'src/store/profileSlice'
+import {
+  useCreateUserAndSendCodeMutation,
+  useLoginMutation,
+  useVerifyUserCodeMutation,
+} from 'src/store/shopApi'
 import {Color} from 'src/themes'
+import {RESEND_SMS_TIMEOUT_SECONDS} from 'src/variables'
 
 import {LoginForm, LoginFormType} from './LoginForm'
 import {RegistryForm, RegistryFormType} from './RegistryForm'
@@ -24,6 +31,7 @@ import {RegistryForm, RegistryFormType} from './RegistryForm'
 import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
 import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
+import {OTPTextInput} from '../ui/OTPTextInput'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
@@ -33,21 +41,39 @@ export const HomeAuth = () => {
   const [authOption, setAuthOption] = useState(options[0].value)
   const [showSmsConfirmModal, setShowSmsConfirmModal] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [requestError, setRequestError] = useState('')
+
   const otpModalRef = useRef<any>(null)
+  const [createUserSendCode] = useCreateUserAndSendCodeMutation()
+  const [verifyCode] = useVerifyUserCodeMutation()
+  const [login] = useLoginMutation()
+
+  const dispatch = useTypedDispatch()
 
   const sendVerifySms = useCallback(
-    (phoneNumber: string) => () => {
-      console.log('🚀 - sendVerifySms, phoneNumber:', phoneNumber)
+    (telephone: string) => () => {
+      createUserSendCode({telephone})
       otpModalRef.current?.resetTimer?.()
     },
     [],
   )
+  useEffect(() => {
+    requestError !== '' && setRequestError('')
+  }, [authOption])
 
   const onRegistryStartVerification = useCallback(
-    (formData: RegistryFormType) => {
+    async (formData: RegistryFormType) => {
+      try {
+        const res: any = await createUserSendCode(formData)
+        if (res?.error?.data.message) {
+          setRequestError(res?.error?.data.message)
+          return
+        }
+      } catch (error) {
+        captureException(error)
+      }
       setShowSmsConfirmModal(true)
       setShowModal(true)
-      sendVerifySms(formData.telephone)()
       // На всякий случай
       setTimeout(() => {
         otpModalRef.current?.setPhoneNumber?.(formData.telephone)
@@ -56,18 +82,39 @@ export const HomeAuth = () => {
     [],
   )
 
-  const onRegistryCheckOtp = useCallback((otpCode: string) => {
-    console.log('🚀 - otpCode:', otpCode)
-  }, [])
-
-  const onLogin = useCallback((formData: LoginFormType) => {
-    console.log('🚀 - formData:', formData)
+  const onLogin = useCallback(async ({telephone, password}: LoginFormType) => {
+    try {
+      const res: any = await login({
+        username: telephone,
+        password,
+      })
+      if (res?.error?.data?.message) {
+        setRequestError(res.error.data.message)
+        return
+      }
+      dispatch(setIsAuthenticated(true))
+    } catch (error) {
+      captureException(error)
+    }
   }, [])
 
   const onCloseModal = useCallback(() => {
     setShowSmsConfirmModal(false)
-    setTimeout(() => setShowModal(false), 1000)
+    setTimeout(() => setShowModal(false), 600)
   }, [])
+
+  const onRegistryCheckOtp = useCallback(
+    async (code: string, telephone: string) => {
+      const res: any = await verifyCode({code, telephone})
+      if (res?.data?.failed) {
+        otpModalRef.current?.setError(res.data.failed)
+      } else if (res.data.success) {
+        dispatch(setIsAuthenticated(true))
+        onCloseModal()
+      }
+    },
+    [onCloseModal],
+  )
 
   return (
     <KeyboardSafeArea>
@@ -77,9 +124,12 @@ export const HomeAuth = () => {
         <Spacer height={36} />
         <SafeLandscapeView center safeArea>
           {authOption === 'registry' ? (
-            <RegistryForm onSubmit={onRegistryStartVerification} />
+            <RegistryForm
+              requestError={requestError}
+              onSubmit={onRegistryStartVerification}
+            />
           ) : (
-            <LoginForm onSubmit={onLogin} />
+            <LoginForm requestError={requestError} onSubmit={onLogin} />
           )}
         </SafeLandscapeView>
         <Spacer height={20} />
@@ -103,24 +153,27 @@ export const HomeAuth = () => {
 interface OTPModalProps {
   onCloseModal?: () => void
   sendVerifySms?: (phone: string) => () => void
-  onSubmit?: (code: string) => void
+  onSubmit?: (code: string, phone: string) => void
 }
 
 const OTPModal = memo(
   forwardRef(({onCloseModal, sendVerifySms, onSubmit}: OTPModalProps, ref) => {
     const [otpCode, setOtpCode] = useState('')
     const [phone, setPhone] = useState('')
+    const [error, setError] = useState('')
+
     const timerRef = useRef<any>(null)
     useScreenBlockPortrait()
 
     useImperativeHandle(ref, () => ({
       setPhoneNumber(phoneNum: string) {
         setPhone(phoneNum)
-        timerRef.current?.resetTimer?.(60)
+        timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
       },
       resetTimer() {
-        timerRef.current?.resetTimer?.(60)
+        timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
       },
+      setError,
     }))
 
     return (
@@ -137,28 +190,34 @@ const OTPModal = memo(
           <View style={styles.modalPopupContainer}>
             <Header
               onPressBack={onCloseModal}
-              title="Введите код из СМС"
+              title="Введите код из вызова"
               showBack
               hideBasket
               hideSearch
               withoutSafeAreaTop
             />
-            <View style={styles.otpContainer}>
-              <OTPTextInput
-                textInputStyle={styles.otpInputContainerStyle}
-                tintColor={Color.primary}
-                handleTextChange={(code: string) => {
-                  setOtpCode(code)
-                }}
-              />
-            </View>
+            <OTPTextInput
+              handleTextChange={(code: string) => {
+                setOtpCode(code)
+              }}
+            />
             <Spacer height={16} />
-            <Button gp5 onPress={() => onSubmit?.(otpCode)}>
+            {error && (
+              <>
+                <Text gp1 center color={Color.textRed1}>
+                  {error}
+                </Text>
+                <Spacer height={16} />
+              </>
+            )}
+            <Button gp5 onPress={() => onSubmit?.(otpCode, phone)}>
               Подтвердить
             </Button>
             <Spacer height={16} />
             <Text center style={styles.text}>
-              <Text gp1>Мы отправили SMS с кодом подтверждения на номер </Text>
+              <Text gp1>
+                Мы направили телефонный звонок с кодом подтверждения на номер{' '}
+              </Text>
               <Text gp6>{phone}</Text>
             </Text>
             <Spacer height={8} />
@@ -194,7 +253,7 @@ const ResendTimer = forwardRef(({onResend}: {onResend?: () => void}, ref) => {
 
   return seconds > 0 ? (
     <Text center style={styles.text}>
-      <Text gp1>Повторить отправку кода можно через </Text>
+      <Text gp1>Запросить повторный звонок можно будет через </Text>
       <Text gp6>{formatSecondsTimer(seconds)}</Text>
     </Text>
   ) : (
@@ -229,18 +288,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     maxWidth: 270,
     alignSelf: 'center',
-  },
-  otpContainer: {
-    borderWidth: 1,
-    borderColor: Color.secondaryGray,
-    borderRadius: 8,
-    padding: 16,
-  },
-  otpInputContainerStyle: {
-    backgroundColor: Color.secondaryGray,
-    borderRadius: 8,
-    borderBottomWidth: 0,
-    flex: 1,
   },
 })
 

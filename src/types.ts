@@ -15,6 +15,7 @@ export type RootStackParamList = {
   home?: NavigatorScreenParams<TabParamList>
   settings: undefined
   productDetail: Partial<ProductPreviewInfo> & {productId: string}
+  loyaltyCardAdd: undefined
 }
 
 // INTERFACES

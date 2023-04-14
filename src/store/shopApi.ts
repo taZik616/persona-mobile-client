@@ -124,9 +124,53 @@ export const shopApi = createApi({
       }),
       transformResponse: (data: any) => data ?? [],
     }),
+    createUserAndSendCode: build.mutation({
+      query: ({telephone, firstName, lastName}: createUserAndSendCodeBody) => ({
+        url: 'codesend/',
+        method: 'PUT',
+        body: {
+          Phone: telephone,
+          Surname: firstName,
+          Name: lastName,
+        },
+      }),
+    }),
+    verifyUserCode: build.mutation({
+      query: ({telephone, code}: verifyUserCodeBody) => ({
+        url: 'codevalidate/',
+        method: 'PUT',
+        body: {
+          Phone: telephone,
+          PhoneCode: code,
+        },
+      }),
+    }),
+    login: build.mutation({
+      query: ({username, password}: loginBody) => ({
+        url: 'login/',
+        method: 'POST',
+        body: {
+          Phone: username,
+          password,
+        },
+      }),
+    }),
   }),
 })
 
+interface loginBody {
+  username: string
+  password: string
+}
+interface verifyUserCodeBody {
+  telephone: string
+  code: string
+}
+interface createUserAndSendCodeBody {
+  telephone: string
+  firstName?: string
+  lastName?: string
+}
 interface getProductsBody {
   sortBy: string
   sortedValues: string
@@ -143,4 +187,7 @@ export const {
   useGetTopBrandsQuery,
   useGetProductsQuery,
   useGetProductByIdQuery,
+  useCreateUserAndSendCodeMutation,
+  useVerifyUserCodeMutation,
+  useLoginMutation,
 } = shopApi
