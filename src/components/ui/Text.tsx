@@ -18,6 +18,7 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
   gp3?: boolean
   gp4?: boolean
   gp5?: boolean
+  maxWidth?: number
   h4?: boolean
   p1?: boolean
   p2?: boolean
@@ -63,6 +64,7 @@ export const Text = ({
   gp3,
   gp4,
   gp5,
+  maxWidth,
   h4,
   p1,
   p2,
@@ -96,6 +98,7 @@ export const Text = ({
         l1 && styles.label1,
         l2 && styles.label2,
         style,
+        {maxWidth: maxWidth},
         {color: color},
         center && styles.center,
         right && styles.right,
@@ -122,6 +125,7 @@ const styles = StyleSheet.create({
   gp1: {
     fontFamily: 'GothamPro',
     fontSize: 11,
+    lineHeight: 18,
   },
   gp2: {
     fontFamily: 'GothamPro-Medium',
@@ -174,6 +178,7 @@ const styles = StyleSheet.create({
   },
   center: {
     textAlign: 'center',
+    alignSelf: 'center',
   },
   right: {
     textAlign: 'right',

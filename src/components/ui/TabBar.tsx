@@ -33,7 +33,7 @@ export const TabBar = ({routes, stateIndex}: TabBarProps) => {
   return (
     <View
       // eslint-disable-next-line react-native/no-inline-styles
-      style={[styles.tabContainer, {paddingBottom: IS_IOS ? bottom + 16 : 16}]}>
+      style={[styles.tabContainer, {paddingBottom: IS_IOS ? bottom : 12}]}>
       {routes.map(({name, key, badgeCount}, id) => {
         const isFocused = stateIndex === id
         return (

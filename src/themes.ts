@@ -4,6 +4,7 @@ export const SPECIAL_DARK = '#0B0629'
 
 export const Color = {
   primary: '#0ABAB5',
+  primaryOpacity1: '#0ABAB50A',
   primaryBlack: '#14142B',
 
   primaryGray: '#696969',

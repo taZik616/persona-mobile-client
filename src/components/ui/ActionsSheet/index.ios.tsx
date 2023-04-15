@@ -2,11 +2,17 @@ import React, {useEffect} from 'react'
 
 import {ActionSheetIOS} from 'react-native'
 
+import {Color} from 'src/themes'
+
 import {ActionsSheetProps} from './index'
 
 export const ActionsSheet = ({
-  onPressDiscard,
-  onPressKeepEditing,
+  onPressFirstOpt,
+  onPressSecondOpt,
+  onCancel,
+  firstOpt,
+  secondOpt,
+  title,
 }: ActionsSheetProps) => {
   useEffect(() => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -14,22 +20,27 @@ export const ActionsSheet = ({
         options: [
           /* getText(I18N.actionSheetKeepEditing),
           getText(I18N.actionSheetDiscard), */
-          'Keep editing',
-          'Discard Changes',
+          'Отмена',
+          firstOpt,
+          secondOpt,
         ],
-        title:
-          'Are you sure you want to discard your changes?' /* getText(I18N.actionSheetMessage) */,
-        destructiveButtonIndex: 1,
+        title,
         cancelButtonIndex: 0,
       },
       buttonIndex => {
-        if (buttonIndex === 0) {
-          onPressKeepEditing?.()
-        } else if (buttonIndex === 1) {
-          onPressDiscard?.()
+        switch (buttonIndex) {
+          case 0:
+            onCancel()
+            break
+          case 1:
+            onPressFirstOpt?.()
+            break
+          case 2:
+            onPressSecondOpt?.()
+            break
         }
       },
     )
-  }, [onPressKeepEditing, onPressDiscard])
+  }, [])
   return <></>
 }

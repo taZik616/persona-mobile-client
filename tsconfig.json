@@ -6,6 +6,7 @@
       "src/*": ["src/*"],
       "assets/*": ["assets/*"]
     },
+    "lib": ["ES2021"],
     /* Completeness */
     "skipLibCheck": true
   }

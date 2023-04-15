@@ -1,6 +1,10 @@
 export interface ActionsSheetProps {
-  onPressDiscard?: () => void
-  onPressKeepEditing?: () => void
+  onPressFirstOpt?: () => void
+  onCancel: () => void
+  onPressSecondOpt?: () => void
+  title?: string
+  firstOpt: string
+  secondOpt: string
 }
 
 export function ActionsSheet(props: ActionsSheetProps): JSX.Element

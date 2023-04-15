@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Svg, {Path, SvgProps} from 'react-native-svg'
+import Svg, {Circle, Path, SvgProps} from 'react-native-svg'
 
 import {Color} from 'src/themes'
 
@@ -73,7 +73,7 @@ export const CrossIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
 
 export const ShareIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
   return (
-    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" {...props}>
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
       <Path
         stroke={color}
         strokeLinecap="round"
@@ -106,6 +106,105 @@ export const ShopBagLightIcon = ({color = Color.white, ...props}: SvgProps) => {
         d="M2.464 4.444A2 2 0 0 0 2 5.724V20a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V5.724a2 2 0 0 0-.464-1.28l-2.27-2.724A2 2 0 0 0 17.73 1H6.27a2 2 0 0 0-1.536.72l-2.27 2.724ZM2 5.5h20"
       />
       <Path stroke={color} strokeLinecap="round" d="M16 10a4 4 0 0 1-8 0" />
+    </Svg>
+  )
+}
+
+export const InfoIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+      <Circle cx={10} cy={10} r={9.167} stroke={color} />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M10 5.833V10M10 13.334v.416"
+      />
+    </Svg>
+  )
+}
+
+export const ProfileLightIcon = ({
+  color = Color.primary,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15.525 14.349C14.2 13.694 12.17 12.917 10 12.917c-2.17 0-4.2.777-5.525 1.432-1.025.506-1.635 1.539-1.77 2.674L2.5 18.75h15l-.205-1.727c-.135-1.135-.745-2.168-1.77-2.674ZM10 9.167a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z"
+      />
+    </Svg>
+  )
+}
+
+export const CartLightIcon = ({color = Color.primary, ...props}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        d="M.833 1.667h1.729a2 2 0 0 1 1.952 1.566L5 5.417m0 0 .77 4.24a6 6 0 0 0 5.904 4.926h.62a6 6 0 0 0 5.85-4.67l.606-2.664a1.5 1.5 0 0 0-1.463-1.832H5Z"
+      />
+      <Circle cx={7.083} cy={17.5} r={0.833} stroke={color} />
+      <Circle cx={17.083} cy={17.5} r={0.833} stroke={color} />
+    </Svg>
+  )
+}
+
+export const MailLightIcon = ({color = Color.primary, ...props}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinejoin="round"
+        d="M1 5.333a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8.75a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8.75Z"
+      />
+      <Path
+        stroke={color}
+        strokeLinejoin="round"
+        d="M2.421 4.636c-.504-.462-.177-1.303.507-1.303h14.144c.684 0 1.01.841.507 1.303l-5.552 5.09a3 3 0 0 1-4.054 0L2.42 4.635Z"
+      />
+    </Svg>
+  )
+}
+
+export const InfoLightIcon = ({color = Color.primary, ...props}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Circle cx={10} cy={10} r={9.167} stroke={color} />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M10 5.833V10M10 13.333v.417"
+      />
+    </Svg>
+  )
+}
+
+export const CameraIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M1.667 7.714A2.714 2.714 0 0 1 4.381 5v0c.908 0 1.755-.454 2.258-1.209l.028-.041A2.807 2.807 0 0 1 9.003 2.5h1.995c.939 0 1.815.47 2.336 1.25l.027.041A2.714 2.714 0 0 0 15.62 5v0a2.714 2.714 0 0 1 2.715 2.714V13.5a4 4 0 0 1-4 4H5.667a4 4 0 0 1-4-4V7.714Z"
+      />
+      <Circle
+        cx={10}
+        cy={10.833}
+        r={3.333}
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   )
 }

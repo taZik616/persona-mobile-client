@@ -1,10 +1,10 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 
-interface GenderSliceState {
+interface initialStateType {
   isAuthenticated: boolean
 }
 
-const initialState: GenderSliceState = {
+const initialState: initialStateType = {
   isAuthenticated: false,
 }
 

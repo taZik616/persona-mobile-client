@@ -16,12 +16,14 @@ import {
 } from 'redux-persist'
 
 import {persistedGenderReducer} from './genderSlice'
+import {profileReducer} from './profileSlice'
 import {shopApi} from './shopApi'
 
 export const store = configureStore({
   reducer: {
     [shopApi.reducerPath]: shopApi.reducer,
     gender: persistedGenderReducer,
+    profile: profileReducer,
   },
   middleware: getMiddleware =>
     getMiddleware({
@@ -46,3 +48,5 @@ export const useTypedSelector: TypedUseSelectorHook<StoreStateType> =
 export const useTypedStore = () => useStore<StoreStateType>()
 
 export const selectGender = (state: StoreStateType) => state.gender.gender
+export const selectIsAuthenticated = (state: StoreStateType) =>
+  state.profile.isAuthenticated

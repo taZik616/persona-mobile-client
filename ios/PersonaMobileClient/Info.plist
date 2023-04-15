@@ -14,6 +14,10 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Чтобы загрузить фотографию, необходимо предоставить приложению доступ к вашей галерее</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Чтобы сделать фотографию, приложению нужен доступ к камере</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

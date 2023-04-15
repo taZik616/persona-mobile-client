@@ -22,6 +22,9 @@ interface HeaderProps {
   title?: string
   subtitle?: string
   withoutSafeAreaTop?: boolean
+  rightText?: string
+  rightTextDisabled?: boolean
+  onPressRightText?: () => void
 }
 
 export const Header = memo(
@@ -36,6 +39,9 @@ export const Header = memo(
     title,
     subtitle,
     withoutSafeAreaTop,
+    rightText,
+    rightTextDisabled,
+    onPressRightText,
   }: HeaderProps) => {
     const {top} = useSafeAreaInsets()
 
@@ -69,20 +75,40 @@ export const Header = memo(
           )}
           <View style={styles.flexOne}>
             <View style={styles.rightButtons}>
-              {!hideSearch && (
-                <TouchableOpacity onPress={onPressSearch} activeOpacity={0.5}>
-                  <IconWithCounterBadge iconName="search" />
+              {rightText ? (
+                <TouchableOpacity
+                  activeOpacity={rightTextDisabled ? 1 : undefined}
+                  onPress={rightTextDisabled ? undefined : onPressRightText}>
+                  <Text
+                    gp4
+                    color={
+                      rightTextDisabled ? Color.primaryGray : Color.primary
+                    }>
+                    {rightText}
+                  </Text>
                 </TouchableOpacity>
-              )}
-              {!hideBasket && (
+              ) : (
                 <>
-                  <Spacer width={8} />
-                  <TouchableOpacity onPress={onPressBasket} activeOpacity={0.5}>
-                    <IconWithCounterBadge
-                      iconName="shopping-bag"
-                      badgeCount={5}
-                    />
-                  </TouchableOpacity>
+                  {!hideSearch && (
+                    <TouchableOpacity
+                      onPress={onPressSearch}
+                      activeOpacity={0.5}>
+                      <IconWithCounterBadge iconName="search" />
+                    </TouchableOpacity>
+                  )}
+                  {!hideBasket && (
+                    <>
+                      <Spacer width={8} />
+                      <TouchableOpacity
+                        onPress={onPressBasket}
+                        activeOpacity={0.5}>
+                        <IconWithCounterBadge
+                          iconName="shopping-bag"
+                          badgeCount={5}
+                        />
+                      </TouchableOpacity>
+                    </>
+                  )}
                 </>
               )}
             </View>

@@ -13,29 +13,31 @@ import Animated, {
 } from 'react-native-reanimated'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
-import {Text} from 'src/components/ui'
-import {useThematicStyles} from 'src/hooks'
-import {Color} from 'src/themeTypes'
+import {Color} from 'src/themes'
 
 import {ActionsSheetProps} from '.'
+import {Text} from '../Text'
 
 const timingOutAnimationConfig: WithTimingConfig = {
-  duration: 550,
-  easing: Easing.in(Easing.back()),
+  duration: 250,
+  easing: Easing.in(Easing.quad),
 }
 
 const timingInAnimationConfig: WithTimingConfig = {
-  duration: 550,
-  easing: Easing.out(Easing.back()),
+  duration: 250,
+  easing: Easing.out(Easing.quad),
 }
 
 export const ActionsSheet = ({
-  onPressDiscard,
-  onPressKeepEditing,
+  firstOpt,
+  onPressFirstOpt,
+  secondOpt,
+  onCancel,
+  onPressSecondOpt,
+  title,
 }: ActionsSheetProps) => {
   const {height: H} = useWindowDimensions()
   const {bottom} = useSafeAreaInsets()
-  const {styles} = useThematicStyles(rawStyles)
 
   const fullyOpen = 0
   const fullyClosed = H * 0.45
@@ -62,9 +64,11 @@ export const ActionsSheet = ({
     transform: [{translateY: fadeAnim.value}],
   }))
 
-  const handleDiscard = () => fadeOut(onPressDiscard)
+  const handleSecondOpt = () => fadeOut(onPressSecondOpt)
 
-  const handleKeepEditing = () => fadeOut(onPressKeepEditing)
+  const handleFirstOpt = () => fadeOut(onPressFirstOpt)
+
+  const handleCancel = () => fadeOut(onCancel)
 
   return (
     <View style={StyleSheet.absoluteFillObject}>
@@ -76,23 +80,28 @@ export const ActionsSheet = ({
           {paddingBottom: bottom},
         ]}>
         <View style={styles.top}>
-          <Text /* i18n={I18N.actionSheetMessage} */ t14 style={styles.t8}>
-            Are you sure you want to discard your changes?
-          </Text>
+          {title && (
+            <Text color={Color.primaryGray} gp1 style={styles.t8}>
+              {title}
+            </Text>
+          )}
           <View style={styles.line} />
-          <TouchableOpacity style={styles.margin} onPress={handleDiscard}>
-            <Text color={Color.textRed1} t8>
-              Discard Changes
+          <TouchableOpacity style={styles.margin} onPress={handleFirstOpt}>
+            <Text color={Color.textBlue1} gp5>
+              {firstOpt}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.line} />
+          <TouchableOpacity style={styles.margin} onPress={handleSecondOpt}>
+            <Text color={Color.textBlue1} gp5>
+              {secondOpt}
             </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.bottom}>
-          <TouchableOpacity style={styles.margin} onPress={handleKeepEditing}>
-            <Text
-              color={Color.textBlue1}
-              /* i18n={I18N.actionSheetKeepEditing} */
-              t8>
-              Keep Editing
+          <TouchableOpacity style={styles.margin} onPress={handleCancel}>
+            <Text color={Color.textRed1} gp5>
+              Отмена
             </Text>
           </TouchableOpacity>
         </View>
@@ -101,14 +110,15 @@ export const ActionsSheet = ({
   )
 }
 
-const rawStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   top: {
     borderRadius: 13,
-    backgroundColor: Color.graphicSecond1,
+    backgroundColor: Color.bg,
   },
   bottom: {
     borderRadius: 13,
-    backgroundColor: Color.bg1,
+    overflow: 'hidden',
+    backgroundColor: Color.bg,
     marginVertical: 8,
   },
   animateView: {
@@ -117,7 +127,7 @@ const rawStyles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: Color.bg4,
+    backgroundColor: Color.darkOpacity,
   },
   animateViewFade: {
     flex: 1,
@@ -128,12 +138,11 @@ const rawStyles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 12,
     textAlign: 'center',
-    color: Color.graphicBase2,
   },
   line: {
     width: '100%',
     height: 0.3,
-    backgroundColor: Color.textSecond1,
+    backgroundColor: Color.border,
   },
   margin: {
     paddingVertical: 18,
