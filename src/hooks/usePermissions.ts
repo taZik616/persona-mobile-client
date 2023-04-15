@@ -97,7 +97,7 @@ export function useGalleryPermissions(params?: useCameraPermissionsParams) {
 
   async function requestGalleryPermissionAndroid() {
     const isGalleryAuthorized = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
     )
     if (isGalleryAuthorized === PermissionsAndroid.RESULTS.GRANTED) {
       setIsAllowed(true)

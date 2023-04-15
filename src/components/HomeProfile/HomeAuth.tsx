@@ -116,6 +116,10 @@ export const HomeAuth = () => {
     [onCloseModal],
   )
 
+  const skipAuth = () => {
+    __DEV__ && dispatch(setIsAuthenticated(true))
+  }
+
   return (
     <KeyboardSafeArea>
       <ScrollView>
@@ -130,6 +134,14 @@ export const HomeAuth = () => {
             />
           ) : (
             <LoginForm requestError={requestError} onSubmit={onLogin} />
+          )}
+          {__DEV__ && (
+            <>
+              <Spacer height={20} />
+              <Button gp5 fullWidth onPress={skipAuth}>
+                SKIP
+              </Button>
+            </>
           )}
         </SafeLandscapeView>
         <Spacer height={20} />

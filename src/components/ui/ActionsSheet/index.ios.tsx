@@ -2,8 +2,6 @@ import React, {useEffect} from 'react'
 
 import {ActionSheetIOS} from 'react-native'
 
-import {Color} from 'src/themes'
-
 import {ActionsSheetProps} from './index'
 
 export const ActionsSheet = ({
