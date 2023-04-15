@@ -105,6 +105,8 @@ const CardInput = ({onChange, onPressPhoto}: CardInputProps) => {
         hitSlop={{bottom: 20, top: 20, left: 16, right: 16}}
         style={styles.input}
         value={value}
+        keyboardType="numeric"
+        textContentType="creditCardNumber"
         placeholderTextColor={Color.primaryGray}
         placeholder="0000 0000 0000 0000"
         onChangeText={handleChange}
