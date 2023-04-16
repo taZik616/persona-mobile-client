@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 
 import ImagePicker from 'react-native-image-crop-picker'
-import TextRecognition from 'react-native-text-recognition'
 
 import {LoyaltyCardAdd} from 'src/components/LoyaltyCardAdd'
 import {ActionsSheet} from 'src/components/ui/ActionsSheet'
@@ -46,8 +45,9 @@ export const LoyaltyCardAddScreen = () => {
         : await requestCameraPermission()
       if (canTakePhoto) {
         const img = await ImagePicker.openCamera(imagePickerConfig)
-        const result = await TextRecognition.recognize(img.path)
-        console.log('🚀 - img:', result)
+        console.log('🚀 - img:', img)
+        //const result = await TextRecognition.recognize(img.path)
+        //console.log('🚀 - img:', result)
       }
     } catch (error) {
       captureException(error)
@@ -62,8 +62,8 @@ export const LoyaltyCardAddScreen = () => {
 
     if (canChoicePhoto) {
       const img = await ImagePicker.openPicker(imagePickerConfig)
-      const result = await TextRecognition.recognize(img.path)
-      console.log('🚀 - img:', result)
+      //const result = await TextRecognition.recognize(img.path)
+      //console.log('🚀 - img:', result)
     }
   }
 
