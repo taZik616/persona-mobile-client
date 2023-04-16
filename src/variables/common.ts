@@ -1,6 +1,8 @@
 import {Dimensions, Platform} from 'react-native'
 import {Easing} from 'react-native-reanimated'
 
+import {Color} from 'src/themes'
+
 export const IS_ANDROID = Platform.OS === 'android'
 export const IS_IOS = Platform.OS === 'ios'
 
@@ -17,3 +19,13 @@ export const PHONE_VALIDATION_REGEXP =
 export const CARD_ASPECT_RATIO = 1.68
 
 export const RESEND_SMS_TIMEOUT_SECONDS = 60 * 6
+
+export const imagePickerCardConfig = {
+  freeStyleCropEnabled: true,
+  cropping: true,
+  enableRotationGesture: true,
+  cropperStatusBarColor: Color.border,
+  cropperToolbarColor: Color.bg,
+  cropperActiveWidgetColor: Color.primary,
+  cropperToolbarWidgetColor: Color.primary,
+}

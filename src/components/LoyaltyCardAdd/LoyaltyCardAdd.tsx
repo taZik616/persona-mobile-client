@@ -1,4 +1,11 @@
-import React, {useCallback, useRef, useState} from 'react'
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 
 import {
   ScrollView,
@@ -24,101 +31,162 @@ interface LoyaltyCardAddProps {
   onNext?: (cardNumber: string) => void
 }
 
-export const LoyaltyCardAdd = ({
-  onPressBack,
-  onPressScanCard,
-  onNext,
-}: LoyaltyCardAddProps) => {
-  const [canGoNext, setCanGoNext] = useState(false)
-  const cardNumber = useRef('')
+export const LoyaltyCardAdd = memo(
+  forwardRef(
+    ({onPressBack, onPressScanCard, onNext}: LoyaltyCardAddProps, ref: any) => {
+      const [canGoNext, setCanGoNext] = useState(false)
+      const [error, setError] = useState('')
+      const [warning, setWarning] = useState('')
+      const cardNumber = useRef('')
+      const cardInputRef = useRef<any>(null)
 
-  const onSubmit = useCallback(() => {
-    onNext?.(cardNumber.current)
-  }, [])
+      useImperativeHandle(ref, () => ({
+        setError: (err: string) => {
+          setError(err)
+          clearWarning()
+        },
+        setWarning: (err: string) => {
+          setWarning(err)
+          clearError()
+        },
+        setValue: cardInputRef.current?.setValue,
+      }))
 
-  const onChangeCardNumber = (cardNum: string) => {
-    cardNumber.current = cardNum
-    if (cardNum.length === 16) {
-      !canGoNext && setCanGoNext(true)
-    } else {
-      canGoNext && setCanGoNext(false)
-    }
-  }
+      const clearWarning = useCallback(() => {
+        warning && setWarning('')
+      }, [warning])
 
-  return (
-    <>
-      <Header
-        title={'Карта лояльности'}
-        rightText={'Далее'}
-        onPressRightText={onSubmit}
-        rightTextDisabled={!canGoNext}
-        showBack
-        onPressBack={onPressBack}
-      />
-      <KeyboardSafeArea>
-        <ScrollView>
-          <SafeLandscapeView safeArea>
-            <Spacer height={20} />
-            <View style={styles.cardContainer}>
-              <CardInput
-                onChange={onChangeCardNumber}
-                onPressPhoto={onPressScanCard}
-              />
-            </View>
-            <Text maxWidth={500} center color={Color.primaryGray} gp1>
-              Телефонный звонок для подтверждения статуса карты будет отправлен
-              на номер телефона, указанный при регистрации
-            </Text>
-            <Spacer height={30} />
-          </SafeLandscapeView>
-        </ScrollView>
-      </KeyboardSafeArea>
-    </>
-  )
-}
+      const clearError = useCallback(() => {
+        error && setError('')
+      }, [error])
+
+      const onSubmit = useCallback(() => {
+        onNext?.(cardNumber.current)
+      }, [])
+
+      const onChangeCardNumber = (cardNum: string) => {
+        cardNumber.current = cardNum
+        if (cardNum.length === 16) {
+          !canGoNext && setCanGoNext(true)
+        } else {
+          canGoNext && setCanGoNext(false)
+        }
+      }
+
+      return (
+        <>
+          <Header
+            title={'Карта лояльности'}
+            rightText={'Далее'}
+            onPressRightText={onSubmit}
+            rightTextDisabled={!canGoNext}
+            showBack
+            onPressBack={onPressBack}
+          />
+          <KeyboardSafeArea>
+            <ScrollView>
+              <SafeLandscapeView safeArea>
+                <Spacer height={20} />
+                <View style={styles.cardContainer}>
+                  <CardInput
+                    ref={cardInputRef}
+                    clearError={clearError}
+                    clearWarning={clearWarning}
+                    onChange={onChangeCardNumber}
+                    onPressPhoto={onPressScanCard}
+                  />
+                </View>
+                <Text maxWidth={500} center color={Color.primaryGray} gp1>
+                  Телефонный звонок для подтверждения статуса карты будет
+                  отправлен на номер телефона, указанный при регистрации
+                </Text>
+                {warning && (
+                  <>
+                    <Spacer height={12} />
+                    <Text gp1 maxWidth={500} center color={Color.textYellow1}>
+                      {warning}
+                    </Text>
+                  </>
+                )}
+                {error && (
+                  <>
+                    <Spacer height={12} />
+                    <Text gp1 maxWidth={500} center color={Color.textRed1}>
+                      {error}
+                    </Text>
+                  </>
+                )}
+                <Spacer height={30} />
+              </SafeLandscapeView>
+            </ScrollView>
+          </KeyboardSafeArea>
+        </>
+      )
+    },
+  ),
+)
 
 interface CardInputProps {
   onChange?: (text: string) => void
   onPressPhoto?: () => void
+  clearError?: () => void
+  clearWarning?: () => void
 }
 
-const CardInput = ({onChange, onPressPhoto}: CardInputProps) => {
-  const [value, setValue] = useState('')
+const CardInput = memo(
+  forwardRef(
+    (
+      {onChange, onPressPhoto, clearError, clearWarning}: CardInputProps,
+      ref,
+    ) => {
+      const [value, setValue] = useState('')
 
-  const handleChange = useCallback(
-    (text: string) => {
-      const withoutSpaces = text.replaceAll(' ', '')
-      const chunks: string[] = []
-      for (let i = 0; i < withoutSpaces.length; i += 4) {
-        const chunk = withoutSpaces.slice(i, i + 4)
-        chunks.push(chunk)
-      }
-      setValue(chunks.join(' '))
-      onChange?.(withoutSpaces)
+      const handleChange = useCallback(
+        (text: string) => {
+          clearError?.()
+          clearWarning?.()
+          const withoutSpaces = text.replaceAll(' ', '')
+          const chunks: string[] = []
+          for (let i = 0; i < withoutSpaces.length; i += 4) {
+            const chunk = withoutSpaces.slice(i, i + 4)
+            chunks.push(chunk)
+          }
+          setValue(chunks.join(' '))
+          onChange?.(withoutSpaces)
+        },
+        [onChange],
+      )
+
+      useImperativeHandle(
+        ref,
+        () => ({
+          setValue: handleChange,
+        }),
+        [handleChange],
+      )
+
+      return (
+        <View style={styles.inputContainer}>
+          <TextInput
+            maxLength={19}
+            hitSlop={{bottom: 20, top: 20, left: 16, right: 16}}
+            style={styles.input}
+            value={value}
+            keyboardType="numeric"
+            textContentType="creditCardNumber"
+            placeholderTextColor={Color.primaryGray}
+            placeholder="0000 0000 0000 0000"
+            onChangeText={handleChange}
+          />
+          <Spacer width={20} />
+          <TouchableOpacity hitSlop={10} onPress={onPressPhoto}>
+            <CameraIcon />
+          </TouchableOpacity>
+        </View>
+      )
     },
-    [onChange],
-  )
-  return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        maxLength={19}
-        hitSlop={{bottom: 20, top: 20, left: 16, right: 16}}
-        style={styles.input}
-        value={value}
-        keyboardType="numeric"
-        textContentType="creditCardNumber"
-        placeholderTextColor={Color.primaryGray}
-        placeholder="0000 0000 0000 0000"
-        onChangeText={handleChange}
-      />
-      <Spacer width={20} />
-      <TouchableOpacity hitSlop={10} onPress={onPressPhoto}>
-        <CameraIcon />
-      </TouchableOpacity>
-    </View>
-  )
-}
-
+  ),
+)
 const styles = StyleSheet.create({
   cardContainer: {
     marginTop: 20,

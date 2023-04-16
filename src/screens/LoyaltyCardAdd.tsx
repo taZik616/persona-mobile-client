@@ -1,36 +1,45 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 
 import ImagePicker from 'react-native-image-crop-picker'
+import {recognizeTextFromLocalImage} from 'react-native-text-recognizer'
 
 import {LoyaltyCardAdd} from 'src/components/LoyaltyCardAdd'
 import {ActionsSheet} from 'src/components/ui/ActionsSheet'
 import {captureException} from 'src/helpers'
+import {findCardNumberInArray} from 'src/helpers/findCardNumberInArray'
 import {useTypedNavigation} from 'src/hooks'
 import {
   useCameraPermissions,
   useGalleryPermissions,
 } from 'src/hooks/usePermissions'
-import {Color} from 'src/themes'
-import {CARD_ASPECT_RATIO} from 'src/variables'
-
-const imagePickerConfig = {
-  width: 1000,
-  height: 1000 / CARD_ASPECT_RATIO,
-  cropping: true,
-  enableRotationGesture: true,
-  cropperStatusBarColor: Color.border,
-  cropperToolbarColor: Color.bg,
-  cropperActiveWidgetColor: Color.primary,
-  cropperToolbarWidgetColor: Color.primary,
-}
+import {imagePickerCardConfig} from 'src/variables'
 
 export const LoyaltyCardAddScreen = () => {
   const {goBack} = useTypedNavigation()
-  const [isOpenAS, setIsOpenAS] = useState(false)
+
   const {isAllowed: isAllowedCamera, requestCameraPermission} =
     useCameraPermissions()
   const {isAllowed: isAllowedGallery, requestGalleryPermission} =
     useGalleryPermissions()
+
+  const [isOpenAS, setIsOpenAS] = useState(false)
+  const componentRef = useRef<any>(null)
+
+  const handleRecognize = async (localImgPath: string) => {
+    const res = await recognizeTextFromLocalImage(localImgPath)
+
+    const cardNumber = findCardNumberInArray(res)
+    if (cardNumber) {
+      componentRef.current?.setValue?.(cardNumber)
+      componentRef.current?.setWarning?.(
+        'Проверьте верность распознанного номера карты.',
+      )
+    } else {
+      componentRef.current?.setError?.('Не удалось распознать номер карты.')
+    }
+
+    // setResult(cardNumber ?? 'Card number not recognized')
+  }
 
   const onPressScanCard = () => {
     setIsOpenAS(true)
@@ -44,10 +53,8 @@ export const LoyaltyCardAddScreen = () => {
         ? true
         : await requestCameraPermission()
       if (canTakePhoto) {
-        const img = await ImagePicker.openCamera(imagePickerConfig)
-        console.log('🚀 - img:', img)
-        //const result = await TextRecognition.recognize(img.path)
-        //console.log('🚀 - img:', result)
+        const img = await ImagePicker.openCamera(imagePickerCardConfig)
+        handleRecognize(img.path)
       }
     } catch (error) {
       captureException(error)
@@ -61,9 +68,8 @@ export const LoyaltyCardAddScreen = () => {
       : await requestGalleryPermission()
 
     if (canChoicePhoto) {
-      const img = await ImagePicker.openPicker(imagePickerConfig)
-      //const result = await TextRecognition.recognize(img.path)
-      //console.log('🚀 - img:', result)
+      const img = await ImagePicker.openPicker(imagePickerCardConfig)
+      handleRecognize(img.path)
     }
   }
 
@@ -73,7 +79,11 @@ export const LoyaltyCardAddScreen = () => {
 
   return (
     <>
-      <LoyaltyCardAdd onPressScanCard={onPressScanCard} onPressBack={goBack} />
+      <LoyaltyCardAdd
+        ref={componentRef}
+        onPressScanCard={onPressScanCard}
+        onPressBack={goBack}
+      />
       {isOpenAS && (
         <ActionsSheet
           firstOpt="Сделать фотографию"
