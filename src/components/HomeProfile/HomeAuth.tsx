@@ -73,16 +73,21 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
         if (res?.error?.data.message) {
           setRequestError(res?.error?.data.message)
           return
+        } else if (res?.data?.success) {
+          setShowSmsConfirmModal(true)
+          setShowModal(true)
+          // На всякий случай
+          setTimeout(() => {
+            otpModalRef.current?.setPhoneNumber?.(formData.telephone)
+          }, 300)
+        } else {
+          setRequestError(
+            'Неизвестная ошибка. Проверьте подключение к интернету',
+          )
         }
       } catch (error) {
         captureException(error)
       }
-      setShowSmsConfirmModal(true)
-      setShowModal(true)
-      // На всякий случай
-      setTimeout(() => {
-        otpModalRef.current?.setPhoneNumber?.(formData.telephone)
-      }, 300)
     },
     [],
   )
@@ -95,9 +100,11 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
       })
       if (res?.error?.data?.message) {
         setRequestError(res.error.data.message)
-        return
+      } else if (res?.data?.success) {
+        dispatch(setIsAuthenticated(true))
+      } else {
+        setRequestError('Неизвестная ошибка. Проверьте подключение к интернету')
       }
-      dispatch(setIsAuthenticated(true))
     } catch (error) {
       captureException(error)
     }
@@ -113,7 +120,7 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
       const res: any = await verifyCode({code, telephone})
       if (res?.data?.failed) {
         otpModalRef.current?.setError(res.data.failed)
-      } else if (res.data.success) {
+      } else if (res?.data?.success) {
         dispatch(setIsAuthenticated(true))
         onCloseModal()
       }
