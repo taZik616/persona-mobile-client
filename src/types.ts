@@ -16,6 +16,11 @@ export type RootStackParamList = {
   settings: undefined
   productDetail: Partial<ProductPreviewInfo> & {productId: string}
   loyaltyCardAdd: undefined
+  help: undefined
+  helpDetail: {
+    title: string
+    queryPath: helpDetailKey
+  }
 }
 
 // INTERFACES
@@ -62,22 +67,13 @@ export interface ProductDetailInfo {
 
 // UTILS
 
-export type InputNameType =
-  | 'eventName'
-  | 'location'
-  | 'country'
-  | 'price'
-  | 'cover'
-  | 'categories'
-  | 'date'
-
-export type EventError =
-  | 'eventName'
-  | 'location'
-  | 'country'
-  | 'date'
-  | 'price'
-  | 'none'
+export type helpDetailKey =
+  | 'exchange_and_return'
+  | 'terms_of_sale'
+  | 'privacy_policy'
+  | 'payment_policy'
+  | 'contacts'
+  | 'delivery'
 
 export type sheetPointsT = [number, number]
 

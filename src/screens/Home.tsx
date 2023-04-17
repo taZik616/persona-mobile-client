@@ -14,7 +14,7 @@ import {HomeCatalogScreen} from './HomeCatalog'
 import {HomeFavouritesScreen} from './HomeFavourites'
 import {HomeMainScreen} from './HomeMain'
 import {HomeNewProductsScreen} from './HomeNewProducts'
-import {HomeProfileScreen} from './HomeProfileScreen'
+import {HomeProfileScreen} from './HomeProfile'
 
 const Tab = createBottomTabNavigator<TabParamList>()
 

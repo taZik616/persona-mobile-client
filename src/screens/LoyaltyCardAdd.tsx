@@ -37,8 +37,6 @@ export const LoyaltyCardAddScreen = () => {
     } else {
       componentRef.current?.setError?.('Не удалось распознать номер карты.')
     }
-
-    // setResult(cardNumber ?? 'Card number not recognized')
   }
 
   const onPressScanCard = () => {

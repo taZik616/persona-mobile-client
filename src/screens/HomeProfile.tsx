@@ -10,5 +10,11 @@ export const HomeProfileScreen = () => {
     navigate('loyaltyCardAdd')
   }
 
-  return <HomeProfile onPressAddCard={onPressAddCard} />
+  const onPressHelp = () => {
+    navigate('help')
+  }
+
+  return (
+    <HomeProfile onPressHelp={onPressHelp} onPressAddCard={onPressAddCard} />
+  )
 }

@@ -8,6 +8,8 @@ import {navigator} from 'src/navigator'
 import {Home} from 'src/screens/Home'
 import {RootStackParamList} from 'src/types'
 
+import {HelpScreen} from './screens/Help'
+import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
 import {ProductDetailScreen} from './screens/ProductDetail'
 import {SettingsScreen} from './screens/SettingsScreen'
@@ -51,6 +53,8 @@ export const App = () => {
             name="loyaltyCardAdd"
             component={LoyaltyCardAddScreen}
           />
+          <Stack.Screen name="help" component={HelpScreen} />
+          <Stack.Screen name="helpDetail" component={HelpDetailScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

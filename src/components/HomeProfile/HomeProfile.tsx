@@ -27,7 +27,7 @@ export type HomeProfileProps = {
   onPressPersonal?: () => void
   onPressOrders?: () => void
   onPressSubscription?: () => void
-  onPressInfo?: () => void
+  onPressHelp?: () => void
   onPressRecentlyItem?: () => void
 }
 
@@ -37,7 +37,7 @@ export const HomeProfile = ({
   onPressPersonal,
   onPressOrders,
   onPressSubscription,
-  onPressInfo,
+  onPressHelp,
   onPressRecentlyItem,
 }: HomeProfileProps) => {
   const isAuthenticated = useTypedSelector(selectIsAuthenticated)
@@ -80,7 +80,7 @@ export const HomeProfile = ({
               title="Управление подписками"
             />
             <MenuButton
-              onPress={onPressInfo}
+              onPress={onPressHelp}
               leftIcon={<InfoLightIcon />}
               title="Помощь"
             />
@@ -120,7 +120,7 @@ export const HomeProfile = ({
           </SafeLandscapeView>
         </ScrollView>
       ) : (
-        <HomeAuth />
+        <HomeAuth onPressHelp={onPressHelp} />
       )}
     </>
   )

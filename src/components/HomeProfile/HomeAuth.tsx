@@ -30,6 +30,7 @@ import {RegistryForm, RegistryFormType} from './RegistryForm'
 
 import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
+import {InfoLightIcon} from '../ui/icons/common'
 import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
 import {OTPTextInput} from '../ui/OTPTextInput'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
@@ -37,7 +38,11 @@ import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
 import {ViewToggler} from '../ui/ViewToggler'
 
-export const HomeAuth = () => {
+interface HomeAuthProps {
+  onPressHelp?: () => void
+}
+
+export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
   const [authOption, setAuthOption] = useState(options[0].value)
   const [showSmsConfirmModal, setShowSmsConfirmModal] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -135,6 +140,17 @@ export const HomeAuth = () => {
           ) : (
             <LoginForm requestError={requestError} onSubmit={onLogin} />
           )}
+          <Spacer height={16} />
+          <Animated.View
+            key={authOption}
+            entering={FadeIn}
+            style={styles.helpContainer}
+            exiting={FadeOut}>
+            <TouchableOpacity onPress={onPressHelp} style={styles.helpBtn}>
+              <InfoLightIcon color={Color.primaryBlack} />
+              <Text gp4>Помощь</Text>
+            </TouchableOpacity>
+          </Animated.View>
           {__DEV__ && (
             <>
               <Spacer height={20} />
@@ -300,6 +316,14 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     maxWidth: 270,
     alignSelf: 'center',
+  },
+  helpBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: 8,
+  },
+  helpContainer: {
+    alignSelf: 'flex-start',
   },
 })
 

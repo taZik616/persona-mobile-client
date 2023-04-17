@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
 import {captureException} from 'src/helpers'
-import {ProductPreviewInfo} from 'src/types'
+import {ProductPreviewInfo, helpDetailKey} from 'src/types'
 import {groupByAlphabetical} from 'src/variables/groupByAlphabetical'
 
 export const shopApi = createApi({
@@ -155,6 +155,13 @@ export const shopApi = createApi({
         },
       }),
     }),
+    getHelpDetails: build.query({
+      query: (type: helpDetailKey) => ({
+        url: `${type}/`,
+        method: 'GET',
+      }),
+      transformResponse: (data: any) => data ?? '',
+    }),
   }),
 })
 
@@ -189,5 +196,6 @@ export const {
   useGetProductByIdQuery,
   useCreateUserAndSendCodeMutation,
   useVerifyUserCodeMutation,
+  useGetHelpDetailsQuery,
   useLoginMutation,
 } = shopApi

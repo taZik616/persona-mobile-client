@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Svg, {Circle, Path, SvgProps} from 'react-native-svg'
+import Svg, {Circle, G, Path, Rect, SvgProps} from 'react-native-svg'
 
 import {Color} from 'src/themes'
 
@@ -204,6 +204,131 @@ export const CameraIcon = ({
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+export const PaymentIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        d="M14.166 7.5V6.167a2 2 0 0 0-2-2H2.833a2 2 0 0 0-2 2V10.5a2 2 0 0 0 2 2h2.881"
+      />
+      <Rect
+        width={13.333}
+        height={8.333}
+        x={5.833}
+        y={7.5}
+        stroke={color}
+        rx={2}
+      />
+      <Circle cx={12.5} cy={11.667} r={1.667} stroke={color} />
+    </Svg>
+  )
+}
+
+export const DeliveryIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M.833 2.5H12.5v10.833H.833zM12.5 6.667h3.333L19.167 10v3.333H12.5V6.667Z"
+      />
+      <Circle
+        cx={4.583}
+        cy={15.417}
+        r={2.083}
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Circle
+        cx={14.583}
+        cy={15.417}
+        r={2.083}
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+export const ExchangeIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3.377 7.84a7.833 7.833 0 0 1 14.89-.52M18.124 13.045a7.834 7.834 0 0 1-14.317.265"
+      />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m5.762 12.446-2.14.317-1.03 1.902M16.111 8.108l2.14-.317 1.03-1.902"
+      />
+    </Svg>
+  )
+}
+
+export const SellConditionIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg viewBox="0 0 20 20" width={20} height={20} fill="none" {...props}>
+      <Path
+        stroke={color}
+        d="M3 3.833a2.5 2.5 0 0 1 2.5-2.5h1.684a3.5 3.5 0 0 1 3.5 3.5V6a2 2 0 0 0 2 2h.816a3.5 3.5 0 0 1 3.5 3.5v4.667a2.5 2.5 0 0 1-2.5 2.5h-9a2.5 2.5 0 0 1-2.5-2.5V3.833Z"
+      />
+      <Path
+        stroke={color}
+        d="M3 3.833a2.5 2.5 0 0 1 2.5-2.5h1.497A8.5 8.5 0 0 1 13.5 4.358l1.503 1.785A8.5 8.5 0 0 1 17 11.618v4.549a2.5 2.5 0 0 1-2.5 2.5h-9a2.5 2.5 0 0 1-2.5-2.5V3.833Z"
+      />
+    </Svg>
+  )
+}
+
+export const PrivacyPolicyIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg viewBox="0 0 20 20" width={20} height={20} fill="none" {...props}>
+      <G stroke={color} clipPath="url(#a)">
+        <Path d="M8.085 2.328a2.48 2.48 0 0 1 3.83 0 2.48 2.48 0 0 0 2.156.892 2.48 2.48 0 0 1 2.709 2.71 2.48 2.48 0 0 0 .892 2.155 2.48 2.48 0 0 1 0 3.83 2.48 2.48 0 0 0-.892 2.156 2.48 2.48 0 0 1-2.71 2.709 2.48 2.48 0 0 0-2.155.892 2.48 2.48 0 0 1-3.83 0 2.48 2.48 0 0 0-2.156-.892 2.48 2.48 0 0 1-2.709-2.71 2.48 2.48 0 0 0-.892-2.155 2.48 2.48 0 0 1 0-3.83 2.48 2.48 0 0 0 .892-2.156A2.48 2.48 0 0 1 5.93 3.22a2.48 2.48 0 0 0 2.155-.892Z" />
+        <Path strokeLinecap="round" d="m7.5 9.958 1.768 1.768 3.535-3.536" />
+      </G>
+    </Svg>
+  )
+}
+
+export const ContactsIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m14.616 1.669 2.407.267c.93.104 1.646.843 1.525 1.77-.262 2.008-1.31 5.675-5.238 9.603-3.928 3.928-7.595 4.976-9.603 5.239-.928.12-1.667-.595-1.77-1.525l-.268-2.407a2 2 0 0 1 .996-1.958l1.659-.947a2 2 0 0 1 2.406.322l.225.225c.473.473 1.155.673 1.751.37.586-.298 1.381-.81 2.247-1.676.865-.865 1.378-1.66 1.675-2.246.303-.596.103-1.279-.37-1.751l-.225-.225a2 2 0 0 1-.322-2.407l.948-1.659a2 2 0 0 1 1.957-.995Z"
       />
     </Svg>
   )
