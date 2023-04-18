@@ -1,20 +1,9 @@
-import React, {
-  forwardRef,
-  memo,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 
-import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
-import {ScrollView} from 'react-native-gesture-handler'
+import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
-import {Keyframe} from 'react-native-reanimated'
 
-import {captureException, formatSecondsTimer} from 'src/helpers'
-import {useScreenBlockPortrait} from 'src/hooks'
+import {captureException} from 'src/helpers'
 import {useTypedDispatch} from 'src/store'
 import {getUserData, setIsAuthenticated} from 'src/store/profileSlice'
 import {
@@ -23,16 +12,14 @@ import {
   useVerifyUserCodeMutation,
 } from 'src/store/shopApi'
 import {Color} from 'src/themes'
-import {RESEND_SMS_TIMEOUT_SECONDS} from 'src/variables'
 
 import {LoginForm, LoginFormType} from './LoginForm'
 import {RegistryForm, RegistryFormType} from './RegistryForm'
 
 import {Button} from '../ui/Button'
-import {Header} from '../ui/Header'
 import {InfoLightIcon} from '../ui/icons/common'
 import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {OTPTextInput} from '../ui/OTPTextInput'
+import {OTPModal, OTPModalRefType} from '../ui/OTPModal'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
@@ -44,11 +31,9 @@ interface HomeAuthProps {
 
 export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
   const [authOption, setAuthOption] = useState(options[0].value)
-  const [showSmsConfirmModal, setShowSmsConfirmModal] = useState(false)
-  const [showModal, setShowModal] = useState(false)
   const [requestError, setRequestError] = useState('')
 
-  const otpModalRef = useRef<any>(null)
+  const otpModalRef = useRef<OTPModalRefType>(null)
   const [createUserSendCode] = useCreateUserAndSendCodeMutation()
   const [verifyCode] = useVerifyUserCodeMutation()
   const [login] = useLoginMutation()
@@ -58,7 +43,7 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
   const sendVerifySms = useCallback(
     (telephone: string) => () => {
       createUserSendCode({telephone})
-      otpModalRef.current?.resetTimer?.()
+      otpModalRef.current?.resetTimer()
     },
     [],
   )
@@ -74,11 +59,10 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
           setRequestError(res?.error?.data.message)
           return
         } else if (res?.data?.success) {
-          setShowSmsConfirmModal(true)
-          setShowModal(true)
+          otpModalRef.current?.openModal()
           // На всякий случай
           setTimeout(() => {
-            otpModalRef.current?.setPhoneNumber?.(formData.telephone)
+            otpModalRef.current?.setPhoneNumber(formData.telephone)
           }, 300)
         } else {
           setRequestError(
@@ -112,8 +96,8 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
   }, [])
 
   const onCloseModal = useCallback(() => {
-    setShowSmsConfirmModal(false)
-    setTimeout(() => setShowModal(false), 600)
+    otpModalRef.current?.closeModal()
+    setRequestError('')
   }, [])
 
   const onRegistryCheckOtp = useCallback(
@@ -171,161 +155,17 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
         </SafeLandscapeView>
         <Spacer height={20} />
       </ScrollView>
-      {showModal && (
-        <Modal transparent>
-          {showSmsConfirmModal && (
-            <OTPModal
-              ref={otpModalRef}
-              sendVerifySms={sendVerifySms}
-              onSubmit={onRegistryCheckOtp}
-              onCloseModal={onCloseModal}
-            />
-          )}
-        </Modal>
-      )}
+      <OTPModal
+        ref={otpModalRef}
+        sendVerifySms={sendVerifySms}
+        onSubmit={onRegistryCheckOtp}
+        onCloseModal={onCloseModal}
+      />
     </KeyboardSafeArea>
   )
 }
 
-interface OTPModalProps {
-  onCloseModal?: () => void
-  sendVerifySms?: (phone: string) => () => void
-  onSubmit?: (code: string, phone: string) => void
-}
-
-const OTPModal = memo(
-  forwardRef(({onCloseModal, sendVerifySms, onSubmit}: OTPModalProps, ref) => {
-    const [otpCode, setOtpCode] = useState('')
-    const [phone, setPhone] = useState('')
-    const [error, setError] = useState('')
-
-    const timerRef = useRef<any>(null)
-    useScreenBlockPortrait()
-
-    useImperativeHandle(ref, () => ({
-      setPhoneNumber(phoneNum: string) {
-        setPhone(phoneNum)
-        timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
-      },
-      resetTimer() {
-        timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
-      },
-      setError,
-    }))
-
-    return (
-      <>
-        <Animated.View
-          entering={FadeIn.duration(300)}
-          exiting={FadeOut.delay(300)}
-          style={styles.modalContainer}
-        />
-        <Animated.View
-          entering={modalEntering.delay(300).duration(300)}
-          exiting={modalExiting.duration(300)}
-          style={styles.modalPopup}>
-          <View style={styles.modalPopupContainer}>
-            <Header
-              onPressBack={onCloseModal}
-              title="Введите код из вызова"
-              showBack
-              hideBasket
-              hideSearch
-              withoutSafeAreaTop
-            />
-            <OTPTextInput
-              handleTextChange={(code: string) => {
-                setOtpCode(code)
-              }}
-            />
-            <Spacer height={16} />
-            {error && (
-              <>
-                <Text gp1 center color={Color.textRed1}>
-                  {error}
-                </Text>
-                <Spacer height={16} />
-              </>
-            )}
-            <Button gp5 onPress={() => onSubmit?.(otpCode, phone)}>
-              Подтвердить
-            </Button>
-            <Spacer height={16} />
-            <Text center style={styles.text}>
-              <Text gp1>
-                Мы направили телефонный звонок с кодом подтверждения на номер{' '}
-              </Text>
-              <Text gp6>{phone}</Text>
-            </Text>
-            <Spacer height={8} />
-            <ResendTimer onResend={sendVerifySms?.(phone)} ref={timerRef} />
-          </View>
-        </Animated.View>
-      </>
-    )
-  }),
-)
-
-const ResendTimer = forwardRef(({onResend}: {onResend?: () => void}, ref) => {
-  const [seconds, setSeconds] = useState(0)
-  const intervalId = useRef<number>(0)
-
-  useImperativeHandle(ref, () => ({
-    resetTimer(secondsAmount: number) {
-      clearInterval(intervalId.current)
-      setSeconds(secondsAmount)
-
-      intervalId.current = setInterval(() => {
-        setSeconds(pr => {
-          if (pr <= 1) {
-            clearInterval(intervalId.current)
-            return pr - 1
-          } else {
-            return pr - 1
-          }
-        })
-      }, 1000)
-    },
-  }))
-
-  return seconds > 0 ? (
-    <Text center style={styles.text}>
-      <Text gp1>Запросить повторный звонок можно будет через </Text>
-      <Text gp6>{formatSecondsTimer(seconds)}</Text>
-    </Text>
-  ) : (
-    <TouchableOpacity onPress={onResend}>
-      <Text center color={Color.primary} gp1 style={styles.text}>
-        Получить новый код
-      </Text>
-    </TouchableOpacity>
-  )
-})
-
 const styles = StyleSheet.create({
-  modalPopup: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: 130,
-    width: '100%',
-    padding: 18,
-    zIndex: 2,
-  },
-  modalPopupContainer: {
-    backgroundColor: Color.bg,
-    borderRadius: 16,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: Color.darkOpacity,
-  },
-  text: {
-    lineHeight: 18,
-    maxWidth: 270,
-    alignSelf: 'center',
-  },
   helpBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -346,24 +186,3 @@ const options = [
     value: 'signIn',
   },
 ]
-
-const modalEntering = new Keyframe({
-  0: {
-    transform: [{scale: 0.6}, {translateY: -50}],
-    opacity: 0,
-  },
-  100: {
-    transform: [{scale: 1}, {translateY: 0}],
-    opacity: 1,
-  },
-})
-const modalExiting = new Keyframe({
-  0: {
-    transform: [{scale: 1}, {translateY: 0}],
-    opacity: 1,
-  },
-  100: {
-    transform: [{scale: 0.6}, {translateY: -50}],
-    opacity: 0,
-  },
-})
