@@ -11,6 +11,8 @@ import {RootStackParamList} from 'src/types'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
+import {PersonalScreen} from './screens/Personal'
+import {PersonalEditScreen} from './screens/PersonalEdit'
 import {ProductDetailScreen} from './screens/ProductDetail'
 import {SettingsScreen} from './screens/SettingsScreen'
 import {Color} from './themes'
@@ -55,6 +57,8 @@ export const App = () => {
           />
           <Stack.Screen name="help" component={HelpScreen} />
           <Stack.Screen name="helpDetail" component={HelpDetailScreen} />
+          <Stack.Screen name="personal" component={PersonalScreen} />
+          <Stack.Screen name="personalEdit" component={PersonalEditScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

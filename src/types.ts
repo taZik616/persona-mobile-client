@@ -21,6 +21,8 @@ export type RootStackParamList = {
     title: string
     queryPath: helpDetailKey
   }
+  personalEdit: undefined
+  personal: undefined
 }
 
 // INTERFACES

@@ -29,3 +29,5 @@ export const imagePickerCardConfig = {
   cropperActiveWidgetColor: Color.primary,
   cropperToolbarWidgetColor: Color.primary,
 }
+
+export const YEAR_IN_MS = 365 * 24 * 60 * 60 * 1000

@@ -6,15 +6,15 @@ import {useTypedNavigation} from 'src/hooks'
 export const HomeProfileScreen = () => {
   const {navigate} = useTypedNavigation()
 
-  const onPressAddCard = () => {
-    navigate('loyaltyCardAdd')
-  }
-
-  const onPressHelp = () => {
-    navigate('help')
-  }
+  const onPressAddCard = () => navigate('loyaltyCardAdd')
+  const onPressHelp = () => navigate('help')
+  const onPressPersonal = () => navigate('personal')
 
   return (
-    <HomeProfile onPressHelp={onPressHelp} onPressAddCard={onPressAddCard} />
+    <HomeProfile
+      onPressPersonal={onPressPersonal}
+      onPressHelp={onPressHelp}
+      onPressAddCard={onPressAddCard}
+    />
   )
 }

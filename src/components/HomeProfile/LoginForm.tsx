@@ -18,6 +18,7 @@ const loginSchema = yup
   .object({
     telephone: yup
       .string()
+      .trim()
       .required('Обязательное поле')
       .matches(PHONE_VALIDATION_REGEXP, 'Введен не корректный номер телефона'),
     password: yup.string().required('Обязательное поле'),

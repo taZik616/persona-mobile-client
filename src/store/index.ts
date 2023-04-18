@@ -50,3 +50,5 @@ export const useTypedStore = () => useStore<StoreStateType>()
 export const selectGender = (state: StoreStateType) => state.gender.gender
 export const selectIsAuthenticated = (state: StoreStateType) =>
   state.profile.isAuthenticated
+
+export const selectProfile = (state: StoreStateType) => state.profile

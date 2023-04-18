@@ -59,11 +59,13 @@ export const Header = memo(
           {title ? (
             <View style={styles.textContainer}>
               <Text gp3>{title}</Text>
-              <Spacer height={6} />
               {subtitle && (
-                <Text center color={Color.primaryGray} gp4>
-                  {subtitle}
-                </Text>
+                <>
+                  <Spacer height={6} />
+                  <Text center color={Color.primaryGray} gp4>
+                    {subtitle}
+                  </Text>
+                </>
               )}
             </View>
           ) : !hideLogo ? (

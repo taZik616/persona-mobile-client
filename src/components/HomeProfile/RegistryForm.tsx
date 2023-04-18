@@ -20,16 +20,20 @@ const registrySchema = yup
       .string()
       .required('Обязательное поле')
       .min(2, 'Слишком короткое имя')
-      .max(35, 'Имя слишком длинное'),
+      .max(35, 'Имя слишком длинное')
+      .trim(),
     lastName: yup
       .string()
       .required('Обязательное поле')
       .min(2, 'Слишком короткая фамилия')
-      .max(35, 'Фамилия слишком длинная'),
+      .max(35, 'Фамилия слишком длинная')
+      .trim(),
     telephone: yup
       .string()
+      .trim()
       .required('Обязательное поле')
-      .matches(PHONE_VALIDATION_REGEXP, 'Введен не корректный номер телефона'),
+      .matches(PHONE_VALIDATION_REGEXP, 'Введен не корректный номер телефона')
+      .trim(),
   })
   .required()
 export type RegistryFormType = yup.InferType<typeof registrySchema>

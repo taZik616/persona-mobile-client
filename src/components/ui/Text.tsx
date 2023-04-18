@@ -36,7 +36,7 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
  * @param cg2 - CormorantGaramond-SemiBold 20
  * @param cg3 - CormorantGaramond-Medium 15
  * @param gp1 - GothamPro 11
- * @param gp2 - GothamPro 32
+ * @param gp2 - GothamPro-Medium 15
  * @param gp3 - GothamPro-Medium 13
  * @param gp4 - GothamPro-Regular 13
  * @param gp5 - GothamPro-Regular 15

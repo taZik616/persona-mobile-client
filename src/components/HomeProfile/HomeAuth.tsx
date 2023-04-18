@@ -16,7 +16,7 @@ import {Keyframe} from 'react-native-reanimated'
 import {captureException, formatSecondsTimer} from 'src/helpers'
 import {useScreenBlockPortrait} from 'src/hooks'
 import {useTypedDispatch} from 'src/store'
-import {setIsAuthenticated} from 'src/store/profileSlice'
+import {getUserData, setIsAuthenticated} from 'src/store/profileSlice'
 import {
   useCreateUserAndSendCodeMutation,
   useLoginMutation,
@@ -102,6 +102,7 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
         setRequestError(res.error.data.message)
       } else if (res?.data?.success) {
         dispatch(setIsAuthenticated(true))
+        dispatch(getUserData(telephone))
       } else {
         setRequestError('Неизвестная ошибка. Проверьте подключение к интернету')
       }
@@ -122,6 +123,7 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
         otpModalRef.current?.setError(res.data.failed)
       } else if (res?.data?.success) {
         dispatch(setIsAuthenticated(true))
+        dispatch(getUserData(telephone))
         onCloseModal()
       }
     },

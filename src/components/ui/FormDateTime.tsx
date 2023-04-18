@@ -1,40 +1,43 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
 import {format} from 'date-fns'
 import {Controller} from 'react-hook-form'
-import {Pressable, StyleProp, StyleSheet, View, ViewStyle} from 'react-native'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import {Pressable, StyleSheet} from 'react-native'
+import Animated, {FadeInUp, FadeOutUp} from 'react-native-reanimated'
 
-import {Text} from 'src/components/ui'
-import {useThematicStyles} from 'src/hooks'
-import {Color} from 'src/themeTypes'
+import {Color} from 'src/themes'
+import {IS_IOS, YEAR_IN_MS} from 'src/variables'
+
+import {Text} from './Text'
 
 interface FormDateTimeProps {
-  style?: StyleProp<ViewStyle>
   placeholder?: string
   name: string
-  isTime: boolean
+  isTime?: boolean
+  maximumDate?: Date
 }
 
 export const FormDateTime = ({
-  style,
   name,
   placeholder,
   isTime,
+  maximumDate,
 }: FormDateTimeProps) => {
   const [showPicker, setShowPicker] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
 
-  const {styles, colors} = useThematicStyles(rawStyles)
-
+  const onPressInput = useCallback(() => setShowPicker(pr => !pr), [])
+  const textColor = hasChanges ? Color.primaryBlack : Color.primaryGray
   return (
     <>
       <Controller
         name={name}
-        render={({field: {onChange, value}}) => {
+        render={({
+          field: {onChange, value = new Date(Date.now() - 10 * YEAR_IN_MS)},
+        }) => {
           const onPickDate = (
             event: DateTimePickerEvent,
             date: Date | undefined,
@@ -61,60 +64,42 @@ export const FormDateTime = ({
           }
           return (
             <>
-              <View style={styles.dateContainer}>
-                {!isTime && (
-                  <Pressable
-                    style={styles.row}
-                    onPress={() => setShowPicker(pr => !pr)}>
-                    <View style={[styles.inputAlternate, style]}>
-                      <Text p1 style={styles.textContent} color={Color.primary}>
-                        {hasChanges ? format(value, 'dd.MM.yyyy') : placeholder}
-                      </Text>
-                    </View>
-                    <View style={styles.part2}>
-                      <MaterialCommunityIcons
-                        name="calendar-check-outline"
-                        color={colors.primary}
-                        size={30}
-                      />
-                    </View>
-                  </Pressable>
-                )}
-                {isTime && (
-                  <Pressable
-                    style={styles.row}
-                    onPress={() => setShowPicker(pr => !pr)}>
-                    <View style={[styles.inputAlternate, style]}>
-                      <Text p1 style={styles.textContent} color={Color.primary}>
-                        {hasChanges ? format(value, 'HH:mm') : placeholder}
-                      </Text>
-                    </View>
-                    <View style={styles.part2}>
-                      <MaterialCommunityIcons
-                        name="clock-outline"
-                        color={colors.primary}
-                        size={30}
-                      />
-                    </View>
-                  </Pressable>
-                )}
-              </View>
-              {showPicker && !isTime && (
-                <DateTimePicker
-                  mode="date"
-                  display="spinner"
-                  onChange={onPickDate}
-                  value={value}
-                  minimumDate={new Date()}
-                />
+              {isTime ? (
+                <Pressable style={styles.container} onPress={onPressInput}>
+                  <Text gp4 numberOfLines={1} color={textColor}>
+                    {hasChanges || value ? format(value, 'HH:mm') : placeholder}
+                  </Text>
+                </Pressable>
+              ) : (
+                <Pressable style={styles.container} onPress={onPressInput}>
+                  <Text gp4 numberOfLines={1} color={textColor}>
+                    {hasChanges || value
+                      ? format(value, 'dd.MM.yyyy')
+                      : placeholder}
+                  </Text>
+                </Pressable>
               )}
-              {showPicker && isTime && (
-                <DateTimePicker
-                  mode="time"
-                  display="spinner"
-                  onChange={onPickTime}
-                  value={value}
-                />
+              {showPicker && (
+                <Animated.View
+                  entering={IS_IOS ? FadeInUp : undefined}
+                  exiting={IS_IOS ? FadeOutUp : undefined}>
+                  {isTime ? (
+                    <DateTimePicker
+                      mode="time"
+                      display="spinner"
+                      onChange={onPickTime}
+                      value={value}
+                    />
+                  ) : (
+                    <DateTimePicker
+                      mode="date"
+                      display="spinner"
+                      onChange={onPickDate}
+                      value={value}
+                      maximumDate={maximumDate}
+                    />
+                  )}
+                </Animated.View>
               )}
             </>
           )
@@ -124,57 +109,13 @@ export const FormDateTime = ({
   )
 }
 
-const rawStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    paddingVertical: 12.5,
+    height: 45,
     width: '100%',
-    alignItems: 'flex-start',
-  },
-  dateContainer: {
-    justifyContent: 'space-between',
-  },
-  title: {
-    marginBottom: 5,
-  },
-  input2: {
-    marginTop: 10,
-  },
-  input: {
-    height: 50,
-    width: '100%',
-    borderRadius: 25,
-    paddingLeft: 25,
-    backgroundColor: Color.inputBg,
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 16,
-    lineHeight: 22,
-  },
-  inputAlternate: {
-    height: 50,
-    width: '80%',
-    alignItems: 'center',
-    borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    paddingLeft: 25,
-    backgroundColor: Color.inputBg,
-    flexDirection: 'row',
-  },
-  part2: {
-    width: '20%',
-    height: 50,
-    alignItems: 'center',
     justifyContent: 'center',
-    borderRightRadius: 25,
+    borderRadius: 10,
+    paddingHorizontal: 16,
     backgroundColor: Color.inputBg,
-    borderTopRightRadius: 25,
-    borderBottomRightRadius: 25,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  textContent: {
-    fontSize: 16,
   },
 })

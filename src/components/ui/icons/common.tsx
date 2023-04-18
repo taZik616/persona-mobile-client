@@ -333,3 +333,20 @@ export const ContactsIcon = ({
     </Svg>
   )
 }
+
+export const ChevronRightIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="m10 5 6.963 6.963L10 18.926"
+      />
+    </Svg>
+  )
+}

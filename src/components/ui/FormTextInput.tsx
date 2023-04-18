@@ -44,9 +44,11 @@ export const FormTextInput = ({
               ref={ref}
               onBlur={onBlur}
               style={[styles.input, style]}
-              blurOnSubmit={true}
+              blurOnSubmit
               onChangeText={onChange}
-              onSubmitEditing={() => nextField && setFocus(nextField)}
+              onSubmitEditing={
+                nextField ? () => setFocus(nextField) : undefined
+              }
               value={value}
               selectionColor={Color.primary}
               keyboardType="default"
