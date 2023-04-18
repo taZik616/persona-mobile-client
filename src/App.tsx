@@ -8,12 +8,15 @@ import {navigator} from 'src/navigator'
 import {Home} from 'src/screens/Home'
 import {RootStackParamList} from 'src/types'
 
+import {ChangePasswordScreen} from './screens/ChangePassword'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
 import {PersonalScreen} from './screens/Personal'
 import {PersonalEditScreen} from './screens/PersonalEdit'
 import {ProductDetailScreen} from './screens/ProductDetail'
+import {RecoveryPasswordConfirmScreen} from './screens/RecoveryPasswordConfirm'
+import {RecoveryPasswordEnterPhoneScreen} from './screens/RecoveryPasswordEnterPhone'
 import {SettingsScreen} from './screens/SettingsScreen'
 import {Color} from './themes'
 
@@ -59,6 +62,18 @@ export const App = () => {
           <Stack.Screen name="helpDetail" component={HelpDetailScreen} />
           <Stack.Screen name="personal" component={PersonalScreen} />
           <Stack.Screen name="personalEdit" component={PersonalEditScreen} />
+          <Stack.Screen
+            name="changePassword"
+            component={ChangePasswordScreen}
+          />
+          <Stack.Screen
+            name="recoveryPasswordEnterPhone"
+            component={RecoveryPasswordEnterPhoneScreen}
+          />
+          <Stack.Screen
+            name="recoveryPasswordConfirm"
+            component={RecoveryPasswordConfirmScreen}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

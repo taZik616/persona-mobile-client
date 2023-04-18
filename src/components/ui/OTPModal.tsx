@@ -46,7 +46,6 @@ export const OTPModal = memo(
       const [showModal, setShowModal] = useState(false)
 
       const timerRef = useRef<any>(null)
-      useScreenBlockPortrait()
 
       useImperativeHandle(ref, () => ({
         setPhoneNumber(phoneNum) {
@@ -62,6 +61,7 @@ export const OTPModal = memo(
           setShowModal(true)
         },
         closeModal: () => {
+          setTimeout(() => setError(''), 300)
           setShowSmsConfirmModal(false)
           setTimeout(() => setShowModal(false), 600)
         },

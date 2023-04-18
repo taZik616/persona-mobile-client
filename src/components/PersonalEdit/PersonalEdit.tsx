@@ -42,7 +42,7 @@ export const PersonalEdit = ({onPressBack, onSubmit}: PersonalEditProps) => {
             <FormTextInput placeholder="Имя" name="name" nextField="surname" />
             <Spacer height={16} />
             <FormTextInput placeholder="Фамилия" name="surname" />
-            <Spacer height={20} />
+            <Spacer height={16} />
             <FormDateTime
               placeholder="Дата рождения"
               name="dob"

@@ -9,6 +9,15 @@ export const PersonalScreen = () => {
   const onPressChangeInfo = () => {
     navigate('personalEdit')
   }
+  const onPressChangePassword = () => {
+    navigate('changePassword')
+  }
 
-  return <Personal onPressBack={goBack} onPressChangeInfo={onPressChangeInfo} />
+  return (
+    <Personal
+      onPressChangePassword={onPressChangePassword}
+      onPressBack={goBack}
+      onPressChangeInfo={onPressChangeInfo}
+    />
+  )
 }

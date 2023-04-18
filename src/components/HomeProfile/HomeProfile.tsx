@@ -29,6 +29,7 @@ export type HomeProfileProps = {
   onPressSubscription?: () => void
   onPressHelp?: () => void
   onPressRecentlyItem?: () => void
+  onPressRecoverPassword?: () => void
 }
 
 export const HomeProfile = ({
@@ -39,6 +40,7 @@ export const HomeProfile = ({
   onPressSubscription,
   onPressHelp,
   onPressRecentlyItem,
+  onPressRecoverPassword,
 }: HomeProfileProps) => {
   const isAuthenticated = useTypedSelector(selectIsAuthenticated)
 
@@ -120,7 +122,10 @@ export const HomeProfile = ({
           </SafeLandscapeView>
         </ScrollView>
       ) : (
-        <HomeAuth onPressHelp={onPressHelp} />
+        <HomeAuth
+          onPressRecoverPassword={onPressRecoverPassword}
+          onPressHelp={onPressHelp}
+        />
       )}
     </>
   )

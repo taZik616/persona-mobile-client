@@ -2,6 +2,7 @@ import React from 'react'
 
 import {Controller, useFormContext} from 'react-hook-form'
 import {StyleSheet, TextInput, TextInputProps, View} from 'react-native'
+import Animated, {FadeInLeft} from 'react-native-reanimated'
 
 import {Color} from 'src/themes'
 
@@ -25,6 +26,7 @@ interface FormTextInputProps
 export const FormTextInput = ({
   style,
   name,
+  editable = true,
   nextField,
   ...textInputProps
 }: FormTextInputProps) => {
@@ -49,6 +51,7 @@ export const FormTextInput = ({
               onSubmitEditing={
                 nextField ? () => setFocus(nextField) : undefined
               }
+              editable={editable}
               value={value}
               selectionColor={Color.primary}
               keyboardType="default"
@@ -60,10 +63,19 @@ export const FormTextInput = ({
         }}
         control={control}
       />
+      {!editable && (
+        <Animated.View entering={FadeInLeft}>
+          <Text gp1 style={styles.errorText} color={Color.textYellow1}>
+            Поле нельзя редактировать
+          </Text>
+        </Animated.View>
+      )}
       {error && (
-        <Text gp1 style={styles.errorText} color={Color.textRed1}>
-          {error.message as string}
-        </Text>
+        <Animated.View entering={FadeInLeft}>
+          <Text gp1 style={styles.errorText} color={Color.textRed1}>
+            {error.message as string}
+          </Text>
+        </Animated.View>
       )}
     </View>
   )

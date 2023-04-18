@@ -4,6 +4,7 @@ import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 
 import {captureException} from 'src/helpers'
+import {storePassword} from 'src/helpers/keychain'
 import {useTypedDispatch} from 'src/store'
 import {getUserData, setIsAuthenticated} from 'src/store/profileSlice'
 import {
@@ -12,6 +13,7 @@ import {
   useVerifyUserCodeMutation,
 } from 'src/store/shopApi'
 import {Color} from 'src/themes'
+import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
 import {LoginForm, LoginFormType} from './LoginForm'
 import {RegistryForm, RegistryFormType} from './RegistryForm'
@@ -27,9 +29,13 @@ import {ViewToggler} from '../ui/ViewToggler'
 
 interface HomeAuthProps {
   onPressHelp?: () => void
+  onPressRecoverPassword?: () => void
 }
 
-export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
+export const HomeAuth = ({
+  onPressHelp,
+  onPressRecoverPassword,
+}: HomeAuthProps) => {
   const [authOption, setAuthOption] = useState(options[0].value)
   const [requestError, setRequestError] = useState('')
 
@@ -65,9 +71,7 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
             otpModalRef.current?.setPhoneNumber(formData.telephone)
           }, 300)
         } else {
-          setRequestError(
-            'Неизвестная ошибка. Проверьте подключение к интернету',
-          )
+          setRequestError(UNKNOWN_ERROR_MSG)
         }
       } catch (error) {
         captureException(error)
@@ -87,8 +91,9 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
       } else if (res?.data?.success) {
         dispatch(setIsAuthenticated(true))
         dispatch(getUserData(telephone))
+        await storePassword({user: telephone, password})
       } else {
-        setRequestError('Неизвестная ошибка. Проверьте подключение к интернету')
+        setRequestError(UNKNOWN_ERROR_MSG)
       }
     } catch (error) {
       captureException(error)
@@ -109,6 +114,7 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
         dispatch(setIsAuthenticated(true))
         dispatch(getUserData(telephone))
         onCloseModal()
+        await storePassword({user: telephone, password: code})
       }
     },
     [onCloseModal],
@@ -143,6 +149,14 @@ export const HomeAuth = ({onPressHelp}: HomeAuthProps) => {
               <InfoLightIcon color={Color.primaryBlack} />
               <Text gp4>Помощь</Text>
             </TouchableOpacity>
+            <Spacer />
+            <TouchableOpacity
+              onPress={onPressRecoverPassword}
+              style={styles.helpBtn}>
+              <Text gp4 color={Color.primary}>
+                Забыли пароль?
+              </Text>
+            </TouchableOpacity>
           </Animated.View>
           {__DEV__ && (
             <>
@@ -173,6 +187,7 @@ const styles = StyleSheet.create({
   },
   helpContainer: {
     alignSelf: 'flex-start',
+    flexDirection: 'row',
   },
 })
 

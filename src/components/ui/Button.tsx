@@ -42,6 +42,7 @@ export const Button = ({
         styles.container,
         styles[variant],
         fullWidth ? styles.widthFull : styles.flexOne,
+        disabled && styles.disabled,
         style,
       ]}>
       <Text
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
   secondaryFilled: {
     backgroundColor: Color.secondaryGray,
   },
+  // eslint-disable-next-line react-native/no-unused-styles
   filled: {
     backgroundColor: Color.primary,
   },
@@ -96,5 +98,8 @@ const styles = StyleSheet.create({
   outline: {
     borderColor: Color.primary,
     borderWidth: 1,
+  },
+  disabled: {
+    opacity: 0.6,
   },
 })

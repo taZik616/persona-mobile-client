@@ -23,6 +23,11 @@ export type RootStackParamList = {
   }
   personalEdit: undefined
   personal: undefined
+  changePassword: undefined
+  recoveryPasswordEnterPhone: undefined
+  recoveryPasswordConfirm: {
+    telephone: string
+  }
 }
 
 // INTERFACES

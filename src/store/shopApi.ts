@@ -136,7 +136,7 @@ export const shopApi = createApi({
       }),
     }),
     verifyUserCode: build.mutation({
-      query: ({telephone, code}: verifyUserCodeBody) => ({
+      query: ({telephone, code}: verifyCodeBody) => ({
         url: 'codevalidate/',
         method: 'PUT',
         body: {
@@ -155,6 +155,35 @@ export const shopApi = createApi({
         },
       }),
     }),
+    recoveryPasswordSendCode: build.mutation({
+      query: ({telephone}: Omit<verifyCodeBody, 'code'>) => ({
+        url: 'passwordrecoverysend/',
+        method: 'PUT',
+        body: {
+          Phone: telephone,
+        },
+      }),
+    }),
+    recoveryPasswordVerifyCode: build.mutation({
+      query: ({telephone, code}: verifyCodeBody) => ({
+        url: 'passwordrecovery/',
+        method: 'PUT',
+        body: {
+          Phone: telephone,
+          PhoneCode: code,
+        },
+      }),
+    }),
+    changePassword: build.mutation({
+      query: ({telephone, password}: changePasswordBody) => ({
+        url: 'personality/',
+        method: 'PUT',
+        body: {
+          Phone: telephone,
+          password,
+        },
+      }),
+    }),
     getHelpDetails: build.query({
       query: (type: helpDetailKey) => ({
         url: `${type}/`,
@@ -165,11 +194,15 @@ export const shopApi = createApi({
   }),
 })
 
+interface changePasswordBody {
+  telephone: string
+  password: string
+}
 interface loginBody {
   username: string
   password: string
 }
-interface verifyUserCodeBody {
+interface verifyCodeBody {
   telephone: string
   code: string
 }
@@ -198,4 +231,7 @@ export const {
   useVerifyUserCodeMutation,
   useGetHelpDetailsQuery,
   useLoginMutation,
+  useRecoveryPasswordSendCodeMutation,
+  useRecoveryPasswordVerifyCodeMutation,
+  useChangePasswordMutation,
 } = shopApi

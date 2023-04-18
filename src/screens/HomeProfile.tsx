@@ -9,12 +9,14 @@ export const HomeProfileScreen = () => {
   const onPressAddCard = () => navigate('loyaltyCardAdd')
   const onPressHelp = () => navigate('help')
   const onPressPersonal = () => navigate('personal')
+  const onPressRecoverPassword = () => navigate('recoveryPasswordEnterPhone')
 
   return (
     <HomeProfile
       onPressPersonal={onPressPersonal}
       onPressHelp={onPressHelp}
       onPressAddCard={onPressAddCard}
+      onPressRecoverPassword={onPressRecoverPassword}
     />
   )
 }
