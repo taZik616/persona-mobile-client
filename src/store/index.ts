@@ -52,3 +52,7 @@ export const selectIsAuthenticated = (state: StoreStateType) =>
   state.profile.isAuthenticated
 
 export const selectProfile = (state: StoreStateType) => state.profile
+
+export const selectSubs = ({
+  profile: {subEmail, subPush, subSms},
+}: StoreStateType) => ({subEmail, subPush, subSms})

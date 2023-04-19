@@ -8,6 +8,9 @@ interface initialStateType {
   surname: string
   dob?: string
   email?: string
+  subSms: boolean
+  subPush: boolean
+  subEmail: boolean
 }
 
 const initialState: initialStateType = {
@@ -17,8 +20,16 @@ const initialState: initialStateType = {
   surname: '',
   dob: '',
   email: '',
+  subSms: false,
+  subPush: false,
+  subEmail: false,
 }
-type updatableInfo = Omit<initialStateType, 'isAuthenticated' | 'phoneNumber'>
+type updatableInfo = {
+  name: string
+  surname: string
+  dob?: string
+  email?: string
+}
 
 export const profileSlice = createSlice({
   name: 'profile',
@@ -44,6 +55,15 @@ export const profileSlice = createSlice({
       state.phoneNumber = ''
       state.dob = undefined
       state.email = undefined
+    },
+    setSubSms: (state, action: PayloadAction<boolean>) => {
+      state.subSms = action.payload
+    },
+    setSubPush: (state, action: PayloadAction<boolean>) => {
+      state.subPush = action.payload
+    },
+    setSubEmail: (state, action: PayloadAction<boolean>) => {
+      state.subEmail = action.payload
     },
   },
 })
@@ -116,5 +136,8 @@ export const {
   setUserInfo,
   setPhoneNumber,
   cleanUpUserInfo,
+  setSubSms,
+  setSubEmail,
+  setSubPush,
 } = profileSlice.actions
 export const profileReducer = profileSlice.reducer

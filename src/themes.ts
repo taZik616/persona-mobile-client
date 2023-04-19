@@ -1,8 +1,8 @@
-export const TRANSPARENT = 'transparent'
 export const SHADOW_COLOR = '#000'
 export const SPECIAL_DARK = '#0B0629'
 
 export const Color = {
+  transparent: 'transparent',
   primary: '#0ABAB5',
   primaryOpacity1: '#0ABAB50A',
   primaryBlack: '#14142B',
@@ -13,6 +13,7 @@ export const Color = {
   bg: '#FFFFFF',
   border: '#C4C4C4',
   darkOpacity: 'rgba(0, 0, 0, 0.3)',
+  switchBg: '#D9DBE9',
 
   secondary: '#0DECDE',
 

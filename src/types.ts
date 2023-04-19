@@ -13,7 +13,6 @@ export type TabParamList = {
 
 export type RootStackParamList = {
   home?: NavigatorScreenParams<TabParamList>
-  settings: undefined
   productDetail: Partial<ProductPreviewInfo> & {productId: string}
   loyaltyCardAdd: undefined
   help: undefined
@@ -29,6 +28,7 @@ export type RootStackParamList = {
     telephone: string
   }
   orders: undefined
+  subscriptions: undefined
 }
 
 // INTERFACES

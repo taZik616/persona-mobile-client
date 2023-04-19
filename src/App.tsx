@@ -19,7 +19,7 @@ import {PersonalEditScreen} from './screens/PersonalEdit'
 import {ProductDetailScreen} from './screens/ProductDetail'
 import {RecoveryPasswordConfirmScreen} from './screens/RecoveryPasswordConfirm'
 import {RecoveryPasswordEnterPhoneScreen} from './screens/RecoveryPasswordEnterPhone'
-import {SettingsScreen} from './screens/SettingsScreen'
+import {SubscriptionsScreen} from './screens/Subscriptions'
 import {Color} from './themes'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -54,7 +54,6 @@ export const App = () => {
         screenOptions={basicScreenOptions}>
         <Stack.Screen name="home" component={Home} />
         <Stack.Group screenOptions={gestureEnabled}>
-          <Stack.Screen name="settings" component={SettingsScreen} />
           <Stack.Screen name="productDetail" component={ProductDetailScreen} />
           <Stack.Screen
             name="loyaltyCardAdd"
@@ -77,7 +76,9 @@ export const App = () => {
             component={RecoveryPasswordConfirmScreen}
           />
           <Stack.Screen name="orders" component={OrdersScreen} />
+          <Stack.Screen name="subscriptions" component={SubscriptionsScreen} />
           {__DEV__ ? (
+            // @ts-ignore
             <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />
           ) : (
             <></>
