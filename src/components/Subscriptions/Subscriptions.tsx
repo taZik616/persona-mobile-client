@@ -35,7 +35,7 @@ export const Subscriptions = ({
         hideSearch
         hideBasket
       />
-      <ScrollView>
+      <ScrollView bounces={false}>
         <SafeLandscapeView safeArea>
           <Spacer height={20} />
           <View style={styles.itemContainer}>

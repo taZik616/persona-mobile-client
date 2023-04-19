@@ -20,6 +20,7 @@ import Animated, {
 } from 'react-native-reanimated'
 import {clamp, snapPoint} from 'react-native-redash'
 
+import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 
 type SwitchProps = {
@@ -52,6 +53,7 @@ export const Switch = ({
     const newVal = !isToggled.current
     isToggled.current = newVal
     onChange?.(newVal)
+    vibration.selection()
     translateX.value = withSpring(!newVal ? 0 : TRACK_CIRCLE_WIDTH, config)
   }
   const animatedStyle = useAnimatedStyle(() => {
@@ -89,6 +91,7 @@ export const Switch = ({
         0,
         TRACK_CIRCLE_WIDTH,
       ])
+      runOnJS(vibration.selection)()
       translateX.value = withSpring(selectedSnapPoint, config)
       onChange && runOnJS(onChange)(selectedSnapPoint !== 0)
     },
