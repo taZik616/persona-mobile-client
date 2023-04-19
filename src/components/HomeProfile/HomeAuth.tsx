@@ -5,6 +5,7 @@ import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 
 import {captureException} from 'src/helpers'
 import {storePassword} from 'src/helpers/keychain'
+import {vibration} from 'src/services/vibration'
 import {useTypedDispatch} from 'src/store'
 import {getUserData, setIsAuthenticated} from 'src/store/profileSlice'
 import {
@@ -48,6 +49,7 @@ export const HomeAuth = ({
 
   const sendVerifySms = useCallback(
     (telephone: string) => () => {
+      vibration.rigid()
       createUserSendCode({telephone})
       otpModalRef.current?.resetTimer()
     },
@@ -62,15 +64,18 @@ export const HomeAuth = ({
       try {
         const res: any = await createUserSendCode(formData)
         if (res?.error?.data.message) {
+          vibration.error()
           setRequestError(res?.error?.data.message)
           return
         } else if (res?.data?.success) {
+          vibration.success()
           otpModalRef.current?.openModal()
           // На всякий случай
           setTimeout(() => {
             otpModalRef.current?.setPhoneNumber(formData.telephone)
           }, 300)
         } else {
+          vibration.error()
           setRequestError(UNKNOWN_ERROR_MSG)
         }
       } catch (error) {
@@ -87,12 +92,15 @@ export const HomeAuth = ({
         password,
       })
       if (res?.error?.data?.message) {
+        vibration.error()
         setRequestError(res.error.data.message)
       } else if (res?.data?.success) {
+        vibration.success()
         dispatch(setIsAuthenticated(true))
         dispatch(getUserData(telephone))
         await storePassword({user: telephone, password})
       } else {
+        vibration.error()
         setRequestError(UNKNOWN_ERROR_MSG)
       }
     } catch (error) {
@@ -109,8 +117,10 @@ export const HomeAuth = ({
     async (code: string, telephone: string) => {
       const res: any = await verifyCode({code, telephone})
       if (res?.data?.failed) {
+        vibration.error()
         otpModalRef.current?.setError(res.data.failed)
       } else if (res?.data?.success) {
+        vibration.success()
         dispatch(setIsAuthenticated(true))
         dispatch(getUserData(telephone))
         onCloseModal()

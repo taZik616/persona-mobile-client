@@ -9,6 +9,7 @@ import {Home} from 'src/screens/Home'
 import {RootStackParamList} from 'src/types'
 
 import {ChangePasswordScreen} from './screens/ChangePassword'
+import {DEV_TestHapticScreen} from './screens/DEV_TestHaptic'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
@@ -49,7 +50,7 @@ export const App = () => {
       }}
       ref={navigator}>
       <Stack.Navigator
-        initialRouteName="home"
+        initialRouteName="home" // haptic
         screenOptions={basicScreenOptions}>
         <Stack.Screen name="home" component={Home} />
         <Stack.Group screenOptions={gestureEnabled}>
@@ -76,6 +77,11 @@ export const App = () => {
             component={RecoveryPasswordConfirmScreen}
           />
           <Stack.Screen name="orders" component={OrdersScreen} />
+          {__DEV__ ? (
+            <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />
+          ) : (
+            <></>
+          )}
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

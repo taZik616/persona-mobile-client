@@ -12,6 +12,7 @@ import {
   useCameraPermissions,
   useGalleryPermissions,
 } from 'src/hooks/usePermissions'
+import {vibration} from 'src/services/vibration'
 import {imagePickerCardConfig} from 'src/variables'
 
 export const LoyaltyCardAddScreen = () => {
@@ -30,16 +31,19 @@ export const LoyaltyCardAddScreen = () => {
 
     const cardNumber = findCardNumberInArray(res)
     if (cardNumber) {
+      vibration.soft()
       componentRef.current?.setValue?.(cardNumber)
       componentRef.current?.setWarning?.(
         'Проверьте верность распознанного номера карты.',
       )
     } else {
+      vibration.error()
       componentRef.current?.setError?.('Не удалось распознать номер карты.')
     }
   }
 
   const onPressScanCard = () => {
+    vibration.light()
     setIsOpenAS(true)
   }
 

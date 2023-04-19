@@ -7,6 +7,7 @@ import * as yup from 'yup'
 
 import {ChangePassword} from 'src/components/ChangePassword'
 import {useTypedNavigation} from 'src/hooks'
+import {vibration} from 'src/services/vibration'
 
 const passwordEditSchema = yup
   .object({
@@ -39,16 +40,20 @@ export const ChangePasswordScreen = () => {
           const creds = await getGenericPassword()
 
           if (creds && currentPassword !== creds.password) {
+            vibration.error()
             changePasswordRef.current?.setError(
               'Пароль от аккаунта и введенный не совпадают',
             )
           } else if (newPassword !== newPasswordConfirmation) {
+            vibration.error()
             changePasswordRef.current?.setError('Пароли не совпадают')
           } else {
+            vibration.success()
             goBack()
           }
         },
         (error: any) => {
+          vibration.error()
           console.log('😭 - error:', error)
         },
       ),

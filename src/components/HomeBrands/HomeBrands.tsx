@@ -10,6 +10,7 @@ import React, {
 import {FlatList, SectionList, StyleSheet} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
+import {vibration} from 'src/services/vibration'
 import {useGetBrandsBySexQuery, useGetTopBrandsQuery} from 'src/store/shopApi'
 import {IS_IOS} from 'src/variables'
 
@@ -43,6 +44,7 @@ export const HomeBrands = memo(({onPressBrand}: HomeBrandsProps) => {
 
     return (id: number) => () => {
       if (prevId !== id) {
+        vibration.selection()
         listRef.current?.scrollToLocation({
           animated: false,
           itemIndex: IS_IOS ? 1 : 0,
@@ -123,7 +125,7 @@ const TopBrandsHeader = memo(
     }, [])
 
     return (
-      <SafeLandscapeView additionalPadding={24}>
+      <SafeLandscapeView>
         <Spacer height={16} />
         <Text center cg2>
           ТОП-БРЕНДЫ

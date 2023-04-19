@@ -7,6 +7,7 @@ import * as yup from 'yup'
 import {RecoveryPasswordEnterPhone} from 'src/components/RecoveryPasswordEnterPhone'
 import {OTPModal, OTPModalRefType} from 'src/components/ui/OTPModal'
 import {useTypedNavigation} from 'src/hooks'
+import {vibration} from 'src/services/vibration'
 import {selectProfile, useTypedSelector} from 'src/store'
 import {
   useRecoveryPasswordSendCodeMutation,
@@ -52,15 +53,19 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
           const res: any = await sendCode({telephone})
           const failedRes = res?.error?.data?.failed
           if (res?.data?.success) {
+            vibration.success()
             otpRef.current?.openModal()
             setTimeout(() => otpRef.current?.setPhoneNumber(telephone), 300)
           } else if (failedRes) {
+            vibration.error()
             enterPhoneRef.current.setError(failedRes)
           } else {
+            vibration.error()
             enterPhoneRef.current.setError(UNKNOWN_ERROR_MSG)
           }
         },
         (error: any) => {
+          vibration.error()
           console.log('😭 - error:', error)
         },
       ),
@@ -73,10 +78,13 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
     const failedRes = res?.error?.data?.failed
 
     if (res?.data?.success) {
+      vibration.success()
       navigate('recoveryPasswordConfirm', {telephone})
     } else if (failedRes) {
+      vibration.error()
       otpRef.current?.setError(failedRes)
     } else {
+      vibration.error()
       otpRef.current?.setError(UNKNOWN_ERROR_MSG)
     }
   }, [])
@@ -86,10 +94,13 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
       const res: any = await sendCode({telephone})
       const failedRes = res?.error?.data?.failed
       if (res?.data?.success) {
+        vibration.success()
         otpRef.current?.resetTimer()
       } else if (failedRes) {
+        vibration.error()
         otpRef.current?.setError(failedRes)
       } else {
+        vibration.error()
         otpRef.current?.setError(UNKNOWN_ERROR_MSG)
       }
     },

@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
+import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 
 import {Spacer} from './Spacer'
@@ -46,6 +47,7 @@ export const SelectorTwoOptions = memo(
     }, [width])
 
     const handleChangeLeft = () => {
+      vibration.rigid()
       isHasTranslate.value = true
       translateX.value = withTiming(
         0,
@@ -60,6 +62,7 @@ export const SelectorTwoOptions = memo(
       )
     }
     const handleChangeRight = () => {
+      vibration.rigid()
       translateX.value = withTiming(
         translateValue,
         {

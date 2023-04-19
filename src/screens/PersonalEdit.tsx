@@ -6,6 +6,7 @@ import * as yup from 'yup'
 
 import {PersonalEdit} from 'src/components/PersonalEdit'
 import {useTypedNavigation} from 'src/hooks'
+import {vibration} from 'src/services/vibration'
 import {selectProfile, useTypedDispatch, useTypedSelector} from 'src/store'
 import {updateUserData} from 'src/store/profileSlice'
 
@@ -58,9 +59,11 @@ export const PersonalEditScreen = () => {
           await dispatch(
             updateUserData({...data, dob: dateOfBirth?.toString()}),
           )
+          vibration.success()
           goBack()
         },
         (error: any) => {
+          vibration.error()
           console.log('😭 - error:', error)
         },
       ),

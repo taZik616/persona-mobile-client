@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated'
 import {Easing} from 'react-native-reanimated'
 
+import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 
 import {SafeLandscapeView} from './SafeLandscapeView'
@@ -32,6 +33,7 @@ export const ViewToggler = memo(
     const handleToggle = useCallback(
       (value: valueType, id: number) => () => {
         onStartToggle?.(value)
+        vibration.rigid()
         activeItem.value = withTiming(
           id,
           {

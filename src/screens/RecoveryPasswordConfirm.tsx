@@ -6,6 +6,7 @@ import * as yup from 'yup'
 
 import {RecoveryPasswordConfirm} from 'src/components/RecoveryPasswordConfirm'
 import {useTypedNavigation, useTypedRoute} from 'src/hooks'
+import {vibration} from 'src/services/vibration'
 import {useChangePasswordMutation} from 'src/store/shopApi'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
@@ -37,6 +38,7 @@ export const RecoveryPasswordConfirmScreen = () => {
       form.handleSubmit(
         async ({newPassword, newPasswordConfirmation}: RecPassConfirmType) => {
           if (newPassword !== newPasswordConfirmation) {
+            vibration.error()
             recPassConfirmRef.current.setError('Пароли не совпадают')
             return
           }
@@ -47,14 +49,18 @@ export const RecoveryPasswordConfirmScreen = () => {
 
           const failedRes = res?.error?.data?.failed
           if (res?.data?.success) {
+            vibration.success()
             popToTop()
           } else if (failedRes) {
+            vibration.error()
             recPassConfirmRef.current.setError(failedRes)
           } else {
+            vibration.error()
             recPassConfirmRef.current.setError(UNKNOWN_ERROR_MSG)
           }
         },
         (error: any) => {
+          vibration.error()
           console.log('😭 - error:', error)
         },
       ),

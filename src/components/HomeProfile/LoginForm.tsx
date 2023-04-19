@@ -40,6 +40,7 @@ export const LoginForm = memo(({onSubmit, requestError}: LoginFormProps) => {
     onSubmit?.(data)
   }
   const onInvalid = async (e: any) => {
+    vibration.error()
     console.log('😭 - error:', e)
   }
 

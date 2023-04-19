@@ -6,6 +6,7 @@ import {StyleSheet} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 import * as yup from 'yup'
 
+import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 import {PHONE_VALIDATION_REGEXP} from 'src/variables'
 
@@ -52,6 +53,7 @@ export const RegistryForm = memo(
       onSubmit?.(data)
     }
     const onInvalid = async (e: any) => {
+      vibration.error()
       console.log('😭 - error:', e)
     }
 

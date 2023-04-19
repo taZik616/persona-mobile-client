@@ -9,6 +9,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated'
 
+import {vibration} from 'src/services/vibration'
 import {CategoryInterface} from 'src/types'
 
 import {Spacer} from './Spacer'
@@ -37,7 +38,11 @@ export const CategoryCard = memo(({onPress, ...item}: CategoryCardProps) => {
       gesture={Gesture.Tap()
         .numberOfTaps(1)
         .onTouchesDown(() => {
-          scale.value = withSpring(0.9, withSpringConfig)
+          scale.value = withSpring(
+            0.95,
+            withSpringConfig,
+            final => final && runOnJS(vibration.soft)(),
+          )
         })
         .onTouchesUp(() => {
           scale.value = withSpring(1, withSpringConfig)
