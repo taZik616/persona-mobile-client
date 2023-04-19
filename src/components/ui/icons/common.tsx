@@ -350,3 +350,47 @@ export const ChevronRightIcon = ({
     </Svg>
   )
 }
+
+export const SuccessIcon = ({color = Color.primary, ...props}: SvgProps) => {
+  return (
+    <Svg width={18} height={18} viewBox="0 0 18 18" fill="none" {...props}>
+      <Circle cx={9} cy={9} r={8.25} stroke={color} />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        d="m6.75 8.962 1.591 1.591 3.182-3.182"
+      />
+    </Svg>
+  )
+}
+
+export const ProgressIcon = ({
+  color = Color.primaryGray,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={18} height={18} viewBox="0 0 18 18" fill="none" {...props}>
+      <Circle cx={9} cy={9} r={8.25} stroke={color} />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 5.25v4.5l1.875 1.875"
+      />
+    </Svg>
+  )
+}
+
+export const RejectedIcon = ({color = Color.textRed1, ...props}: SvgProps) => {
+  return (
+    <Svg width={18} height={18} viewBox="0 0 18 18" fill="none" {...props}>
+      <Circle cx={9} cy={9} r={8.25} stroke={color} />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m6.75 6.75 4.5 4.5M6.75 11.25l4.5-4.5"
+      />
+    </Svg>
+  )
+}

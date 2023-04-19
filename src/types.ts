@@ -28,9 +28,24 @@ export type RootStackParamList = {
   recoveryPasswordConfirm: {
     telephone: string
   }
+  orders: undefined
 }
 
 // INTERFACES
+
+export interface OrderInfoInterface {
+  id: string
+  status: 'rejected' | 'progress' | 'completed'
+  totalPrice: number
+  items: OrderItemInterface[]
+}
+
+export interface OrderItemInterface {
+  productId: string
+  title: string
+  category: string
+  image: string
+}
 
 export interface CategoryInterface {
   id: string

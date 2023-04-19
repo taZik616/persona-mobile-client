@@ -12,6 +12,7 @@ import {ChangePasswordScreen} from './screens/ChangePassword'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
+import {OrdersScreen} from './screens/Orders'
 import {PersonalScreen} from './screens/Personal'
 import {PersonalEditScreen} from './screens/PersonalEdit'
 import {ProductDetailScreen} from './screens/ProductDetail'
@@ -74,6 +75,7 @@ export const App = () => {
             name="recoveryPasswordConfirm"
             component={RecoveryPasswordConfirmScreen}
           />
+          <Stack.Screen name="orders" component={OrdersScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

@@ -29,7 +29,7 @@ export const Color = {
   white: '#FFFFFF',
   black: '#000000',
 
-  textRed1: '#FF3C2E',
+  textRed1: '#FF2D55',
   opacityRed1: 'rgba(225, 99, 99, 0.2)',
   textBlue1: '#007AFF',
   opacityBlue1: 'rgba(0, 122, 255, 0.2)',
