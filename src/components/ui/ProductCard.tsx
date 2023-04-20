@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {memo} from 'react'
 
 import {
   Image,
@@ -11,7 +11,17 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
-import {selectBasketIds, selectFavoritesIds, useTypedSelector} from 'src/store'
+import {
+  selectBasketIds,
+  selectFavoritesIds,
+  useTypedDispatch,
+  useTypedSelector,
+} from 'src/store'
+import {addItemToBasket} from 'src/store/basketSlice'
+import {
+  addItemToFavorites,
+  removeItemFromFavorites,
+} from 'src/store/favoritesSlice'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
@@ -22,9 +32,6 @@ import {Text} from './Text'
 
 interface ProductCardProps extends ProductPreviewInfo {
   onPress?: (item: ProductPreviewInfo) => void
-  onPressTopRightIcon?: (item: ProductPreviewInfo) => void
-  onPressAddToBasket?: (item: ProductPreviewInfo) => void
-  onRemoveStar?: (item: ProductPreviewInfo) => void
   topRightIcon?: 'star' | 'cross'
   showAddToBasket?: boolean
   width?: number
@@ -33,9 +40,6 @@ interface ProductCardProps extends ProductPreviewInfo {
 
 export const ProductCard = ({
   onPress,
-  onPressTopRightIcon,
-  onPressAddToBasket,
-  onRemoveStar,
   topRightIcon,
   showAddToBasket,
   hidePrice,
@@ -44,47 +48,21 @@ export const ProductCard = ({
 }: ProductCardProps) => {
   const {
     title,
-    // largeImages,
     previewImages,
     price,
     brandImage,
     collection,
     isAvailable,
     priceGroup,
-    productId,
     brandName,
+    productId,
   } = item
-  const inBasket = useTypedSelector(selectBasketIds).includes(productId)
-  const inFavorites = useTypedSelector(selectFavoritesIds).includes(productId)
-
-  const icon = useMemo(() => {
-    switch (topRightIcon) {
-      case 'cross':
-        return <CrossIcon />
-      case 'star':
-        return inFavorites ? <StarFilledIcon /> : <StarEmptyIcon />
-      default:
-        return <></>
-    }
-  }, [topRightIcon, inFavorites])
 
   return (
     <View style={[styles.container, !isAvailable && styles.disabledCard]}>
       <View style={{width}}>
-        {topRightIcon && (
-          <Pressable
-            onPress={() =>
-              !inFavorites
-                ? onPressTopRightIcon?.(item)
-                : topRightIcon === 'star'
-                ? onRemoveStar?.(item)
-                : onPressTopRightIcon?.(item)
-            }
-            hitSlop={10}
-            style={styles.topIconContainer}>
-            {icon}
-          </Pressable>
-        )}
+        {topRightIcon === 'star' ? <Star item={item} /> : <></>}
+        {topRightIcon === 'cross' ? <Remove productId={productId} /> : <></>}
         <GestureDetector
           gesture={Gesture.Tap().onEnd(
             () => onPress && runOnJS(onPress)(item),
@@ -139,12 +117,7 @@ export const ProductCard = ({
           </View>
         </GestureDetector>
         {showAddToBasket ? (
-          <TouchableOpacity
-            disabled={inBasket}
-            onPress={() => onPressAddToBasket?.(item)}
-            style={[styles.addToCartButton, {width}]}>
-            <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
-          </TouchableOpacity>
+          <AddBasketButton item={item} width={width} />
         ) : (
           <></>
         )}
@@ -153,6 +126,59 @@ export const ProductCard = ({
     </View>
   )
 }
+
+interface AddBasketButtonProps {
+  item: ProductPreviewInfo
+  width: number
+}
+
+const AddBasketButton = memo(({item, width}: AddBasketButtonProps) => {
+  const dispatch = useTypedDispatch()
+  const inBasket = useTypedSelector(selectBasketIds).includes(item.productId)
+  return (
+    <TouchableOpacity
+      disabled={inBasket}
+      onPress={() => dispatch(addItemToBasket(item))}
+      style={[styles.addToCartButton, {width}]}>
+      <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
+    </TouchableOpacity>
+  )
+})
+
+interface StarProps {
+  item: ProductPreviewInfo
+}
+
+const Star = memo(({item}: StarProps) => {
+  const dispatch = useTypedDispatch()
+  const {productId} = item
+  const inFavorites = useTypedSelector(selectFavoritesIds).includes(productId)
+  return (
+    <Pressable
+      onPress={() =>
+        inFavorites
+          ? dispatch(removeItemFromFavorites(productId))
+          : dispatch(addItemToFavorites(item))
+      }
+      style={styles.topIconContainer}>
+      {inFavorites ? <StarFilledIcon /> : <StarEmptyIcon />}
+    </Pressable>
+  )
+})
+
+interface RemoveProps {
+  productId: string
+}
+const Remove = memo(({productId}: RemoveProps) => {
+  const dispatch = useTypedDispatch()
+  return (
+    <Pressable
+      onPress={() => dispatch(removeItemFromFavorites(productId))}
+      style={styles.topIconContainer}>
+      <CrossIcon />
+    </Pressable>
+  )
+})
 
 const styles = StyleSheet.create({
   container: {

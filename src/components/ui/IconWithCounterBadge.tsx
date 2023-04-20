@@ -24,7 +24,7 @@ export const IconWithCounterBadge = ({
   const displayCount = badgeCount
     ? badgeCount > 99
       ? '99+'
-      : badgeCount.toString()
+      : String(badgeCount)
     : 0
   return (
     <View style={styles.icoContainer}>
@@ -40,7 +40,7 @@ export const IconWithCounterBadge = ({
       ) : (
         <></>
       )}
-      {badgeCount && (
+      {badgeCount ? (
         <View style={[styles.borderCircle]}>
           <View
             style={[
@@ -52,6 +52,8 @@ export const IconWithCounterBadge = ({
             </Text>
           </View>
         </View>
+      ) : (
+        <></>
       )}
     </View>
   )

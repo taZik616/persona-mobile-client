@@ -1,11 +1,13 @@
 import React, {memo} from 'react'
 
+import {PASSWORD_FAST_DEV_LOGIN, TELEPHONE_FAST_DEV_LOGIN} from '@env'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
 import {StyleSheet} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 import * as yup from 'yup'
 
+import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 import {PHONE_VALIDATION_REGEXP} from 'src/variables'
 
@@ -35,6 +37,10 @@ interface LoginFormProps {
 export const LoginForm = memo(({onSubmit, requestError}: LoginFormProps) => {
   const form = useForm<LoginFormType>({
     resolver: yupResolver(loginSchema),
+    defaultValues: {
+      telephone: __DEV__ ? TELEPHONE_FAST_DEV_LOGIN : undefined,
+      password: __DEV__ ? PASSWORD_FAST_DEV_LOGIN : undefined,
+    },
   })
   const onSubmitForm = async (data: LoginFormType) => {
     onSubmit?.(data)

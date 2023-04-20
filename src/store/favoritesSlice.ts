@@ -2,19 +2,91 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import {persistReducer} from 'redux-persist'
 
-import {getArrayOfField} from 'src/helpers'
-import {FavoriteItemInfoInterface} from 'src/types'
+import {delay, getArrayOfField} from 'src/helpers'
+import {ProductPreviewInfo as ProductI} from 'src/types'
 
 interface FavoritesSliceState {
-  items: FavoriteItemInfoInterface[]
+  items: ProductI[]
   counter: number
   // Для быстрого определения что товар находиться в избранном
   productIds: string[]
 }
 
-const fakeData: FavoriteItemInfoInterface[] = [
+const initialState: FavoritesSliceState = {
+  items: [],
+  counter: 0,
+  productIds: [],
+}
+
+export const favoritesSlice = createSlice({
+  name: 'favorites',
+  initialState,
+  reducers: {
+    setItems: (state, action: PayloadAction<ProductI[]>) => {
+      const items = action.payload
+      state.items = items
+      state.counter = items.length
+      state.productIds = getArrayOfField(items, 'productId')
+    },
+    removeItem: (state, action: PayloadAction<string>) => {
+      const id = action.payload
+      state.items = state.items.filter(it => it.productId !== id)
+      state.counter = state.items.length
+      state.productIds = getArrayOfField(state.items, 'productId')
+    },
+    addItem: (state, action: PayloadAction<ProductI>) => {
+      const newItem = action.payload
+      if (
+        state.items.findIndex(it => it.productId === newItem.productId) === -1
+      ) {
+        state.items = [...state.items, newItem]
+        state.counter = state.items.length
+        state.productIds = getArrayOfField(state.items, 'productId')
+      }
+    },
+  },
+})
+
+const {setItems, removeItem, addItem} = favoritesSlice.actions
+
+/**
+ * Добавить 1 элемент в избранное
+ */
+export const addItemToFavorites = (item: ProductI) => async (dispatch: any) => {
+  await delay(500)
+  dispatch(addItem(item))
+}
+/**
+ * Загрузить с сервера избранные товары пользователя
+ */
+export const loadItemsToFavorites = async (dispatch: any) => {
+  await delay(2000) // const res = await fetch(`url/...`)
+  dispatch(setItems(fakeData))
+}
+/**
+ * Удалить элемент по productId из избранного
+ */
+export const removeItemFromFavorites =
+  (productId: string) => async (dispatch: any) => {
+    await delay(500)
+    dispatch(removeItem(productId))
+  }
+
+export const favoritesReducer = favoritesSlice.reducer
+
+const favoritesPersistConfig = {
+  key: 'favorites',
+  version: 1,
+  storage: AsyncStorage,
+}
+
+export const persistedFavoritesReducer = persistReducer(
+  favoritesPersistConfig,
+  favoritesReducer,
+)
+
+const fakeData: ProductI[] = [
   {
-    id: '1',
     productId: '74896',
     price: 145900,
     priceGroup: 'Распродажа 20%',
@@ -41,7 +113,6 @@ const fakeData: FavoriteItemInfoInterface[] = [
     brandName: 'PHILIPP PLEIN',
   },
   {
-    id: '2',
     productId: '76077',
     price: 14450,
     priceGroup: 'Основная',
@@ -62,7 +133,6 @@ const fakeData: FavoriteItemInfoInterface[] = [
     brandName: 'Сумки',
   },
   {
-    id: '3',
     productId: '76255',
     price: 20450,
     priceGroup: 'Основная',
@@ -101,64 +171,3 @@ const fakeData: FavoriteItemInfoInterface[] = [
     brandName: 'ESCADA SPORT',
   },
 ]
-
-const initialState: FavoritesSliceState = {
-  items: fakeData,
-  counter: fakeData.length,
-  productIds: getArrayOfField(fakeData, 'productId'),
-}
-
-export const favoritesSlice = createSlice({
-  name: 'favorites',
-  initialState,
-  reducers: {
-    setItems: (state, action: PayloadAction<FavoriteItemInfoInterface[]>) => {
-      const items = action.payload
-      state.items = items
-      state.counter = items.length
-      state.productIds = getArrayOfField(items, 'productId')
-    },
-    mergeItems: (state, action: PayloadAction<FavoriteItemInfoInterface[]>) => {
-      const items = action.payload
-      state.items = [...state.items, ...items]
-      state.counter = state.items.length
-      state.productIds = getArrayOfField(state.items, 'productId')
-    },
-    removeItem: (state, action: PayloadAction<string>) => {
-      const id = action.payload
-      state.items = state.items.filter(it => it.productId !== id)
-      state.counter = state.items.length
-      state.productIds = getArrayOfField(state.items, 'productId')
-    },
-    addItem: (state, action: PayloadAction<FavoriteItemInfoInterface>) => {
-      const newItem = action.payload
-      if (
-        state.items.findIndex(it => it.productId === newItem.productId) === -1
-      ) {
-        state.items = [...state.items, newItem]
-        state.counter = state.items.length
-        state.productIds = getArrayOfField(state.items, 'productId')
-      }
-    },
-  },
-})
-
-export const {
-  mergeItems: mergeItemsInFavorites,
-  setItems: setItemsInFavorites,
-  removeItem: removeItemFromFavorites,
-  addItem: addItemToFavorites,
-} = favoritesSlice.actions
-
-export const favoritesReducer = favoritesSlice.reducer
-
-const favoritesPersistConfig = {
-  key: 'favorites',
-  version: 1,
-  storage: AsyncStorage,
-}
-
-export const persistedFavoritesReducer = persistReducer(
-  favoritesPersistConfig,
-  favoritesReducer,
-)

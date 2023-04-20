@@ -1,4 +1,4 @@
-import React, {memo, useMemo, useRef} from 'react'
+import React, {memo, useCallback, useRef} from 'react'
 
 import {
   Image,
@@ -16,7 +16,13 @@ import {
 import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
-import {selectFavoritesIds, useTypedSelector} from 'src/store'
+import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
+import {selectFavoritesIds, useTypedDispatch, useTypedSelector} from 'src/store'
+import {removeItemFromBasket} from 'src/store/basketSlice'
+import {
+  addItemToFavorites,
+  removeItemFromFavorites,
+} from 'src/store/favoritesSlice'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
@@ -27,23 +33,11 @@ import {Spacer} from './Spacer'
 import {Text} from './Text'
 
 interface BasketCardProps extends ProductPreviewInfo {
-  id: string
-  onPress?: (basketItemId: string, item: ProductPreviewInfo) => void
-  onRemove?: (basketItemId: string) => void
-  onChangeSelect?: (basketItemId: string, isSelected: boolean) => void
-  onPressRemoveStar?: (item: ProductPreviewInfo) => void
-  onPressStar?: (item: ProductPreviewInfo) => void
+  onPress?: (item: ProductPreviewInfo) => void
+  onChangeSelect?: (item: ProductPreviewInfo, isSelected: boolean) => void
 }
 export const BasketCard = memo(
-  ({
-    onRemove,
-    onChangeSelect,
-    id,
-    onPressStar,
-    onPressRemoveStar,
-    onPress,
-    ...item
-  }: BasketCardProps) => {
+  ({onPress, onChangeSelect, ...item}: BasketCardProps) => {
     const {
       price,
       title,
@@ -53,83 +47,8 @@ export const BasketCard = memo(
       brandName,
       productId,
     } = item
-    const inFavorites = useTypedSelector(selectFavoritesIds).includes(productId)
     const swipeableRef = useRef<any>(null)
-
-    const renderLeftActions = useMemo(() => {
-      return function (progress: any) {
-        const scale = progress.interpolate({
-          inputRange: [0, 0, 1, 2],
-          outputRange: [0.4, 0.4, 1, 1],
-        })
-        const textScale = scale.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0.8, 1],
-        })
-
-        return (
-          <RectButton
-            onPress={() => {
-              swipeableRef.current?.close()
-              setTimeout(() => {
-                inFavorites ? onPressRemoveStar?.(item) : onPressStar?.(item)
-              }, 300)
-            }}
-            style={styles.swipeableBtnL}>
-            <RNAnimated.View
-              style={{
-                transform: [{scale: scale}],
-              }}>
-              {inFavorites ? (
-                <StarFilledIcon color={Color.white} />
-              ) : (
-                <StarEmptyIcon color={Color.white} />
-              )}
-            </RNAnimated.View>
-            <Spacer height={12} />
-            <RNAnimated.Text
-              style={[styles.btnText, {transform: [{scale: textScale}]}]}>
-              {inFavorites ? 'Убрать с избранного' : 'В избранное'}
-            </RNAnimated.Text>
-          </RectButton>
-        )
-      }
-    }, [onPressStar, onPressRemoveStar, item, inFavorites])
-
-    const renderRightActions = useMemo(() => {
-      return function (progress: any) {
-        const scale = progress.interpolate({
-          inputRange: [0, 0, 1, 2],
-          outputRange: [0.4, 0.4, 1, 1],
-        })
-        const textScale = scale.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0.8, 1],
-        })
-        return (
-          <RectButton
-            onPress={() => {
-              swipeableRef.current?.close()
-              onRemove?.(id)
-            }}
-            style={styles.swipeableBtnR}>
-            <RNAnimated.View
-              style={[
-                {
-                  transform: [{scale: scale}],
-                },
-              ]}>
-              <CrossIcon color={Color.white} />
-            </RNAnimated.View>
-            <Spacer height={12} />
-            <RNAnimated.Text
-              style={[styles.btnText, {transform: [{scale: textScale}]}]}>
-              Удалить
-            </RNAnimated.Text>
-          </RectButton>
-        )
-      }
-    }, [onRemove, id])
+    const onClose = useCallback(() => swipeableRef.current?.close(), [])
 
     return (
       <View style={styles.root}>
@@ -137,19 +56,27 @@ export const BasketCard = memo(
           ref={swipeableRef}
           overshootLeft={false}
           overshootRight={false}
-          renderLeftActions={renderLeftActions}
-          renderRightActions={renderRightActions}>
+          renderLeftActions={progress => (
+            <LeftAction item={item} onClose={onClose} progress={progress} />
+          )}
+          renderRightActions={progress => (
+            <RightAction
+              productId={productId}
+              onClose={onClose}
+              progress={progress}
+            />
+          )}>
           <View style={styles.container}>
             <View style={styles.topRowContainer}>
               <View style={styles.checkbox}>
                 <Checkmark
                   defaultValue={false}
-                  onChange={isSelected => onChangeSelect?.(id, isSelected)}
+                  onChange={isSelected => onChangeSelect?.(item, isSelected)}
                 />
               </View>
               <GestureDetector
                 gesture={Gesture.Tap().onEnd(
-                  () => onPress && runOnJS(onPress)(id, item),
+                  () => onPress && runOnJS(onPress)(item),
                 )}>
                 <View style={styles.images}>
                   <View>
@@ -158,12 +85,12 @@ export const BasketCard = memo(
                 </View>
               </GestureDetector>
               <Pressable
-                onPress={() => onPress && onPress(id, item)}
+                onPress={() => onPress && onPress(item)}
                 style={styles.costContainer}>
                 <Text gp5>{cleanNumber(price, ' ', 0)} ₽</Text>
               </Pressable>
             </View>
-            <Pressable onPress={() => onPress && onPress(id, item)}>
+            <Pressable onPress={() => onPress && onPress(item)}>
               <Spacer height={4} />
               {brandImage ? (
                 <Image
@@ -206,6 +133,98 @@ export const BasketCard = memo(
     )
   },
 )
+export const BasketCardWHM = withHorizontalMargins(BasketCard)
+
+interface LeftActionProps {
+  onClose?: () => void
+  progress: RNAnimated.AnimatedInterpolation<number>
+  item: ProductPreviewInfo
+}
+
+export const LeftAction = memo(({progress, item, onClose}: LeftActionProps) => {
+  const {productId} = item
+  const inFavorites = useTypedSelector(selectFavoritesIds).includes(productId)
+  const dispatch = useTypedDispatch()
+
+  const scale = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.4, 1],
+    extrapolate: 'clamp',
+  })
+  const textScale = scale.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.8, 1],
+  })
+
+  return (
+    <RectButton
+      onPress={() => {
+        onClose?.()
+        setTimeout(() => {
+          inFavorites
+            ? dispatch(removeItemFromFavorites(productId))
+            : dispatch(addItemToFavorites(item))
+        }, 300)
+      }}
+      style={styles.swipeableBtnL}>
+      <RNAnimated.View
+        style={{
+          transform: [{scale: scale}],
+        }}>
+        {inFavorites ? (
+          <StarFilledIcon color={Color.white} />
+        ) : (
+          <StarEmptyIcon color={Color.white} />
+        )}
+      </RNAnimated.View>
+      <Spacer height={12} />
+      <RNAnimated.Text
+        style={[styles.btnText, {transform: [{scale: textScale}]}]}>
+        {inFavorites ? 'Убрать с избранного' : 'В избранное'}
+      </RNAnimated.Text>
+    </RectButton>
+  )
+})
+
+interface RightActionProps {
+  onClose?: () => void
+  progress: RNAnimated.AnimatedInterpolation<number>
+  productId: string
+}
+
+const RightAction = memo(({onClose, progress, productId}: RightActionProps) => {
+  const dispatch = useTypedDispatch()
+  const scale = progress.interpolate({
+    inputRange: [0, 0, 1, 2],
+    outputRange: [0.4, 0.4, 1, 1],
+  })
+  const textScale = scale.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.8, 1],
+  })
+  return (
+    <RectButton
+      onPress={() => {
+        onClose?.()
+        dispatch(removeItemFromBasket(productId))
+      }}
+      style={styles.swipeableBtnR}>
+      <RNAnimated.View
+        style={[
+          {
+            transform: [{scale: scale}],
+          },
+        ]}>
+        <CrossIcon color={Color.white} />
+      </RNAnimated.View>
+      <Spacer height={12} />
+      <RNAnimated.Text
+        style={[styles.btnText, {transform: [{scale: textScale}]}]}>
+        Удалить
+      </RNAnimated.Text>
+    </RectButton>
+  )
+})
 
 const styles = StyleSheet.create({
   root: {

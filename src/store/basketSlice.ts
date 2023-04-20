@@ -1,18 +1,79 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 
-import {getArrayOfField} from 'src/helpers'
-import {BasketItemInfoInterface} from 'src/types'
+import {delay, getArrayOfField} from 'src/helpers'
+import {ProductPreviewInfo as ProductI} from 'src/types'
 
 interface BasketSliceState {
-  items: BasketItemInfoInterface[]
+  items: ProductI[]
   counter: number
   // Для быстрого определения что товар находиться в корзине
   productIds: string[]
 }
 
-const fakeData: BasketItemInfoInterface[] = [
+const initialState: BasketSliceState = {
+  items: [],
+  counter: 0,
+  productIds: [],
+}
+
+export const basketSlice = createSlice({
+  name: 'basket',
+  initialState,
+  reducers: {
+    setItems: (state, action: PayloadAction<ProductI[]>) => {
+      const items = action.payload
+      state.items = items
+      state.counter = items.length
+      state.productIds = getArrayOfField(items, 'productId')
+    },
+    addItem: (state, action: PayloadAction<ProductI>) => {
+      const newItem = action.payload
+      if (
+        state.items.findIndex(it => it.productId === newItem.productId) === -1
+      ) {
+        state.items = [...state.items, newItem]
+        state.counter = state.items.length
+        state.productIds = getArrayOfField(state.items, 'productId')
+      }
+    },
+    removeItem: (state, action: PayloadAction<string>) => {
+      const id = action.payload
+      state.items = state.items.filter(it => it.productId !== id)
+      state.counter = state.items.length
+      state.productIds = getArrayOfField(state.items, 'productId')
+    },
+  },
+})
+
+const {setItems, removeItem, addItem} = basketSlice.actions
+
+/**
+ * Добавить 1 элемент в корзину
+ */
+export const addItemToBasket = (item: ProductI) => async (dispatch: any) => {
+  await delay(500)
+  dispatch(addItem(item))
+}
+/**
+ * Загрузить с сервера корзину пользователя
+ */
+export const loadItemsToBasket = async (dispatch: any) => {
+  await delay(2000) // const res = await fetch(`url/...`)
+  dispatch(setItems(fakeData))
+}
+/**
+ * Удалить элемент по productId из корзины
+ */
+export const removeItemFromBasket =
+  (productId: string) => async (dispatch: any) => {
+    await delay(500)
+    dispatch(removeItem(productId))
+  }
+
+export const basketReducer = basketSlice.reducer
+
+const fakeData: ProductI[] = [
   {
-    id: '1',
     productId: '68567',
     price: 18780,
     priceGroup: 'Основная',
@@ -38,7 +99,6 @@ const fakeData: BasketItemInfoInterface[] = [
     brandName: 'PAUL SHARK',
   },
   {
-    id: '2',
     productId: '68563',
     price: 12060,
     priceGroup: 'Основная',
@@ -80,7 +140,6 @@ const fakeData: BasketItemInfoInterface[] = [
     brandName: 'PAUL SHARK',
   },
   {
-    id: '3',
     productId: '68560',
     price: 72660,
     priceGroup: 'Основная',
@@ -104,53 +163,3 @@ const fakeData: BasketItemInfoInterface[] = [
     brandName: 'PAUL SHARK',
   },
 ]
-
-const initialState: BasketSliceState = {
-  items: fakeData,
-  counter: fakeData.length,
-  productIds: getArrayOfField(fakeData, 'productId'),
-}
-
-export const basketSlice = createSlice({
-  name: 'basket',
-  initialState,
-  reducers: {
-    setItems: (state, action: PayloadAction<BasketItemInfoInterface[]>) => {
-      const items = action.payload
-      state.items = items
-      state.counter = items.length
-      state.productIds = getArrayOfField(items, 'productId')
-    },
-    mergeItems: (state, action: PayloadAction<BasketItemInfoInterface[]>) => {
-      const items = action.payload
-      state.items = [...state.items, ...items]
-      state.counter = state.items.length
-      state.productIds = getArrayOfField(state.items, 'productId')
-    },
-    addItem: (state, action: PayloadAction<BasketItemInfoInterface>) => {
-      const newItem = action.payload
-      if (
-        state.items.findIndex(it => it.productId === newItem.productId) === -1
-      ) {
-        state.items = [...state.items, newItem]
-        state.counter = state.items.length
-        state.productIds = getArrayOfField(state.items, 'productId')
-      }
-    },
-    removeItem: (state, action: PayloadAction<string>) => {
-      const id = action.payload
-      state.items = state.items.filter(it => it.id !== id)
-      state.counter = state.items.length
-      state.productIds = getArrayOfField(state.items, 'productId')
-    },
-  },
-})
-
-export const {
-  mergeItems: mergeItemsInBasket,
-  setItems: setItemsInBasket,
-  removeItem: removeItemFromBasket,
-  addItem: addItemToBasket,
-} = basketSlice.actions
-
-export const basketReducer = basketSlice.reducer

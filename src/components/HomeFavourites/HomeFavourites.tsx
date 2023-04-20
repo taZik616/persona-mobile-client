@@ -14,67 +14,57 @@ import {Spacer} from '../ui/Spacer'
 import {ViewToggler} from '../ui/ViewToggler'
 
 interface HomeFavouritesProps {
-  onPressRemove?: (id: ProductPreviewInfo) => void
-  onPressAddToBasket?: (item: ProductPreviewInfo) => void
   onPressProduct?: (item: ProductPreviewInfo) => void
 }
 
-export const HomeFavourites = memo(
-  ({
-    onPressProduct,
-    onPressAddToBasket,
-    onPressRemove,
-  }: HomeFavouritesProps) => {
-    useScreenBlockCurrent()
-    const [filter, setFilter] = useState(togglerOptions[0].value)
+export const HomeFavourites = memo(({onPressProduct}: HomeFavouritesProps) => {
+  useScreenBlockCurrent()
+  const [filter, setFilter] = useState(togglerOptions[0].value)
 
-    const items = useTypedSelector(selectFavorites)
-    const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
+  const items = useTypedSelector(selectFavorites)
+  const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
 
-    const isAvailable = togglerOptions[0].value === filter
+  const isAvailable = togglerOptions[0].value === filter
 
-    const curData = items?.filter(it => it.isAvailable === isAvailable)
-    return (
-      <>
-        <Header
-          title="Избранное"
-          hideSearch
-          subtitle={getProductsCountString(items.length)}
-        />
-        <FlashList
-          key={numColumns}
-          numColumns={numColumns}
-          estimatedItemSize={379} // if !showAddToBasket - 351
-          contentContainerStyle={contentPaddingsStyle}
-          ListHeaderComponent={() => (
-            <>
-              <Spacer height={20} />
-              <ViewToggler
-                initialValue={filter}
-                onEndToggle={setFilter}
-                options={togglerOptions}
-              />
-              <Spacer height={16} />
-            </>
-          )}
-          renderItem={({item}) => (
-            <ProductCard
-              width={cardWidth}
-              topRightIcon="cross"
-              showAddToBasket
-              onPressTopRightIcon={onPressRemove}
-              onPressAddToBasket={onPressAddToBasket}
-              onPress={onPressProduct}
-              {...item}
+  const curData = items?.filter(it => it.isAvailable === isAvailable)
+  return (
+    <>
+      <Header
+        title="Избранное"
+        hideSearch
+        subtitle={getProductsCountString(items.length)}
+      />
+      <FlashList
+        key={numColumns}
+        numColumns={numColumns}
+        estimatedItemSize={379} // if !showAddToBasket - 351
+        contentContainerStyle={contentPaddingsStyle}
+        ListHeaderComponent={() => (
+          <>
+            <Spacer height={20} />
+            <ViewToggler
+              initialValue={filter}
+              onEndToggle={setFilter}
+              options={togglerOptions}
             />
-          )}
-          keyExtractor={item => item.productId}
-          data={curData}
-        />
-      </>
-    )
-  },
-)
+            <Spacer height={16} />
+          </>
+        )}
+        renderItem={({item}) => (
+          <ProductCard
+            width={cardWidth}
+            topRightIcon="cross"
+            showAddToBasket
+            onPress={onPressProduct}
+            {...item}
+          />
+        )}
+        keyExtractor={it => it.productId + filter}
+        data={curData}
+      />
+    </>
+  )
+})
 
 const togglerOptions = [
   {value: 'available', title: 'Доступно для заказа'},

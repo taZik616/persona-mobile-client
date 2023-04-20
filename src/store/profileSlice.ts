@@ -1,6 +1,9 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import {resetGenericPassword} from 'react-native-keychain'
 
+import {loadItemsToBasket} from './basketSlice'
+import {loadItemsToFavorites} from './favoritesSlice'
+
 interface initialStateType {
   isAuthenticated: boolean
   phoneNumber: string
@@ -74,6 +77,8 @@ export const cleanUserDataAndKeychain = async (dispatch: any) => {
 }
 
 export const getUserData = (phoneNumber: string) => async (dispatch: any) => {
+  dispatch(loadItemsToFavorites)
+  dispatch(loadItemsToBasket)
   // dispatch(
   //   setUserInfo({
   //     dob: '2021-04-18T02:07:17.000Z',

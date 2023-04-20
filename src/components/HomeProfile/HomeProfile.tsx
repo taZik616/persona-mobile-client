@@ -119,6 +119,7 @@ export const HomeProfile = ({
             <Button variant="secondaryFilled" onPress={onPressExit}>
               Выход
             </Button>
+            <Spacer height={20} />
           </SafeLandscapeView>
         </ScrollView>
       ) : (

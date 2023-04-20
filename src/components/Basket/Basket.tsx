@@ -2,11 +2,10 @@ import React, {useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 
-import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {selectBasket, useTypedSelector} from 'src/store'
 import {ProductPreviewInfo} from 'src/types'
 
-import {BasketCard} from '../ui/BasketCard'
+import {BasketCardWHM} from '../ui/BasketCard'
 import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
@@ -15,27 +14,18 @@ import {ViewTogglerWHM} from '../ui/ViewToggler'
 
 interface BasketProps {
   onPressBack?: () => void
-  onPressBasketItem?: (basketItemId: string, item: ProductPreviewInfo) => void
-  onPressRemove?: (basketItemId: string) => void
-  onPressStar?: (item: ProductPreviewInfo) => void
-  onPressRemoveStar?: (item: ProductPreviewInfo) => void
+  onPressBasketItem?: (item: ProductPreviewInfo) => void
+  onChangeSelect?: (item: ProductPreviewInfo, isSelected: boolean) => void
 }
-
-const BasketCardWHM = withHorizontalMargins(BasketCard)
 
 export const Basket = ({
   onPressBasketItem,
-  onPressRemove,
-  onPressStar,
-  onPressRemoveStar,
+  onChangeSelect,
   onPressBack,
 }: BasketProps) => {
   const [filter, setFilter] = useState(options[0].value)
   const items = useTypedSelector(selectBasket)
 
-  const onChangeSelect = (id: string, isSelected: boolean) => {
-    console.log('🚀 - onChangeSelect:', id, '-', isSelected)
-  }
   const isAvailable = options[0].value === filter
 
   const curData = items?.filter(it => it.isAvailable === isAvailable)
@@ -51,7 +41,7 @@ export const Basket = ({
       <FlashList
         data={curData}
         estimatedItemSize={230}
-        keyExtractor={it => it.id + filter}
+        keyExtractor={it => it.productId + filter}
         ListHeaderComponent={() => (
           <>
             <Spacer height={20} />
@@ -77,9 +67,6 @@ export const Basket = ({
         ItemSeparatorComponent={() => <Spacer height={12} />}
         renderItem={({item}) => (
           <BasketCardWHM
-            onPressStar={onPressStar}
-            onPressRemoveStar={onPressRemoveStar}
-            onRemove={onPressRemove}
             onPress={onPressBasketItem}
             onChangeSelect={onChangeSelect}
             {...item}

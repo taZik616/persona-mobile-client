@@ -15,15 +15,9 @@ import {Spacer} from '../ui/Spacer'
 
 interface HomeNewProductsProps {
   onPressProduct?: (item: ProductPreviewInfo) => void
-  onPressStarIcon?: (item: ProductPreviewInfo) => void
-  onPressRemoveStarIcon?: (item: ProductPreviewInfo) => void
 }
 
-export const HomeNewProducts = ({
-  onPressProduct,
-  onPressStarIcon,
-  onPressRemoveStarIcon,
-}: HomeNewProductsProps) => {
+export const HomeNewProducts = ({onPressProduct}: HomeNewProductsProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
 
   useScreenBlockCurrent()
@@ -57,8 +51,6 @@ export const HomeNewProducts = ({
           <ProductCard
             width={cardWidth}
             topRightIcon="star"
-            onPressTopRightIcon={onPressStarIcon}
-            onRemoveStar={onPressRemoveStarIcon}
             onPress={onPressProduct}
             {...item}
           />

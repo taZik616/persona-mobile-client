@@ -78,7 +78,11 @@ export const App = () => {
           />
           <Stack.Screen name="orders" component={OrdersScreen} />
           <Stack.Screen name="subscriptions" component={SubscriptionsScreen} />
-          <Stack.Screen name="basket" component={BasketScreen} />
+          <Stack.Screen
+            name="basket"
+            options={{animation: 'slide_from_bottom'}}
+            component={BasketScreen}
+          />
           {__DEV__ ? (
             // @ts-ignore
             <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />

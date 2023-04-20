@@ -54,3 +54,7 @@ export const getProductsCountString = (count: number) => {
     return `${count} товар`
   }
 }
+
+export const delay = (timeMS: number) => {
+  return new Promise(resolve => setTimeout(() => resolve(''), timeMS))
+}

@@ -1,4 +1,7 @@
-declare module '@env' {}
+declare module '@env' {
+  export const TELEPHONE_FAST_DEV_LOGIN: string | undefined
+  export const PASSWORD_FAST_DEV_LOGIN: string | undefined
+}
 
 declare module '*.svg' {
   import React from 'react'
