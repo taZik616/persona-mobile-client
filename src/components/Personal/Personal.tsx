@@ -2,7 +2,6 @@ import React from 'react'
 
 import {format} from 'date-fns'
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {selectProfile, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
@@ -27,7 +26,6 @@ export const Personal = ({
 }: PersonalProps) => {
   const {email, dob, name, surname, phoneNumber} =
     useTypedSelector(selectProfile)
-  const {bottom} = useSafeAreaInsets()
 
   return (
     <>
@@ -64,7 +62,7 @@ export const Personal = ({
             <Text gp4>Изменить пароль</Text>
             <ChevronRightIcon />
           </TouchableOpacity>
-          <Spacer height={20 + bottom} />
+          <Spacer height={20} withBottomInsets />
         </SafeLandscapeView>
       </ScrollView>
     </>

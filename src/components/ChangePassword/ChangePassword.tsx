@@ -2,7 +2,6 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {Color} from 'src/themes'
 
@@ -29,8 +28,6 @@ export const ChangePassword = forwardRef<any, ChangePasswordProps>(
     useImperativeHandle(ref, () => ({
       setError,
     }))
-
-    const {bottom} = useSafeAreaInsets()
 
     return (
       <>
@@ -87,7 +84,7 @@ export const ChangePassword = forwardRef<any, ChangePasswordProps>(
               <Button gp5 disabled={!isValid} onPress={onSubmit}>
                 Изменить
               </Button>
-              <Spacer height={20 + bottom} />
+              <Spacer height={20} withBottomInsets />
             </SafeLandscapeView>
           </ScrollView>
         </KeyboardSafeArea>

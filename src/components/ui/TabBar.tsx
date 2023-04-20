@@ -1,13 +1,13 @@
 import React from 'react'
 
 import {StyleSheet, View} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {useTypedNavigation} from 'src/hooks'
 import {Color} from 'src/themes'
 import {TabParamList} from 'src/types'
 import {IS_IOS} from 'src/variables'
 
+import {Spacer} from './Spacer'
 import {Tab} from './Tab'
 
 interface TabBarProps {
@@ -20,7 +20,6 @@ interface TabBarProps {
 }
 
 export const TabBar = ({routes, stateIndex}: TabBarProps) => {
-  const {bottom} = useSafeAreaInsets()
   const {navigate} = useTypedNavigation()
   const handlePress = (name: keyof TabParamList, isFocused: boolean) => {
     if (!isFocused) {
@@ -31,29 +30,28 @@ export const TabBar = ({routes, stateIndex}: TabBarProps) => {
   }
 
   return (
-    <View
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={[styles.tabContainer, {paddingBottom: IS_IOS ? bottom : 12}]}>
-      {routes.map(({name, key, badgeCount}, id) => {
-        const isFocused = stateIndex === id
-        return (
-          <Tab
-            badgeCount={badgeCount}
-            isFocused={isFocused}
-            key={key}
-            onPress={() => handlePress(name, isFocused)}
-            tabId={id}
-          />
-        )
-      })}
+    <View style={styles.root}>
+      <View style={styles.tabContainer}>
+        {routes.map(({name, key, badgeCount}, id) => {
+          const isFocused = stateIndex === id
+          return (
+            <Tab
+              badgeCount={badgeCount}
+              isFocused={isFocused}
+              key={key}
+              onPress={() => handlePress(name, isFocused)}
+              tabId={id}
+            />
+          )
+        })}
+      </View>
+      <Spacer withBottomInsets={IS_IOS} height={IS_IOS ? 0 : 12} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  tabContainer: {
-    paddingTop: 20,
-    flexDirection: 'row',
+  root: {
     backgroundColor: Color.bg,
     shadowColor: Color.black,
     shadowOffset: {
@@ -64,5 +62,9 @@ const styles = StyleSheet.create({
     shadowRadius: 8.3,
 
     elevation: 13,
+  },
+  tabContainer: {
+    paddingTop: 20,
+    flexDirection: 'row',
   },
 })

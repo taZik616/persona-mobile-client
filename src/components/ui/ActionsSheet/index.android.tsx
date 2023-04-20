@@ -11,11 +11,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {Color} from 'src/themes'
 
 import {ActionsSheetProps} from '.'
+import {Spacer} from '../Spacer'
 import {Text} from '../Text'
 
 const timingOutAnimationConfig: WithTimingConfig = {
@@ -37,7 +37,6 @@ export const ActionsSheet = ({
   title,
 }: ActionsSheetProps) => {
   const {height: H} = useWindowDimensions()
-  const {bottom} = useSafeAreaInsets()
 
   const fullyOpen = 0
   const fullyClosed = H * 0.45
@@ -73,12 +72,7 @@ export const ActionsSheet = ({
   return (
     <View style={StyleSheet.absoluteFillObject}>
       <Animated.View style={[styles.animateView, bgAnimation]} />
-      <Animated.View
-        style={[
-          styles.animateViewFade,
-          slideFromBottomAnimation,
-          {paddingBottom: bottom},
-        ]}>
+      <Animated.View style={[styles.animateViewFade, slideFromBottomAnimation]}>
         <View style={styles.top}>
           {title && (
             <Text color={Color.primaryGray} gp1 style={styles.t8}>
@@ -105,6 +99,7 @@ export const ActionsSheet = ({
             </Text>
           </TouchableOpacity>
         </View>
+        <Spacer withBottomInsets />
       </Animated.View>
     </View>
   )

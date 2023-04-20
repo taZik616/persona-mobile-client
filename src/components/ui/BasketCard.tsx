@@ -41,6 +41,7 @@ export const BasketCard = memo(
     onPress,
     ...item
   }: BasketCardProps) => {
+    console.log('🚀 - BasketCard:')
     const {price, title, collection, priceGroup, brandImage, brandName} = item
     const swipeableRef = useRef<any>(null)
 

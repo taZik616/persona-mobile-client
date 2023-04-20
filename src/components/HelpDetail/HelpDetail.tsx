@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {ConnectionError} from '../ui/ConnectionError'
 import {Header} from '../ui/Header'
@@ -27,7 +26,6 @@ export const HelpDetail = ({
   onPressBack,
   onPressRetry,
 }: HelpDetailProps) => {
-  const {bottom} = useSafeAreaInsets()
   return (
     <>
       <Header
@@ -47,7 +45,7 @@ export const HelpDetail = ({
           ) : !isError ? (
             <>
               <Text gp4>{content}</Text>
-              <Spacer height={bottom + 24} />
+              <Spacer withBottomInsets height={24} />
             </>
           ) : (
             <ConnectionError onPressRetry={onPressRetry} />

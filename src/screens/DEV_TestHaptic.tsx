@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {Button} from 'src/components/ui/Button'
 import {SafeLandscapeView} from 'src/components/ui/SafeLandscapeView'
@@ -10,11 +9,9 @@ import {Text} from 'src/components/ui/Text'
 import {vibration} from 'src/services/vibration'
 
 export const DEV_TestHapticScreen = () => {
-  const {top} = useSafeAreaInsets()
-
   return (
     <ScrollView>
-      <Spacer height={top + 20} />
+      <Spacer withTopInsets height={20} />
       <SafeLandscapeView safeArea>
         <View style={styles.row}>
           <Button onPress={vibration.error}>Error</Button>

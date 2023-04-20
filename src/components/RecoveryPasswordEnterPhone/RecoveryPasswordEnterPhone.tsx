@@ -2,7 +2,6 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView, StyleSheet} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {Color} from 'src/themes'
 
@@ -33,8 +32,6 @@ export const RecoveryPasswordEnterPhone = forwardRef<
   useImperativeHandle(ref, () => ({
     setError,
   }))
-
-  const {bottom} = useSafeAreaInsets()
 
   return (
     <>
@@ -72,7 +69,7 @@ export const RecoveryPasswordEnterPhone = forwardRef<
                 </Text>
               </>
             )}
-            <Spacer height={20 + bottom} />
+            <Spacer height={20} withBottomInsets />
           </SafeLandscapeView>
         </ScrollView>
       </KeyboardSafeArea>

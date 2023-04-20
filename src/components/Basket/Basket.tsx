@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {selectBasket, useTypedSelector} from 'src/store'
@@ -29,7 +28,6 @@ export const Basket = ({
   onPressRemove,
   onPressBack,
 }: BasketProps) => {
-  const {bottom} = useSafeAreaInsets()
   const [filter, setFilter] = useState(options[0].value)
   const {items} = useTypedSelector(selectBasket)
 
@@ -69,7 +67,7 @@ export const Basket = ({
             </Button>
             <Spacer height={16} />
             <Button gp5>Купить</Button>
-            <Spacer height={bottom + 20} />
+            <Spacer withBottomInsets height={20} />
           </SafeLandscapeView>
         )}
         ItemSeparatorComponent={() => <Spacer height={12} />}

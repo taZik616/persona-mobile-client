@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {FlashList} from '@shopify/flash-list'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {OrderInfoInterface} from 'src/types'
@@ -25,7 +24,6 @@ export const Orders = ({
   onPressOrder,
   onPressBack,
 }: OrdersProps) => {
-  const {bottom} = useSafeAreaInsets()
   return (
     <>
       <Header
@@ -40,7 +38,7 @@ export const Orders = ({
         estimatedItemSize={250}
         keyExtractor={it => it.id}
         ListHeaderComponent={() => <Spacer height={20} />}
-        ListFooterComponent={() => <Spacer height={bottom + 20} />}
+        ListFooterComponent={() => <Spacer withBottomInsets height={20} />}
         ItemSeparatorComponent={() => <Spacer height={12} />}
         renderItem={({item}) => (
           <OrderCardWHM

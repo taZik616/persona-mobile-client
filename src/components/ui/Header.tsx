@@ -1,7 +1,6 @@
 import React, {memo} from 'react'
 
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {useTypedNavigation} from 'src/hooks'
 import {Color} from 'src/themes'
@@ -48,11 +47,9 @@ export const Header = memo(
     const handlePressBasket = () =>
       onPressBasket ? onPressBasket() : navigate('basket')
 
-    const {top} = useSafeAreaInsets()
-
     return (
       <View style={styles.container}>
-        <Spacer height={withoutSafeAreaTop ? 0 : top} />
+        <Spacer withTopInsets={!withoutSafeAreaTop} height={0} />
         <View style={styles.rowContainer}>
           <View style={styles.flexOne}>
             {showBack && (

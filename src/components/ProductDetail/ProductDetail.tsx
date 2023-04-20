@@ -1,7 +1,6 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {Color} from 'src/themes'
 import {ProductDetailInfo} from 'src/types'
@@ -28,7 +27,7 @@ export const ProductDetail = ({
   ...item
 }: ProductDetailProps) => {
   const {largeImages, priceGroup, collection, brandImage, title, price} = item
-  const {bottom} = useSafeAreaInsets()
+
   return (
     <>
       <Header showBack onPressBack={onPressBack} hideSearch />
@@ -77,7 +76,7 @@ export const ProductDetail = ({
             </Button>
           </View>
         </SafeLandscapeView>
-        <Spacer height={bottom + 14} />
+        <Spacer withBottomInsets height={20} />
       </ScrollView>
     </>
   )

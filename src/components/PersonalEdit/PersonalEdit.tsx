@@ -2,7 +2,6 @@ import React from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import {YEAR_IN_MS} from 'src/variables'
 
@@ -23,7 +22,6 @@ export const PersonalEdit = ({onPressBack, onSubmit}: PersonalEditProps) => {
   const {
     formState: {isValid},
   } = useFormContext()
-  const {bottom} = useSafeAreaInsets()
 
   return (
     <>
@@ -58,7 +56,7 @@ export const PersonalEdit = ({onPressBack, onSubmit}: PersonalEditProps) => {
               placeholder="E-mail"
               name="email"
             />
-            <Spacer height={20 + bottom} />
+            <Spacer height={20} withBottomInsets />
           </SafeLandscapeView>
         </ScrollView>
       </KeyboardSafeArea>
