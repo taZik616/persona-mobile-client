@@ -29,13 +29,9 @@ export const Home = () => {
   return (
     <Tab.Navigator
       tabBar={props => {
-        const routes = props.state.routes.map((item, id) => {
-          if (id === 4) return {...item, badgeCount: 999}
-          else return item
-        })
         return (
           // @ts-ignore
-          <TabBar routes={routes} stateIndex={props.state.index} />
+          <TabBar routes={props.state.routes} stateIndex={props.state.index} />
         )
       }}
       screenOptions={{headerShown: false}}>

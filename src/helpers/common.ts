@@ -37,3 +37,20 @@ export const formatSecondsTimer = (sec_num: number) => {
   }
   return minutes + ':' + seconds
 }
+
+export const getArrayOfField = <T extends Array<any>>(
+  arr: T,
+  fieldName: keyof T[number],
+) => {
+  return arr.map(a => a[fieldName])
+}
+
+export const getProductsCountString = (count: number) => {
+  if (count > 4) {
+    return `${count} товаров`
+  } else if (count > 1) {
+    return `${count} товара`
+  } else {
+    return `${count} товар`
+  }
+}

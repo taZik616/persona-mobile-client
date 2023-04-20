@@ -14,7 +14,6 @@ interface TabBarProps {
   routes: {
     name: keyof TabParamList
     key: string
-    badgeCount?: number
   }[]
   stateIndex: number
 }
@@ -32,11 +31,10 @@ export const TabBar = ({routes, stateIndex}: TabBarProps) => {
   return (
     <View style={styles.root}>
       <View style={styles.tabContainer}>
-        {routes.map(({name, key, badgeCount}, id) => {
+        {routes.map(({name, key}, id) => {
           const isFocused = stateIndex === id
           return (
             <Tab
-              badgeCount={badgeCount}
               isFocused={isFocused}
               key={key}
               onPress={() => handlePress(name, isFocused)}

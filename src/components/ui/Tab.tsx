@@ -2,6 +2,7 @@ import React from 'react'
 
 import {Pressable, StyleSheet} from 'react-native'
 
+import {selectFavoritesCounter, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 
 import {tabBarIcons} from './icons/tab-bar-icons'
@@ -15,7 +16,6 @@ interface TabProps {
   color?: string
   activeColor?: string
   isFocused: boolean
-  badgeCount?: number
 }
 
 const navLabelsById = [
@@ -33,13 +33,14 @@ export const Tab = ({
   tabId,
   color = Color.primaryBlack,
   activeColor = Color.primary,
-  badgeCount,
 }: TabProps) => {
+  const favoritesCount = useTypedSelector(selectFavoritesCounter)
   const Icon = tabBarIcons[tabId]
+
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <IconWithCounterBadge
-        badgeCount={badgeCount}
+        badgeCount={tabId === 4 ? favoritesCount : undefined}
         color={isFocused ? activeColor : color}
         IconComponent={Icon}
       />

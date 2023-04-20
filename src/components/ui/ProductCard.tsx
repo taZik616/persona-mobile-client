@@ -11,6 +11,7 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
+import {selectBasketIds, selectFavoritesIds, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
@@ -23,7 +24,8 @@ interface ProductCardProps extends ProductPreviewInfo {
   onPress?: (item: ProductPreviewInfo) => void
   onPressTopRightIcon?: (item: ProductPreviewInfo) => void
   onPressAddToBasket?: (item: ProductPreviewInfo) => void
-  topRightIcon?: 'star' | 'starFilled' | 'cross'
+  onRemoveStar?: (item: ProductPreviewInfo) => void
+  topRightIcon?: 'star' | 'cross'
   showAddToBasket?: boolean
   width?: number
   hidePrice?: boolean
@@ -33,6 +35,7 @@ export const ProductCard = ({
   onPress,
   onPressTopRightIcon,
   onPressAddToBasket,
+  onRemoveStar,
   topRightIcon,
   showAddToBasket,
   hidePrice,
@@ -48,29 +51,35 @@ export const ProductCard = ({
     collection,
     isAvailable,
     priceGroup,
-    // productId,
+    productId,
     brandName,
   } = item
+  const inBasket = useTypedSelector(selectBasketIds).includes(productId)
+  const inFavorites = useTypedSelector(selectFavoritesIds).includes(productId)
 
   const icon = useMemo(() => {
     switch (topRightIcon) {
       case 'cross':
         return <CrossIcon />
       case 'star':
-        return <StarEmptyIcon />
-      case 'starFilled':
-        return <StarFilledIcon />
+        return inFavorites ? <StarFilledIcon /> : <StarEmptyIcon />
       default:
         return <></>
     }
-  }, [topRightIcon])
+  }, [topRightIcon, inFavorites])
 
   return (
     <View style={[styles.container, !isAvailable && styles.disabledCard]}>
       <View style={{width}}>
         {topRightIcon && (
           <Pressable
-            onPress={() => onPressTopRightIcon?.(item)}
+            onPress={() =>
+              !inFavorites
+                ? onPressTopRightIcon?.(item)
+                : topRightIcon === 'star'
+                ? onRemoveStar?.(item)
+                : onPressTopRightIcon?.(item)
+            }
             hitSlop={10}
             style={styles.topIconContainer}>
             {icon}
@@ -131,9 +140,10 @@ export const ProductCard = ({
         </GestureDetector>
         {showAddToBasket ? (
           <TouchableOpacity
+            disabled={inBasket}
             onPress={() => onPressAddToBasket?.(item)}
             style={[styles.addToCartButton, {width}]}>
-            <Text gp1>Добавить в корзину</Text>
+            <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
           </TouchableOpacity>
         ) : (
           <></>

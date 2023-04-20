@@ -13,7 +13,7 @@ import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 import {Swiper} from '../ui/Swiper'
 import {Text} from '../ui/Text'
-import {ViewToggler} from '../ui/ViewToggler'
+import {ViewTogglerWHM} from '../ui/ViewToggler'
 interface ProductDetailProps extends Partial<ProductDetailInfo> {
   onPressBack?: () => void
   onPressFastBuy?: () => void
@@ -57,7 +57,7 @@ export const ProductDetail = ({
           </View>
           <Spacer height={16} />
         </SafeLandscapeView>
-        <ViewToggler options={options} />
+        <ViewTogglerWHM options={options} />
         <SafeLandscapeView safeArea>
           <Spacer height={22} />
           <Text center cg2>

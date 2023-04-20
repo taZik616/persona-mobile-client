@@ -30,7 +30,7 @@ export const Spacer = ({
       },
       style,
     ].filter(Boolean)
-  }, [style, height, width, top, withTopInsets])
+  }, [style, height, width, top, bottom, withBottomInsets, withTopInsets])
 
   return (
     <View style={container} {...props}>

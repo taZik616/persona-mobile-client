@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {memo, useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 
+import {getProductsCountString} from 'src/helpers'
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useProductListHelper} from 'src/hooks/useProductListHelper'
-import {useGetProductsQuery} from 'src/store/shopApi'
+import {selectFavorites, useTypedSelector} from 'src/store'
+import {ProductPreviewInfo} from 'src/types'
 
 import {Header} from '../ui/Header'
 import {ProductCard} from '../ui/ProductCard'
@@ -12,57 +14,67 @@ import {Spacer} from '../ui/Spacer'
 import {ViewToggler} from '../ui/ViewToggler'
 
 interface HomeFavouritesProps {
-  onPressRemove?: (item: any) => void
-  onPressAddToBasket?: (item: any) => void
-  onPressProduct?: (item: any) => void
+  onPressRemove?: (id: ProductPreviewInfo) => void
+  onPressAddToBasket?: (item: ProductPreviewInfo) => void
+  onPressProduct?: (item: ProductPreviewInfo) => void
 }
 
-export const HomeFavourites = ({
-  onPressProduct,
-  onPressAddToBasket,
-  onPressRemove,
-}: HomeFavouritesProps) => {
-  useScreenBlockCurrent()
-  const products = useGetProductsQuery({
-    end: 1600,
-    start: 1500,
-    sortBy: 'stock',
-    sortedValues: '1',
-  })
-  const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
+export const HomeFavourites = memo(
+  ({
+    onPressProduct,
+    onPressAddToBasket,
+    onPressRemove,
+  }: HomeFavouritesProps) => {
+    useScreenBlockCurrent()
+    const [filter, setFilter] = useState(togglerOptions[0].value)
 
-  return (
-    <>
-      <Header title="Избранное" hideSearch subtitle="0 товаров" />
-      <Spacer height={16} />
-      <ViewToggler options={togglerOptions} />
-      <Spacer height={8} />
-      <FlashList
-        key={numColumns}
-        numColumns={numColumns}
-        refreshing={products.isFetching && !!products.currentData}
-        onRefresh={products.refetch}
-        estimatedItemSize={379} // if !showAddToBasket - 351
-        contentContainerStyle={contentPaddingsStyle}
-        renderItem={({item}) => (
-          <ProductCard
-            width={cardWidth}
-            topRightIcon="cross"
-            showAddToBasket
-            onPressTopRightIcon={onPressRemove}
-            onPressAddToBasket={onPressAddToBasket}
-            onPress={onPressProduct}
-            {...item}
-          />
-        )}
-        ListHeaderComponent={renderListHeader}
-        keyExtractor={item => item.productId}
-        data={!products.isLoading ? products.currentData : []}
-      />
-    </>
-  )
-}
-const renderListHeader = () => <Spacer height={12} />
+    const items = useTypedSelector(selectFavorites)
+    const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
+
+    const isAvailable = togglerOptions[0].value === filter
+
+    const curData = items?.filter(it => it.isAvailable === isAvailable)
+    return (
+      <>
+        <Header
+          title="Избранное"
+          hideSearch
+          subtitle={getProductsCountString(items.length)}
+        />
+        <FlashList
+          key={numColumns}
+          numColumns={numColumns}
+          estimatedItemSize={379} // if !showAddToBasket - 351
+          contentContainerStyle={contentPaddingsStyle}
+          ListHeaderComponent={() => (
+            <>
+              <Spacer height={20} />
+              <ViewToggler
+                initialValue={filter}
+                onEndToggle={setFilter}
+                options={togglerOptions}
+              />
+              <Spacer height={16} />
+            </>
+          )}
+          renderItem={({item}) => (
+            <ProductCard
+              width={cardWidth}
+              topRightIcon="cross"
+              showAddToBasket
+              onPressTopRightIcon={onPressRemove}
+              onPressAddToBasket={onPressAddToBasket}
+              onPress={onPressProduct}
+              {...item}
+            />
+          )}
+          keyExtractor={item => item.productId}
+          data={curData}
+        />
+      </>
+    )
+  },
+)
 
 const togglerOptions = [
   {value: 'available', title: 'Доступно для заказа'},

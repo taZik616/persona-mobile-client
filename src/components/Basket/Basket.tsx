@@ -11,21 +11,23 @@ import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
-import {ViewToggler} from '../ui/ViewToggler'
+import {ViewTogglerWHM} from '../ui/ViewToggler'
 
 interface BasketProps {
   onPressBack?: () => void
   onPressBasketItem?: (basketItemId: string, item: ProductPreviewInfo) => void
-  onPressAddFavorites?: (basketItemId: string) => void
   onPressRemove?: (basketItemId: string) => void
+  onPressStar?: (item: ProductPreviewInfo) => void
+  onPressRemoveStar?: (item: ProductPreviewInfo) => void
 }
 
 const BasketCardWHM = withHorizontalMargins(BasketCard)
 
 export const Basket = ({
   onPressBasketItem,
-  onPressAddFavorites,
   onPressRemove,
+  onPressStar,
+  onPressRemoveStar,
   onPressBack,
 }: BasketProps) => {
   const [filter, setFilter] = useState(options[0].value)
@@ -53,7 +55,7 @@ export const Basket = ({
         ListHeaderComponent={() => (
           <>
             <Spacer height={20} />
-            <ViewToggler
+            <ViewTogglerWHM
               initialValue={filter}
               onEndToggle={setFilter}
               options={options}
@@ -75,7 +77,8 @@ export const Basket = ({
         ItemSeparatorComponent={() => <Spacer height={12} />}
         renderItem={({item}) => (
           <BasketCardWHM
-            onAddFavorites={onPressAddFavorites}
+            onPressStar={onPressStar}
+            onPressRemoveStar={onPressRemoveStar}
             onRemove={onPressRemove}
             onPress={onPressBasketItem}
             onChangeSelect={onChangeSelect}

@@ -1,10 +1,13 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 
+import {getArrayOfField} from 'src/helpers'
 import {BasketItemInfoInterface} from 'src/types'
 
 interface BasketSliceState {
   items: BasketItemInfoInterface[]
   counter: number
+  // Для быстрого определения что товар находиться в корзине
+  productIds: string[]
 }
 
 const fakeData: BasketItemInfoInterface[] = [
@@ -105,20 +108,49 @@ const fakeData: BasketItemInfoInterface[] = [
 const initialState: BasketSliceState = {
   items: fakeData,
   counter: fakeData.length,
+  productIds: getArrayOfField(fakeData, 'productId'),
 }
 
 export const basketSlice = createSlice({
   name: 'basket',
   initialState,
   reducers: {
+    setItems: (state, action: PayloadAction<BasketItemInfoInterface[]>) => {
+      const items = action.payload
+      state.items = items
+      state.counter = items.length
+      state.productIds = getArrayOfField(items, 'productId')
+    },
+    mergeItems: (state, action: PayloadAction<BasketItemInfoInterface[]>) => {
+      const items = action.payload
+      state.items = [...state.items, ...items]
+      state.counter = state.items.length
+      state.productIds = getArrayOfField(state.items, 'productId')
+    },
+    addItem: (state, action: PayloadAction<BasketItemInfoInterface>) => {
+      const newItem = action.payload
+      if (
+        state.items.findIndex(it => it.productId === newItem.productId) === -1
+      ) {
+        state.items = [...state.items, newItem]
+        state.counter = state.items.length
+        state.productIds = getArrayOfField(state.items, 'productId')
+      }
+    },
     removeItem: (state, action: PayloadAction<string>) => {
       const id = action.payload
       state.items = state.items.filter(it => it.id !== id)
       state.counter = state.items.length
+      state.productIds = getArrayOfField(state.items, 'productId')
     },
   },
 })
 
-export const {removeItem} = basketSlice.actions
+export const {
+  mergeItems: mergeItemsInBasket,
+  setItems: setItemsInBasket,
+  removeItem: removeItemFromBasket,
+  addItem: addItemToBasket,
+} = basketSlice.actions
 
 export const basketReducer = basketSlice.reducer

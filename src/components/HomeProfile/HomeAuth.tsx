@@ -26,7 +26,7 @@ import {OTPModal, OTPModalRefType} from '../ui/OTPModal'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
-import {ViewToggler} from '../ui/ViewToggler'
+import {ViewTogglerWHM} from '../ui/ViewToggler'
 
 interface HomeAuthProps {
   onPressHelp?: () => void
@@ -138,7 +138,7 @@ export const HomeAuth = ({
     <KeyboardSafeArea>
       <ScrollView>
         <Spacer height={40} />
-        <ViewToggler onEndToggle={setAuthOption} options={options} />
+        <ViewTogglerWHM onEndToggle={setAuthOption} options={options} />
         <Spacer height={36} />
         <SafeLandscapeView center safeArea>
           {authOption === 'registry' ? (

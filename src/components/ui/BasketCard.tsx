@@ -16,11 +16,12 @@ import {
 import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
+import {selectFavoritesIds, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
 import {Checkmark} from './Checkmark'
-import {CrossIcon, StarEmptyIcon} from './icons/common'
+import {CrossIcon, StarEmptyIcon, StarFilledIcon} from './icons/common'
 import {ImagesLooping} from './ImagesLooping'
 import {Spacer} from './Spacer'
 import {Text} from './Text'
@@ -28,21 +29,31 @@ import {Text} from './Text'
 interface BasketCardProps extends ProductPreviewInfo {
   id: string
   onPress?: (basketItemId: string, item: ProductPreviewInfo) => void
-  onAddFavorites?: (basketItemId: string) => void
   onRemove?: (basketItemId: string) => void
   onChangeSelect?: (basketItemId: string, isSelected: boolean) => void
+  onPressRemoveStar?: (item: ProductPreviewInfo) => void
+  onPressStar?: (item: ProductPreviewInfo) => void
 }
 export const BasketCard = memo(
   ({
-    onAddFavorites,
     onRemove,
     onChangeSelect,
     id,
+    onPressStar,
+    onPressRemoveStar,
     onPress,
     ...item
   }: BasketCardProps) => {
-    console.log('🚀 - BasketCard:')
-    const {price, title, collection, priceGroup, brandImage, brandName} = item
+    const {
+      price,
+      title,
+      collection,
+      priceGroup,
+      brandImage,
+      brandName,
+      productId,
+    } = item
+    const inFavorites = useTypedSelector(selectFavoritesIds).includes(productId)
     const swipeableRef = useRef<any>(null)
 
     const renderLeftActions = useMemo(() => {
@@ -60,24 +71,30 @@ export const BasketCard = memo(
           <RectButton
             onPress={() => {
               swipeableRef.current?.close()
-              onAddFavorites?.(id)
+              setTimeout(() => {
+                inFavorites ? onPressRemoveStar?.(item) : onPressStar?.(item)
+              }, 300)
             }}
             style={styles.swipeableBtnL}>
             <RNAnimated.View
               style={{
                 transform: [{scale: scale}],
               }}>
-              <StarEmptyIcon color={Color.white} />
+              {inFavorites ? (
+                <StarFilledIcon color={Color.white} />
+              ) : (
+                <StarEmptyIcon color={Color.white} />
+              )}
             </RNAnimated.View>
             <Spacer height={12} />
             <RNAnimated.Text
               style={[styles.btnText, {transform: [{scale: textScale}]}]}>
-              В избранное
+              {inFavorites ? 'Убрать с избранного' : 'В избранное'}
             </RNAnimated.Text>
           </RectButton>
         )
       }
-    }, [onAddFavorites, id])
+    }, [onPressStar, onPressRemoveStar, item, inFavorites])
 
     const renderRightActions = useMemo(() => {
       return function (progress: any) {
@@ -252,5 +269,7 @@ const styles = StyleSheet.create({
     fontFamily: 'GothamPro',
     fontSize: 13,
     color: Color.white,
+    textAlign: 'center',
+    lineHeight: 16,
   },
 })

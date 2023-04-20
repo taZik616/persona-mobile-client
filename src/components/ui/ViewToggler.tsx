@@ -9,10 +9,10 @@ import Animated, {
 } from 'react-native-reanimated'
 import {Easing} from 'react-native-reanimated'
 
+import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 
-import {SafeLandscapeView} from './SafeLandscapeView'
 import {Text} from './Text'
 
 type valueType = string
@@ -58,7 +58,7 @@ export const ViewToggler = memo(
     )
 
     return (
-      <SafeLandscapeView safeArea type="margin" style={styles.container}>
+      <View style={styles.container}>
         <Animated.View style={[styles.focusRectContainer, animFocusRect]}>
           <View style={styles.focusRect} />
         </Animated.View>
@@ -72,10 +72,12 @@ export const ViewToggler = memo(
             </Text>
           </Pressable>
         ))}
-      </SafeLandscapeView>
+      </View>
     )
   },
 )
+
+export const ViewTogglerWHM = withHorizontalMargins(ViewToggler)
 
 const styles = StyleSheet.create({
   container: {

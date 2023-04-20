@@ -37,6 +37,11 @@ export type RootStackParamList = {
 export interface BasketItemInfoInterface extends ProductPreviewInfo {
   id: string
 }
+
+export interface FavoriteItemInfoInterface extends ProductPreviewInfo {
+  id: string
+}
+
 export interface OrderInfoInterface {
   id: string
   status: 'rejected' | 'progress' | 'completed'
