@@ -29,12 +29,14 @@ export const Basket = ({
   onPressBack,
 }: BasketProps) => {
   const [filter, setFilter] = useState(options[0].value)
-  const {items} = useTypedSelector(selectBasket)
+  const items = useTypedSelector(selectBasket)
 
   const onChangeSelect = (id: string, isSelected: boolean) => {
     console.log('🚀 - onChangeSelect:', id, '-', isSelected)
   }
   const isAvailable = options[0].value === filter
+
+  const curData = items?.filter(it => it.isAvailable === isAvailable)
   return (
     <>
       <Header
@@ -45,9 +47,9 @@ export const Basket = ({
         hideBasket
       />
       <FlashList
-        data={items?.filter(it => it.isAvailable === isAvailable)}
+        data={curData}
         estimatedItemSize={230}
-        keyExtractor={it => it.id}
+        keyExtractor={it => it.id + filter}
         ListHeaderComponent={() => (
           <>
             <Spacer height={20} />

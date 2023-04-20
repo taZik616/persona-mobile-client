@@ -54,7 +54,9 @@ export const selectIsAuthenticated = (state: StoreStateType) =>
   state.profile.isAuthenticated
 
 export const selectProfile = (state: StoreStateType) => state.profile
-export const selectBasket = (state: StoreStateType) => state.basket
+export const selectBasket = (state: StoreStateType) => state.basket.items
+export const selectBasketCounter = (state: StoreStateType) =>
+  state.basket.counter
 
 export const selectSubs = ({
   profile: {subEmail, subPush, subSms},

@@ -3,6 +3,7 @@ import React, {memo} from 'react'
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
 
 import {useTypedNavigation} from 'src/hooks'
+import {selectBasketCounter, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 
 import {BackArrowIcon} from './icons/common'
@@ -44,6 +45,7 @@ export const Header = memo(
     onPressRightText,
   }: HeaderProps) => {
     const {navigate} = useTypedNavigation()
+    const basketCount = useTypedSelector(selectBasketCounter)
     const handlePressBasket = () =>
       onPressBasket ? onPressBasket() : navigate('basket')
 
@@ -108,7 +110,7 @@ export const Header = memo(
                         activeOpacity={0.5}>
                         <IconWithCounterBadge
                           iconName="shopping-bag"
-                          badgeCount={5}
+                          badgeCount={basketCount}
                         />
                       </TouchableOpacity>
                     </>

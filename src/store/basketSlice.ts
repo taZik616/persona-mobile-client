@@ -4,6 +4,7 @@ import {BasketItemInfoInterface} from 'src/types'
 
 interface BasketSliceState {
   items: BasketItemInfoInterface[]
+  counter: number
 }
 
 const fakeData: BasketItemInfoInterface[] = [
@@ -103,6 +104,7 @@ const fakeData: BasketItemInfoInterface[] = [
 
 const initialState: BasketSliceState = {
   items: fakeData,
+  counter: fakeData.length,
 }
 
 export const basketSlice = createSlice({
@@ -112,6 +114,7 @@ export const basketSlice = createSlice({
     removeItem: (state, action: PayloadAction<string>) => {
       const id = action.payload
       state.items = state.items.filter(it => it.id !== id)
+      state.counter = state.items.length
     },
   },
 })
