@@ -8,6 +8,7 @@ import {navigator} from 'src/navigator'
 import {Home} from 'src/screens/Home'
 import {RootStackParamList} from 'src/types'
 
+import {BasketScreen} from './screens/Basket'
 import {ChangePasswordScreen} from './screens/ChangePassword'
 import {DEV_TestHapticScreen} from './screens/DEV_TestHaptic'
 import {HelpScreen} from './screens/Help'
@@ -77,6 +78,7 @@ export const App = () => {
           />
           <Stack.Screen name="orders" component={OrdersScreen} />
           <Stack.Screen name="subscriptions" component={SubscriptionsScreen} />
+          <Stack.Screen name="basket" component={BasketScreen} />
           {__DEV__ ? (
             // @ts-ignore
             <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />

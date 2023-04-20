@@ -3,6 +3,7 @@ import React, {memo} from 'react'
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
+import {useTypedNavigation} from 'src/hooks'
 import {Color} from 'src/themes'
 
 import {BackArrowIcon} from './icons/common'
@@ -43,6 +44,10 @@ export const Header = memo(
     rightTextDisabled,
     onPressRightText,
   }: HeaderProps) => {
+    const {navigate} = useTypedNavigation()
+    const handlePressBasket = () =>
+      onPressBasket ? onPressBasket() : navigate('basket')
+
     const {top} = useSafeAreaInsets()
 
     return (
@@ -102,7 +107,7 @@ export const Header = memo(
                     <>
                       <Spacer width={8} />
                       <TouchableOpacity
-                        onPress={onPressBasket}
+                        onPress={handlePressBasket}
                         activeOpacity={0.5}>
                         <IconWithCounterBadge
                           iconName="shopping-bag"

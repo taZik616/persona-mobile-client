@@ -29,10 +29,14 @@ export type RootStackParamList = {
   }
   orders: undefined
   subscriptions: undefined
+  basket: undefined
 }
 
 // INTERFACES
 
+export interface BasketItemInfoInterface extends ProductPreviewInfo {
+  id: string
+}
 export interface OrderInfoInterface {
   id: string
   status: 'rejected' | 'progress' | 'completed'

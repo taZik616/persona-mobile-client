@@ -15,6 +15,7 @@ import {
   persistStore,
 } from 'redux-persist'
 
+import {basketReducer} from './basketSlice'
 import {persistedGenderReducer} from './genderSlice'
 import {profileReducer} from './profileSlice'
 import {shopApi} from './shopApi'
@@ -24,6 +25,7 @@ export const store = configureStore({
     [shopApi.reducerPath]: shopApi.reducer,
     gender: persistedGenderReducer,
     profile: profileReducer,
+    basket: basketReducer,
   },
   middleware: getMiddleware =>
     getMiddleware({
@@ -52,6 +54,7 @@ export const selectIsAuthenticated = (state: StoreStateType) =>
   state.profile.isAuthenticated
 
 export const selectProfile = (state: StoreStateType) => state.profile
+export const selectBasket = (state: StoreStateType) => state.basket
 
 export const selectSubs = ({
   profile: {subEmail, subPush, subSms},

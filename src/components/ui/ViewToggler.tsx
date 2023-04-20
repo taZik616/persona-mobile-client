@@ -22,13 +22,16 @@ interface ViewTogglerProps {
     value: valueType
     title: string
   }[]
+  initialValue?: string
   onStartToggle?(value: valueType): void
   onEndToggle?(value: valueType): void
 }
 
 export const ViewToggler = memo(
-  ({options, onStartToggle, onEndToggle}: ViewTogglerProps) => {
-    const activeItem = useSharedValue(0)
+  ({options, onStartToggle, initialValue, onEndToggle}: ViewTogglerProps) => {
+    const activeItem = useSharedValue(
+      initialValue ? options.findIndex(a => a.value === initialValue) : 0,
+    )
 
     const handleToggle = useCallback(
       (value: valueType, id: number) => () => {

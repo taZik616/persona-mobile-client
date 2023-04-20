@@ -9,13 +9,13 @@ import {
 } from 'react-native'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
-import Carousel from 'react-native-snap-carousel'
 
 import {capitalize, cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
 import {CrossIcon, StarEmptyIcon, StarFilledIcon} from './icons/common'
+import {ImagesLooping} from './ImagesLooping'
 import {Spacer} from './Spacer'
 import {Text} from './Text'
 
@@ -26,6 +26,7 @@ interface ProductCardProps extends ProductPreviewInfo {
   topRightIcon?: 'star' | 'starFilled' | 'cross'
   showAddToBasket?: boolean
   width?: number
+  hidePrice?: boolean
 }
 
 export const ProductCard = ({
@@ -34,6 +35,7 @@ export const ProductCard = ({
   onPressAddToBasket,
   topRightIcon,
   showAddToBasket,
+  hidePrice,
   width = 200,
   ...item
 }: ProductCardProps) => {
@@ -74,37 +76,12 @@ export const ProductCard = ({
             {icon}
           </Pressable>
         )}
-
         <GestureDetector
           gesture={Gesture.Tap().onEnd(
             () => onPress && runOnJS(onPress)(item),
           )}>
           <View style={{width}}>
-            <Carousel
-              renderItem={({item: uri}) => (
-                <View style={[styles.imageContainer, {width}]}>
-                  <Image
-                    style={styles.image}
-                    resizeMode="cover"
-                    source={{uri}}
-                  />
-                </View>
-              )}
-              bounces={false}
-              keyExtractor={(a, id) => String(id)}
-              data={previewImages}
-              loop
-              loopClonesPerSide={previewImages.length}
-              inactiveSlideOpacity={1}
-              inactiveSlideScale={1}
-              slideStyle={{width}}
-              activeAnimationType="spring"
-              windowSize={6}
-              layout="default"
-              horizontal
-              sliderWidth={width}
-              itemWidth={width}
-            />
+            <ImagesLooping width={width} images={previewImages} />
             <Spacer height={6} />
             {brandImage ? (
               <Image
@@ -131,7 +108,7 @@ export const ProductCard = ({
               ) : (
                 <></>
               )}
-              {priceGroup && (
+              {(priceGroup || collection) && (
                 <>
                   <Text color={Color.primary} numberOfLines={1} center gp4>
                     {capitalize(collection ? collection : priceGroup)}
@@ -139,7 +116,7 @@ export const ProductCard = ({
                   <Spacer height={6} />
                 </>
               )}
-              {price ? (
+              {price && !hidePrice ? (
                 <>
                   <Text numberOfLines={1} center gp5>
                     {cleanNumber(price, ' ', 0)} ₽
@@ -172,16 +149,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  imageContainer: {
-    flex: 1,
-    aspectRatio: '140/180',
-  },
   disabledCard: {
     opacity: 0.7,
-  },
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
   },
   brandImage: {
     width: '100%',

@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   // eslint-disable-next-line react-native/no-unused-styles
   outline: {
-    borderColor: Color.primary,
+    borderColor: Color.primaryBlack,
     borderWidth: 1,
   },
   disabled: {

@@ -96,6 +96,7 @@ export const shopApi = createApi({
                 previewImages,
                 title,
                 largeImages,
+                isAvailable,
                 ...item
               }) =>
                 ({
@@ -104,6 +105,7 @@ export const shopApi = createApi({
                   // 'http://89.108.71.146:8000/IMGS_Preview/preview_2000000723044MAN055_1_.JPG_compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_2000000723044MAN054_1_.JPG_compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_2000000723044MAN113_1__compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_2000000723044MAN115_1__compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_2000000723044MAN116_1__compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_2000000723044MAN117_1__compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_2000000723099MAN051_1_.JPG_compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_2000000723099MAN052_1_.JPG_compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_bez_tsennikaMOD056_1_.JPG_compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_bez_tsennikaMOD053_1_.JPG_compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_bez_tsennikaMOD055_1_.JPG_compressed.jpg;http://89.108.71.146:8000/IMGS_Preview/preview_bez_tsennikaMOD050_1_.JPG_compressed.jpg'.split(
                   //   ';',
                   //  ),
+                  isAvailable: isAvailable === '1',
                   title: title === 'None' ? undefined : title,
                   largeImages: largeImages.split(';'),
                   brandImage: url === 'None' ? undefined : url,

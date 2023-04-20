@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Orders} from 'src/components/Orders/Orders'
+import {Orders} from 'src/components/Orders'
 import {useTypedNavigation} from 'src/hooks'
 import {OrderInfoInterface} from 'src/types'
 
