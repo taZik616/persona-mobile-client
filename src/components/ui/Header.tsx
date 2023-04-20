@@ -1,9 +1,13 @@
 import React, {memo} from 'react'
 
-import {StyleSheet, TouchableOpacity, View} from 'react-native'
+import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native'
 
 import {useTypedNavigation} from 'src/hooks'
-import {selectBasketCounter, useTypedSelector} from 'src/store'
+import {
+  selectBasketCounter,
+  selectIsAuthenticated,
+  useTypedSelector,
+} from 'src/store'
 import {Color} from 'src/themes'
 
 import {BackArrowIcon} from './icons/common'
@@ -46,8 +50,21 @@ export const Header = memo(
   }: HeaderProps) => {
     const {navigate} = useTypedNavigation()
     const basketCount = useTypedSelector(selectBasketCounter)
-    const handlePressBasket = () =>
-      onPressBasket ? onPressBasket() : navigate('basket')
+    const isAuthenticated = useTypedSelector(selectIsAuthenticated)
+    const handlePressBasket = () => {
+      if (onPressBasket) {
+        onPressBasket()
+      } else {
+        isAuthenticated
+          ? navigate('basket')
+          : Alert.alert(
+              'Корзина не доступна',
+              'Для того чтобы иметь доступ к пользованию корзиной нужно пройти аутентификацию',
+              undefined,
+              {cancelable: true},
+            )
+      }
+    }
 
     return (
       <View style={styles.container}>

@@ -394,3 +394,57 @@ export const RejectedIcon = ({color = Color.textRed1, ...props}: SvgProps) => {
     </Svg>
   )
 }
+
+export const FavoritesEmptyIcon = ({
+  color = Color.primaryGray,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={40} height={40} viewBox="0 0 40 40" fill="none" {...props}>
+      <Path
+        fill={color}
+        fillRule="evenodd"
+        d="M5.827 7.994a9.084 9.084 0 0 1 12.847 0l.765.765a1.5 1.5 0 0 0 2.121 0l.765-.765A9.084 9.084 0 0 1 35.172 20.84l-1.027 1.027c.579.35 1.115.762 1.6 1.229l.841-.842c4.329-4.329 4.329-11.347 0-15.675-4.328-4.329-11.346-4.329-15.675 0l-.412.411-.411-.411c-4.329-4.33-11.347-4.33-15.676 0-4.328 4.328-4.328 11.346 0 15.675L19.688 37.53a1 1 0 0 0 .812.287 1.004 1.004 0 0 0 .813-.287l1.707-1.707a9.032 9.032 0 0 1-1.23-1.6l-1.29 1.29L5.828 20.841a9.084 9.084 0 0 1 0-12.847Z"
+        clipRule="evenodd"
+      />
+      <Circle cx={29.5} cy={29.578} r={8.25} stroke={color} strokeWidth={1.5} />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="m26.5 26.578 6.387 6.387M26.5 32.965l6.387-6.387"
+      />
+    </Svg>
+  )
+}
+
+export const BasketEmptyIcon = ({
+  color = Color.primaryGray,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={40} height={40} viewBox="0 0 40 40" fill="none" {...props}>
+      <Path
+        fill={color}
+        fillRule="evenodd"
+        d="M9.922.145c-.829 0-1.615.369-2.145 1.005L3.595 6.168a2.792 2.792 0 0 0-.647 1.788v24.458a3.723 3.723 0 0 0 3.723 3.724h17.08a8.341 8.341 0 0 1-.94-1.862H6.67a1.862 1.862 0 0 1-1.862-1.862V8.988h29.167v14.768a8.37 8.37 0 0 1 1.861 1.097V7.956c0-.653-.229-1.286-.647-1.788L31.01 1.15A2.793 2.793 0 0 0 28.863.145H9.922Zm-.715 2.197a.93.93 0 0 1 .715-.335h18.941a.93.93 0 0 1 .715.335l3.988 4.785H5.22l3.987-4.785Zm4.91 12.697a.93.93 0 0 0-1.86 0 7.136 7.136 0 0 0 14.272 0 .93.93 0 0 0-1.862 0 5.275 5.275 0 0 1-10.55 0Z"
+        clipRule="evenodd"
+      />
+      <Circle
+        cx={30.698}
+        cy={31.463}
+        r={7.674}
+        stroke={color}
+        strokeWidth={1.396}
+      />
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.396}
+        d="m27.925 28.69 5.946 5.946M27.925 34.636l5.946-5.945"
+      />
+    </Svg>
+  )
+}

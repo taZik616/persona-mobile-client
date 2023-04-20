@@ -8,6 +8,8 @@ import {useProductListHelper} from 'src/hooks/useProductListHelper'
 import {selectFavorites, useTypedSelector} from 'src/store'
 import {ProductPreviewInfo} from 'src/types'
 
+import {FavoritesListEmpty} from './FavoritesListEmpty'
+
 import {Header} from '../ui/Header'
 import {ProductCard} from '../ui/ProductCard'
 import {Spacer} from '../ui/Spacer'
@@ -39,6 +41,9 @@ export const HomeFavourites = memo(({onPressProduct}: HomeFavouritesProps) => {
         numColumns={numColumns}
         estimatedItemSize={379} // if !showAddToBasket - 351
         contentContainerStyle={contentPaddingsStyle}
+        ListEmptyComponent={() => (
+          <FavoritesListEmpty isAvailable={isAvailable} />
+        )}
         ListHeaderComponent={() => (
           <>
             <Spacer height={20} />

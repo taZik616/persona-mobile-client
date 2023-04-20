@@ -5,6 +5,8 @@ import {FlashList} from '@shopify/flash-list'
 import {selectBasket, useTypedSelector} from 'src/store'
 import {ProductPreviewInfo} from 'src/types'
 
+import {BasketListEmpty} from './BasketListEmpty'
+
 import {BasketCardWHM} from '../ui/BasketCard'
 import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
@@ -42,6 +44,7 @@ export const Basket = ({
         data={curData}
         estimatedItemSize={230}
         keyExtractor={it => it.productId + filter}
+        ListEmptyComponent={() => <BasketListEmpty isAvailable={isAvailable} />}
         ListHeaderComponent={() => (
           <>
             <Spacer height={20} />
@@ -53,17 +56,21 @@ export const Basket = ({
             <Spacer height={16} />
           </>
         )}
-        ListFooterComponent={() => (
-          <SafeLandscapeView safeArea>
-            <Spacer height={16} />
-            <Button gp5 variant="outline">
-              Добавить промокод
-            </Button>
-            <Spacer height={16} />
-            <Button gp5>Купить</Button>
-            <Spacer withBottomInsets height={20} />
-          </SafeLandscapeView>
-        )}
+        ListFooterComponent={() =>
+          curData.length ? (
+            <SafeLandscapeView safeArea>
+              <Spacer height={16} />
+              <Button gp5 variant="outline">
+                Добавить промокод
+              </Button>
+              <Spacer height={16} />
+              <Button gp5>Купить</Button>
+              <Spacer withBottomInsets height={20} />
+            </SafeLandscapeView>
+          ) : (
+            <></>
+          )
+        }
         ItemSeparatorComponent={() => <Spacer height={12} />}
         renderItem={({item}) => (
           <BasketCardWHM
