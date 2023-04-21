@@ -2,27 +2,37 @@ import React, {memo} from 'react'
 
 import {
   Image,
+  Pressable,
   StyleProp,
-  View,
   ViewStyle,
   useWindowDimensions,
 } from 'react-native'
 import {StyleSheet} from 'react-native'
 
+import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {CARD_ASPECT_RATIO} from 'src/variables'
 
 interface CardWithImageProps {
   uri: string
+  autoWidth?: boolean
   style?: StyleProp<ViewStyle>
   borderRadius?: number
+  onPress?: () => void
 }
 
 export const CardWithImage = memo(
-  ({style, uri, borderRadius}: CardWithImageProps) => {
+  ({style, uri, autoWidth, onPress, borderRadius}: CardWithImageProps) => {
     const {width} = useWindowDimensions()
 
     return (
-      <View style={[styles.imageContainer, {width}, style]}>
+      <Pressable
+        onPress={onPress}
+        style={[
+          styles.imageContainer,
+          // eslint-disable-next-line react-native/no-inline-styles
+          {width: autoWidth ? 'auto' : width},
+          style,
+        ]}>
         <Image
           source={{
             uri,
@@ -33,11 +43,11 @@ export const CardWithImage = memo(
             {borderRadius: borderRadius ? borderRadius : 10},
           ]}
         />
-      </View>
+      </Pressable>
     )
   },
 )
-
+export const CardWithImageWHM = withHorizontalMargins(CardWithImage)
 const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',

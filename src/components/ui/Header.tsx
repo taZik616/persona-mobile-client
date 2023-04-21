@@ -48,24 +48,6 @@ export const Header = memo(
     rightTextDisabled,
     onPressRightText,
   }: HeaderProps) => {
-    const {navigate} = useTypedNavigation()
-    const basketCount = useTypedSelector(selectBasketCounter)
-    const isAuthenticated = useTypedSelector(selectIsAuthenticated)
-    const handlePressBasket = () => {
-      if (onPressBasket) {
-        onPressBasket()
-      } else {
-        isAuthenticated
-          ? navigate('basket')
-          : Alert.alert(
-              'Корзина не доступна',
-              'Для того чтобы иметь доступ к пользованию корзиной нужно пройти аутентификацию',
-              undefined,
-              {cancelable: true},
-            )
-      }
-    }
-
     return (
       <View style={styles.container}>
         <Spacer withTopInsets={!withoutSafeAreaTop} height={0} />
@@ -119,19 +101,7 @@ export const Header = memo(
                       <IconWithCounterBadge iconName="search" />
                     </TouchableOpacity>
                   )}
-                  {!hideBasket && (
-                    <>
-                      <Spacer width={8} />
-                      <TouchableOpacity
-                        onPress={handlePressBasket}
-                        activeOpacity={0.5}>
-                        <IconWithCounterBadge
-                          iconName="shopping-bag"
-                          badgeCount={basketCount}
-                        />
-                      </TouchableOpacity>
-                    </>
-                  )}
+                  {!hideBasket && <BasketBtn onPressBasket={onPressBasket} />}
                 </>
               )}
             </View>
@@ -141,6 +111,41 @@ export const Header = memo(
     )
   },
 )
+interface BasketBtnProps {
+  onPressBasket?: () => void
+}
+
+const BasketBtn = memo(({onPressBasket}: BasketBtnProps) => {
+  const {navigate} = useTypedNavigation()
+  const basketCount = useTypedSelector(selectBasketCounter)
+  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
+
+  const handlePressBasket = () => {
+    if (onPressBasket) {
+      onPressBasket()
+    } else {
+      isAuthenticated
+        ? navigate('basket')
+        : Alert.alert(
+            'Корзина не доступна',
+            'Для того чтобы иметь доступ к пользованию корзиной нужно пройти аутентификацию',
+            undefined,
+            {cancelable: true},
+          )
+    }
+  }
+  return (
+    <>
+      <Spacer width={8} />
+      <TouchableOpacity onPress={handlePressBasket} activeOpacity={0.5}>
+        <IconWithCounterBadge
+          iconName="shopping-bag"
+          badgeCount={basketCount}
+        />
+      </TouchableOpacity>
+    </>
+  )
+})
 
 const styles = StyleSheet.create({
   container: {

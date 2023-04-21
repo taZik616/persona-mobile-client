@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated'
 
 import {useIsPortrait} from 'src/hooks/useIsPortrait'
+import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 import {IS_ANDROID, SCREEN_H, SCREEN_W} from 'src/variables'
 
@@ -22,10 +23,18 @@ interface SwiperProps {
   type?: 'card-image' | 'big-image'
   images: string[]
   horizontalMargins?: number
+  onPress?: (id: number) => void
+  hasVibration?: boolean
 }
 
 export const Swiper = memo(
-  ({images, type = 'card-image', horizontalMargins = 24}: SwiperProps) => {
+  ({
+    images,
+    type = 'card-image',
+    onPress,
+    hasVibration,
+    horizontalMargins = 24,
+  }: SwiperProps) => {
     const currentIndex = useSharedValue(0)
     const scrollRef = useRef<Animated.ScrollView>(null)
     const {isPortrait} = useIsPortrait()
@@ -79,6 +88,10 @@ export const Swiper = memo(
                 <CardWithImage
                   key={index}
                   uri={image}
+                  onPress={() => {
+                    hasVibration && vibration.soft()
+                    onPress?.(index)
+                  }}
                   style={{width: activeWidth}}
                 />
               ) : (

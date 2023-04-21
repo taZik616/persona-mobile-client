@@ -1,40 +1,34 @@
 import React from 'react'
 
-import {ScrollView, StyleSheet} from 'react-native'
+import {FlashList} from '@shopify/flash-list'
+import {ScrollView} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
-import {CategoryInterface} from 'src/types'
+import {HomeMainContentI, HomeMainContentItem} from 'src/types'
 
-import {CardWithImage} from '../ui/CardWithImage'
+import {RenderContent} from './RenderContent'
+
+import {CardWithImageWHM} from '../ui/CardWithImage'
 import {Header} from '../ui/Header'
-import {RenderHorizontalList} from '../ui/RenderHorizontalList'
 import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
 import {Spacer} from '../ui/Spacer'
 import {Swiper} from '../ui/Swiper'
-import {Text} from '../ui/Text'
 
 interface HomeMainProps {
-  menImgUri: string
-  womenImgUri: string
-  mainSliderImages: string[]
-  newProductsInCategoriesWomen: CategoryInterface[]
-  newProductsInCategoriesMen: CategoryInterface[]
-  newProductsInBrandsWomen: CategoryInterface[]
-  newProductsInBrandsMen: CategoryInterface[]
-  onPressAnyListItem?: (item: CategoryInterface) => void
+  menData: HomeMainContentI
+  womenData: HomeMainContentI
+  onPressContentItem?: (item: HomeMainContentItem, id: string) => void
 }
 
 export const HomeMain = ({
-  menImgUri,
-  womenImgUri,
-  mainSliderImages,
-  newProductsInCategoriesWomen,
-  newProductsInCategoriesMen,
-  newProductsInBrandsWomen,
-  newProductsInBrandsMen,
-  onPressAnyListItem,
+  menData,
+  womenData,
+  onPressContentItem,
 }: HomeMainProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
+  const curData = isMenSelected ? menData : womenData
+
+  const {bannerCard, mainSwiperImages, otherContent} = curData || {}
 
   return (
     <>
@@ -47,56 +41,33 @@ export const HomeMain = ({
           values={values}
         />
         <Spacer height={16} />
-        <Swiper images={mainSliderImages} />
-        <Spacer height={16} />
-        <CardWithImage
-          style={styles.marginHorizontal}
-          uri={isMenSelected ? menImgUri : womenImgUri}
-        />
-        <Spacer height={36} />
-        <Text center cg2>
-          НОВЫЕ ПОСТУПЛЕНИЯ
-        </Text>
-        <Spacer height={12} />
-        <RenderHorizontalList
-          onPressItem={onPressAnyListItem}
-          data={
-            isMenSelected
-              ? newProductsInCategoriesMen
-              : newProductsInCategoriesWomen
-          }
+        <Swiper images={mainSwiperImages} />
+        {bannerCard ? (
+          <>
+            <Spacer height={16} />
+            <CardWithImageWHM autoWidth uri={bannerCard} />
+          </>
+        ) : (
+          <></>
+        )}
+        <FlashList
+          scrollEnabled={false}
+          estimatedItemSize={300}
+          renderItem={({item}) => (
+            <RenderContent onPressItem={onPressContentItem} {...item} />
+          )}
+          data={otherContent}
         />
         <Spacer height={28} />
-        <Text center cg2>
-          {'новое в брендах'.toUpperCase()}
-        </Text>
-        <Spacer height={12} />
-        <RenderHorizontalList
-          onPressItem={onPressAnyListItem}
-          data={
-            isMenSelected ? newProductsInBrandsMen : newProductsInBrandsWomen
-          }
-        />
-        <Spacer height={28} />
-        <Text center cg2>
-          {'подарочные карты'.toUpperCase()}
-        </Text>
-        <Spacer height={12} />
-        <CardWithImage
-          style={styles.marginHorizontal}
+        <CardWithImageWHM
+          autoWidth
           borderRadius={32}
           uri={
             'https://vadim-backet.s3.eu-central-1.amazonaws.com/PersonaCard.png'
           }
         />
-        <Spacer height={48} />
+        <Spacer withBottomInsets height={40} />
       </ScrollView>
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  marginHorizontal: {
-    paddingHorizontal: 24,
-  },
-})

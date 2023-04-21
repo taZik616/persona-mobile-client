@@ -1,78 +1,57 @@
 import React, {memo} from 'react'
 
-import {Image, StyleSheet, View} from 'react-native'
-import {Gesture, GestureDetector} from 'react-native-gesture-handler'
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from 'react-native-reanimated'
+import {Image, Pressable, StyleSheet, View} from 'react-native'
 
-import {vibration} from 'src/services/vibration'
-import {CategoryInterface} from 'src/types'
+import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
+import {BrandsListItem, CategoriesListItem} from 'src/types'
 
 import {Spacer} from './Spacer'
 import {Text} from './Text'
 
-interface CategoryCardProps extends CategoryInterface {
-  onPress?: (item: CategoryInterface) => void
+interface CategoryCardProps<T> {
+  onPress?: (id: string) => void
+  item: T
 }
 
-const withSpringConfig = {
-  stiffness: 500,
-  damping: 20,
-  mass: 1,
-  velocity: 0,
-}
+export const CategoryCard = memo(
+  <T extends CategoriesListItem | BrandsListItem>({
+    onPress,
+    item,
+  }: CategoryCardProps<T>) => {
+    const isCat = isCategories(item)
+    const {imgUri, id} = item
 
-export const CategoryCard = memo(({onPress, ...item}: CategoryCardProps) => {
-  const {uri, name, logoUri} = item
-
-  const scale = useSharedValue(1)
-  const anim = useAnimatedStyle(() => ({
-    transform: [{scale: scale.value}],
-  }))
-  return (
-    <GestureDetector
-      gesture={Gesture.Tap()
-        .numberOfTaps(1)
-        .onTouchesDown(() => {
-          scale.value = withSpring(
-            0.95,
-            withSpringConfig,
-            final => final && runOnJS(vibration.soft)(),
-          )
-        })
-        .onTouchesUp(() => {
-          scale.value = withSpring(1, withSpringConfig)
-        })
-        .onTouchesCancelled(() => {
-          scale.value = withSpring(1, withSpringConfig)
-        })
-        .onEnd(() => {
-          onPress && runOnJS(onPress)(item)
-        })}>
-      <Animated.View style={[styles.containerForHorizontalScroll, anim]}>
-        <Image style={styles.img} source={{uri}} />
-        <Spacer height={8} />
-        <View style={styles.brandOrNameContainer}>
-          {logoUri ? (
-            <Image
-              resizeMode="contain"
-              style={styles.logoImage}
-              source={{uri: logoUri}}
-            />
-          ) : (
-            <Text center cg3>
-              {(name ?? '').toUpperCase()}
-            </Text>
-          )}
+    return (
+      <Pressable onPress={() => onPress?.(id)}>
+        <View style={styles.containerForHorizontalScroll}>
+          <Image style={styles.img} source={{uri: imgUri}} />
+          <Spacer height={8} />
+          <View style={styles.brandOrNameContainer}>
+            {!isCat && item.logoUri ? (
+              <Image
+                resizeMode="contain"
+                style={styles.logoImage}
+                source={{uri: item.logoUri}}
+              />
+            ) : (
+              <Text center cg3>
+                {(isCat ? item.name : '').toUpperCase()}
+              </Text>
+            )}
+          </View>
         </View>
-      </Animated.View>
-    </GestureDetector>
-  )
-})
+      </Pressable>
+    )
+  },
+)
+
+export const CategoryCardWHM = withHorizontalMargins(CategoryCard)
+
+const isCategories = (
+  item: CategoriesListItem | BrandsListItem,
+): item is CategoriesListItem => {
+  return (item as CategoriesListItem)?.categoryId !== undefined
+}
 
 const styles = StyleSheet.create({
   containerForHorizontalScroll: {

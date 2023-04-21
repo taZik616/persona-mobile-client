@@ -11,7 +11,6 @@ import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 import {Keyframe} from 'react-native-reanimated'
 
 import {formatSecondsTimer} from 'src/helpers'
-import {useScreenBlockPortrait} from 'src/hooks'
 import {Color} from 'src/themes'
 import {RESEND_SMS_TIMEOUT_SECONDS} from 'src/variables'
 
