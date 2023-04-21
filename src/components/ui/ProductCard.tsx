@@ -36,6 +36,7 @@ interface ProductCardProps extends ProductPreviewInfo {
   showAddToBasket?: boolean
   width?: number
   hidePrice?: boolean
+  singleImage?: boolean
 }
 
 export const ProductCard = ({
@@ -43,6 +44,7 @@ export const ProductCard = ({
   topRightIcon,
   showAddToBasket,
   hidePrice,
+  singleImage,
   width = 200,
   ...item
 }: ProductCardProps) => {
@@ -68,7 +70,16 @@ export const ProductCard = ({
             () => onPress && runOnJS(onPress)(item),
           )}>
           <View style={{width}}>
-            <ImagesLooping width={width} images={previewImages} />
+            {singleImage ? (
+              <Image
+                resizeMode="cover"
+                style={styles.singleImage}
+                source={{uri: previewImages[0]}}
+              />
+            ) : (
+              <ImagesLooping width={width} images={previewImages} />
+            )}
+
             <Spacer height={6} />
             {brandImage ? (
               <Image
@@ -219,5 +230,9 @@ const styles = StyleSheet.create({
     borderColor: Color.primaryGray,
     borderRadius: 8,
     borderWidth: 1,
+  },
+  singleImage: {
+    flex: 1,
+    aspectRatio: '140/180',
   },
 })

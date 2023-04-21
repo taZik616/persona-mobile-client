@@ -6,6 +6,7 @@ import {useGetHelpDetailsQuery} from 'src/store/shopApi'
 
 export const HelpDetailScreen = () => {
   const {goBack} = useTypedNavigation()
+
   const {title, queryPath} = useTypedRoute<'helpDetail'>().params ?? {}
 
   const {isLoading, isError, refetch, currentData} =

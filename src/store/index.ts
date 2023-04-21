@@ -19,12 +19,14 @@ import {basketReducer} from './basketSlice'
 import {persistedFavoritesReducer} from './favoritesSlice'
 import {persistedGenderReducer} from './genderSlice'
 import {profileReducer} from './profileSlice'
+import {persistedRecentlyWatchedReducer} from './recentlyWatchedSlice'
 import {shopApi} from './shopApi'
 
 export const store = configureStore({
   reducer: {
     [shopApi.reducerPath]: shopApi.reducer,
     gender: persistedGenderReducer,
+    recentlyWatched: persistedRecentlyWatchedReducer,
     favorites: persistedFavoritesReducer,
     profile: profileReducer,
     basket: basketReducer,
@@ -68,6 +70,9 @@ export const selectFavoritesCounter = (state: StoreStateType) =>
   state.favorites.counter
 export const selectFavoritesIds = (state: StoreStateType) =>
   state.favorites.productIds
+
+export const selectRecentlyWatched = (state: StoreStateType) =>
+  state.recentlyWatched.items
 
 export const selectSubs = ({
   profile: {subEmail, subPush, subSms},

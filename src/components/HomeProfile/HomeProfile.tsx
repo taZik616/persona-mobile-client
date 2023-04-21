@@ -4,8 +4,10 @@ import {Image, ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
 
 import {selectIsAuthenticated, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
+import {ProductPreviewInfo} from 'src/types'
 
 import {HomeAuth} from './HomeAuth'
+import {RecentlyWatchedList} from './RecentlyWatchedList'
 
 import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
@@ -16,7 +18,6 @@ import {
   ProfileLightIcon,
 } from '../ui/icons/common'
 import {MenuButton} from '../ui/MenuButton'
-import {RenderHorizontalList} from '../ui/RenderHorizontalList'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
@@ -28,7 +29,7 @@ export type HomeProfileProps = {
   onPressOrders?: () => void
   onPressSubscription?: () => void
   onPressHelp?: () => void
-  onPressRecentlyItem?: () => void
+  onPressRecentlyItem?: (item: ProductPreviewInfo) => void
   onPressRecoverPassword?: () => void
 }
 
@@ -48,7 +49,7 @@ export const HomeProfile = ({
     <>
       <Header hideSearch />
       {isAuthenticated ? (
-        <ScrollView>
+        <ScrollView nestedScrollEnabled>
           <Spacer height={20} />
           <SafeLandscapeView safeArea>
             <TouchableOpacity
@@ -86,34 +87,9 @@ export const HomeProfile = ({
               leftIcon={<InfoLightIcon />}
               title="Помощь"
             />
-            <Spacer height={38} />
-            <Text center cg2>
-              ПРОСМОТРЕННЫЕ ТОВАРЫ
-            </Text>
-            <Spacer height={14} />
+            <Spacer height={20} />
           </SafeLandscapeView>
-          <RenderHorizontalList
-            onPressItem={onPressRecentlyItem}
-            data={[
-              {
-                uri: 'https://alamode.ru/image/cache/catalog/Tovari/JAKETY/sn_247-950x950.png',
-                id: '1',
-                logoUri: 'http://89.108.71.146:8000/CAT_logo/585/AGNONA.png',
-              },
-              {
-                uri: 'https://nikawatches.ru/upload/iblock/c6d/c6d4e99236dece8523a353c59c76b506.png',
-                id: '2',
-                logoUri:
-                  'http://89.108.71.146:8000/CAT_logo/587/lo234234234go.jpg',
-              },
-              {
-                uri: 'https://static.tildacdn.com/tild6138-3330-4364-b631-393730333636/923.png',
-                id: '3',
-                logoUri:
-                  'http://89.108.71.146:8000/CAT_logo/540/aL324234tER.png',
-              },
-            ]}
-          />
+          <RecentlyWatchedList onPressItem={onPressRecentlyItem} />
           <SafeLandscapeView>
             <Spacer height={16} />
             <Button variant="secondaryFilled" onPress={onPressExit}>
