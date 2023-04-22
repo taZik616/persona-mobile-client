@@ -1,6 +1,8 @@
 import React, {
   forwardRef,
   memo,
+  useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -40,6 +42,12 @@ export const BrandSearching = memo(
         close: bottomSheetRef.current?.close,
       }))
 
+      useEffect(() => {
+        return () => setSearchText('')
+      }, [])
+
+      const onClose = useCallback(() => setSearchText(''), [])
+
       const content = useMemo(() => {
         const sections = allBrands.currentData
           ?.map(a => {
@@ -57,6 +65,7 @@ export const BrandSearching = memo(
             <Spacer height={16} />
             <SafeLandscapeView safeArea>
               <TextInput
+                value={searchText}
                 placeholderTextColor={Color.primaryGray}
                 selectionColor={Color.primary}
                 blurOnSubmit
@@ -101,6 +110,7 @@ export const BrandSearching = memo(
         <BottomSheet
           closeDistance={80}
           showClose
+          onClose={onClose}
           title="БРЕНДЫ"
           fillMax
           ref={bottomSheetRef}>
