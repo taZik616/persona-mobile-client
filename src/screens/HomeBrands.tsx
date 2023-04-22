@@ -11,6 +11,7 @@ export const HomeBrandsScreen = () => {
 
   const onPressBrand = useCallback((brand: any) => {
     console.log('Brand pressed:', JSON.stringify(brand))
+    brandSearchingRef.current?.close?.()
   }, [])
 
   const onPressSearch = useCallback(() => {
@@ -20,7 +21,7 @@ export const HomeBrandsScreen = () => {
   return (
     <>
       <HomeBrands onPressSearch={onPressSearch} onPressBrand={onPressBrand} />
-      <BrandSearching ref={brandSearchingRef} />
+      <BrandSearching onCompleteSelect={onPressBrand} ref={brandSearchingRef} />
     </>
   )
 }

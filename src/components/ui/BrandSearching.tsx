@@ -18,11 +18,12 @@ import {BrandGroupTitle} from './BrandGroupTitle'
 import {BrandRowItem} from './BrandRowItem'
 import {SafeLandscapeView} from './SafeLandscapeView'
 import {Spacer} from './Spacer'
+import {Text} from './Text'
 
 import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
 
 interface BrandSearchingProps {
-  onCompleteSelect?: (selected: string[]) => void
+  onCompleteSelect?: (brand: any) => void
 }
 
 export interface BrandSearchingRefType {
@@ -76,6 +77,14 @@ export const BrandSearching = memo(
             </SafeLandscapeView>
             <Spacer height={16} />
             <SectionList
+              ListEmptyComponent={() => (
+                <SafeLandscapeView safeArea>
+                  <Spacer height={32} />
+                  <Text gp4 center>
+                    По введенному запросу ничего не найдено.
+                  </Text>
+                </SafeLandscapeView>
+              )}
               scrollEnabled={false}
               removeClippedSubviews
               refreshing={allBrands.isFetching && !!allBrands.currentData}
@@ -84,7 +93,7 @@ export const BrandSearching = memo(
               }}
               renderItem={({item}) => (
                 <BrandRowItem
-                  //onPress={onPressBrand}
+                  onPress={onCompleteSelect}
                   isLoading={allBrands.isLoading}
                   item={item}
                 />
