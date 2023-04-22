@@ -10,7 +10,7 @@ interface BrandGroupTitleProps {
 
 export const BrandGroupTitle = ({title}: BrandGroupTitleProps) => {
   return (
-    <SafeLandscapeView additionalPadding={24}>
+    <SafeLandscapeView safeArea>
       <Spacer height={20} />
       <Text gp2>{title}</Text>
       <Spacer height={10} />

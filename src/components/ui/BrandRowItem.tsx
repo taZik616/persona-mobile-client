@@ -17,7 +17,7 @@ interface BrandRowItemProps {
 export const BrandRowItem = memo(
   ({item, isLoading, onPress}: BrandRowItemProps) => {
     return (
-      <SafeLandscapeView additionalPadding={24}>
+      <SafeLandscapeView safeArea>
         <Pressable
           onPress={() => !isLoading && onPress?.(item)}
           style={styles.brandItemContainer}>

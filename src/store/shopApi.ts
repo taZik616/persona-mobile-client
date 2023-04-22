@@ -4,6 +4,20 @@ import {captureException} from 'src/helpers'
 import {ProductPreviewInfo, helpDetailKey} from 'src/types'
 import {groupByAlphabetical} from 'src/variables/groupByAlphabetical'
 
+const transformBrandsResponse = (data: any) => {
+  try {
+    return data
+      ? groupByAlphabetical(data, 'Subdivision_Name', obj => ({
+          id: obj.Subdivision_ID,
+          name: obj.Subdivision_Name,
+        }))
+      : []
+  } catch (error) {
+    captureException(error)
+    return []
+  }
+}
+
 export const shopApi = createApi({
   reducerPath: 'shopApi',
   baseQuery: fetchBaseQuery({
@@ -11,7 +25,8 @@ export const shopApi = createApi({
   }),
   endpoints: build => ({
     getAllBrands: build.query({
-      query: () => 'brands',
+      query: () => ({url: 'brands/', method: 'GET'}),
+      transformResponse: transformBrandsResponse,
     }),
     getBrandsBySex: build.query({
       query: (sex: 'men' | 'women') => ({
@@ -21,20 +36,7 @@ export const shopApi = createApi({
           sex, // кекс
         },
       }),
-      transformResponse: (data: any) => {
-        try {
-          return data
-            ? groupByAlphabetical(data, 'Subdivision_Name', obj => ({
-                ...obj,
-                id: obj.Subdivision_ID,
-                name: obj.Subdivision_Name,
-              }))
-            : []
-        } catch (error) {
-          captureException(error)
-          return []
-        }
-      },
+      transformResponse: transformBrandsResponse,
     }),
     getTopBrands: build.query({
       query: (isMan: boolean) => ({

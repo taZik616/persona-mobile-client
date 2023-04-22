@@ -27,82 +27,85 @@ import {Text} from '../ui/Text'
 
 interface HomeBrandsProps {
   onPressBrand?: (brand: any) => void
+  onPressSearch?: () => void
 }
 
 const emptyArr = ['', '', '', '', '', '']
 
-export const HomeBrands = memo(({onPressBrand}: HomeBrandsProps) => {
-  const {isMenSelected, onChangeGender, values} = useGender()
+export const HomeBrands = memo(
+  ({onPressBrand, onPressSearch}: HomeBrandsProps) => {
+    const {isMenSelected, onChangeGender, values} = useGender()
 
-  const allBrands = useGetBrandsBySexQuery(isMenSelected ? 'men' : 'women')
+    const allBrands = useGetBrandsBySexQuery(isMenSelected ? 'men' : 'women')
 
-  const listRef = useRef<SectionList>(null)
-  const topBrandsRef = useRef<any>(null)
+    const listRef = useRef<SectionList>(null)
+    const topBrandsRef = useRef<any>(null)
 
-  const handleScrollToLetter = useMemo(() => {
-    let prevId: number
+    const handleScrollToLetter = useMemo(() => {
+      let prevId: number
 
-    return (id: number) => () => {
-      if (prevId !== id) {
-        vibration.selection()
-        listRef.current?.scrollToLocation({
-          animated: false,
-          itemIndex: IS_IOS ? 1 : 0,
-          sectionIndex: id,
-          viewPosition: 0,
-        })
+      return (id: number) => () => {
+        if (prevId !== id) {
+          vibration.selection()
+          listRef.current?.scrollToLocation({
+            animated: false,
+            itemIndex: IS_IOS ? 1 : 0,
+            sectionIndex: id,
+            viewPosition: 0,
+          })
+        }
+        prevId = id
       }
-      prevId = id
-    }
-  }, [])
+    }, [])
 
-  return (
-    <>
-      <Header title="Бренды" />
-      <AlphabetVerticalSelector
-        data={allBrands.currentData}
-        onChangeLetter={handleScrollToLetter}
-      />
-      <SelectorTwoOptions
-        isSecondActive={isMenSelected}
-        onChange={onChangeGender}
-        values={values}
-      />
-      <Spacer height={8} />
-      <SectionList
-        ref={listRef}
-        removeClippedSubviews
-        refreshing={allBrands.isFetching && !!allBrands.currentData}
-        onRefresh={() => {
-          allBrands.refetch()
-          topBrandsRef.current.refetch()
-        }}
-        ListHeaderComponent={() => (
-          <TopBrandsHeader
-            ref={topBrandsRef}
-            onPressBrand={onPressBrand}
-            isMenSelected={isMenSelected}
-          />
-        )}
-        renderItem={({item}) => (
-          <BrandRowItem
-            onPress={onPressBrand}
-            isLoading={allBrands.isLoading}
-            item={item}
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-        renderSectionHeader={({section: {title}}) => (
-          <BrandGroupTitle title={title} />
-        )}
-        ListFooterComponent={() => <Spacer height={46} />}
-        keyExtractor={_brandKeyExtractor}
-        sections={allBrands.currentData ?? []}
-        // sections={[{title: 'A',data: [{id: '1',name: 'AGNONA',},],},{title: 'B',data: [{id: '1',name: 'BARRETT',}, {id: '2',name: 'BILLIONAIRE',},{id: '3',name: 'BOGNER',},],},]}
-      />
-    </>
-  )
-})
+    return (
+      <>
+        <Header title="Бренды" onPressSearch={onPressSearch} />
+        <AlphabetVerticalSelector
+          data={allBrands.currentData ?? []}
+          onChangeLetter={handleScrollToLetter}
+        />
+        <SelectorTwoOptions
+          isSecondActive={isMenSelected}
+          onChange={onChangeGender}
+          values={values}
+        />
+        <Spacer height={8} />
+        <SectionList
+          ref={listRef}
+          removeClippedSubviews
+          refreshing={allBrands.isFetching && !!allBrands.currentData}
+          onRefresh={() => {
+            allBrands.refetch()
+            topBrandsRef.current.refetch()
+          }}
+          ListHeaderComponent={() => (
+            <TopBrandsHeader
+              ref={topBrandsRef}
+              onPressBrand={onPressBrand}
+              isMenSelected={isMenSelected}
+            />
+          )}
+          renderItem={({item}) => (
+            <BrandRowItem
+              onPress={onPressBrand}
+              isLoading={allBrands.isLoading}
+              item={item}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+          renderSectionHeader={({section: {title}}) => (
+            <BrandGroupTitle title={title} />
+          )}
+          ListFooterComponent={() => <Spacer height={46} />}
+          keyExtractor={_brandKeyExtractor}
+          sections={allBrands.currentData ?? []}
+          // sections={[{title: 'A',data: [{id: '1',name: 'AGNONA',},],},{title: 'B',data: [{id: '1',name: 'BARRETT',}, {id: '2',name: 'BILLIONAIRE',},{id: '3',name: 'BOGNER',},],},]}
+        />
+      </>
+    )
+  },
+)
 
 interface TopBrandsHeaderProps {
   isMenSelected: boolean
@@ -152,7 +155,7 @@ const TopBrandsHeader = memo(
   }),
 )
 
-const _brandKeyExtractor = (item: any, id: number) => item.id ?? id
+const _brandKeyExtractor = (item: any, id: number) => item?.id ?? id
 
 const styles = StyleSheet.create({
   topBrandGap: {
