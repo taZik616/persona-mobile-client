@@ -70,6 +70,7 @@ export const BrandSearching = memo(
                 placeholderTextColor={Color.primaryGray}
                 selectionColor={Color.primary}
                 blurOnSubmit
+                autoFocus
                 placeholder="Укажите название бренда"
                 onChangeText={setSearchText}
                 style={styles.search}

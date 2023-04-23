@@ -3,12 +3,12 @@ import React from 'react'
 import {FlatList, StyleSheet} from 'react-native'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
-import {FashionListItem} from 'src/types'
+import {FashionListItemT} from 'src/types'
 
-import {FashionItem} from './FashionItem'
+import {FashionListItem} from './FashionListItem'
 
 interface RenderFashionListProps {
-  data: FashionListItem[]
+  data: FashionListItemT[]
   onPressItem?: (id: string) => void
 }
 
@@ -22,7 +22,9 @@ export const RenderFashionList = ({
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={[styles.categoryContainer, paddingHorizontal]}
-      renderItem={({item}) => <FashionItem onPress={onPressItem} {...item} />}
+      renderItem={({item}) => (
+        <FashionListItem onPress={onPressItem} {...item} />
+      )}
       keyExtractor={i => i.id}
       data={data}
     />

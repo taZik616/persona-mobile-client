@@ -44,14 +44,14 @@ export interface CategoriesList {
   items: CategoriesListItem[]
 }
 
-export type FashionListItem = {
+export type FashionListItemT = {
   id: string
   productIds: string[]
   imgUri: string
 }
 export interface FashionList {
   type: MainContentItemType.FashionList
-  items: FashionListItem[]
+  items: FashionListItemT[]
 }
 
 export type FashionSwiperItem = {

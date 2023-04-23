@@ -1,11 +1,21 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useRef} from 'react'
 
 import {HomeMain} from 'src/components/HomeMain'
-import {HomeMainContentItem, MainContentItemType} from 'src/types'
+import {
+  FashionItemsPresent,
+  FashionItemsPresentRefType,
+} from 'src/components/ui/FashionItemsPresent'
+import {useTypedNavigation} from 'src/hooks'
+import {
+  HomeMainContentItem,
+  MainContentItemType,
+  ProductPreviewInfo,
+} from 'src/types'
 import {MAIN_SLIDER_MEN, MAIN_SLIDER_WOMEN} from 'src/variables/fakeData'
 
 export const HomeMainScreen = () => {
-  // const {navigate} = useTypedNavigation()
+  const fashionPresentRef = useRef<FashionItemsPresentRefType>(null)
+  const {navigate} = useTypedNavigation()
 
   const onPressContentItem = useCallback(
     (item: HomeMainContentItem, id: string) => {
@@ -20,21 +30,33 @@ export const HomeMainScreen = () => {
           console.log('CategoriesList:', item, id)
           break
         case MainContentItemType.FashionList:
-          console.log('FashionList:', item, id)
-          break
         case MainContentItemType.FashionSwiper:
-          console.log('FashionSwiper:', item, id)
+          console.log('FashionList or FashionSwiper:', item, id)
+          const productIds = item.items.find(a => a.id === id)?.productIds
+          if (productIds) {
+            fashionPresentRef.current?.setProductIds(productIds)
+            fashionPresentRef.current?.open?.()
+          }
           break
       }
     },
     [],
   )
+  const onPressProduct = useCallback((item: ProductPreviewInfo) => {
+    navigate('productDetail', item)
+  }, [])
 
   return (
-    <HomeMain
-      menData={MAIN_SLIDER_MEN}
-      womenData={MAIN_SLIDER_WOMEN}
-      onPressContentItem={onPressContentItem}
-    />
+    <>
+      <HomeMain
+        menData={MAIN_SLIDER_MEN}
+        womenData={MAIN_SLIDER_WOMEN}
+        onPressContentItem={onPressContentItem}
+      />
+      <FashionItemsPresent
+        onPressProduct={onPressProduct}
+        ref={fashionPresentRef}
+      />
+    </>
   )
 }
