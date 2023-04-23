@@ -18,20 +18,13 @@ import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 
 interface HelpProps {
-  onPressBack?: () => void
   onPressDetail?: (key: helpDetailKey, title: string) => void
 }
 
-export const Help = ({onPressBack, onPressDetail}: HelpProps) => {
+export const Help = ({onPressDetail}: HelpProps) => {
   return (
     <>
-      <Header
-        title="Помощь"
-        onPressBack={onPressBack}
-        showBack
-        hideBasket
-        hideSearch
-      />
+      <Header title="Помощь" showBack hideBasket hideSearch />
       <ScrollView>
         <Spacer height={24} />
         <SafeLandscapeView safeArea style={styles.container}>

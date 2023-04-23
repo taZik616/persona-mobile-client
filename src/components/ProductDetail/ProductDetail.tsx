@@ -16,13 +16,11 @@ import {Swiper} from '../ui/Swiper'
 import {Text} from '../ui/Text'
 import {ViewTogglerWHM} from '../ui/ViewToggler'
 interface ProductDetailProps extends ProductPreviewInfo {
-  onPressBack?: () => void
   onPressFastBuy?: () => void
   onPressAddToBasket?: () => void
 }
 
 export const ProductDetail = ({
-  onPressBack,
   onPressFastBuy,
   onPressAddToBasket,
   ...item
@@ -31,7 +29,7 @@ export const ProductDetail = ({
 
   return (
     <>
-      <Header showBack onPressBack={onPressBack} hideSearch />
+      <Header showBack hideSearch />
       <ScrollView>
         <Spacer height={16} />
         {largeImages && <Swiper type="big-image" images={largeImages} />}

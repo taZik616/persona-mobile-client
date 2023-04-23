@@ -13,7 +13,6 @@ interface HelpDetailProps {
   title: string
   isLoading: boolean
   isError?: boolean
-  onPressBack?: () => void
   onPressRetry?: () => void
   content?: string
 }
@@ -23,18 +22,11 @@ export const HelpDetail = ({
   content,
   isLoading,
   isError,
-  onPressBack,
   onPressRetry,
 }: HelpDetailProps) => {
   return (
     <>
-      <Header
-        title={title}
-        onPressBack={onPressBack}
-        showBack
-        hideBasket
-        hideSearch
-      />
+      <Header title={title} showBack hideBasket hideSearch />
       <ScrollView style={styles.flexOne}>
         <SafeLandscapeView style={styles.flexOne} safeArea>
           {isLoading ? (

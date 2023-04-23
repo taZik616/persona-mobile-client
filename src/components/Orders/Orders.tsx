@@ -10,7 +10,6 @@ import {OrderCard} from '../ui/OrderCard'
 import {Spacer} from '../ui/Spacer'
 
 interface OrdersProps {
-  onPressBack?: () => void
   onPressProductItem?: (productId: string) => void
   onPressOrder?: (orderId: string) => void
   orders?: OrderInfoInterface[]
@@ -22,17 +21,10 @@ export const Orders = ({
   onPressProductItem,
   orders,
   onPressOrder,
-  onPressBack,
 }: OrdersProps) => {
   return (
     <>
-      <Header
-        title="Ваши заказы"
-        onPressBack={onPressBack}
-        showBack
-        hideSearch
-        hideBasket
-      />
+      <Header title="Ваши заказы" showBack hideSearch hideBasket />
       <FlashList
         data={orders}
         estimatedItemSize={250}

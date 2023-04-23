@@ -14,13 +14,12 @@ import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
 
 interface ChangePasswordProps {
-  onPressBack?: () => void
   onPressRecovery?: () => void
   onSubmit?: () => void
 }
 
 export const ChangePassword = forwardRef<any, ChangePasswordProps>(
-  ({onPressBack, onPressRecovery, onSubmit}, ref) => {
+  ({onPressRecovery, onSubmit}, ref) => {
     const {
       formState: {isValid},
     } = useFormContext()
@@ -31,13 +30,7 @@ export const ChangePassword = forwardRef<any, ChangePasswordProps>(
 
     return (
       <>
-        <Header
-          title="Изменение пароля"
-          onPressBack={onPressBack}
-          showBack
-          hideSearch
-          hideBasket
-        />
+        <Header title="Изменение пароля" showBack hideSearch hideBasket />
         <KeyboardSafeArea>
           <ScrollView>
             <SafeLandscapeView safeArea>

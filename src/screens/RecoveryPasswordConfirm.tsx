@@ -31,7 +31,7 @@ export const RecoveryPasswordConfirmScreen = () => {
 
   const {telephone} = useTypedRoute<'recoveryPasswordConfirm'>().params || {}
 
-  const {goBack, popToTop} = useTypedNavigation()
+  const {popToTop} = useTypedNavigation()
 
   const onSubmitForm = useMemo(
     () =>
@@ -72,7 +72,6 @@ export const RecoveryPasswordConfirmScreen = () => {
       <RecoveryPasswordConfirm
         ref={recPassConfirmRef}
         onSubmit={onSubmitForm}
-        onPressBack={goBack}
       />
     </FormProvider>
   )

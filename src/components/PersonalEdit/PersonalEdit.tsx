@@ -14,11 +14,10 @@ import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
 
 interface PersonalEditProps {
-  onPressBack?: () => void
   onSubmit?: () => void
 }
 
-export const PersonalEdit = ({onPressBack, onSubmit}: PersonalEditProps) => {
+export const PersonalEdit = ({onSubmit}: PersonalEditProps) => {
   const {
     formState: {isValid},
   } = useFormContext()
@@ -26,7 +25,6 @@ export const PersonalEdit = ({onPressBack, onSubmit}: PersonalEditProps) => {
   return (
     <>
       <Header
-        onPressBack={onPressBack}
         showBack
         rightTextDisabled={!isValid}
         title="Профиль"

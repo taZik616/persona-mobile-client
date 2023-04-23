@@ -15,26 +15,18 @@ interface SubscriptionsProps {
   onChangeEmailSub?: (enabled: boolean) => void
   onChangeSmsSub?: (enabled: boolean) => void
   onChangePushSub?: (enabled: boolean) => void
-  onPressBack?: () => void
 }
 
 export const Subscriptions = ({
   onChangeEmailSub,
   onChangeSmsSub,
   onChangePushSub,
-  onPressBack,
 }: SubscriptionsProps) => {
   const subs = useTypedSelector(selectSubs)
 
   return (
     <>
-      <Header
-        title="Подписки"
-        onPressBack={onPressBack}
-        showBack
-        hideSearch
-        hideBasket
-      />
+      <Header title="Подписки" showBack hideSearch hideBasket />
       <ScrollView bounces={false}>
         <SafeLandscapeView safeArea>
           <Spacer height={20} />

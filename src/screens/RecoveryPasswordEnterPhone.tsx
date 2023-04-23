@@ -44,7 +44,7 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
     },
   })
 
-  const {goBack, navigate} = useTypedNavigation()
+  const {navigate} = useTypedNavigation()
 
   const onSubmitForm = useMemo(
     () =>
@@ -118,7 +118,6 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
           ref={enterPhoneRef}
           disablePhoneInput={!!phoneNumber}
           onSubmit={onSubmitForm}
-          onPressBack={goBack}
         />
       </FormProvider>
       <OTPModal

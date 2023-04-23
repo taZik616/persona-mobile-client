@@ -66,7 +66,6 @@ export const ChangePasswordScreen = () => {
     <FormProvider {...form}>
       <ChangePassword
         ref={changePasswordRef}
-        onPressBack={goBack}
         onSubmit={onSubmit}
         onPressRecovery={onPressRecoverPassword}
       />

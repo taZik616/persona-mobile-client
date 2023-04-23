@@ -26,104 +26,100 @@ import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
 
 interface LoyaltyCardAddProps {
-  onPressBack?: () => void
   onPressScanCard?: () => void
   onNext?: (cardNumber: string) => void
 }
 
 export const LoyaltyCardAdd = memo(
-  forwardRef(
-    ({onPressBack, onPressScanCard, onNext}: LoyaltyCardAddProps, ref: any) => {
-      const [canGoNext, setCanGoNext] = useState(false)
-      const [error, setError] = useState('')
-      const [warning, setWarning] = useState('')
-      const cardNumber = useRef('')
-      const cardInputRef = useRef<any>(null)
+  forwardRef(({onPressScanCard, onNext}: LoyaltyCardAddProps, ref: any) => {
+    const [canGoNext, setCanGoNext] = useState(false)
+    const [error, setError] = useState('')
+    const [warning, setWarning] = useState('')
+    const cardNumber = useRef('')
+    const cardInputRef = useRef<any>(null)
 
-      useImperativeHandle(ref, () => ({
-        setError: (err: string) => {
-          setError(err)
-          clearWarning()
-        },
-        setWarning: (err: string) => {
-          setWarning(err)
-          clearError()
-        },
-        setValue: cardInputRef.current?.setValue,
-      }))
+    useImperativeHandle(ref, () => ({
+      setError: (err: string) => {
+        setError(err)
+        clearWarning()
+      },
+      setWarning: (err: string) => {
+        setWarning(err)
+        clearError()
+      },
+      setValue: cardInputRef.current?.setValue,
+    }))
 
-      const clearWarning = useCallback(() => {
-        warning && setWarning('')
-      }, [warning])
+    const clearWarning = useCallback(() => {
+      warning && setWarning('')
+    }, [warning])
 
-      const clearError = useCallback(() => {
-        error && setError('')
-      }, [error])
+    const clearError = useCallback(() => {
+      error && setError('')
+    }, [error])
 
-      const onSubmit = useCallback(() => {
-        onNext?.(cardNumber.current)
-      }, [])
+    const onSubmit = useCallback(() => {
+      onNext?.(cardNumber.current)
+    }, [])
 
-      const onChangeCardNumber = (cardNum: string) => {
-        cardNumber.current = cardNum
-        if (cardNum.length === 16) {
-          !canGoNext && setCanGoNext(true)
-        } else {
-          canGoNext && setCanGoNext(false)
-        }
+    const onChangeCardNumber = (cardNum: string) => {
+      cardNumber.current = cardNum
+      if (cardNum.length === 16) {
+        !canGoNext && setCanGoNext(true)
+      } else {
+        canGoNext && setCanGoNext(false)
       }
+    }
 
-      return (
-        <>
-          <Header
-            title={'Карта лояльности'}
-            rightText={'Далее'}
-            onPressRightText={onSubmit}
-            rightTextDisabled={!canGoNext}
-            showBack
-            onPressBack={onPressBack}
-          />
-          <KeyboardSafeArea>
-            <ScrollView>
-              <SafeLandscapeView safeArea>
-                <Spacer height={20} />
-                <View style={styles.cardContainer}>
-                  <CardInput
-                    ref={cardInputRef}
-                    clearError={clearError}
-                    clearWarning={clearWarning}
-                    onChange={onChangeCardNumber}
-                    onPressPhoto={onPressScanCard}
-                  />
-                </View>
-                <Text maxWidth={500} center color={Color.primaryGray} gp1>
-                  Телефонный звонок для подтверждения статуса карты будет
-                  отправлен на номер телефона, указанный при регистрации
-                </Text>
-                {warning && (
-                  <>
-                    <Spacer height={12} />
-                    <Text gp1 maxWidth={500} center color={Color.textYellow1}>
-                      {warning}
-                    </Text>
-                  </>
-                )}
-                {error && (
-                  <>
-                    <Spacer height={12} />
-                    <Text gp1 maxWidth={500} center color={Color.textRed1}>
-                      {error}
-                    </Text>
-                  </>
-                )}
-                <Spacer height={30} />
-              </SafeLandscapeView>
-            </ScrollView>
-          </KeyboardSafeArea>
-        </>
-      )
-    },
-  ),
+    return (
+      <>
+        <Header
+          title="Карта лояльности"
+          rightText="Далее"
+          onPressRightText={onSubmit}
+          rightTextDisabled={!canGoNext}
+          showBack
+        />
+        <KeyboardSafeArea>
+          <ScrollView>
+            <SafeLandscapeView safeArea>
+              <Spacer height={20} />
+              <View style={styles.cardContainer}>
+                <CardInput
+                  ref={cardInputRef}
+                  clearError={clearError}
+                  clearWarning={clearWarning}
+                  onChange={onChangeCardNumber}
+                  onPressPhoto={onPressScanCard}
+                />
+              </View>
+              <Text maxWidth={500} center color={Color.primaryGray} gp1>
+                Телефонный звонок для подтверждения статуса карты будет
+                отправлен на номер телефона, указанный при регистрации
+              </Text>
+              {warning && (
+                <>
+                  <Spacer height={12} />
+                  <Text gp1 maxWidth={500} center color={Color.textYellow1}>
+                    {warning}
+                  </Text>
+                </>
+              )}
+              {error && (
+                <>
+                  <Spacer height={12} />
+                  <Text gp1 maxWidth={500} center color={Color.textRed1}>
+                    {error}
+                  </Text>
+                </>
+              )}
+              <Spacer height={30} />
+            </SafeLandscapeView>
+          </ScrollView>
+        </KeyboardSafeArea>
+      </>
+    )
+  }),
 )
 
 interface CardInputProps {

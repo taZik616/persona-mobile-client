@@ -13,12 +13,11 @@ import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
 
 interface RecPassConfirmProps {
-  onPressBack?: () => void
   onSubmit?: () => void
 }
 
 export const RecoveryPasswordConfirm = forwardRef<any, RecPassConfirmProps>(
-  ({onPressBack, onSubmit}, ref) => {
+  ({onSubmit}, ref) => {
     const {
       formState: {isValid},
     } = useFormContext()
@@ -31,7 +30,6 @@ export const RecoveryPasswordConfirm = forwardRef<any, RecPassConfirmProps>(
       <>
         <Header
           title="Восстановление пароля"
-          onPressBack={onPressBack}
           showBack
           rightText="Сменить"
           rightTextDisabled={!isValid}

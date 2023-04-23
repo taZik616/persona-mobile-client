@@ -15,12 +15,10 @@ import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
 
 interface PersonalProps {
-  onPressBack?: () => void
   onPressChangeInfo?: () => void
   onPressChangePassword?: () => void
 }
 export const Personal = ({
-  onPressBack,
   onPressChangePassword,
   onPressChangeInfo,
 }: PersonalProps) => {
@@ -30,7 +28,6 @@ export const Personal = ({
   return (
     <>
       <Header
-        onPressBack={onPressBack}
         showBack
         title="Профиль"
         rightText="Сменить"

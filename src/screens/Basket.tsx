@@ -5,7 +5,7 @@ import {useTypedNavigation} from 'src/hooks'
 import {ProductPreviewInfo} from 'src/types'
 
 export const BasketScreen = () => {
-  const {goBack, navigate} = useTypedNavigation()
+  const {navigate} = useTypedNavigation()
   // const dispatch = useTypedDispatch()
 
   const onPressBasketItem = (item: ProductPreviewInfo) => {
@@ -20,7 +20,6 @@ export const BasketScreen = () => {
     <Basket
       onChangeSelect={onChangeSelect}
       onPressBasketItem={onPressBasketItem}
-      onPressBack={goBack}
     />
   )
 }

@@ -7,7 +7,6 @@ import {LoyaltyCardAdd} from 'src/components/LoyaltyCardAdd'
 import {ActionsSheet} from 'src/components/ui/ActionsSheet'
 import {captureException} from 'src/helpers'
 import {findCardNumberInArray} from 'src/helpers/findCardNumberInArray'
-import {useTypedNavigation} from 'src/hooks'
 import {
   useCameraPermissions,
   useGalleryPermissions,
@@ -16,8 +15,6 @@ import {vibration} from 'src/services/vibration'
 import {imagePickerCardConfig} from 'src/variables'
 
 export const LoyaltyCardAddScreen = () => {
-  const {goBack} = useTypedNavigation()
-
   const {isAllowed: isAllowedCamera, requestCameraPermission} =
     useCameraPermissions()
   const {isAllowed: isAllowedGallery, requestGalleryPermission} =
@@ -81,11 +78,7 @@ export const LoyaltyCardAddScreen = () => {
 
   return (
     <>
-      <LoyaltyCardAdd
-        ref={componentRef}
-        onPressScanCard={onPressScanCard}
-        onPressBack={goBack}
-      />
+      <LoyaltyCardAdd ref={componentRef} onPressScanCard={onPressScanCard} />
       {isOpenAS && (
         <ActionsSheet
           firstOpt="Сделать фотографию"

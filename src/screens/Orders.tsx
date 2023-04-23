@@ -1,11 +1,9 @@
 import React from 'react'
 
 import {Orders} from 'src/components/Orders'
-import {useTypedNavigation} from 'src/hooks'
 import {OrderInfoInterface} from 'src/types'
 
 export const OrdersScreen = () => {
-  const {goBack} = useTypedNavigation()
   const onPressProductItem = (productId: string) => {
     console.log('onPressProductItem:', productId)
   }
@@ -14,7 +12,6 @@ export const OrdersScreen = () => {
   }
   return (
     <Orders
-      onPressBack={goBack}
       onPressOrder={onPressOrder}
       orders={fakeData}
       onPressProductItem={onPressProductItem}

@@ -4,7 +4,7 @@ import {Personal} from 'src/components/Personal'
 import {useTypedNavigation} from 'src/hooks'
 
 export const PersonalScreen = () => {
-  const {goBack, navigate} = useTypedNavigation()
+  const {navigate} = useTypedNavigation()
 
   const onPressChangeInfo = () => {
     navigate('personalEdit')
@@ -16,7 +16,6 @@ export const PersonalScreen = () => {
   return (
     <Personal
       onPressChangePassword={onPressChangePassword}
-      onPressBack={goBack}
       onPressChangeInfo={onPressChangeInfo}
     />
   )

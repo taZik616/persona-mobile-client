@@ -50,11 +50,7 @@ export const ProductDetailScreen = () => {
   if (!item) return <></>
   return (
     <>
-      <ProductDetail
-        onPressAddToBasket={onPressAddToBasket}
-        onPressBack={goBack}
-        {...item}
-      />
+      <ProductDetail onPressAddToBasket={onPressAddToBasket} {...item} />
       <AddedToBasket
         onPressContinue={onPressContinue}
         onPressGoBasket={onPressGoBasket}

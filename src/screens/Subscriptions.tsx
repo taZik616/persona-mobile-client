@@ -1,12 +1,10 @@
 import React from 'react'
 
 import {Subscriptions} from 'src/components/Subscriptions'
-import {useTypedNavigation} from 'src/hooks'
 import {useTypedDispatch} from 'src/store'
 import {setSubEmail, setSubPush, setSubSms} from 'src/store/profileSlice'
 
 export const SubscriptionsScreen = () => {
-  const {goBack} = useTypedNavigation()
   const dispatch = useTypedDispatch()
 
   const onChangeEmailSub = (isEnabled: boolean) => {
@@ -24,7 +22,6 @@ export const SubscriptionsScreen = () => {
       onChangeEmailSub={onChangeEmailSub}
       onChangeSmsSub={onChangeSmsSub}
       onChangePushSub={onChangePushSub}
-      onPressBack={goBack}
     />
   )
 }

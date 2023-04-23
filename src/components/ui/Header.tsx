@@ -48,13 +48,16 @@ export const Header = memo(
     rightTextDisabled,
     onPressRightText,
   }: HeaderProps) => {
+    const {goBack} = useTypedNavigation()
     return (
       <View style={styles.container}>
         <Spacer withTopInsets={!withoutSafeAreaTop} height={0} />
         <View style={styles.rowContainer}>
           <View style={styles.flexOne}>
             {showBack && (
-              <TouchableOpacity onPress={onPressBack} activeOpacity={0.5}>
+              <TouchableOpacity
+                onPress={onPressBack ? onPressBack : goBack}
+                activeOpacity={0.5}>
                 <BackArrowIcon />
               </TouchableOpacity>
             )}

@@ -15,7 +15,6 @@ import {Spacer} from '../ui/Spacer'
 import {Text} from '../ui/Text'
 
 interface RecoveryPasswordEnterPhoneProps {
-  onPressBack?: () => void
   onSubmit?: () => void
   disablePhoneInput?: boolean
 }
@@ -23,7 +22,7 @@ interface RecoveryPasswordEnterPhoneProps {
 export const RecoveryPasswordEnterPhone = forwardRef<
   any,
   RecoveryPasswordEnterPhoneProps
->(({onPressBack, onSubmit, disablePhoneInput}, ref) => {
+>(({onSubmit, disablePhoneInput}, ref) => {
   const {
     formState: {isValid},
   } = useFormContext()
@@ -35,13 +34,7 @@ export const RecoveryPasswordEnterPhone = forwardRef<
 
   return (
     <>
-      <Header
-        title="Восстановление пароля"
-        onPressBack={onPressBack}
-        showBack
-        hideSearch
-        hideBasket
-      />
+      <Header title="Восстановление пароля" showBack hideSearch hideBasket />
       <KeyboardSafeArea>
         <ScrollView>
           <SafeLandscapeView safeArea>

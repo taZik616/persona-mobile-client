@@ -5,7 +5,7 @@ import {useTypedNavigation} from 'src/hooks'
 import {helpDetailKey} from 'src/types'
 
 export const HelpScreen = () => {
-  const {goBack, navigate} = useTypedNavigation()
+  const {navigate} = useTypedNavigation()
 
   const onPressDetail = (key: helpDetailKey, title: string) => {
     navigate('helpDetail', {
@@ -14,5 +14,5 @@ export const HelpScreen = () => {
     })
   }
 
-  return <Help onPressDetail={onPressDetail} onPressBack={goBack} />
+  return <Help onPressDetail={onPressDetail} />
 }

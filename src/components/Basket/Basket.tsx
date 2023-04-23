@@ -15,16 +15,11 @@ import {Spacer} from '../ui/Spacer'
 import {ViewTogglerWHM} from '../ui/ViewToggler'
 
 interface BasketProps {
-  onPressBack?: () => void
   onPressBasketItem?: (item: ProductPreviewInfo) => void
   onChangeSelect?: (item: ProductPreviewInfo, isSelected: boolean) => void
 }
 
-export const Basket = ({
-  onPressBasketItem,
-  onChangeSelect,
-  onPressBack,
-}: BasketProps) => {
+export const Basket = ({onPressBasketItem, onChangeSelect}: BasketProps) => {
   const [filter, setFilter] = useState(options[0].value)
   const items = useTypedSelector(selectBasket)
 
@@ -33,13 +28,7 @@ export const Basket = ({
   const curData = items?.filter(it => it.isAvailable === isAvailable)
   return (
     <>
-      <Header
-        title="Корзина"
-        onPressBack={onPressBack}
-        showBack
-        hideSearch
-        hideBasket
-      />
+      <Header title="Корзина" showBack hideSearch hideBasket />
       <FlashList
         data={curData}
         estimatedItemSize={230}

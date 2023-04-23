@@ -72,7 +72,7 @@ export const PersonalEditScreen = () => {
 
   return (
     <FormProvider {...form}>
-      <PersonalEdit onPressBack={goBack} onSubmit={onSubmit} />
+      <PersonalEdit onSubmit={onSubmit} />
     </FormProvider>
   )
 }
