@@ -16,6 +16,7 @@ import Animated, {
 
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
+import {IS_IOS} from 'src/variables'
 
 import {Text} from './Text'
 
@@ -67,63 +68,72 @@ export const WheelPicker = memo(
         vibration.selection()
       }
 
+      const gesture = Gesture.Pan()
+        .onStart(() => {
+          prevY.value = y.value - ITEM_HEIGHT * COUNT_PER_SIDE
+        })
+        .onChange(event => {
+          y.value = Math.max(
+            Math.min(
+              event.translationY + ITEM_HEIGHT * COUNT_PER_SIDE + prevY.value,
+              minScroll,
+            ),
+            maxScroll,
+          )
+
+          const id = Math.round(-y.value / ITEM_HEIGHT) + COUNT_PER_SIDE
+          if (choiceId.value !== id) {
+            choiceId.value = id
+            runOnJS(handleSelect)(id)
+          }
+        })
+        .onEnd(e => {
+          y.value = withDecay(
+            {
+              velocity: e.velocityY,
+              clamp: [maxScroll, minScroll],
+            },
+            () => {
+              const id = Math.round(-y.value / ITEM_HEIGHT) + COUNT_PER_SIDE
+              y.value = withTiming((id - COUNT_PER_SIDE) * -ITEM_HEIGHT)
+              if (choiceId.value !== id) {
+                choiceId.value = id
+                runOnJS(handleSelect)(id)
+              }
+            },
+          )
+        })
+
       return (
         <View style={styles.container}>
-          <MaskedView
-            style={styles.mask}
-            maskElement={
-              <Animated.View style={animStyle}>
-                {values.map((v, i) => (
-                  <MaskElement value={v} anim={y} index={i} />
-                ))}
-              </Animated.View>
-            }>
-            <View style={styles.inactiveSelection} />
-            <View
-              style={{height: ITEM_HEIGHT, backgroundColor: Color.primaryBlack}}
-            />
-            <View style={styles.inactiveSelection} />
-          </MaskedView>
+          {IS_IOS ? (
+            <MaskedView
+              style={styles.mask}
+              maskElement={
+                <Animated.View style={animStyle}>
+                  {values.map((v, i) => (
+                    <MaskElement value={v} anim={y} index={i} />
+                  ))}
+                </Animated.View>
+              }>
+              <View style={styles.inactiveSelection} />
+              <View
+                style={{
+                  height: ITEM_HEIGHT,
+                  backgroundColor: Color.primaryBlack,
+                }}
+              />
+              <View style={styles.inactiveSelection} />
+            </MaskedView>
+          ) : (
+            <Animated.View style={animStyle}>
+              {values.map((v, i) => (
+                <MaskElement value={v} anim={y} index={i} />
+              ))}
+            </Animated.View>
+          )}
           <View style={styles.selectionLine} />
-          <GestureDetector
-            gesture={Gesture.Pan()
-              .onStart(() => {
-                prevY.value = y.value - ITEM_HEIGHT * COUNT_PER_SIDE
-              })
-              .onChange(event => {
-                y.value = Math.max(
-                  Math.min(
-                    event.translationY +
-                      ITEM_HEIGHT * COUNT_PER_SIDE +
-                      prevY.value,
-                    minScroll,
-                  ),
-                  maxScroll,
-                )
-
-                const id = Math.round(-y.value / ITEM_HEIGHT) + COUNT_PER_SIDE
-                if (choiceId.value !== id) {
-                  choiceId.value = id
-                  runOnJS(handleSelect)(id)
-                }
-              })
-              .onEnd(e => {
-                y.value = withDecay(
-                  {
-                    velocity: e.velocityY,
-                    clamp: [maxScroll, minScroll],
-                  },
-                  () => {
-                    const id =
-                      Math.round(-y.value / ITEM_HEIGHT) + COUNT_PER_SIDE
-                    y.value = withTiming((id - COUNT_PER_SIDE) * -ITEM_HEIGHT)
-                    if (choiceId.value !== id) {
-                      choiceId.value = id
-                      runOnJS(handleSelect)(id)
-                    }
-                  },
-                )
-              })}>
+          <GestureDetector gesture={gesture}>
             <View style={[StyleSheet.absoluteFill, styles.gestureDetector]} />
           </GestureDetector>
         </View>
