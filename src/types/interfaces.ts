@@ -12,7 +12,7 @@ export interface OrderItemInterface {
   image: string
 }
 
-export interface CategoryInterface {
+export interface CategoryOrBrandInterface {
   id: string
   uri: string
   name?: string
@@ -50,4 +50,11 @@ export interface ProductDetailInfo {
   brandImage?: string
   collection?: string
   brandName?: string
+}
+
+export interface CategoryI {
+  image: string
+  title: string
+  categoryId: string
+  fullTitle: string
 }

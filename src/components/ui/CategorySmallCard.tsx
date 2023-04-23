@@ -2,13 +2,13 @@ import React from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
 
-import {CategoryInterface} from 'src/types'
+import {CategoryOrBrandInterface} from 'src/types'
 
 import {Spacer} from './Spacer'
 import {Text} from './Text'
 
-interface CategorySmallCardProps extends CategoryInterface {
-  onPress?: (item: CategoryInterface) => void
+interface CategorySmallCardProps extends CategoryOrBrandInterface {
+  onPress?: (item: CategoryOrBrandInterface) => void
 }
 
 export const CategorySmallCard = ({

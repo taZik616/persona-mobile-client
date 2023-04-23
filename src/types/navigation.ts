@@ -3,13 +3,11 @@ import {NavigatorScreenParams} from '@react-navigation/native'
 import {ProductPreviewInfo} from './interfaces'
 import {helpDetailKey} from './utils'
 
-// NAVIGATION
-
 export type TabParamList = {
   homeMain: undefined
   homeNewProducts: undefined
   homeBrands: undefined
-  homeCatalog: undefined
+  homeCatalog: NavigatorScreenParams<CatalogStackParamList>
   homeFavourites: undefined
   homeProfile: undefined
 }
@@ -34,4 +32,16 @@ export type RootStackParamList = {
   subscriptions: undefined
   basket: undefined
   sizeChart: undefined
+}
+
+export type CatalogStackParamList = {
+  categories: undefined
+  subcategories: {
+    categoryId: string
+    headerTitle: string
+  }
+  products: {
+    categoryId: string
+    subcategoryId: string
+  }
 }

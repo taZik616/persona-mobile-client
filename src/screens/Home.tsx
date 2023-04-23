@@ -10,7 +10,7 @@ import {TabBar} from 'src/components/ui/TabBar'
 import {TabParamList} from 'src/types'
 
 import {HomeBrandsScreen} from './HomeBrands'
-import {HomeCatalogScreen} from './HomeCatalog'
+import {HomeCatalogStack} from './HomeCatalogStack'
 import {HomeFavouritesScreen} from './HomeFavourites'
 import {HomeMainScreen} from './HomeMain'
 import {HomeNewProductsScreen} from './HomeNewProducts'
@@ -52,7 +52,7 @@ export const Home = () => {
       />
       <Tab.Screen
         name="homeCatalog"
-        component={HomeCatalogScreen}
+        component={HomeCatalogStack}
         options={screenOptions}
       />
       <Tab.Screen
