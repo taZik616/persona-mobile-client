@@ -9,7 +9,7 @@ export const BasketScreen = () => {
   // const dispatch = useTypedDispatch()
 
   const onPressBasketItem = (item: ProductPreviewInfo) => {
-    navigate('productDetail', item)
+    navigate('productDetail', {item, productId: item.productId})
   }
 
   const onChangeSelect = (item: ProductPreviewInfo, isSelected: boolean) => {

@@ -14,7 +14,7 @@ export const HomeProfileScreen = () => {
   const onPressOrders = () => navigate('orders')
   const onPressSubscription = () => navigate('subscriptions')
   const onPressRecentlyItem = (item: ProductPreviewInfo) =>
-    navigate('productDetail', item)
+    navigate('productDetail', {item, productId: item.productId})
 
   return (
     <HomeProfile

@@ -52,6 +52,7 @@ export const Img = memo<ImgT>(
 const styles = StyleSheet.create({
   img: {
     overflow: 'hidden',
+    maxWidth: '100%',
   },
   mainBlock: {
     width: '100%',

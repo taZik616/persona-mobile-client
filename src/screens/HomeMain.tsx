@@ -43,7 +43,7 @@ export const HomeMainScreen = () => {
     [],
   )
   const onPressProduct = useCallback((item: ProductPreviewInfo) => {
-    navigate('productDetail', item)
+    navigate('productDetail', {item, productId: item.productId})
   }, [])
 
   return (

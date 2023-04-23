@@ -70,8 +70,6 @@ const topInsets = initialWindowMetrics?.insets.top ?? 0
 const bottomInsets = initialWindowMetrics?.insets.bottom ?? 0
 const useBottomSheetHeight = () => {
   const {isPortrait} = useIsPortrait()
-  console.log('🚀 - SCREEN_H:', SCREEN_H)
-  console.log('🚀 - SCREEN_W:', SCREEN_W)
   if (isPortrait) {
     return SCREEN_H - (topInsets + 84 + bottomInsets + 43)
   } else {

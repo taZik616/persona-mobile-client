@@ -448,3 +448,20 @@ export const BasketEmptyIcon = ({
     </Svg>
   )
 }
+
+export const HangerIcon = ({
+  color = Color.primaryBlack,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+      <G stroke={color} strokeWidth={2} clipPath="url(#a)">
+        <Path d="M2.201 21c-.98 0-1.375-1.264-.569-1.822l9.23-6.39a2 2 0 0 1 2.276 0l9.23 6.39c.806.558.411 1.822-.57 1.822H2.202Z" />
+        <Path
+          strokeLinecap="round"
+          d="M12 12v-1.882c0-.379.213-.724.535-.925C13.398 8.656 15 7.462 15 6c0-2-1.475-3-3-3S9 4.5 9 6v.25"
+        />
+      </G>
+    </Svg>
+  )
+}

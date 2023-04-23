@@ -16,7 +16,7 @@ export type TabParamList = {
 
 export type RootStackParamList = {
   home?: NavigatorScreenParams<TabParamList>
-  productDetail: Partial<ProductPreviewInfo> & {productId: string}
+  productDetail: {productId: string; item?: ProductPreviewInfo}
   loyaltyCardAdd: undefined
   help: undefined
   helpDetail: {
@@ -33,4 +33,5 @@ export type RootStackParamList = {
   orders: undefined
   subscriptions: undefined
   basket: undefined
+  sizeChart: undefined
 }

@@ -3,18 +3,19 @@ import React from 'react'
 import {ScrollView, StyleSheet, View} from 'react-native'
 
 import {Color} from 'src/themes'
-import {ProductDetailInfo} from 'src/types'
+import {ProductPreviewInfo} from 'src/types'
 
 import {Button} from '../ui/Button'
 import {Header} from '../ui/Header'
-import {ShareIcon, ShopBagLightIcon, StarEmptyIcon} from '../ui/icons/common'
+import {ShopBagLightIcon} from '../ui/icons/common'
 import {Img} from '../ui/Img'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
+import {StarProduct} from '../ui/StarProduct'
 import {Swiper} from '../ui/Swiper'
 import {Text} from '../ui/Text'
 import {ViewTogglerWHM} from '../ui/ViewToggler'
-interface ProductDetailProps extends Partial<ProductDetailInfo> {
+interface ProductDetailProps extends ProductPreviewInfo {
   onPressBack?: () => void
   onPressFastBuy?: () => void
   onPressAddToBasket?: () => void
@@ -41,11 +42,11 @@ export const ProductDetail = ({
           }`}</Text>
           <Spacer height={8} />
           <View style={styles.row}>
-            <ShareIcon />
+            <Spacer width={24} />
             <View style={styles.headInfoContainer}>
               {brandImage && (
                 <>
-                  <Img maxHeight={45} uri={brandImage} />
+                  <Img maxHeight={35} uri={brandImage} />
                   <Spacer height={10} />
                 </>
               )}
@@ -53,7 +54,7 @@ export const ProductDetail = ({
               <Spacer height={6} />
               <Text gp4>{price}</Text>
             </View>
-            <StarEmptyIcon height={20} />
+            <StarProduct item={item} />
           </View>
           <Spacer height={16} />
         </SafeLandscapeView>
@@ -76,7 +77,7 @@ export const ProductDetail = ({
             </Button>
           </View>
         </SafeLandscapeView>
-        <Spacer withBottomInsets height={20} />
+        <Spacer withBottomInsets height={50} />
       </ScrollView>
     </>
   )

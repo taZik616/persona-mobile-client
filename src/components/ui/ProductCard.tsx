@@ -11,23 +11,16 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
-import {
-  selectBasketIds,
-  selectFavoritesIds,
-  useTypedDispatch,
-  useTypedSelector,
-} from 'src/store'
+import {selectBasketIds, useTypedDispatch, useTypedSelector} from 'src/store'
 import {addItemToBasket} from 'src/store/basketSlice'
-import {
-  addItemToFavorites,
-  removeItemFromFavorites,
-} from 'src/store/favoritesSlice'
+import {removeItemFromFavorites} from 'src/store/favoritesSlice'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
-import {CrossIcon, StarEmptyIcon, StarFilledIcon} from './icons/common'
+import {CrossIcon} from './icons/common'
 import {ImagesLooping} from './ImagesLooping'
 import {Spacer} from './Spacer'
+import {StarProduct} from './StarProduct'
 import {Text} from './Text'
 
 interface ProductCardProps extends ProductPreviewInfo {
@@ -63,7 +56,11 @@ export const ProductCard = ({
   return (
     <View style={[styles.container, !isAvailable && styles.disabledCard]}>
       <View style={{width}}>
-        {topRightIcon === 'star' ? <Star item={item} /> : <></>}
+        {topRightIcon === 'star' ? (
+          <StarProduct style={styles.topIconContainer} item={item} />
+        ) : (
+          <></>
+        )}
         {topRightIcon === 'cross' ? <Remove productId={productId} /> : <></>}
         <GestureDetector
           gesture={Gesture.Tap().onEnd(
@@ -153,27 +150,6 @@ const AddBasketButton = memo(({item, width}: AddBasketButtonProps) => {
       style={[styles.addToCartButton, {width}]}>
       <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
     </TouchableOpacity>
-  )
-})
-
-interface StarProps {
-  item: ProductPreviewInfo
-}
-
-const Star = memo(({item}: StarProps) => {
-  const dispatch = useTypedDispatch()
-  const {productId} = item
-  const inFavorites = useTypedSelector(selectFavoritesIds).includes(productId)
-  return (
-    <Pressable
-      onPress={() =>
-        inFavorites
-          ? dispatch(removeItemFromFavorites(productId))
-          : dispatch(addItemToFavorites(item))
-      }
-      style={styles.topIconContainer}>
-      {inFavorites ? <StarFilledIcon /> : <StarEmptyIcon />}
-    </Pressable>
   )
 })
 
