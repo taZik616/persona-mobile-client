@@ -15,11 +15,16 @@ import {Spacer} from '../ui/Spacer'
 import {ViewTogglerWHM} from '../ui/ViewToggler'
 
 interface BasketProps {
+  onPressPromoEntry?: () => void
   onPressBasketItem?: (item: ProductPreviewInfo) => void
   onChangeSelect?: (item: ProductPreviewInfo, isSelected: boolean) => void
 }
 
-export const Basket = ({onPressBasketItem, onChangeSelect}: BasketProps) => {
+export const Basket = ({
+  onPressBasketItem,
+  onPressPromoEntry,
+  onChangeSelect,
+}: BasketProps) => {
   const [filter, setFilter] = useState(options[0].value)
   const items = useTypedSelector(selectBasket)
 
@@ -49,7 +54,7 @@ export const Basket = ({onPressBasketItem, onChangeSelect}: BasketProps) => {
           curData.length ? (
             <SafeLandscapeView safeArea>
               <Spacer height={16} />
-              <Button gp5 variant="outline">
+              <Button gp5 onPress={onPressPromoEntry} variant="outline">
                 Добавить промокод
               </Button>
               <Spacer height={16} />

@@ -56,6 +56,8 @@ export type BottomSheetProps = {
   rightIcon?: JSX.Element
   onPressRight?: () => void
   fillMax?: boolean
+  hasBottomTabs?: boolean
+  keyboardInsets?: number
 }
 
 export type BottomSheetRefType = {
@@ -89,6 +91,8 @@ export const BottomSheet = memo(
         showClose,
         closeDistance,
         fillMax,
+        hasBottomTabs = true, // Фиксит клавиатуру
+        keyboardInsets,
       },
       ref,
     ) => {
@@ -244,7 +248,9 @@ export const BottomSheet = memo(
 
       const keyboard = useAnimatedKeyboard()
       const keyboardSafe = useAnimatedStyle(() => ({
-        height: Math.max(keyboard.height.value - 65, 0),
+        height: hasBottomTabs
+          ? Math.max(keyboard.height.value - 65, 0)
+          : Math.max(keyboard.height.value - (keyboardInsets ?? 0), 0),
       }))
 
       if (!isVisible) return <></>

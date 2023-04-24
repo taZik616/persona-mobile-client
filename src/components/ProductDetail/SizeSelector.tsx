@@ -77,11 +77,3 @@ export const SizeSelector = memo(
     },
   ),
 )
-// const start = 10
-// const values = new Array(start + 1)
-//   .fill(0)
-//   .map((_, i) => {
-//     const value = start - i
-//     return {value, label: `${value}`}
-//   })
-//   .reverse()

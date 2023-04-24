@@ -39,11 +39,13 @@ export const AddedToBasket = memo(
         return (
           <SafeLandscapeView>
             <Spacer height={16} />
-            <Button onPress={onPressContinue} variant="outline">
+            <Button onPress={onPressContinue} gp5 variant="outline">
               Продолжить покупки
             </Button>
             <Spacer height={16} />
-            <Button onPress={onPressGoBasket}>Перейти в корзину</Button>
+            <Button gp5 onPress={onPressGoBasket}>
+              Перейти в корзину
+            </Button>
             <Spacer withBottomInsets height={56} />
           </SafeLandscapeView>
         )

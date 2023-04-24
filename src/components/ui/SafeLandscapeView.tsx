@@ -8,6 +8,7 @@ interface SafeLandscapeViewProps extends ViewProps {
   safeArea?: boolean
   center?: boolean
   type?: 'margin' | 'padding'
+  maxWidth?: number
 }
 
 export const SafeLandscapeView = ({
@@ -15,6 +16,7 @@ export const SafeLandscapeView = ({
   safeArea,
   center,
   style,
+  maxWidth,
   ...viewProps
 }: SafeLandscapeViewProps) => {
   const {paddingHorizontal, marginHorizontal} = useHorizontalMargins({safeArea})
@@ -25,6 +27,7 @@ export const SafeLandscapeView = ({
         center && styles.center,
         style,
         type === 'margin' ? marginHorizontal : paddingHorizontal,
+        maxWidth ? {maxWidth, ...styles.maxWidth} : undefined,
       ]}
       {...viewProps}
     />
@@ -34,5 +37,9 @@ export const SafeLandscapeView = ({
 const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
+  },
+  maxWidth: {
+    alignSelf: 'center',
+    width: '100%',
   },
 })
