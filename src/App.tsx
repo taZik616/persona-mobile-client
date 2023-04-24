@@ -20,6 +20,7 @@ import {PersonalEditScreen} from './screens/PersonalEdit'
 import {ProductDetailScreen} from './screens/ProductDetail'
 import {RecoveryPasswordConfirmScreen} from './screens/RecoveryPasswordConfirm'
 import {RecoveryPasswordEnterPhoneScreen} from './screens/RecoveryPasswordEnterPhone'
+import {SizeChartScreen} from './screens/SizeChart'
 import {SubscriptionsScreen} from './screens/Subscriptions'
 import {Color} from './themes'
 
@@ -83,6 +84,7 @@ export const App = () => {
             options={{animation: 'slide_from_bottom'}}
             component={BasketScreen}
           />
+          <Stack.Screen name="sizeChart" component={SizeChartScreen} />
           {__DEV__ ? (
             // @ts-ignore
             <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />

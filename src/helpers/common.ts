@@ -58,3 +58,18 @@ export const getProductsCountString = (count: number) => {
 export const delay = (timeMS: number) => {
   return new Promise(resolve => setTimeout(() => resolve(''), timeMS))
 }
+
+export const longestStringInDoubleArr = (doubleArr: string[][]) => {
+  let longest = ''
+  for (let i = 0; i < doubleArr.length; i++) {
+    for (let j = 0; j < doubleArr[i].length; j++) {
+      if (
+        typeof doubleArr[i][j] === 'string' &&
+        doubleArr[i][j].length > longest.length
+      ) {
+        longest = doubleArr[i][j]
+      }
+    }
+  }
+  return longest
+}

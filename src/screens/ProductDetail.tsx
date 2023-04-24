@@ -39,6 +39,13 @@ export const ProductDetailScreen = () => {
     }
   }, [])
 
+  const onSelectSize = useCallback((size: val) => {
+    console.log('🚀 - size:', size.label, '- id:', size.value)
+
+    sizeSelectorRef.current?.close?.()
+    setTimeout(() => addedToBasketRef.current?.open?.(), 250)
+  }, [])
+
   //const productDetail = useGetProductByIdQuery(productId)
 
   //const mixedItem = Object.assign(item, productDetail.currentData?.[0] ?? {})
@@ -56,7 +63,23 @@ export const ProductDetailScreen = () => {
         onPressGoBasket={onPressGoBasket}
         ref={addedToBasketRef}
       />
-      <SizeSelector ref={sizeSelectorRef} />
+      <SizeSelector
+        values={sizeValues}
+        onPressContinue={onSelectSize}
+        ref={sizeSelectorRef}
+      />
     </>
   )
 }
+type val = {
+  value: number
+  label: string
+}
+const start = 10
+const sizeValues = new Array(start + 1)
+  .fill(0)
+  .map((_, i) => {
+    const value = start - i
+    return {value, label: `${value} size`}
+  })
+  .reverse()

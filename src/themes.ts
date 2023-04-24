@@ -22,6 +22,8 @@ export const Color = {
 
   inputBg: '#0000000A',
 
+  tablePrimary: '#F5F5F5',
+
   textBase1: '#090909',
   textBase2: '#4B4B4B',
 

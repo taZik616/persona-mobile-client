@@ -15,10 +15,14 @@ import {HangerIcon} from '../ui/icons/common'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
 import {WheelPicker, WheelPickerRefType} from '../ui/WheelPicker'
-
+type val = {
+  value: number
+  label: string
+}
 interface SizeSelectorProps {
+  values: val[]
   onPressGoBasket?: () => void
-  onPressContinue?: () => void
+  onPressContinue?: (item: val) => void
 }
 
 export interface SizeSelectorRefType {
@@ -28,7 +32,7 @@ export interface SizeSelectorRefType {
 
 export const SizeSelector = memo(
   forwardRef<SizeSelectorRefType, SizeSelectorProps>(
-    ({onPressGoBasket, onPressContinue}, ref) => {
+    ({onPressGoBasket, onPressContinue, values}, ref) => {
       const bottomSheetRef = useRef<BottomSheetRefType>(null)
       const wheelPickerRef = useRef<WheelPickerRefType>(null)
       const {navigate} = useTypedNavigation()
@@ -43,25 +47,15 @@ export const SizeSelector = memo(
       }))
 
       const content = useMemo(() => {
+        const handleContinue = () => {
+          onPressContinue?.(wheelPickerRef.current?.getSelected() ?? values[0])
+        }
         return (
           <SafeLandscapeView>
             <Spacer height={16} />
-            <WheelPicker
-              ref={wheelPickerRef}
-              onChange={val => {
-                console.log('onChange:', val)
-              }}
-              values={values}
-            />
+            <WheelPicker ref={wheelPickerRef} values={values} />
             <Spacer height={16} />
-            <Button
-              onPress={() =>
-                console.log(
-                  'getSelected:',
-                  wheelPickerRef.current?.getSelected(),
-                )
-              }
-              gp5>
+            <Button onPress={handleContinue} gp5>
               Продолжить
             </Button>
             <Spacer withBottomInsets height={56} />
@@ -83,11 +77,11 @@ export const SizeSelector = memo(
     },
   ),
 )
-const start = 10
-const values = new Array(start + 1)
-  .fill(0)
-  .map((_, i) => {
-    const value = start - i
-    return {value, label: `${value}`}
-  })
-  .reverse()
+// const start = 10
+// const values = new Array(start + 1)
+//   .fill(0)
+//   .map((_, i) => {
+//     const value = start - i
+//     return {value, label: `${value}`}
+//   })
+//   .reverse()
