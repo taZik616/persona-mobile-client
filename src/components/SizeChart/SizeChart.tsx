@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   title: {
     backgroundColor: Color.tablePrimary,
     zIndex: 2,
-    maxWidth: 125,
+    maxWidth: 150,
     textAlign: 'left',
   },
   row: {
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 16,
     color: Color.primaryBlack,
+    paddingVertical: 4,
   },
   centerText: {
     textAlign: 'center',
