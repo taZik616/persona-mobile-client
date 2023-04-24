@@ -5,6 +5,7 @@ import {Col, Rows, Table, TableWrapper} from 'react-native-table-component'
 
 import {longestStringInDoubleArr} from 'src/helpers'
 import {Color} from 'src/themes'
+import {IS_IOS} from 'src/variables'
 
 import {Header} from '../ui/Header'
 import {Spacer} from '../ui/Spacer'
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: 'GothamPro',
     fontSize: 13,
-    lineHeight: 16,
+    lineHeight: IS_IOS ? 15.4 : 16,
     color: Color.primaryBlack,
     paddingVertical: 4,
   },
