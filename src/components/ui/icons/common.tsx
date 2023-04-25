@@ -465,3 +465,16 @@ export const HangerIcon = ({
     </Svg>
   )
 }
+
+export const FilterIcon = ({color = Color.primaryGray, ...props}: SvgProps) => {
+  return (
+    <Svg width={18} height={18} viewBox="0 0 18 18" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 15.75V2.25l-4.5 4.5M12 2.25v13.5l4.5-4.5"
+      />
+    </Svg>
+  )
+}
