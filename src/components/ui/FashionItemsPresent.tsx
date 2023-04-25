@@ -11,6 +11,7 @@ import {FlatList, Image, Pressable, StyleSheet, View} from 'react-native'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {ProductPreviewInfo} from 'src/types'
+import {IS_ANDROID} from 'src/variables'
 
 import {Spacer} from './Spacer'
 
@@ -58,7 +59,10 @@ export const FashionItemsPresent = memo(
         )
       }, [data, paddingHorizontal])
       return (
-        <BottomSheet closeDistance={60} ref={bottomSheetRef}>
+        <BottomSheet
+          fixAndroidHorizontalList={IS_ANDROID}
+          closeDistance={60}
+          ref={bottomSheetRef}>
           {content}
         </BottomSheet>
       )

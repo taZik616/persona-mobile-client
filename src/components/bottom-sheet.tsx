@@ -58,6 +58,7 @@ export type BottomSheetProps = {
   fillMax?: boolean
   hasBottomTabs?: boolean
   keyboardInsets?: number
+  fixAndroidHorizontalList?: boolean
 }
 
 export type BottomSheetRefType = {
@@ -93,6 +94,7 @@ export const BottomSheet = memo(
         fillMax,
         hasBottomTabs = true, // Фиксит клавиатуру
         keyboardInsets,
+        fixAndroidHorizontalList,
       },
       ref,
     ) => {
@@ -295,8 +297,7 @@ export const BottomSheet = memo(
                 <Spacer height={10} />
               </SafeLandscapeView>
             </GestureDetector>
-            <GestureDetector
-              gesture={Gesture.Simultaneous(panGesture, scrollViewGesture)}>
+            {fixAndroidHorizontalList ? (
               <Animated.ScrollView
                 bounces={false}
                 showsVerticalScrollIndicator={false}
@@ -307,7 +308,21 @@ export const BottomSheet = memo(
                 {children}
                 <Animated.View style={keyboardSafe} />
               </Animated.ScrollView>
-            </GestureDetector>
+            ) : (
+              <GestureDetector
+                gesture={Gesture.Simultaneous(panGesture, scrollViewGesture)}>
+                <Animated.ScrollView
+                  bounces={false}
+                  showsVerticalScrollIndicator={false}
+                  scrollEventThrottle={1}
+                  onScrollBeginDrag={e => {
+                    scrollOffset.value = e.nativeEvent.contentOffset.y
+                  }}>
+                  {children}
+                  <Animated.View style={keyboardSafe} />
+                </Animated.ScrollView>
+              </GestureDetector>
+            )}
           </Animated.View>
         </View>
       )
