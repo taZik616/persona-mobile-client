@@ -13,8 +13,6 @@ import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {Color} from 'src/themes'
 import {CARD_ASPECT_RATIO, SKELETON_ANIM_CONF} from 'src/variables'
 
-import {SafeLandscapeView} from '../SafeLandscapeView'
-
 const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient)
 
 const LIS_W = 100
@@ -44,19 +42,21 @@ export const SwiperSkeleton = memo(({style}: SwiperSkeletonProps) => {
   }))
 
   return (
-    <View style={[styles.image, style]}>
-      <AnimatedGradient
-        locations={[0, 0.35, 0.65, 1]}
-        colors={[
-          Color.secondaryGray,
-          Color.white,
-          Color.white,
-          Color.secondaryGray,
-        ]}
-        style={[styles.listItemGrad, lineAnim]}
-        end={{x: 1, y: 0.5}}
-        start={{x: 0, y: 0.5}}
-      />
+    <View style={[styles.container, style]}>
+      <View style={[styles.image]}>
+        <AnimatedGradient
+          locations={[0, 0.35, 0.65, 1]}
+          colors={[
+            Color.secondaryGray,
+            Color.white,
+            Color.white,
+            Color.secondaryGray,
+          ]}
+          style={[styles.listItemGrad, lineAnim]}
+          end={{x: 1, y: 0.5}}
+          start={{x: 0, y: 0.5}}
+        />
+      </View>
     </View>
   )
 })
@@ -73,6 +73,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     columnGap: 16,
+  },
+  container: {
+    alignItems: 'center',
   },
   image: {
     width: '100%',
