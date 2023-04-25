@@ -30,6 +30,11 @@ export interface ProductPreviewInfo {
   brandImage?: string
   collection?: string
   brandName?: string
+  categoryName?: string
+}
+export interface ProductInBasketI extends ProductPreviewInfo {
+  size?: string
+  color?: string
 }
 
 export interface ProductDetailInfo {

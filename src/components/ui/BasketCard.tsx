@@ -143,7 +143,7 @@ const WrappedCheckBox = memo(({onChangeSelect, item}: any) => {
   return (
     <Checkmark
       value={isSelected}
-      onChange={isSelected => onChangeSelect?.(item, isSelected)}
+      onChange={val => onChangeSelect?.(item, val)}
     />
   )
 })

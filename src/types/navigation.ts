@@ -1,6 +1,6 @@
 import {NavigatorScreenParams} from '@react-navigation/native'
 
-import {ProductPreviewInfo} from './interfaces'
+import {ProductInBasketI, ProductPreviewInfo} from './interfaces'
 import {helpDetailKey} from './utils'
 
 export type TabParamList = {
@@ -33,6 +33,7 @@ export type RootStackParamList = {
   basket: undefined
   sizeChart: undefined
   buy: undefined
+  fastBuy: {product: ProductInBasketI}
 }
 
 export type CatalogStackParamList = {

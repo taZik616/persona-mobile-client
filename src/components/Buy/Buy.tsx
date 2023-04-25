@@ -2,6 +2,7 @@ import React from 'react'
 
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native'
 
+import {useScreenBlockPortrait} from 'src/hooks'
 import {Color} from 'src/themes'
 
 import {CostLine} from './CostLine'
@@ -20,6 +21,7 @@ interface BuyProps {
 }
 
 export const Buy = ({onPressAddCard, onSubmit}: BuyProps) => {
+  useScreenBlockPortrait()
   return (
     <>
       <Header title="Оформление" showBack hideSearch hideBasket />

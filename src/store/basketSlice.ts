@@ -1,10 +1,10 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 
 import {delay, getArrayOfField} from 'src/helpers'
-import {ProductPreviewInfo as ProductI} from 'src/types'
+import {ProductInBasketI} from 'src/types'
 
 interface BasketSliceState {
-  items: ProductI[]
+  items: ProductInBasketI[]
   counter: number
   // Для быстрого определения что товар находиться в корзине
   productIds: string[]
@@ -22,7 +22,7 @@ export const basketSlice = createSlice({
   name: 'basket',
   initialState,
   reducers: {
-    setItems: (state, action: PayloadAction<ProductI[]>) => {
+    setItems: (state, action: PayloadAction<ProductInBasketI[]>) => {
       const items = action.payload
       state.items = items
       state.counter = items.length
@@ -31,7 +31,7 @@ export const basketSlice = createSlice({
         items.some(b => b.productId === a),
       )
     },
-    addItem: (state, action: PayloadAction<ProductI>) => {
+    addItem: (state, action: PayloadAction<ProductInBasketI>) => {
       const newItem = action.payload
       if (
         state.items.findIndex(it => it.productId === newItem.productId) === -1
@@ -74,10 +74,11 @@ export const {
 /**
  * Добавить 1 элемент в корзину
  */
-export const addItemToBasket = (item: ProductI) => async (dispatch: any) => {
-  await delay(500)
-  dispatch(addItem(item))
-}
+export const addItemToBasket =
+  (item: ProductInBasketI) => async (dispatch: any) => {
+    await delay(500)
+    dispatch(addItem(item))
+  }
 /**
  * Загрузить с сервера корзину пользователя
  */
@@ -96,7 +97,7 @@ export const removeItemFromBasket =
 
 export const basketReducer = basketSlice.reducer
 
-const fakeData: ProductI[] = [
+const fakeData: ProductInBasketI[] = [
   {
     productId: '68567',
     price: 18780,

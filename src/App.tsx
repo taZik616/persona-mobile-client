@@ -12,6 +12,7 @@ import {BasketScreen} from './screens/Basket'
 import {BuyScreen} from './screens/Buy'
 import {ChangePasswordScreen} from './screens/ChangePassword'
 import {DEV_TestHapticScreen} from './screens/DEV_TestHaptic'
+import {FastBuyScreen} from './screens/FastBuy'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
@@ -87,6 +88,7 @@ export const App = () => {
           />
           <Stack.Screen name="sizeChart" component={SizeChartScreen} />
           <Stack.Screen name="buy" component={BuyScreen} />
+          <Stack.Screen name="fastBuy" component={FastBuyScreen} />
           {__DEV__ ? (
             // @ts-ignore
             <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />
