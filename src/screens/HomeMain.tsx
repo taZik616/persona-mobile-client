@@ -11,7 +11,6 @@ import {
   MainContentItemType,
   ProductPreviewInfo,
 } from 'src/types'
-import {MAIN_SLIDER_MEN, MAIN_SLIDER_WOMEN} from 'src/variables/fakeData'
 
 export const HomeMainScreen = () => {
   const fashionPresentRef = useRef<FashionItemsPresentRefType>(null)
@@ -48,11 +47,7 @@ export const HomeMainScreen = () => {
 
   return (
     <>
-      <HomeMain
-        menData={MAIN_SLIDER_MEN}
-        womenData={MAIN_SLIDER_WOMEN}
-        onPressContentItem={onPressContentItem}
-      />
+      <HomeMain onPressContentItem={onPressContentItem} />
       <FashionItemsPresent
         onPressProduct={onPressProduct}
         ref={fashionPresentRef}

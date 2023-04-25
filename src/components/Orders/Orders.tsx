@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 
@@ -15,31 +15,29 @@ interface OrdersProps {
   orders?: OrderInfoInterface[]
 }
 
-const OrderCardWHM = withHorizontalMargins(OrderCard)
+export const Orders = memo(
+  ({onPressProductItem, orders, onPressOrder}: OrdersProps) => {
+    return (
+      <>
+        <Header title="Ваши заказы" showBack hideSearch hideBasket />
+        <FlashList
+          data={orders}
+          estimatedItemSize={250}
+          keyExtractor={it => it.id}
+          ListHeaderComponent={() => <Spacer height={20} />}
+          ListFooterComponent={() => <Spacer withBottomInsets height={20} />}
+          ItemSeparatorComponent={() => <Spacer height={12} />}
+          renderItem={({item}) => (
+            <OrderCardWHM
+              onPress={onPressOrder}
+              onPressProductItem={onPressProductItem}
+              {...item}
+            />
+          )}
+        />
+      </>
+    )
+  },
+)
 
-export const Orders = ({
-  onPressProductItem,
-  orders,
-  onPressOrder,
-}: OrdersProps) => {
-  return (
-    <>
-      <Header title="Ваши заказы" showBack hideSearch hideBasket />
-      <FlashList
-        data={orders}
-        estimatedItemSize={250}
-        keyExtractor={it => it.id}
-        ListHeaderComponent={() => <Spacer height={20} />}
-        ListFooterComponent={() => <Spacer withBottomInsets height={20} />}
-        ItemSeparatorComponent={() => <Spacer height={12} />}
-        renderItem={({item}) => (
-          <OrderCardWHM
-            onPress={onPressOrder}
-            onPressProductItem={onPressProductItem}
-            {...item}
-          />
-        )}
-      />
-    </>
-  )
-}
+const OrderCardWHM = withHorizontalMargins(OrderCard)

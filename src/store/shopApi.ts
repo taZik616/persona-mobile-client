@@ -195,6 +195,15 @@ export const shopApi = createApi({
       }),
       transformResponse: (data: any) => data ?? '',
     }),
+    getMainContent: build.query({
+      query: (gender: 'men' | 'women') => ({
+        url: 'slider/',
+        method: 'PATCH',
+        body: {
+          gender,
+        },
+      }),
+    }),
   }),
 })
 
@@ -238,4 +247,5 @@ export const {
   useRecoveryPasswordSendCodeMutation,
   useRecoveryPasswordVerifyCodeMutation,
   useChangePasswordMutation,
+  useGetMainContentQuery,
 } = shopApi

@@ -47,7 +47,9 @@ export const CardWithImage = memo(
     )
   },
 )
+
 export const CardWithImageWHM = withHorizontalMargins(CardWithImage)
+
 const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',

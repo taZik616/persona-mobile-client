@@ -17,10 +17,11 @@ import {IS_ANDROID, SCREEN_H, SCREEN_W} from 'src/variables'
 
 import {CardWithImage} from './CardWithImage'
 import {Img} from './Img'
+import {SwiperSkeleton} from './Skeletons/Swiper'
 import {Spacer} from './Spacer'
 
 interface SwiperProps {
-  type?: 'card-image' | 'big-image'
+  type?: 'card-image' | 'big-image' | 'card-image-skeleton'
   images: string[]
   horizontalMargins?: number
   onPress?: (id: number) => void
@@ -94,6 +95,8 @@ export const Swiper = memo(
                   }}
                   style={{width: activeWidth}}
                 />
+              ) : type === 'card-image-skeleton' ? (
+                <SwiperSkeleton key={index} style={{width: activeWidth}} />
               ) : (
                 <Img
                   key={index}

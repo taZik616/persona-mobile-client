@@ -1,9 +1,9 @@
 export enum MainContentItemType {
-  BrandsSwiper,
-  BrandsList,
-  CategoriesList,
-  FashionList,
-  FashionSwiper,
+  BrandsSwiper = 'BrandsSwiper',
+  BrandsList = 'BrandsList',
+  CategoriesList = 'CategoriesList',
+  FashionList = 'FashionList',
+  FashionSwiper = 'FashionSwiper',
 }
 
 export interface HomeMainContentI {

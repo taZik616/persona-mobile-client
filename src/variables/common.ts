@@ -34,3 +34,8 @@ export const YEAR_IN_MS = 365 * 24 * 60 * 60 * 1000
 
 export const UNKNOWN_ERROR_MSG =
   'Неизвестная ошибка. Проверьте подключение к интернету'
+
+export const SKELETON_ANIM_CONF = {
+  duration: 1000,
+  easing: Easing.in(Easing.quad),
+}
