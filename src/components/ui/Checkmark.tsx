@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {memo, useState} from 'react'
 
 import {StyleProp, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native'
 import Svg, {Circle, G, Path, SvgProps} from 'react-native-svg'
@@ -7,30 +7,33 @@ import {Color} from 'src/themes'
 
 export type CheckmarkProps = {
   defaultValue?: boolean
+  value?: boolean
   style?: StyleProp<ViewStyle>
   onChange?: (isSelected: boolean) => void
 }
 
-export const Checkmark = ({
-  defaultValue = false,
-  onChange,
-  style,
-}: CheckmarkProps) => {
-  const [isFilled, setIsFilled] = useState(defaultValue)
+export const Checkmark = memo(
+  ({defaultValue = false, value, onChange, style}: CheckmarkProps) => {
+    const [isFilled, setIsFilled] = useState(defaultValue)
 
-  const onToggle = () => {
-    setIsFilled(pr => {
-      onChange?.(!pr)
-      return !pr
-    })
-  }
+    const onToggle = () => {
+      if (value == null) {
+        setIsFilled(pr => {
+          onChange?.(!pr)
+          return !pr
+        })
+      } else {
+        onChange?.(!value)
+      }
+    }
 
-  return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onToggle}>
-      {isFilled ? <CheckboxFilled /> : <CheckboxEmpty />}
-    </TouchableOpacity>
-  )
-}
+    return (
+      <TouchableOpacity style={[styles.container, style]} onPress={onToggle}>
+        {value ?? isFilled ? <CheckboxFilled /> : <CheckboxEmpty />}
+      </TouchableOpacity>
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   container: {

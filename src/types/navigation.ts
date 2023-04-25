@@ -32,6 +32,7 @@ export type RootStackParamList = {
   subscriptions: undefined
   basket: undefined
   sizeChart: undefined
+  buy: undefined
 }
 
 export type CatalogStackParamList = {

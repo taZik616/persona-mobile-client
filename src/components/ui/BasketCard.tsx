@@ -17,7 +17,12 @@ import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
-import {selectFavoritesIds, useTypedDispatch, useTypedSelector} from 'src/store'
+import {
+  selectBasketSelectedIds,
+  selectFavoritesIds,
+  useTypedDispatch,
+  useTypedSelector,
+} from 'src/store'
 import {removeItemFromBasket} from 'src/store/basketSlice'
 import {
   addItemToFavorites,
@@ -69,10 +74,7 @@ export const BasketCard = memo(
           <View style={styles.container}>
             <View style={styles.topRowContainer}>
               <View style={styles.checkbox}>
-                <Checkmark
-                  defaultValue={false}
-                  onChange={isSelected => onChangeSelect?.(item, isSelected)}
-                />
+                <WrappedCheckBox item={item} onChangeSelect={onChangeSelect} />
               </View>
               <GestureDetector
                 gesture={Gesture.Tap().onEnd(
@@ -133,6 +135,19 @@ export const BasketCard = memo(
     )
   },
 )
+
+const WrappedCheckBox = memo(({onChangeSelect, item}: any) => {
+  const isSelected = useTypedSelector(selectBasketSelectedIds).includes(
+    item.productId,
+  )
+  return (
+    <Checkmark
+      value={isSelected}
+      onChange={isSelected => onChangeSelect?.(item, isSelected)}
+    />
+  )
+})
+
 export const BasketCardWHM = withHorizontalMargins(BasketCard)
 
 interface LeftActionProps {

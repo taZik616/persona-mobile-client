@@ -64,7 +64,9 @@ export const Header = memo(
           </View>
           {title ? (
             <View style={styles.textContainer}>
-              <Text gp3>{title}</Text>
+              <Text center gp3>
+                {title}
+              </Text>
               {subtitle && (
                 <>
                   <Spacer height={6} />

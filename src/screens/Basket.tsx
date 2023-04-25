@@ -11,6 +11,7 @@ import {
 } from 'src/components/Basket'
 import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
+import {store} from 'src/store'
 import {ProductPreviewInfo} from 'src/types'
 
 const promoCodeSchema = yup
@@ -36,10 +37,6 @@ export const BasketScreen = () => {
     navigate('productDetail', {item, productId: item.productId})
   }
 
-  const onChangeSelect = (item: ProductPreviewInfo, isSelected: boolean) => {
-    console.log('🚀 - onChangeSelect:', item.productId, '-', isSelected)
-  }
-
   const onSubmitPromoCode = useMemo(
     () =>
       form.handleSubmit(
@@ -60,12 +57,17 @@ export const BasketScreen = () => {
   const onPressPromoEntry = useCallback(() => {
     promoCodeEntryRef.current?.open?.()
   }, [])
+  const onPressBuy = useCallback(() => {
+    const {selectedItemIds} = store.getState().basket
+    console.log('🚀 - selectedItemIds:', selectedItemIds)
+    navigate('buy')
+  }, [])
 
   return (
     <>
       <Basket
+        onPressBuy={onPressBuy}
         onPressPromoEntry={onPressPromoEntry}
-        onChangeSelect={onChangeSelect}
         onPressBasketItem={onPressBasketItem}
       />
       <FormProvider {...form}>

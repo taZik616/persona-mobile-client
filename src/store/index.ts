@@ -64,6 +64,8 @@ export const selectBasketCounter = (state: StoreStateType) =>
   state.basket.counter
 export const selectBasketIds = (state: StoreStateType) =>
   state.basket.productIds
+export const selectBasketSelectedIds = (state: StoreStateType) =>
+  state.basket.selectedItemIds
 
 export const selectFavorites = (state: StoreStateType) => state.favorites.items
 export const selectFavoritesCounter = (state: StoreStateType) =>

@@ -8,12 +8,14 @@ interface BasketSliceState {
   counter: number
   // Для быстрого определения что товар находиться в корзине
   productIds: string[]
+  selectedItemIds: string[]
 }
 
 const initialState: BasketSliceState = {
   items: [],
   counter: 0,
   productIds: [],
+  selectedItemIds: [],
 }
 
 export const basketSlice = createSlice({
@@ -25,6 +27,9 @@ export const basketSlice = createSlice({
       state.items = items
       state.counter = items.length
       state.productIds = getArrayOfField(items, 'productId')
+      state.selectedItemIds = state.selectedItemIds.filter(a =>
+        items.some(b => b.productId === a),
+      )
     },
     addItem: (state, action: PayloadAction<ProductI>) => {
       const newItem = action.payload
@@ -41,12 +46,31 @@ export const basketSlice = createSlice({
       state.items = state.items.filter(it => it.productId !== id)
       state.counter = state.items.length
       state.productIds = getArrayOfField(state.items, 'productId')
+      state.selectedItemIds = state.selectedItemIds.filter(a => a !== id)
+    },
+    selectItem: (state, action: PayloadAction<string>) => {
+      const productId = action.payload
+      if (!state.selectedItemIds.includes(productId)) {
+        state.selectedItemIds = [...state.selectedItemIds, productId]
+      }
+    },
+    deselectItem: (state, action: PayloadAction<string>) => {
+      const productId = action.payload
+      state.selectedItemIds = state.selectedItemIds.filter(a => a !== productId)
+    },
+    clearSelect: state => {
+      state.selectedItemIds = []
     },
   },
 })
 
 const {setItems, removeItem, addItem} = basketSlice.actions
 
+export const {
+  selectItem: selectBasketItem,
+  deselectItem: deselectBasketItem,
+  clearSelect: clearBasketSelect,
+} = basketSlice.actions
 /**
  * Добавить 1 элемент в корзину
  */
