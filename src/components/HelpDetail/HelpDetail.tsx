@@ -1,13 +1,15 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
+import Markdown from 'react-native-markdown-display'
+
+import {useMarkdownProps} from 'src/hooks'
 
 import {ConnectionError} from '../ui/ConnectionError'
 import {Header} from '../ui/Header'
 import {Loading} from '../ui/Loading'
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface HelpDetailProps {
   title: string
@@ -24,6 +26,7 @@ export const HelpDetail = ({
   isError,
   onPressRetry,
 }: HelpDetailProps) => {
+  const mdProps = useMarkdownProps(0.3)
   return (
     <>
       <Header title={title} showBack hideBasket hideSearch />
@@ -36,8 +39,8 @@ export const HelpDetail = ({
             </>
           ) : !isError ? (
             <>
-              <Text gp4>{content}</Text>
-              <Spacer withBottomInsets height={24} />
+              <Markdown {...mdProps}>{content}</Markdown>
+              <Spacer withBottomInsets height={48} />
             </>
           ) : (
             <ConnectionError onPressRetry={onPressRetry} />

@@ -1,6 +1,6 @@
+/* eslint-disable react-native/no-unused-styles */
 import React, {useMemo} from 'react'
 
-import {Theme, useTheme} from '@react-navigation/native'
 // @ts-ignore
 import blockEmbedPlugin from 'markdown-it-block-embed'
 import {StyleProp, StyleSheet, TextStyle} from 'react-native'
@@ -8,6 +8,7 @@ import {MarkdownIt, RenderRules} from 'react-native-markdown-display'
 import {ms, mvs, s, vs} from 'react-native-size-matters'
 
 import {Img} from 'src/components/ui/Img'
+import {Color} from 'src/themes'
 
 const markdownItInstance = MarkdownIt({typographer: true, breaks: true}).use(
   blockEmbedPlugin,
@@ -18,36 +19,20 @@ const markdownItInstance = MarkdownIt({typographer: true, breaks: true}).use(
 
 const factor = 0.3
 const bodyText = {
-  fontSize: ms(14, factor),
-  fontFamily: 'Montserrat',
-  lineHeight: ms(22, factor),
+  fontSize: ms(13, factor),
+  fontFamily: 'GothamPro',
+  lineHeight: ms(18, factor),
 }
 
-export const useMarkdownProps = (
-  YouTubeContainerWidthCoefficient?: number,
-  ImageWidthCoefficient?: number,
-) => {
-  const theme = useTheme()
+export const useMarkdownProps = (ImageWidthCoefficient?: number) => {
   const props = useMemo(
-    () =>
-      getMarkdownStyle(
-        theme,
-        YouTubeContainerWidthCoefficient,
-        ImageWidthCoefficient,
-      ),
-    [theme, YouTubeContainerWidthCoefficient],
+    () => getMarkdownStyle(ImageWidthCoefficient),
+    [ImageWidthCoefficient],
   )
   return {...props, markdownit: markdownItInstance}
 }
 
-export const getMarkdownStyle = (
-  theme: Theme,
-  YTwPercent?: number,
-  IMGwPercent?: number,
-) => {
-  const {
-    colors: {text, border, primary, card, background},
-  } = theme
+export const getMarkdownStyle = (IMGwPercent?: number) => {
   const paragraph: StyleProp<TextStyle> = {
     flexWrap: 'wrap',
     flexDirection: 'row',
@@ -55,7 +40,7 @@ export const getMarkdownStyle = (
     justifyContent: 'flex-start',
     width: '100%',
     ...bodyText,
-    color: text,
+    color: Color.primaryBlack,
 
     letterSpacing: ms(0.2, factor),
   }
@@ -64,56 +49,62 @@ export const getMarkdownStyle = (
     // Headings
     heading1: {
       flexDirection: 'row',
-      fontFamily: 'Montserrat',
-      fontSize: ms(28, factor),
+      fontFamily: 'CormorantGaramond-SemiBold',
+      fontSize: ms(20, factor),
       marginTop: vs(10),
       marginBottom: vs(10),
-      alignSelf: 'center',
-      color: text,
+      color: Color.primaryBlack,
     },
     heading2: {
       flexDirection: 'row',
-      fontFamily: 'Montserrat',
-      color: text,
-      fontSize: ms(22, factor),
+      fontFamily: 'GothamPro-Medium',
+      color: Color.primaryBlack,
+      fontSize: ms(15, factor),
+      lineHeight: ms(22, factor),
       marginTop: vs(8),
-      marginBottom: vs(8),
-      marginLeft: ms(8, factor),
+      marginBottom: vs(2),
     },
     heading3: {
       flexDirection: 'row',
-      fontFamily: 'Montserrat',
-      color: text,
-      fontSize: ms(20, factor),
+      fontFamily: 'GothamPro-Medium',
+      color: Color.primaryBlack,
+      fontSize: ms(13, factor),
+      lineHeight: ms(20, factor),
       marginTop: vs(6),
       marginBottom: vs(6),
-      marginLeft: ms(8, factor),
     },
     heading4: {
       flexDirection: 'row',
-      fontFamily: 'Montserrat',
-      color: text,
-      fontSize: ms(18, factor),
-      marginTop: vs(6),
-      marginBottom: vs(4),
-      marginLeft: ms(8, factor),
+      fontFamily: 'GothamPro',
+      color: Color.primaryBlack,
+      fontSize: ms(15, factor),
+      lineHeight: ms(22, factor),
+      alignSelf: 'center',
+      textAlign: 'center',
+      marginTop: vs(10),
+      marginBottom: vs(10),
     },
     heading5: {
       flexDirection: 'row',
-      fontFamily: 'Montserrat',
-      color: text,
-      fontSize: ms(16, factor),
-      marginTop: vs(4),
+      fontFamily: 'GothamPro-Medium',
+      color: Color.primaryBlack,
+      alignSelf: 'center',
+      textAlign: 'center',
+      fontSize: ms(15, factor),
+      lineHeight: ms(24, factor),
+      marginTop: vs(2),
       marginBottom: vs(2),
-      marginLeft: ms(8, factor),
     },
     heading6: {
       flexDirection: 'row',
-      fontFamily: 'Montserrat',
-      color: text,
-      fontSize: ms(14, factor),
-      marginTop: vs(4),
-      marginLeft: ms(8, factor),
+      fontFamily: 'GothamPro',
+      color: Color.primaryBlack,
+      alignSelf: 'center',
+      textAlign: 'center',
+      fontSize: ms(13, factor),
+      lineHeight: ms(20, factor),
+      marginTop: vs(2),
+      marginBottom: vs(2),
     },
 
     // Text Output
@@ -127,31 +118,37 @@ export const getMarkdownStyle = (
 
     // Emphasis
     strong: {
-      fontFamily: 'Montserrat',
+      fontFamily: 'GothamPro-Medium',
     },
     em: {
-      fontFamily: 'Montserrat',
-      fontStyle: 'italic',
+      fontFamily: 'GothamPro-Italic',
     },
     // не знаю что это
     s: {
       textDecorationLine: 'line-through',
     },
+    hr: {
+      height: 1,
+      width: '100%',
+      backgroundColor: Color.border,
+      marginTop: 24,
+      marginBottom: 12,
+    },
     // Links
     link: {
       textDecorationLine: 'underline',
-      color: primary,
-      fontFamily: 'Montserrat',
+      color: Color.primary,
+      fontFamily: 'GothamPro',
     },
     blocklink: {
       flex: 1,
-      borderColor: border,
+      borderColor: Color.border,
       borderBottomWidth: 1,
     },
     // Blockquotes
     blockquote: {
-      backgroundColor: background,
-      borderColor: border,
+      backgroundColor: Color.bg,
+      borderColor: Color.border,
       borderLeftWidth: s(1),
       paddingLeft: ms(10, factor),
       paddingBottom: vs(4),
@@ -159,17 +156,17 @@ export const getMarkdownStyle = (
     // Code
     code_inline: {
       // `code`
-      backgroundColor: card,
+      backgroundColor: Color.switchBg,
     },
     code_block: {
-      backgroundColor: card,
+      backgroundColor: Color.switchBg,
       paddingVertical: s(10),
       paddingHorizontal: s(5),
       borderRadius: s(5),
     },
     fence: {
       // ```code```
-      backgroundColor: card,
+      backgroundColor: Color.switchBg,
       paddingVertical: s(10),
       paddingHorizontal: s(5),
       borderRadius: s(10),
@@ -184,38 +181,44 @@ export const getMarkdownStyle = (
     image: {},
     // Tables
     table: {
+      color: Color.primaryBlack,
       borderWidth: 0,
-      borderColor: border,
-      borderRadius: s(5),
+      borderColor: Color.border,
     },
     thead: {
-      color: text,
-      fontFamily: 'Montserrat',
+      fontFamily: 'GothamPro',
+      color: Color.primaryBlack,
       fontSize: ms(15, factor),
+      lineHeight: ms(22, factor),
       flex: 1,
-      borderColor: border,
-      borderTopWidth: s(1),
+      borderColor: Color.transparent,
+      borderWidth: 0,
     },
     tbody: {
-      color: text,
-      ...bodyText,
+      fontFamily: 'GothamPro',
+      color: Color.primaryBlack,
+      fontSize: ms(15, factor),
+      lineHeight: ms(22, factor),
+      flex: 1,
+      borderColor: Color.transparent,
+      borderWidth: 0,
     },
     th: {
-      borderRightWidth: s(1),
-      borderColor: border,
       flex: 1,
       padding: s(5),
+      borderColor: Color.transparent,
+      borderWidth: 0,
     },
     tr: {
-      borderLeftWidth: s(1),
-      borderColor: border,
       flexDirection: 'row',
+      borderColor: Color.transparent,
+      borderWidth: 0,
     },
     td: {
-      borderRightWidth: s(1),
-      borderColor: border,
       flex: 1,
       padding: s(5),
+      borderColor: Color.transparent,
+      borderWidth: 0,
     },
   })
   const rules: RenderRules = {
