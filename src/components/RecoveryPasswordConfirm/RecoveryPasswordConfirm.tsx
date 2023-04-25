@@ -46,6 +46,7 @@ export const RecoveryPasswordConfirm = forwardRef<any, RecPassConfirmProps>(
               <FormTextInput
                 textContentType="newPassword"
                 autoCapitalize="none"
+                nextField="newPasswordConfirmation"
                 placeholder="Новый пароль"
                 name="newPassword"
               />

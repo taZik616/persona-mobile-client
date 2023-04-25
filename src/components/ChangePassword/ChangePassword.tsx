@@ -40,6 +40,7 @@ export const ChangePassword = forwardRef<any, ChangePasswordProps>(
               <FormTextInput
                 textContentType="password"
                 autoCapitalize="none"
+                nextField="newPassword"
                 placeholder="Текущий пароль"
                 name="currentPassword"
               />
@@ -55,6 +56,7 @@ export const ChangePassword = forwardRef<any, ChangePasswordProps>(
               <FormTextInput
                 textContentType="newPassword"
                 autoCapitalize="none"
+                nextField="newPasswordConfirmation"
                 placeholder="Новый пароль"
                 name="newPassword"
               />
