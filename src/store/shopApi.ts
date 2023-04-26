@@ -204,6 +204,16 @@ export const shopApi = createApi({
         },
       }),
     }),
+    getCategories: build.query({
+      query: (gender: 'men' | 'women', category: 'Main' | string = 'Main') => ({
+        url: 'categories/',
+        method: 'PATCH',
+        body: {
+          gender,
+          category: category,
+        },
+      }),
+    }),
   }),
 })
 
@@ -248,4 +258,5 @@ export const {
   useRecoveryPasswordVerifyCodeMutation,
   useChangePasswordMutation,
   useGetMainContentQuery,
+  useGetCategoriesQuery,
 } = shopApi
