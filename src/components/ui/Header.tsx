@@ -1,4 +1,4 @@
-import React, {memo} from 'react'
+import React, {memo, useCallback, useState} from 'react'
 
 import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native'
 
@@ -10,9 +10,11 @@ import {
 } from 'src/store'
 import {Color} from 'src/themes'
 
+import {HeaderSearching} from './HeaderSearching'
 import {BackArrowIcon} from './icons/common'
 import {Logo} from './icons/logo'
 import {IconWithCounterBadge} from './IconWithCounterBadge'
+import {SafeLandscapeView} from './SafeLandscapeView'
 import {Spacer} from './Spacer'
 import {Text} from './Text'
 
@@ -30,6 +32,7 @@ interface HeaderProps {
   rightText?: string
   rightTextDisabled?: boolean
   onPressRightText?: () => void
+  onSearchSubmit?: (text: string) => void
 }
 
 export const Header = memo(
@@ -47,71 +50,112 @@ export const Header = memo(
     rightText,
     rightTextDisabled,
     onPressRightText,
+    onSearchSubmit,
   }: HeaderProps) => {
     const {goBack} = useTypedNavigation()
+    const [isSearching, setIsSearching] = useState(false)
+
+    const handleSearchSubmit = useCallback(
+      (text: string) => {
+        setIsSearching(false)
+        if (onSearchSubmit) {
+          onSearchSubmit(text)
+        } else {
+          // default behaviour here
+          console.log('Search - handleSubmit:', text)
+        }
+      },
+      [onSearchSubmit],
+    )
+
+    const onSearchCancel = useCallback(() => setIsSearching(false), [])
+
     return (
       <View style={styles.container}>
         <Spacer withTopInsets={!withoutSafeAreaTop} height={0} />
-        <View style={styles.rowContainer}>
-          <View style={styles.flexOne}>
-            {showBack && (
-              <TouchableOpacity
-                onPress={onPressBack ? onPressBack : goBack}
-                activeOpacity={0.5}>
-                <BackArrowIcon />
-              </TouchableOpacity>
-            )}
-          </View>
-          {title ? (
-            <View style={styles.textContainer}>
-              <Text center gp3>
-                {title}
-              </Text>
-              {subtitle && (
-                <>
-                  <Spacer height={6} />
-                  <Text center color={Color.primaryGray} gp4>
-                    {subtitle}
-                  </Text>
-                </>
-              )}
-            </View>
-          ) : !hideLogo ? (
-            <View style={styles.logoContainer}>
-              <Logo />
-            </View>
-          ) : (
-            <></>
-          )}
-          <View style={styles.flexOne}>
-            <View style={styles.rightButtons}>
-              {rightText ? (
-                <TouchableOpacity
-                  activeOpacity={rightTextDisabled ? 1 : undefined}
-                  onPress={rightTextDisabled ? undefined : onPressRightText}>
-                  <Text
-                    gp4
-                    color={
-                      rightTextDisabled ? Color.primaryGray : Color.primary
-                    }>
-                    {rightText}
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <>
-                  {!hideSearch && (
+        {!isSearching ? (
+          <SafeLandscapeView>
+            <View style={styles.rowContainer}>
+              <>
+                <View style={styles.flexOne}>
+                  {showBack && (
                     <TouchableOpacity
-                      onPress={onPressSearch}
+                      onPress={onPressBack ? onPressBack : goBack}
                       activeOpacity={0.5}>
-                      <IconWithCounterBadge iconName="search" />
+                      <BackArrowIcon />
                     </TouchableOpacity>
                   )}
-                  {!hideBasket && <BasketBtn onPressBasket={onPressBasket} />}
-                </>
-              )}
+                </View>
+                {title ? (
+                  <View style={styles.textContainer}>
+                    <Text center gp3>
+                      {title}
+                    </Text>
+                    {subtitle && (
+                      <>
+                        <Spacer height={6} />
+                        <Text center color={Color.primaryGray} gp4>
+                          {subtitle}
+                        </Text>
+                      </>
+                    )}
+                  </View>
+                ) : !hideLogo ? (
+                  <View style={styles.logoContainer}>
+                    <Logo />
+                  </View>
+                ) : (
+                  <></>
+                )}
+                <View style={styles.flexOne}>
+                  <View style={styles.rightButtons}>
+                    {rightText ? (
+                      <TouchableOpacity
+                        activeOpacity={rightTextDisabled ? 1 : undefined}
+                        onPress={
+                          rightTextDisabled ? undefined : onPressRightText
+                        }>
+                        <Text
+                          gp4
+                          color={
+                            rightTextDisabled
+                              ? Color.primaryGray
+                              : Color.primary
+                          }>
+                          {rightText}
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <>
+                        {!hideSearch && (
+                          <TouchableOpacity
+                            onPress={
+                              onPressSearch
+                                ? onPressSearch
+                                : () => setIsSearching(true)
+                            }
+                            activeOpacity={0.5}>
+                            <IconWithCounterBadge iconName="search" />
+                          </TouchableOpacity>
+                        )}
+                        {!hideBasket && (
+                          <BasketBtn onPressBasket={onPressBasket} />
+                        )}
+                      </>
+                    )}
+                  </View>
+                </View>
+              </>
             </View>
-          </View>
-        </View>
+          </SafeLandscapeView>
+        ) : (
+          <SafeLandscapeView safeArea>
+            <HeaderSearching
+              onCancel={onSearchCancel}
+              onSubmit={handleSearchSubmit}
+            />
+          </SafeLandscapeView>
+        )}
       </View>
     )
   },
@@ -157,14 +201,14 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 24,
     paddingTop: 16,
     paddingBottom: 8,
   },
   rowContainer: {
     flexDirection: 'row',
     width: '100%',
-    height: 37,
+    height: 40,
+    alignItems: 'center',
   },
   logoContainer: {
     alignItems: 'center',
