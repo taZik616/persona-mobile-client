@@ -63,3 +63,8 @@ export interface CategoryI {
   categoryId: string
   fullTitle: string
 }
+
+export interface SortItemI {
+  name: string
+  id: string
+}

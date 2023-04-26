@@ -478,3 +478,16 @@ export const FilterIcon = ({color = Color.primaryGray, ...props}: SvgProps) => {
     </Svg>
   )
 }
+
+export const CheckIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
+  return (
+    <Svg width={18} height={18} viewBox="0 0 18 18" fill="none" {...props}>
+      <Path
+        stroke={color}
+        strokeLinecap="round"
+        strokeWidth={2}
+        d="M3.259 9.735 7.5 13.978l8.486-8.485"
+      />
+    </Svg>
+  )
+}
