@@ -1,7 +1,8 @@
 import React, {memo, useCallback, useState} from 'react'
 
-import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, TouchableOpacity, View} from 'react-native'
 
+import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
 import {useTypedNavigation} from 'src/hooks'
 import {
   selectBasketCounter,
@@ -173,14 +174,7 @@ const BasketBtn = memo(({onPressBasket}: BasketBtnProps) => {
     if (onPressBasket) {
       onPressBasket()
     } else {
-      isAuthenticated
-        ? navigate('basket')
-        : Alert.alert(
-            'Корзина не доступна',
-            'Для того чтобы иметь доступ к пользованию корзиной нужно пройти аутентификацию',
-            undefined,
-            {cancelable: true},
-          )
+      isAuthenticated ? navigate('basket') : showAlertBasketLocked()
     }
   }
   return (

@@ -24,8 +24,8 @@ export const Orders = memo(
           data={orders}
           estimatedItemSize={250}
           keyExtractor={it => it.id}
-          ListHeaderComponent={() => <Spacer height={20} />}
-          ListFooterComponent={() => <Spacer withBottomInsets height={20} />}
+          ListHeaderComponent={<Spacer height={20} />}
+          ListFooterComponent={<Spacer withBottomInsets height={20} />}
           ItemSeparatorComponent={() => <Spacer height={12} />}
           renderItem={({item}) => (
             <OrderCardWHM

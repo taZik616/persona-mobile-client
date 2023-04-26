@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import {persistReducer} from 'redux-persist'
 
-import {delay, getArrayOfField} from 'src/helpers'
+import {getArrayOfField} from 'src/helpers'
 import {ProductPreviewInfo as ProductI} from 'src/types'
 
 interface FavoritesSliceState {
@@ -53,14 +53,14 @@ const {setItems, removeItem, addItem} = favoritesSlice.actions
  * Добавить 1 элемент в избранное
  */
 export const addItemToFavorites = (item: ProductI) => async (dispatch: any) => {
-  await delay(500)
+  // await delay(500)
   dispatch(addItem(item))
 }
 /**
  * Загрузить с сервера избранные товары пользователя
  */
 export const loadItemsToFavorites = async (dispatch: any) => {
-  await delay(2000) // const res = await fetch(`url/...`)
+  // await delay(2000) // const res = await fetch(`url/...`)
   dispatch(setItems(fakeData))
 }
 /**
@@ -68,7 +68,7 @@ export const loadItemsToFavorites = async (dispatch: any) => {
  */
 export const removeItemFromFavorites =
   (productId: string) => async (dispatch: any) => {
-    await delay(500)
+    //await delay(500)
     dispatch(removeItem(productId))
   }
 

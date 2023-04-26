@@ -11,7 +11,13 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
-import {selectBasketIds, useTypedDispatch, useTypedSelector} from 'src/store'
+import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
+import {
+  selectBasketIds,
+  selectIsAuthenticated,
+  useTypedDispatch,
+  useTypedSelector,
+} from 'src/store'
 import {addItemToBasket} from 'src/store/basketSlice'
 import {removeItemFromFavorites} from 'src/store/favoritesSlice'
 import {Color} from 'src/themes'
@@ -142,11 +148,20 @@ interface AddBasketButtonProps {
 
 const AddBasketButton = memo(({item, width}: AddBasketButtonProps) => {
   const dispatch = useTypedDispatch()
+  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
   const inBasket = useTypedSelector(selectBasketIds).includes(item.productId)
+
+  const handlePress = () => {
+    if (isAuthenticated) {
+      dispatch(addItemToBasket(item))
+    } else {
+      showAlertBasketLocked()
+    }
+  }
   return (
     <TouchableOpacity
       disabled={inBasket}
-      onPress={() => dispatch(addItemToBasket(item))}
+      onPress={handlePress}
       style={[styles.addToCartButton, {width}]}>
       <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
     </TouchableOpacity>

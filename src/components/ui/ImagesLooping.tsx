@@ -17,7 +17,7 @@ export const ImagesLooping = memo(({width, images}: ImagesLoopingProps) => {
         </View>
       )}
       bounces={false}
-      keyExtractor={(a, id) => String(id)}
+      keyExtractor={a => a}
       data={images}
       loop
       loopClonesPerSide={images.length}

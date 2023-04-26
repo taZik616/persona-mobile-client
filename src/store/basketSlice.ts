@@ -1,6 +1,6 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 
-import {delay, getArrayOfField} from 'src/helpers'
+import {getArrayOfField} from 'src/helpers'
 import {ProductInBasketI} from 'src/types'
 
 interface BasketSliceState {
@@ -76,14 +76,14 @@ export const {
  */
 export const addItemToBasket =
   (item: ProductInBasketI) => async (dispatch: any) => {
-    await delay(500)
+    // await delay(500)
     dispatch(addItem(item))
   }
 /**
  * Загрузить с сервера корзину пользователя
  */
 export const loadItemsToBasket = async (dispatch: any) => {
-  await delay(2000) // const res = await fetch(`url/...`)
+  // await delay(2000) // const res = await fetch(`url/...`)
   dispatch(setItems(fakeData))
 }
 /**
@@ -91,7 +91,7 @@ export const loadItemsToBasket = async (dispatch: any) => {
  */
 export const removeItemFromBasket =
   (productId: string) => async (dispatch: any) => {
-    await delay(500)
+    // await delay(500)
     dispatch(removeItem(productId))
   }
 

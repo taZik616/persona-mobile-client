@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {nanoid} from '@reduxjs/toolkit'
 import {FlatList, ScrollView} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
@@ -48,11 +49,9 @@ export const HomeCatalogCategories = ({
             />
           )}
           ItemSeparatorComponent={() => <Spacer height={16} />}
-          keyExtractor={a => a.categoryId}
+          keyExtractor={(a, id) => a.categoryId || String(id)}
           data={
-            data.currentData
-              ? data.currentData
-              : [emptyEl, emptyEl, emptyEl, emptyEl] // скелетон нет нужды делать, так можно)
+            data.currentData ? data.currentData : emptyArr // скелетон нет нужды делать, так можно)
           }
         />
         <Spacer height={16} />
@@ -68,9 +67,10 @@ export const HomeCatalogCategories = ({
   )
 }
 
-const emptyEl: CategoryI = {
+const emptyEl = (): CategoryI => ({
   title: '',
   image: '',
   fullTitle: '',
-  categoryId: '',
-}
+  categoryId: nanoid(),
+})
+const emptyArr = [emptyEl(), emptyEl(), emptyEl(), emptyEl()]

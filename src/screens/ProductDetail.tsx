@@ -7,8 +7,13 @@ import {
   SizeSelector,
   SizeSelectorRefType,
 } from 'src/components/ProductDetail'
+import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
 import {useTypedNavigation, useTypedRoute} from 'src/hooks'
-import {useTypedDispatch} from 'src/store'
+import {
+  selectIsAuthenticated,
+  useTypedDispatch,
+  useTypedSelector,
+} from 'src/store'
 import {addItemToBasket} from 'src/store/basketSlice'
 import {addItemToRecently} from 'src/store/recentlyWatchedSlice'
 // import {useGetProductByIdQuery} from 'src/store/shopApi'
@@ -21,6 +26,7 @@ export const ProductDetailScreen = () => {
   const {productId, item} = useTypedRoute<'productDetail'>().params ?? {}
   const dispatch = useTypedDispatch()
   const {goBack, navigate} = useTypedNavigation()
+  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
 
   const onPressGoBasket = useCallback(() => {
     addedToBasketRef.current?.close?.()
@@ -33,9 +39,13 @@ export const ProductDetailScreen = () => {
   }, [])
 
   const onPressAddToBasket = useCallback(() => {
-    isFastBuy.current = false
-    if (item) {
-      sizeSelectorRef.current?.open?.()
+    if (isAuthenticated) {
+      isFastBuy.current = false
+      if (item) {
+        sizeSelectorRef.current?.open?.()
+      }
+    } else {
+      showAlertBasketLocked()
     }
   }, [])
 

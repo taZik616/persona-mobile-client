@@ -78,14 +78,14 @@ export const BrandSearching = memo(
             </SafeLandscapeView>
             <Spacer height={16} />
             <SectionList
-              ListEmptyComponent={() => (
+              ListEmptyComponent={
                 <SafeLandscapeView safeArea>
                   <Spacer height={32} />
                   <Text gp4 center>
                     По введенному запросу ничего не найдено.
                   </Text>
                 </SafeLandscapeView>
-              )}
+              }
               scrollEnabled={false}
               removeClippedSubviews
               refreshing={allBrands.isFetching && !!allBrands.currentData}

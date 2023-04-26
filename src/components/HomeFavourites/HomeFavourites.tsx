@@ -41,10 +41,8 @@ export const HomeFavourites = memo(({onPressProduct}: HomeFavouritesProps) => {
         numColumns={numColumns}
         estimatedItemSize={379} // if !showAddToBasket - 351
         contentContainerStyle={contentPaddingsStyle}
-        ListEmptyComponent={() => (
-          <FavoritesListEmpty isAvailable={isAvailable} />
-        )}
-        ListHeaderComponent={() => (
+        ListEmptyComponent={<FavoritesListEmpty isAvailable={isAvailable} />}
+        ListHeaderComponent={
           <>
             <Spacer height={20} />
             <ViewToggler
@@ -54,7 +52,7 @@ export const HomeFavourites = memo(({onPressProduct}: HomeFavouritesProps) => {
             />
             <Spacer height={16} />
           </>
-        )}
+        }
         renderItem={({item}) => (
           <ProductCard
             width={cardWidth}

@@ -52,7 +52,7 @@ export const HomeNewProducts = memo(
   forwardRef<any, HomeNewProductsProps>(
     ({onPressProduct, onPressSort}, ref) => {
       const {isMenSelected, onChangeGender, values} = useGender()
-      const [sort, setSort] = useState()
+      const [sort, setSort] = useState('')
 
       useImperativeHandle(ref, () => ({
         setSort,
@@ -94,13 +94,13 @@ export const HomeNewProducts = memo(
                 {...item}
               />
             )}
-            ListHeaderComponent={() => (
+            ListHeaderComponent={
               <>
                 <Spacer height={8} />
                 <Filters onPressSort={onPressSort} />
                 <Spacer height={20} />
               </>
-            )}
+            }
             keyExtractor={item => item.productId}
             data={!products.isLoading ? products.currentData : []}
           />
@@ -114,15 +114,20 @@ interface FiltersProps {
   onPressSort?: () => void
 }
 const Filters = memo(({onPressSort}: FiltersProps) => {
-  const onSort = useCallback((id: string) => {
-    if (id === 'filter') {
-      onPressSort?.()
-    }
-  }, [])
+  const onSort = useCallback(
+    (id: string) => {
+      if (id === 'filter') {
+        onPressSort?.()
+      }
+    },
+    [onPressSort],
+  )
+
   return (
     <FlashList
       horizontal
       bounces={false}
+      estimatedItemSize={114}
       showsHorizontalScrollIndicator={false}
       style={styles.filtersList}
       ItemSeparatorComponent={() => <Spacer width={12} />}

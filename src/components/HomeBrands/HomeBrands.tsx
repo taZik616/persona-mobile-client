@@ -79,13 +79,13 @@ export const HomeBrands = memo(
             allBrands.refetch()
             topBrandsRef.current.refetch()
           }}
-          ListHeaderComponent={() => (
+          ListHeaderComponent={
             <TopBrandsHeader
               ref={topBrandsRef}
               onPressBrand={onPressBrand}
               isMenSelected={isMenSelected}
             />
-          )}
+          }
           renderItem={({item}) => (
             <BrandRowItem
               onPress={onPressBrand}
@@ -97,7 +97,7 @@ export const HomeBrands = memo(
           renderSectionHeader={({section: {title}}) => (
             <BrandGroupTitle title={title} />
           )}
-          ListFooterComponent={() => <Spacer height={46} />}
+          ListFooterComponent={<Spacer height={46} />}
           keyExtractor={_brandKeyExtractor}
           sections={allBrands.currentData ?? []}
           // sections={[{title: 'A',data: [{id: '1',name: 'AGNONA',},],},{title: 'B',data: [{id: '1',name: 'BARRETT',}, {id: '2',name: 'BILLIONAIRE',},{id: '3',name: 'BOGNER',},],},]}

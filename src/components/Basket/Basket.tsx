@@ -53,10 +53,8 @@ export const Basket = memo(
           data={curData}
           estimatedItemSize={230}
           keyExtractor={it => it.productId + filter}
-          ListEmptyComponent={() => (
-            <BasketListEmpty isAvailable={isAvailable} />
-          )}
-          ListHeaderComponent={() => (
+          ListEmptyComponent={<BasketListEmpty isAvailable={isAvailable} />}
+          ListHeaderComponent={
             <>
               <Spacer height={20} />
               <ViewTogglerWHM
@@ -66,8 +64,8 @@ export const Basket = memo(
               />
               <Spacer height={16} />
             </>
-          )}
-          ListFooterComponent={() =>
+          }
+          ListFooterComponent={
             curData.length ? (
               <SafeLandscapeView safeArea>
                 <Spacer height={16} />

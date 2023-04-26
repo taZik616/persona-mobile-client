@@ -10,18 +10,18 @@ export const HomeNewProductsScreen = () => {
   const componentRef = useRef<any>(null)
   const sortSelectRef = useRef<SortSelectRefType>(null)
   // Пока тут нету никаких хуков, вызывающих ре-рендер, можно обходится без useCallback
-  const onPressProduct = (item: ProductPreviewInfo) => {
+  const onPressProduct = useCallback((item: ProductPreviewInfo) => {
     navigate('productDetail', {item, productId: item.productId})
-  }
+  }, [])
 
   const onPressSort = useCallback(() => {
     sortSelectRef.current?.open?.()
   }, [])
 
-  const onChangeSort = (id: string) => {
+  const onChangeSort = useCallback((id: string) => {
     console.log('onChangeSort:', id)
     componentRef.current?.setSort(id)
-  }
+  }, [])
 
   return (
     <>

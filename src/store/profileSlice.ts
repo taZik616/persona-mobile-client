@@ -115,25 +115,25 @@ export const getUserData = (phoneNumber: string) => async (dispatch: any) => {
 
 export const updateUserData =
   (newInfo: updatableInfo) => async (dispatch: any) => {
-    const req = await fetch('http://89.108.71.146:8000/personality/', {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        Surname: newInfo.surname,
-        Name: newInfo.name,
-        Date_of_birth: newInfo.dob,
-        email: newInfo.email,
-      }),
-    })
-    const data = await req.json()
-    console.log('🚀 - data:', data)
+    // const req = await fetch('http://89.108.71.146:8000/personality/', {
+    //   method: 'PUT',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     Surname: newInfo.surname,
+    //     Name: newInfo.name,
+    //     Date_of_birth: newInfo.dob,
+    //     email: newInfo.email,
+    //   }),
+    // })
+    // const data = await req.json()
+    // console.log('🚀 - data:', data)
 
-    if (req.ok) {
-      dispatch(setUserInfo(newInfo))
-    }
+    // if (req.ok) {
+    dispatch(setUserInfo(newInfo))
+    // }
   }
 
 export const {

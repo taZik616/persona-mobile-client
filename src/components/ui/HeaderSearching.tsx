@@ -1,8 +1,9 @@
 import React, {memo, useEffect, useState} from 'react'
 
-import {StyleSheet, TextInput, TouchableOpacity} from 'react-native'
+import {Keyboard, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
 import Animated, {
   Easing,
+  FadeOut,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
@@ -36,6 +37,9 @@ export const HeaderSearching = memo(
         easing: EASING,
         duration: 400,
       })
+      Keyboard.addListener('keyboardWillHide', () => {
+        onCancel?.()
+      })
     }, [])
 
     const animContainer = useAnimatedStyle(() => ({
@@ -47,7 +51,9 @@ export const HeaderSearching = memo(
     }))
 
     return (
-      <Animated.View style={[styles.rowContainer, animContainer]}>
+      <Animated.View
+        exiting={FadeOut.duration(150)}
+        style={[styles.rowContainer, animContainer]}>
         <Animated.View style={styles.inputContainer}>
           <Spacer width={14} />
           <AnimFeather
