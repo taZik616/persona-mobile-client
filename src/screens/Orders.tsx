@@ -41,18 +41,18 @@ const fakeData: OrderInfoInterface[] = [
     status: 'progress',
     items: [
       {
-        title: 'STONE ISLAND',
-        category: 'Я бы мог вставить другую картинку, но не охото',
-        productId: '30',
+        productId: '33949',
+        category: 'Жилеты',
         image:
-          'https://st.tsum.com/btrx/i/12/57/31/13/01_1526.jpg?u=1644791942',
+          'http://89.108.71.146:8000/IMGS_Preview/preview_untitled_6075_compressed.jpg',
+        title: 'Жилет FRANKIE MORELLO',
       },
       {
         title: 'Gucci тапки',
         category: 'Обувь',
         productId: '34',
         image:
-          'https://st.tsum.com/btrx/i/12/57/31/13/01_1526.jpg?u=1644791942',
+          'https://vipavenue.ru/upload/catalog_photos/115/1153c76033d36e933d18173156bf5c4d.jpg',
       },
     ],
   },
