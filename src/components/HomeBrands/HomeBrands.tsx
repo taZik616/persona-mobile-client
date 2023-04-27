@@ -1,7 +1,6 @@
 import React, {
   forwardRef,
   memo,
-  useCallback,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -14,6 +13,7 @@ import {vibration} from 'src/services/vibration'
 import {useGetBrandsBySexQuery, useGetTopBrandsQuery} from 'src/store/shopApi'
 import {IS_IOS} from 'src/variables'
 
+import {LoadingSkeleton} from './LoadingSkeleton'
 import {TopBrandItem} from './TopBrandItem'
 
 import {AlphabetVerticalSelector} from '../ui/AlphabetVerticalSelector'
@@ -30,7 +30,7 @@ interface HomeBrandsProps {
   onPressSearch?: () => void
 }
 
-const emptyArr = ['', '', '', '', '', '']
+const emptyArr = Array(6).fill('')
 
 export const HomeBrands = memo(
   ({onPressBrand, onPressSearch}: HomeBrandsProps) => {
@@ -93,6 +93,7 @@ export const HomeBrands = memo(
               item={item}
             />
           )}
+          ListEmptyComponent={<LoadingSkeleton />}
           showsVerticalScrollIndicator={false}
           renderSectionHeader={({section: {title}}) => (
             <BrandGroupTitle title={title} />
@@ -123,10 +124,7 @@ const TopBrandsHeader = memo(
       },
     }))
 
-    const renderTopBrand = useCallback(({item}: any) => {
-      return <TopBrandItem onPress={onPressBrand} item={item} />
-    }, [])
-
+    const isLoading = !topBrands.currentData?.length || topBrandIsLoading
     return (
       <SafeLandscapeView>
         <Spacer height={16} />
@@ -135,16 +133,20 @@ const TopBrandsHeader = memo(
         </Text>
         <Spacer height={14} />
         <FlatList
-          renderItem={renderTopBrand}
+          renderItem={({item}: any) => {
+            return (
+              <TopBrandItem
+                onPress={onPressBrand}
+                isLoading={isLoading}
+                item={item}
+              />
+            )
+          }}
           style={styles.topBrandGap}
           columnWrapperStyle={styles.topBrandGap}
           keyExtractor={_brandKeyExtractor}
           numColumns={3}
-          data={
-            topBrands.currentData?.length && !topBrandIsLoading
-              ? topBrands.currentData
-              : emptyArr
-          }
+          data={isLoading ? emptyArr : topBrands.currentData}
         />
         <Spacer height={24} />
         <Text center cg2>

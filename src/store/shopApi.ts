@@ -126,7 +126,8 @@ export const shopApi = createApi({
           IdProduct: id,
         },
       }),
-      transformResponse: (data: any) => data ?? [],
+      transformResponse: (data: any) =>
+        data ? {description: data.Description} : [],
     }),
     createUserAndSendCode: build.mutation({
       query: ({telephone, firstName, lastName}: createUserAndSendCodeBody) => ({

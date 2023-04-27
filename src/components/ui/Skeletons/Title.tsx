@@ -19,6 +19,7 @@ interface TitleSkeletonProps {
   lineWidth?: number
   center?: boolean
   height?: number
+  borderRadius?: number
 }
 
 export const TitleSkeleton = memo(
@@ -27,6 +28,7 @@ export const TitleSkeleton = memo(
     lineWidth = SCREEN_W / 3 / 2.5,
     center,
     height = 22,
+    borderRadius = 12,
   }: TitleSkeletonProps) => {
     const gradX = useSharedValue(-lineWidth)
 
@@ -54,7 +56,7 @@ export const TitleSkeleton = memo(
       <View
         style={[
           styles.listItemContainer,
-          {width, height},
+          {width, height, borderRadius},
           center && styles.centered,
         ]}>
         <AnimatedGradient
@@ -77,7 +79,6 @@ export const TitleSkeleton = memo(
 const styles = StyleSheet.create({
   listItemContainer: {
     height: 20,
-    borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: Color.secondaryGray,
   },

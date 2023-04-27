@@ -16,16 +16,16 @@ import {
 } from 'src/store'
 import {addItemToBasket} from 'src/store/basketSlice'
 import {addItemToRecently} from 'src/store/recentlyWatchedSlice'
-// import {useGetProductByIdQuery} from 'src/store/shopApi'
 
 export const ProductDetailScreen = () => {
   const addedToBasketRef = useRef<AddedToBasketRefType>(null)
   const sizeSelectorRef = useRef<SizeSelectorRefType>(null)
   const isFastBuy = useRef<boolean>(false)
 
-  const {productId, item} = useTypedRoute<'productDetail'>().params ?? {}
-  const dispatch = useTypedDispatch()
+  const {item} = useTypedRoute<'productDetail'>().params ?? {}
   const {goBack, navigate} = useTypedNavigation()
+
+  const dispatch = useTypedDispatch()
   const isAuthenticated = useTypedSelector(selectIsAuthenticated)
 
   const onPressGoBasket = useCallback(() => {
@@ -50,7 +50,6 @@ export const ProductDetailScreen = () => {
   }, [])
 
   const onSelectSize = useCallback((size: val) => {
-    console.log('🚀 - size:', size.label, '- id:', size.value)
     sizeSelectorRef.current?.close?.()
     if (!item) {
       return

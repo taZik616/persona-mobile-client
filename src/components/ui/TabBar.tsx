@@ -44,7 +44,7 @@ export const TabBar = ({routes, stateIndex}: TabBarProps) => {
           )
         })}
       </View>
-      <Spacer withBottomInsets={IS_IOS} height={IS_IOS ? 0 : 12} />
+      <Spacer withBottomInsets={IS_IOS} height={12} />
     </View>
   )
 }
