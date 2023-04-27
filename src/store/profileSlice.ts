@@ -14,6 +14,7 @@ interface initialStateType {
   subSms: boolean
   subPush: boolean
   subEmail: boolean
+  allowAppNotification: boolean
 }
 
 const initialState: initialStateType = {
@@ -26,6 +27,7 @@ const initialState: initialStateType = {
   subSms: false,
   subPush: false,
   subEmail: false,
+  allowAppNotification: false,
 }
 type updatableInfo = {
   name: string
@@ -67,6 +69,10 @@ export const profileSlice = createSlice({
     },
     setSubEmail: (state, action: PayloadAction<boolean>) => {
       state.subEmail = action.payload
+    },
+    setAllowAppNotification: (state, action: PayloadAction<boolean>) => {
+      if (state.allowAppNotification !== action.payload)
+        state.allowAppNotification = action.payload
     },
   },
 })
@@ -144,5 +150,6 @@ export const {
   setSubSms,
   setSubEmail,
   setSubPush,
+  setAllowAppNotification,
 } = profileSlice.actions
 export const profileReducer = profileSlice.reducer

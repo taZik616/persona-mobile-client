@@ -12,6 +12,7 @@ import {BasketScreen} from './screens/Basket'
 import {BuyScreen} from './screens/Buy'
 import {ChangePasswordScreen} from './screens/ChangePassword'
 import {DEV_TestHapticScreen} from './screens/DEV_TestHaptic'
+import {DEV_TestNotification} from './screens/DEV_TestNotification'
 import {FastBuyScreen} from './screens/FastBuy'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
@@ -54,7 +55,7 @@ export const App = () => {
       }}
       ref={navigator}>
       <Stack.Navigator
-        initialRouteName="home" // haptic
+        initialRouteName="home" // haptic|notification
         screenOptions={basicScreenOptions}>
         <Stack.Screen name="home" component={Home} />
         <Stack.Group screenOptions={gestureEnabled}>
@@ -90,8 +91,15 @@ export const App = () => {
           <Stack.Screen name="buy" component={BuyScreen} />
           <Stack.Screen name="fastBuy" component={FastBuyScreen} />
           {__DEV__ ? (
-            // @ts-ignore
-            <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />
+            <>
+              {/* @ts-ignore */}
+              <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />
+              {/* @ts-ignore */}
+              <Stack.Screen
+                name="notification"
+                component={DEV_TestNotification}
+              />
+            </>
           ) : (
             <></>
           )}
