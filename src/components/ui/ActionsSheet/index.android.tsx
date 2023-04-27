@@ -15,7 +15,6 @@ import Animated, {
 import {Color} from 'src/themes'
 
 import {ActionsSheetProps} from '.'
-import {Spacer} from '../Spacer'
 import {Text} from '../Text'
 
 const timingOutAnimationConfig: WithTimingConfig = {
@@ -99,7 +98,6 @@ export const ActionsSheet = ({
             </Text>
           </TouchableOpacity>
         </View>
-        <Spacer withBottomInsets />
       </Animated.View>
     </View>
   )

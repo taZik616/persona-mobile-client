@@ -20,6 +20,7 @@ import {Header} from '../ui/Header'
 import {FilterIcon} from '../ui/icons/common'
 import {ProductCard} from '../ui/ProductCard'
 import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
+import {LoadingProductListSkeleton} from '../ui/Skeletons/LoadingProductList'
 import {Spacer} from '../ui/Spacer'
 
 const fakeFilters = [
@@ -70,6 +71,8 @@ export const HomeNewProducts = memo(
       const {numColumns, cardWidth, contentPaddingsStyle} =
         useProductListHelper()
 
+      const isLoad = products.isLoading || !products.currentData
+
       return (
         <>
           <Header title="Новые поступления" />
@@ -79,31 +82,39 @@ export const HomeNewProducts = memo(
             values={values}
           />
           <Spacer height={8} />
-          <FlashList
-            key={numColumns}
-            numColumns={numColumns}
-            refreshing={products.isFetching && !!products.currentData}
-            onRefresh={products.refetch}
-            estimatedItemSize={351} // if showAddToBasket - 379
-            contentContainerStyle={contentPaddingsStyle}
-            renderItem={({item}) => (
-              <ProductCard
-                width={cardWidth}
-                topRightIcon="star"
-                onPress={onPressProduct}
-                {...item}
-              />
-            )}
-            ListHeaderComponent={
-              <>
-                <Spacer height={8} />
-                <Filters onPressSort={onPressSort} />
-                <Spacer height={20} />
-              </>
-            }
-            keyExtractor={item => item.productId}
-            data={!products.isLoading ? products.currentData : []}
-          />
+          {isLoad ? (
+            <LoadingProductListSkeleton
+              width={cardWidth}
+              style={contentPaddingsStyle}
+              numColumns={numColumns}
+            />
+          ) : (
+            <FlashList
+              key={numColumns}
+              numColumns={numColumns}
+              refreshing={products.isFetching && !!products.currentData}
+              onRefresh={products.refetch}
+              estimatedItemSize={351} // if showAddToBasket - 379
+              contentContainerStyle={contentPaddingsStyle}
+              renderItem={({item}) => (
+                <ProductCard
+                  width={cardWidth}
+                  topRightIcon="star"
+                  onPress={onPressProduct}
+                  {...item}
+                />
+              )}
+              ListHeaderComponent={
+                <>
+                  <Spacer height={8} />
+                  <Filters onPressSort={onPressSort} />
+                  <Spacer height={20} />
+                </>
+              }
+              keyExtractor={item => item.productId}
+              data={products.currentData}
+            />
+          )}
         </>
       )
     },

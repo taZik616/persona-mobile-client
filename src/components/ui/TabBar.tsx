@@ -22,6 +22,7 @@ export const TabBar = ({routes, stateIndex}: TabBarProps) => {
   const {navigate} = useTypedNavigation()
   const handlePress = (name: keyof TabParamList, isFocused: boolean) => {
     if (!isFocused) {
+      // @ts-ignore
       navigate('home', {
         screen: name,
       })

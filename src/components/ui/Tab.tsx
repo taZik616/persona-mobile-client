@@ -4,6 +4,7 @@ import {Pressable, StyleSheet} from 'react-native'
 
 import {selectFavoritesCounter, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
+import {IS_ANDROID, SCREEN_W} from 'src/variables'
 
 import {tabBarIcons} from './icons/tab-bar-icons'
 import {IconWithCounterBadge} from './IconWithCounterBadge'
@@ -45,7 +46,11 @@ export const Tab = ({
         IconComponent={Icon}
       />
       <Spacer height={5} />
-      <Text center color={isFocused ? activeColor : color} gp1>
+      <Text
+        style={styles.text}
+        center
+        color={isFocused ? activeColor : color}
+        gp1>
         {navLabelsById[tabId]}
       </Text>
     </Pressable>
@@ -55,5 +60,8 @@ export const Tab = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  text: {
+    fontSize: IS_ANDROID ? (SCREEN_W < 400 ? 9.5 : 11) : 11,
   },
 })
