@@ -14,7 +14,7 @@ import {SCREEN_W, SKELETON_ANIM_CONF} from 'src/variables'
 
 const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient)
 
-interface TitleSkeletonProps {
+interface BlockSkeletonProps {
   width?: number
   lineWidth?: number
   center?: boolean
@@ -22,14 +22,14 @@ interface TitleSkeletonProps {
   borderRadius?: number
 }
 
-export const TitleSkeleton = memo(
+export const BlockSkeleton = memo(
   ({
     width = SCREEN_W / 3,
     lineWidth = SCREEN_W / 3 / 2.5,
     center,
     height = 22,
     borderRadius = 12,
-  }: TitleSkeletonProps) => {
+  }: BlockSkeletonProps) => {
     const gradX = useSharedValue(-lineWidth)
 
     useEffect(() => {

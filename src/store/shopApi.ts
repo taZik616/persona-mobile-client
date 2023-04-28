@@ -206,17 +206,22 @@ export const shopApi = createApi({
       }),
     }),
     getCategories: build.query({
-      query: (gender: 'men' | 'women', category: 'Main' | string = 'Main') => ({
+      query: ({gender, category = 'Main'}: getCategoriesBody) => ({
         url: 'categories/',
         method: 'PATCH',
         body: {
           gender,
-          category: category,
+          category,
         },
       }),
     }),
   }),
 })
+
+interface getCategoriesBody {
+  gender?: 'men' | 'women'
+  category?: 'Main' | string
+}
 
 interface changePasswordBody {
   telephone: string

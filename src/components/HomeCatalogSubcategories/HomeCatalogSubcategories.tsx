@@ -1,49 +1,33 @@
 import React from 'react'
 
-import {FlatList} from 'react-native'
-
 import {useTypedRouteCatalogStack} from 'src/hooks'
-import {CategoriesListItem} from 'src/types'
+import {useGetCategoriesQuery} from 'src/store/shopApi'
+import {CategoryI} from 'src/types'
 
 import {Header} from '../ui/Header'
-import {RenderHorizontalList} from '../ui/RenderHorizontalList'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
+import {SubcategoriesList} from '../ui/SubcategoriesList'
 
 interface HomeCatalogSubcategoriesProps {
-  subcategories: {
-    title: string
-    items: CategoriesListItem[]
-  }[]
-  onPressSubCategory?: (id: string) => void
+  onPressSubCategory?: (item: CategoryI) => void
 }
 
 export const HomeCatalogSubcategories = ({
-  subcategories,
   onPressSubCategory,
 }: HomeCatalogSubcategoriesProps) => {
-  const {headerTitle} = useTypedRouteCatalogStack<'subcategories'>().params
+  const {headerTitle, categoryId} =
+    useTypedRouteCatalogStack<'subcategories'>().params
+
+  const data = useGetCategoriesQuery({category: categoryId})
+
   return (
     <>
       <Header hideSearch showBack title={headerTitle} />
-      <FlatList
-        nestedScrollEnabled
-        renderItem={({item: rootItem}) => (
-          <>
-            <Spacer height={16} />
-            <Text cg2 center>
-              {rootItem.title.toUpperCase()}
-            </Text>
-            <Spacer height={12} />
-            <RenderHorizontalList
-              onPressItem={onPressSubCategory}
-              data={rootItem.items}
-            />
-          </>
-        )}
-        keyExtractor={a => a.title}
-        data={subcategories}
-      />
+      {data.currentData && (
+        <SubcategoriesList
+          onPressItem={onPressSubCategory}
+          subcategories={data.currentData}
+        />
+      )}
     </>
   )
 }

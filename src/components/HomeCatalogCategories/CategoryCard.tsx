@@ -1,6 +1,7 @@
 import React, {memo} from 'react'
 
-import {Image, StyleSheet, TouchableOpacity} from 'react-native'
+import {StyleSheet, TouchableOpacity} from 'react-native'
+import FastImage from 'react-native-fast-image'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {Color} from 'src/themes'
@@ -21,7 +22,11 @@ export const CategoryCard = memo(
         activeOpacity={0.85}
         onPress={() => onPress?.(categoryId)}
         style={styles.container}>
-        <Image source={{uri: imgUri}} style={StyleSheet.absoluteFill} />
+        <FastImage
+          resizeMode={FastImage.resizeMode.cover}
+          source={{uri: imgUri, priority: FastImage.priority.high}}
+          style={StyleSheet.absoluteFill}
+        />
         <Text numberOfLines={2} style={styles.title} cg1>
           {title}
         </Text>

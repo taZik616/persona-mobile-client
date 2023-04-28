@@ -61,7 +61,7 @@ export interface CategoryI {
   image: string
   title: string
   categoryId: string
-  fullTitle: string
+  fullTitle?: string
 }
 
 export interface SortItemI {

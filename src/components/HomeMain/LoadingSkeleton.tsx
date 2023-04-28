@@ -5,16 +5,16 @@ import {ScrollView, StyleSheet} from 'react-native'
 import {SCREEN_W} from 'src/variables'
 
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
+import {BlockSkeleton} from '../ui/Skeletons/Block'
 import {ListItemSkeleton} from '../ui/Skeletons/ListItem'
 import {CardSkeleton} from '../ui/Skeletons/Swiper'
-import {TitleSkeleton} from '../ui/Skeletons/Title'
 import {Spacer} from '../ui/Spacer'
 import {Swiper} from '../ui/Swiper'
 
 export const LoadingSkeleton = () => {
   return (
     <>
-      <TitleSkeleton center />
+      <BlockSkeleton center />
       <Spacer height={16} width={SCREEN_W / 2} />
       <ScrollView horizontal>
         <SafeLandscapeView style={styles.row} safeArea>
@@ -26,7 +26,7 @@ export const LoadingSkeleton = () => {
         </SafeLandscapeView>
       </ScrollView>
       <Spacer height={16} />
-      <TitleSkeleton center />
+      <BlockSkeleton center />
       <Spacer height={16} />
       <Swiper images={['', '', '', '']} type="card-image-skeleton" />
       <Spacer height={16} />

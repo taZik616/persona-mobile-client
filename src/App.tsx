@@ -94,8 +94,8 @@ export const App = () => {
             <>
               {/* @ts-ignore */}
               <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />
-              {/* @ts-ignore */}
               <Stack.Screen
+                // @ts-ignore
                 name="notification"
                 component={DEV_TestNotification}
               />

@@ -5,7 +5,7 @@ import {useWindowDimensions} from 'react-native'
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {TitleSkeleton} from '../ui/Skeletons/Title'
+import {BlockSkeleton} from '../ui/Skeletons/Block'
 import {Spacer} from '../ui/Spacer'
 
 export const LoadingSkeleton = memo(() => {
@@ -18,11 +18,11 @@ export const LoadingSkeleton = memo(() => {
     return (
       <>
         <Spacer height={16} />
-        <TitleSkeleton borderRadius={6} width={38} height={30} />
+        <BlockSkeleton borderRadius={6} width={38} height={30} />
         <Spacer height={12} />
         {arr.map((a, id: any) => (
           <React.Fragment key={id}>
-            <TitleSkeleton
+            <BlockSkeleton
               borderRadius={6}
               height={40}
               lineWidth={activeW / 4}

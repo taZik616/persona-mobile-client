@@ -12,6 +12,7 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
   cg1?: boolean
   cg2?: boolean
   cg3?: boolean
+  cg4?: boolean
   gp1?: boolean
   gp6?: boolean
   gp2?: boolean
@@ -35,6 +36,7 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
  * @param cg1 - CormorantGaramond-SemiBold 15
  * @param cg2 - CormorantGaramond-SemiBold 20
  * @param cg3 - CormorantGaramond-Medium 15
+ * @param cg4 - CormorantGaramond-SemiBold 11
  * @param gp1 - GothamPro 11
  * @param gp2 - GothamPro-Medium 15
  * @param gp3 - GothamPro-Medium 13
@@ -58,6 +60,7 @@ export const Text = ({
   cg1,
   cg2,
   cg3,
+  cg4,
   gp1,
   gp6,
   gp2,
@@ -86,6 +89,7 @@ export const Text = ({
         cg1 && styles.cg1,
         cg2 && styles.cg2,
         cg3 && styles.cg3,
+        cg4 && styles.cg4,
         gp1 && styles.gp1,
         gp6 && styles.gp6,
         gp2 && styles.gp2,
@@ -121,6 +125,10 @@ const styles = StyleSheet.create({
   cg3: {
     fontFamily: 'CormorantGaramond-Medium',
     fontSize: 15,
+  },
+  cg4: {
+    fontFamily: 'CormorantGaramond-SemiBold',
+    fontSize: 11,
   },
   gp1: {
     fontFamily: 'GothamPro',

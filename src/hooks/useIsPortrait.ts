@@ -9,7 +9,6 @@ export function useIsPortrait() {
   useFocusEffect(
     useCallback(() => {
       const listener = (or: OrientationType) => {
-        console.log('🚀 - setIsPortrait:')
         if (
           or === OrientationType['LANDSCAPE-LEFT'] ||
           or === OrientationType['LANDSCAPE-RIGHT']

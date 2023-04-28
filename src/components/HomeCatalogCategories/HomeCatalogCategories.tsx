@@ -23,7 +23,7 @@ export const HomeCatalogCategories = ({
   onPressGiftCard,
 }: HomeCatalogCategoriesProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
-  const data = useGetCategoriesQuery(isMenSelected ? 'men' : 'women')
+  const data = useGetCategoriesQuery({gender: isMenSelected ? 'men' : 'women'})
 
   return (
     <>
