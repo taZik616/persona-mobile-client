@@ -9,11 +9,13 @@ import React, {
 import {FlashList} from '@shopify/flash-list'
 import {StyleSheet} from 'react-native'
 
+import {getProductsCountString} from 'src/helpers'
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
 import {useProductListHelper} from 'src/hooks/useProductListHelper'
 import {useGetProductsQuery} from 'src/store/shopApi'
-import {ProductPreviewInfo} from 'src/types'
+import {Color} from 'src/themes'
+import {ProductPreviewInfo, ProductsDataI} from 'src/types'
 
 import {FilterItem} from '../ui/FilterItem'
 import {Header} from '../ui/Header'
@@ -22,6 +24,7 @@ import {ProductCard} from '../ui/ProductCard'
 import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
 import {LoadingProductListSkeleton} from '../ui/Skeletons/LoadingProductList'
 import {Spacer} from '../ui/Spacer'
+import {Text} from '../ui/Text'
 
 const fakeFilters = [
   {
@@ -68,6 +71,8 @@ export const HomeNewProducts = memo(
         sortedValues: '1',
       })
 
+      const curData = products.currentData as ProductsDataI
+
       const {numColumns, cardWidth, contentPaddingsStyle} =
         useProductListHelper()
 
@@ -92,7 +97,7 @@ export const HomeNewProducts = memo(
             <FlashList
               key={numColumns}
               numColumns={numColumns}
-              refreshing={products.isFetching && !!products.currentData}
+              refreshing={products.isFetching && !!curData?.data}
               onRefresh={products.refetch}
               estimatedItemSize={351} // if showAddToBasket - 379
               contentContainerStyle={contentPaddingsStyle}
@@ -109,10 +114,18 @@ export const HomeNewProducts = memo(
                   <Spacer height={8} />
                   <Filters onPressSort={onPressSort} />
                   <Spacer height={20} />
+                  {curData?.count && (
+                    <>
+                      <Text center color={Color.primaryGray} gp4>
+                        {getProductsCountString(curData.count)}
+                      </Text>
+                      <Spacer height={18} />
+                    </>
+                  )}
                 </>
               }
               keyExtractor={item => item.productId}
-              data={products.currentData}
+              data={curData?.data ?? []}
             />
           )}
         </>

@@ -31,7 +31,7 @@ export const LoadingProductListSkeleton = memo(
   },
 )
 
-const emptyArr = Array(9).fill('')
+const emptyArr = Array(10).fill('')
 
 const styles = StyleSheet.create({
   container: {

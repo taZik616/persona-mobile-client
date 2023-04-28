@@ -32,6 +32,11 @@ export interface ProductPreviewInfo {
   brandName?: string
   categoryName?: string
 }
+
+export interface ProductsDataI {
+  count: number
+  data: ProductPreviewInfo[]
+}
 export interface ProductInBasketI extends ProductPreviewInfo {
   size?: string
   color?: string
