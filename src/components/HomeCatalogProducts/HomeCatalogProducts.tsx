@@ -20,8 +20,8 @@ export const HomeCatalogProducts = ({
       <Header showBack />
       <RenderProductList
         showCounter
-        sortBy="Subdivision_ID"
-        sortedValues={subcategoryId}
+        sortBy="Subdivision_ID stock"
+        sortedValues={`${subcategoryId};1`}
         onPressProduct={onPressProduct}
       />
     </>
