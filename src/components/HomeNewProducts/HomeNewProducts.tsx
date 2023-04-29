@@ -2,7 +2,6 @@ import React, {
   forwardRef,
   memo,
   useCallback,
-  useEffect,
   useImperativeHandle,
   useState,
 } from 'react'
@@ -13,12 +12,6 @@ import {StyleSheet} from 'react-native'
 import {getProductsCountString} from 'src/helpers'
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
-import {
-  getProductsFetch,
-  useGetProductsQuery,
-  useLazyGetProductsQuery,
-  useProductsList,
-} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo, ProductsDataI} from 'src/types'
 
@@ -67,8 +60,25 @@ export const HomeNewProducts = memo(
       }))
 
       useScreenBlockCurrent()
-      const {curData, loadNext} = useProductsList({start: 10600})
-      console.log('🚀 - curData:', curData)
+
+      const renderHeader = useCallback(
+        (curData: ProductsDataI) => (
+          <>
+            <Spacer height={8} />
+            <Filters onPressSort={onPressSort} />
+            <Spacer height={20} />
+            {curData?.count && (
+              <>
+                <Text center color={Color.primaryGray} gp4>
+                  {getProductsCountString(curData.count)}
+                </Text>
+                <Spacer height={18} />
+              </>
+            )}
+          </>
+        ),
+        [onPressSort],
+      )
 
       return (
         <>
@@ -80,24 +90,9 @@ export const HomeNewProducts = memo(
           />
           <Spacer height={8} />
           <RenderProductList
-            loadNext={loadNext}
-            curData={curData}
+            start={10600}
             onPressProduct={onPressProduct}
-            headerComponent={
-              <>
-                <Spacer height={8} />
-                <Filters onPressSort={onPressSort} />
-                <Spacer height={20} />
-                {curData?.count && (
-                  <>
-                    <Text center color={Color.primaryGray} gp4>
-                      {getProductsCountString(curData.count)}
-                    </Text>
-                    <Spacer height={18} />
-                  </>
-                )}
-              </>
-            }
+            renderHeader={renderHeader}
           />
         </>
       )

@@ -22,6 +22,7 @@ export const LoadingProductListSkeleton = memo(
           key={numColumns}
           numColumns={numColumns}
           data={emptyArr}
+          showsVerticalScrollIndicator={false}
           estimatedItemSize={351} // if showAddToBasket - 379
           renderItem={() => <ProductCardSkeleton width={width} />}
           keyExtractor={(_, id) => String(id)}

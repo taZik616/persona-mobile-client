@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
 
@@ -85,10 +86,11 @@ export const ProductCard = ({
 
             <Spacer height={6} />
             {brandImage ? (
-              <Image
+              <FastImage
+                key={brandImage}
                 style={styles.brandImage}
                 resizeMode="contain"
-                source={{uri: brandImage}}
+                source={{uri: brandImage, priority: FastImage.priority.high}}
               />
             ) : (
               <View style={styles.brandName}>

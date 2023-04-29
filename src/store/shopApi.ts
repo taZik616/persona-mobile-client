@@ -267,7 +267,6 @@ export const useProductsList = ({
       : undefined
 
   const fetchRes = useCallback(async () => {
-    console.log('fetchRes')
     const res = await fetch('http://89.108.71.146:8000/sort_by_lite/', {
       method: 'PATCH',
       headers: {

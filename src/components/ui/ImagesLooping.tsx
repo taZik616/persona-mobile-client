@@ -1,6 +1,7 @@
 import React, {memo} from 'react'
 
-import {Image, StyleSheet, View} from 'react-native'
+import {StyleSheet, View} from 'react-native'
+import FastImage from 'react-native-fast-image'
 import Carousel from 'react-native-snap-carousel'
 
 interface ImagesLoopingProps {
@@ -13,7 +14,17 @@ export const ImagesLooping = memo(({width, images}: ImagesLoopingProps) => {
     <Carousel
       renderItem={({item: uri}) => (
         <View style={[styles.imageContainer, {width}]}>
-          <Image style={styles.image} resizeMode="cover" source={{uri}} />
+          <FastImage
+            style={styles.image}
+            resizeMode="cover"
+            source={{
+              uri,
+              priority:
+                uri === images[0]
+                  ? FastImage.priority.low
+                  : FastImage.priority.high,
+            }}
+          />
         </View>
       )}
       bounces={false}
