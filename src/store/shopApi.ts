@@ -299,8 +299,14 @@ export const useProductsList = ({
   }, [sortBy, sortedValues, filterByPrice, reverse, search])
 
   const loadNext = () => {
-    countRef.current = countRef.current + ITEMS_PER_PAGE
-    fetchRes()
+    if (
+      countRef.current == null ||
+      curData?.count == null ||
+      countRef.current < curData?.count
+    ) {
+      countRef.current = countRef.current + ITEMS_PER_PAGE
+      fetchRes()
+    }
   }
 
   return {curData, loadNext}

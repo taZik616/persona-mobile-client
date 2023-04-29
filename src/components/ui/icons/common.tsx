@@ -466,7 +466,7 @@ export const HangerIcon = ({
   )
 }
 
-export const FilterIcon = ({color = Color.primaryGray, ...props}: SvgProps) => {
+export const SortIcon = ({color = Color.primaryGray, ...props}: SvgProps) => {
   return (
     <Svg width={18} height={18} viewBox="0 0 18 18" fill="none" {...props}>
       <Path

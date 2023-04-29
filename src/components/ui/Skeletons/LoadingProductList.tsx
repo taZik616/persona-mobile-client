@@ -26,6 +26,7 @@ export const LoadingProductListSkeleton = memo(
           estimatedItemSize={351} // if showAddToBasket - 379
           renderItem={() => <ProductCardSkeleton width={width} />}
           keyExtractor={(_, id) => String(id)}
+          ListHeaderComponent={<Spacer height={20} />}
         />
       </View>
     )

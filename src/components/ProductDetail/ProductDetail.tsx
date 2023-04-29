@@ -48,7 +48,7 @@ export const ProductDetail = memo(
                 )}
                 <Text gp4>{title}</Text>
                 <Spacer height={6} />
-                <Text gp4>{price}</Text>
+                <Text gp4>{price} ₽</Text>
               </View>
               <StarProduct item={item} />
             </View>

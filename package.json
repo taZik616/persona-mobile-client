@@ -11,7 +11,7 @@
     "link-asset": "npx react-native-asset",
     "fast-clean": "cd android && ./gradlew clean && cd .. && watchman watch-del-all && yarn cache clean && yarn start --reset-cache",
     "postinstall": "patch-package && react-native setup-ios-permissions",
-    "release:android": "cd android && ./gradlew assembleRelease"
+    "release:apk:android": "cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.1",
