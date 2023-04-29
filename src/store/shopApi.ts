@@ -1,3 +1,5 @@
+import {useCallback, useEffect, useRef, useState} from 'react'
+
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
 import {captureException} from 'src/helpers'
@@ -48,75 +50,6 @@ export const shopApi = createApi({
         },
       }),
       transformResponse: (data: any) => data?.brand ?? [],
-    }),
-    /**
-     * @param sortBy - пробел служит разделителем, здесь указываются названия полей
-     * по которым должен происходить процесс фильтрации и одновременно сортировки
-     * @example ```ts
-     * "color Manufacturer" // сортировка и фильтрация по полям "color" и "Manufacturer"
-     * ```
-     * @param sortedValues - символ ≪;≫ служит разделителем между параметрами поля,
-     * а символ ≪,≫ разделяет значения параметра
-     * @example ```ts
-     * "черный,зеленый;Италия" // поле "color" должно быть "черный" или "зеленый", "Manufacturer" - "Италия"
-     * ```
-     * @param filterByPrice
-     * @param reverse
-     *
-     * @param start
-     * @param end !! end - start <= 200 !!
-     */
-    getProducts: build.query({
-      query: ({
-        sortBy,
-        sortedValues,
-        filterByPrice = 'False',
-        reverse,
-        start = 0,
-        end = 40,
-        search,
-      }: getProductsBody) => ({
-        url: 'sort_by_lite/',
-        method: 'PATCH',
-        body: {
-          sort_by: sortBy,
-          key: sortedValues,
-          Price: filterByPrice,
-          reverse,
-          'start count': start,
-          'end count': end,
-          Search: search,
-        },
-      }),
-      transformResponse: (data: any): ProductsDataI | undefined => {
-        return data
-          ? {
-              count: data.Count,
-              data: data.Products.map(
-                ({
-                  Collection,
-                  url,
-                  brand,
-                  previewImages,
-                  title,
-                  largeImages,
-                  isAvailable,
-                  ...item
-                }: any) =>
-                  ({
-                    ...item,
-                    previewImages: previewImages.split(';'),
-                    isAvailable: isAvailable === '1',
-                    title: title === 'None' ? undefined : title,
-                    largeImages: largeImages.split(';'),
-                    brandImage: url === 'None' ? undefined : url,
-                    collection: Collection === 'None' ? undefined : Collection,
-                    brandName: brand,
-                  } as ProductPreviewInfo),
-              ),
-            }
-          : undefined
-      },
     }),
     getProductById: build.query({
       query: (id: string) => ({
@@ -240,21 +173,11 @@ interface createUserAndSendCodeBody {
   firstName?: string
   lastName?: string
 }
-interface getProductsBody {
-  sortBy: string
-  sortedValues: string
-  start?: number
-  end?: number
-  filterByPrice?: 'True' | 'False'
-  reverse?: 'True' | 'False'
-  search?: string
-}
 
 export const {
   useGetAllBrandsQuery,
   useGetBrandsBySexQuery,
   useGetTopBrandsQuery,
-  useGetProductsQuery,
   useGetProductByIdQuery,
   useCreateUserAndSendCodeMutation,
   useVerifyUserCodeMutation,
@@ -266,3 +189,120 @@ export const {
   useGetMainContentQuery,
   useGetCategoriesQuery,
 } = shopApi
+
+const ITEMS_PER_PAGE = 30
+interface getProductsBody {
+  sortBy?: string
+  sortedValues?: string
+  start?: number
+  filterByPrice?: 'True' | 'False'
+  reverse?: 'True' | 'False'
+  search?: string
+}
+
+/**
+ * @param sortBy - пробел служит разделителем, здесь указываются названия полей
+ * по которым должен происходить процесс фильтрации и одновременно сортировки
+ * @example ```ts
+ * "color Manufacturer" // сортировка и фильтрация по полям "color" и "Manufacturer"
+ * ```
+ * @param sortedValues - символ ≪;≫ служит разделителем между параметрами поля,
+ * а символ ≪,≫ разделяет значения параметра
+ * @example ```ts
+ * "черный,зеленый;Италия" // поле "color" должно быть "черный" или "зеленый", "Manufacturer" - "Италия"
+ * ```
+ * @param filterByPrice
+ * @param reverse
+ *
+ * @param start
+ * @param end !! end - start <= 200 !!
+ *
+ * Так вот, я все доки по RTK посмотрел, чат GPT просил(какие то не рабочии вообще решения
+ * предложил), смотрел как все хуки там работают и понял что придется все-таки использовать
+ * что-то отдельное от RTK в этом запросе если я хочу единожды вызывать где-то функцию и
+ * получить результат.
+ *
+ * Единственное что могло мне помочь в теории это `useLazyQuery`, но он вызывает 3 лишних
+ * ре-рендера,  которые не могу без отстойных костылей остановить(`useLazyQuery` не обладает
+ * skip опцией как `useQuery`☹️)
+ */
+export const useProductsList = ({
+  start = 0,
+  sortBy = 'stock',
+  sortedValues = '1',
+  filterByPrice = 'False',
+  reverse,
+  search,
+}: getProductsBody) => {
+  const [curData, setCurData] = useState<ProductsDataI | undefined>(undefined)
+  const countRef = useRef(start)
+
+  const transformResponse = (data: any) =>
+    data
+      ? {
+          count: data.Count,
+          data: data.Products.map(
+            ({
+              Collection,
+              url,
+              brand,
+              previewImages,
+              title,
+              largeImages,
+              isAvailable,
+              ...item
+            }: any) =>
+              ({
+                ...item,
+                previewImages: previewImages.split(';'),
+                isAvailable: isAvailable === '1',
+                title: title === 'None' ? undefined : title,
+                largeImages: largeImages.split(';'),
+                brandImage: url === 'None' ? undefined : url,
+                collection: Collection === 'None' ? undefined : Collection,
+                brandName: brand,
+              } as ProductPreviewInfo),
+          ),
+        }
+      : undefined
+
+  const fetchRes = useCallback(async () => {
+    console.log('fetchRes')
+    const res = await fetch('http://89.108.71.146:8000/sort_by_lite/', {
+      method: 'PATCH',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sort_by: sortBy,
+        key: sortedValues,
+        Price: filterByPrice,
+        reverse,
+        'start count': countRef.current,
+        'end count': countRef.current + ITEMS_PER_PAGE,
+        Search: search,
+      }),
+    })
+    const data = transformResponse(await res.json())
+    if (data?.data) {
+      setCurData(pr => ({
+        count: data.count,
+        data: [...(pr?.data ?? []), ...(data?.data ?? [])],
+      }))
+    }
+  }, [])
+
+  useEffect(() => {
+    countRef.current = start
+    setCurData(undefined)
+    fetchRes()
+  }, [sortBy, sortedValues, filterByPrice, reverse, search])
+
+  const loadNext = () => {
+    countRef.current = countRef.current + ITEMS_PER_PAGE
+    fetchRes()
+  }
+
+  return {curData, loadNext}
+}
