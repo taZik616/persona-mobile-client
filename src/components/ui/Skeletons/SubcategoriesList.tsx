@@ -10,7 +10,7 @@ export const SubcategoriesListSkeleton = () => {
   return (
     <>
       {emptyArr.map((_, id) => (
-        <BlockSkeleton key={id} width={s(90)} height={s(90) + 24} />
+        <BlockSkeleton key={id} width={s(140)} height={s(140) + 24} />
       ))}
     </>
   )

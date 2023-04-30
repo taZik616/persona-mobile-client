@@ -60,17 +60,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     rowGap: 8,
     columnGap: 16,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     flexWrap: 'wrap',
     paddingBottom: 30,
     paddingTop: 20,
   },
   item: {
-    width: s(90),
+    width: s(140),
   },
   flexOne: {flex: 1},
   image: {
-    height: s(90),
+    height: s(140),
     width: '100%',
   },
 })
