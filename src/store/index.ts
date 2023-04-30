@@ -15,6 +15,8 @@ import {
   persistStore,
 } from 'redux-persist'
 
+import {ProductInBasketI} from 'src/types'
+
 import {basketReducer} from './basketSlice'
 import {persistedFavoritesReducer} from './favoritesSlice'
 import {persistedGenderReducer} from './genderSlice'
@@ -66,6 +68,15 @@ export const selectBasketIds = (state: StoreStateType) =>
   state.basket.productIds
 export const selectBasketSelectedIds = (state: StoreStateType) =>
   state.basket.selectedItemIds
+
+export const selectBasketSelectedItems = (state: StoreStateType) => {
+  const items: ProductInBasketI[] = []
+  state.basket.selectedItemIds.forEach(id => {
+    const item = state.basket.items.find(a => a.productId === id)
+    item && items.push(item)
+  })
+  return items
+}
 
 export const selectFavorites = (state: StoreStateType) => state.favorites.items
 export const selectFavoritesCounter = (state: StoreStateType) =>

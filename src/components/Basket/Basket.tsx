@@ -74,7 +74,7 @@ export const Basket = memo(
                 </Button>
                 <Spacer height={16} />
                 <BuyBtn onPress={onPressBuy} />
-                <Spacer withBottomInsets height={20} />
+                <Spacer withBottomInsets height={28} />
               </SafeLandscapeView>
             ) : (
               <></>

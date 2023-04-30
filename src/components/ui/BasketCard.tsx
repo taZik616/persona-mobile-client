@@ -50,6 +50,7 @@ export const BasketCard = memo(
       priceGroup,
       brandImage,
       brandName,
+      isAvailable,
       productId,
     } = item
     const swipeableRef = useRef<any>(null)
@@ -74,7 +75,12 @@ export const BasketCard = memo(
           <View style={styles.container}>
             <View style={styles.topRowContainer}>
               <View style={styles.checkbox}>
-                <WrappedCheckBox item={item} onChangeSelect={onChangeSelect} />
+                {isAvailable && (
+                  <WrappedCheckBox
+                    item={item}
+                    onChangeSelect={onChangeSelect}
+                  />
+                )}
               </View>
               <GestureDetector
                 gesture={Gesture.Tap().onEnd(

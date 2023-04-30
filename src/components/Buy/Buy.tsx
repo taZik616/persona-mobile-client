@@ -3,6 +3,7 @@ import React from 'react'
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native'
 
 import {useScreenBlockPortrait} from 'src/hooks'
+import {selectBasketSelectedItems, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 
 import {CostLine} from './CostLine'
@@ -22,6 +23,13 @@ interface BuyProps {
 
 export const Buy = ({onPressAddCard, onSubmit}: BuyProps) => {
   useScreenBlockPortrait()
+  const products = useTypedSelector(selectBasketSelectedItems)
+
+  const orderPrice = products.reduce((acc, it) => acc + it.price, 0)
+  const deliveryPrice = 500
+  const discount = 200
+  const totalPrice = orderPrice + deliveryPrice - discount
+
   return (
     <>
       <Header title="Оформление" showBack hideSearch hideBasket />
@@ -42,10 +50,10 @@ export const Buy = ({onPressAddCard, onSubmit}: BuyProps) => {
         </SafeLandscapeView>
       </ScrollView>
       <SafeLandscapeView safeArea>
-        <CostLine name="Доставка" cost={500} />
-        <CostLine name="Итого" cost={96300} />
-        <CostLine name="Скидка" cost={0} />
-        <CostLine name="Итого к оплате" cost={96800} />
+        <CostLine name="Доставка" cost={deliveryPrice} />
+        <CostLine name="Итого" cost={orderPrice} />
+        <CostLine name="Скидка" cost={discount} />
+        <CostLine name="Итого к оплате" cost={totalPrice} />
         <Spacer height={12} />
         <View style={styles.flexRow}>
           <Button onPress={onSubmit}>Банковская карта</Button>
@@ -53,7 +61,7 @@ export const Buy = ({onPressAddCard, onSubmit}: BuyProps) => {
           <Button variant="outline">Another</Button>
         </View>
       </SafeLandscapeView>
-      <Spacer withBottomInsets height={20} />
+      <Spacer withBottomInsets height={28} />
     </>
   )
 }
