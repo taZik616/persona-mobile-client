@@ -34,6 +34,7 @@ export type RootStackParamList = {
   sizeChart: undefined
   buy: undefined
   fastBuy: {product: ProductInBasketI}
+  giftCard: undefined
 }
 
 export type CatalogStackParamList = {

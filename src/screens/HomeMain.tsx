@@ -45,9 +45,16 @@ export const HomeMainScreen = () => {
     navigate('productDetail', {item, productId: item.productId})
   }, [])
 
+  const onPressGiftCard = () => {
+    navigate('giftCard')
+  }
+
   return (
     <>
-      <HomeMain onPressContentItem={onPressContentItem} />
+      <HomeMain
+        onPressGiftCard={onPressGiftCard}
+        onPressContentItem={onPressContentItem}
+      />
       <FashionItemsPresent
         onPressProduct={onPressProduct}
         ref={fashionPresentRef}

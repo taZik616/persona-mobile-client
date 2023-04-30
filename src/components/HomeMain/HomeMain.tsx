@@ -6,6 +6,7 @@ import {ScrollView} from 'react-native'
 import {useGender} from 'src/hooks/useGender'
 import {useGetMainContentQuery} from 'src/store/shopApi'
 import {HomeMainContentI, HomeMainContentItem} from 'src/types'
+import {CARD_BORDER_RADIUS} from 'src/variables'
 
 import {LoadingSkeleton} from './LoadingSkeleton'
 import {RenderContent} from './RenderContent'
@@ -18,9 +19,13 @@ import {Swiper} from '../ui/Swiper'
 
 interface HomeMainProps {
   onPressContentItem?: (item: HomeMainContentItem, id: string) => void
+  onPressGiftCard?: () => void
 }
 
-export const HomeMain = ({onPressContentItem}: HomeMainProps) => {
+export const HomeMain = ({
+  onPressContentItem,
+  onPressGiftCard,
+}: HomeMainProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
   const page = useGetMainContentQuery(isMenSelected ? 'men' : 'women')
 
@@ -61,7 +66,8 @@ export const HomeMain = ({onPressContentItem}: HomeMainProps) => {
             <Spacer height={28} />
             <CardWithImageWHM
               autoWidth
-              borderRadius={32}
+              onPress={onPressGiftCard}
+              borderRadius={CARD_BORDER_RADIUS}
               uri={
                 'https://vadim-backet.s3.eu-central-1.amazonaws.com/PersonaCard.png'
               }

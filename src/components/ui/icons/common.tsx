@@ -491,3 +491,19 @@ export const CheckIcon = ({color = Color.primaryBlack, ...props}: SvgProps) => {
     </Svg>
   )
 }
+
+export const CircleCheckmarkIcon = ({
+  color = Color.secondaryGray,
+  ...props
+}: SvgProps) => {
+  return (
+    <Svg width={16} height={16} viewBox="0 0 16 16" fill="none" {...props}>
+      <Path
+        fill={color}
+        fillRule="evenodd"
+        d="M8 16a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm0-4a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+        clipRule="evenodd"
+      />
+    </Svg>
+  )
+}

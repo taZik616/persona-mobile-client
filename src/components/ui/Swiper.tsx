@@ -24,6 +24,7 @@ interface SwiperProps {
   type?: 'card-image' | 'big-image' | 'card-image-skeleton'
   images: string[]
   horizontalMargins?: number
+  borderRadius?: number
   onPress?: (id: number) => void
   hasVibration?: boolean
 }
@@ -35,6 +36,7 @@ export const Swiper = memo(
     onPress,
     hasVibration,
     horizontalMargins = 24,
+    borderRadius,
   }: SwiperProps) => {
     const currentIndex = useSharedValue(0)
     const scrollRef = useRef<Animated.ScrollView>(null)
@@ -93,6 +95,7 @@ export const Swiper = memo(
                     hasVibration && vibration.soft()
                     onPress?.(index)
                   }}
+                  borderRadius={borderRadius}
                   style={{width: activeWidth}}
                 />
               ) : type === 'card-image-skeleton' ? (

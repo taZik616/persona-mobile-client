@@ -14,6 +14,7 @@ import {ChangePasswordScreen} from './screens/ChangePassword'
 import {DEV_TestHapticScreen} from './screens/DEV_TestHaptic'
 import {DEV_TestNotification} from './screens/DEV_TestNotification'
 import {FastBuyScreen} from './screens/FastBuy'
+import {GiftCardScreen} from './screens/GiftCard'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
@@ -90,6 +91,7 @@ export const App = () => {
           <Stack.Screen name="sizeChart" component={SizeChartScreen} />
           <Stack.Screen name="buy" component={BuyScreen} />
           <Stack.Screen name="fastBuy" component={FastBuyScreen} />
+          <Stack.Screen name="giftCard" component={GiftCardScreen} />
           {__DEV__ ? (
             <>
               {/* @ts-ignore */}

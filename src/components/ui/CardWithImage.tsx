@@ -16,7 +16,7 @@ interface CardWithImageProps {
   uri: string
   autoWidth?: boolean
   style?: StyleProp<ViewStyle>
-  borderRadius?: number
+  borderRadius?: number | string
   onPress?: () => void
 }
 

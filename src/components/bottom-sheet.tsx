@@ -26,7 +26,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withTiming,
+  withSpring,
 } from 'react-native-reanimated'
 import {initialWindowMetrics} from 'react-native-safe-area-context'
 
@@ -34,13 +34,7 @@ import {useAndroidStatusBarAnimation} from 'src/hooks'
 import {useIsPortrait} from 'src/hooks/useIsPortrait'
 import {Color} from 'src/themes'
 import {sheetPointsT} from 'src/types'
-import {
-  ANIMATION_DURATION,
-  ANIMATION_TYPE,
-  IS_IOS,
-  SCREEN_H,
-  SCREEN_W,
-} from 'src/variables'
+import {IS_IOS, SCREEN_H, SCREEN_W, SPRING_ANIM_CONF} from 'src/variables'
 
 import {CrossIcon} from './ui/icons/common'
 import {SafeLandscapeView} from './ui/SafeLandscapeView'
@@ -148,11 +142,9 @@ export const BottomSheet = memo(
           bottomSheetTranslateY.value + translationY.value
         translationY.value = 0
 
-        bottomSheetTranslateY.value = withTiming(
+        bottomSheetTranslateY.value = withSpring(
           destSnapPoint,
-          {
-            duration: ANIMATION_DURATION,
-          },
+          SPRING_ANIM_CONF,
           success => {
             if (destSnapPoint === closedSnapPoint && success) {
               runOnJS(setIsVisible)(false)
@@ -202,12 +194,9 @@ export const BottomSheet = memo(
 
       const onClosePopup = useCallback(() => {
         toLight()
-        bottomSheetTranslateY.value = withTiming(
+        bottomSheetTranslateY.value = withSpring(
           closedSnapPoint,
-          {
-            duration: ANIMATION_DURATION,
-            easing: ANIMATION_TYPE,
-          },
+          SPRING_ANIM_CONF,
           () => {
             runOnJS(setIsVisible)(false)
             onClose && runOnJS(onClose)()
@@ -218,10 +207,10 @@ export const BottomSheet = memo(
       const onOpenPopup = useCallback(() => {
         setIsVisible(true)
         toDark()
-        bottomSheetTranslateY.value = withTiming(fullyOpenSnapPoint, {
-          duration: ANIMATION_DURATION,
-          easing: ANIMATION_TYPE,
-        })
+        bottomSheetTranslateY.value = withSpring(
+          fullyOpenSnapPoint,
+          SPRING_ANIM_CONF,
+        )
       }, [bottomSheetTranslateY, fullyOpenSnapPoint, toDark])
 
       useImperativeHandle(ref, () => ({

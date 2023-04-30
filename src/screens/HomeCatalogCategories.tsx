@@ -21,6 +21,14 @@ export const HomeCatalogCategoriesScreen = () => {
     },
     [],
   )
+  const onPressGiftCard = () => {
+    navigate('giftCard')
+  }
 
-  return <HomeCatalogCategories onPressCategory={onPressCategory} />
+  return (
+    <HomeCatalogCategories
+      onPressGiftCard={onPressGiftCard}
+      onPressCategory={onPressCategory}
+    />
+  )
 }

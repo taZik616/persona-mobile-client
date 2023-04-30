@@ -20,12 +20,7 @@ export type TextProps = Omit<RNTextProps, 'children'> & {
   gp4?: boolean
   gp5?: boolean
   maxWidth?: number
-  h4?: boolean
-  p1?: boolean
-  p2?: boolean
-  l1?: boolean
-  l2?: boolean
-  bold?: boolean
+  lineHeight?: number
   center?: boolean
   right?: boolean
   color?: string
@@ -67,13 +62,8 @@ export const Text = ({
   gp3,
   gp4,
   gp5,
+  lineHeight,
   maxWidth,
-  h4,
-  p1,
-  p2,
-  l1,
-  l2,
-  bold,
   center,
   right,
   color = Color.textBase1,
@@ -96,14 +86,8 @@ export const Text = ({
         gp3 && styles.gp3,
         gp4 && styles.gp4,
         gp5 && styles.gp5,
-        h4 && styles.headline4,
-        p1 && (bold ? styles.paragraphBold1 : styles.paragraph1),
-        p2 && (bold ? styles.paragraphBold2 : styles.paragraph2),
-        l1 && styles.label1,
-        l2 && styles.label2,
         style,
-        {maxWidth: maxWidth},
-        {color: color},
+        {maxWidth, lineHeight, color},
         center && styles.center,
         right && styles.right,
       ]}
@@ -147,7 +131,7 @@ const styles = StyleSheet.create({
   gp4: {
     fontFamily: 'GothamPro',
     fontSize: 13,
-    lineHeight: 16,
+    lineHeight: 18,
   },
   gp5: {
     fontFamily: 'GothamPro',
@@ -156,34 +140,6 @@ const styles = StyleSheet.create({
   gp6: {
     fontFamily: 'GothamPro-Medium',
     fontSize: 11,
-  },
-  headline4: {
-    fontFamily: 'Oswald-Bold',
-    fontSize: 18,
-  },
-  paragraph1: {
-    fontFamily: 'PTSans-Regular',
-    fontSize: 14,
-  },
-  paragraphBold1: {
-    fontFamily: 'PTSans-Bold',
-    fontSize: 14,
-  },
-  paragraph2: {
-    fontFamily: 'PTSans-Regular',
-    fontSize: 12,
-  },
-  paragraphBold2: {
-    fontFamily: 'PTSans-Bold',
-    fontSize: 12,
-  },
-  label1: {
-    fontFamily: 'Montserrat-Bold',
-    fontSize: 10,
-  },
-  label2: {
-    fontFamily: 'Montserrat-Bold',
-    fontSize: 12,
   },
   center: {
     textAlign: 'center',
