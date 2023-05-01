@@ -11,6 +11,7 @@ import {RootStackParamList} from 'src/types'
 import {BasketScreen} from './screens/Basket'
 import {BuyScreen} from './screens/Buy'
 import {ChangePasswordScreen} from './screens/ChangePassword'
+import {DEV_TestScreen} from './screens/DEV_Test'
 import {DEV_TestHapticScreen} from './screens/DEV_TestHaptic'
 import {DEV_TestNotification} from './screens/DEV_TestNotification'
 import {FastBuyScreen} from './screens/FastBuy'
@@ -56,7 +57,7 @@ export const App = () => {
       }}
       ref={navigator}>
       <Stack.Navigator
-        initialRouteName="home" // haptic|notification
+        initialRouteName="home" // haptic|notification|test
         screenOptions={basicScreenOptions}>
         <Stack.Screen name="home" component={Home} />
         <Stack.Group screenOptions={gestureEnabled}>
@@ -96,6 +97,8 @@ export const App = () => {
             <>
               {/* @ts-ignore */}
               <Stack.Screen name="haptic" component={DEV_TestHapticScreen} />
+              {/* @ts-ignore */}
+              <Stack.Screen name="test" component={DEV_TestScreen} />
               <Stack.Screen
                 // @ts-ignore
                 name="notification"

@@ -38,8 +38,12 @@ export const HomeNewProducts = memo(
           <RenderProductList
             showFilter
             showCounter
+            sortBy="stock"
+            sortedValues="1"
+            // sortBy="stock new"
+            // sortedValues="1;True"
             onPressSort={onPressSort}
-            start={10600}
+            start={0}
             onPressProduct={onPressProduct}
           />
         </>
