@@ -1,7 +1,9 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
-import {resetGenericPassword} from 'react-native-keychain'
+import {getGenericPassword, resetGenericPassword} from 'react-native-keychain'
 
-import {loadItemsToBasket} from './basketSlice'
+import {storePassword} from 'src/helpers/keychain'
+
+import {loadItemsToBasket, setBasketItems} from './basketSlice'
 import {loadItemsToFavorites} from './favoritesSlice'
 
 import {StoreStateType} from '.'
@@ -89,6 +91,7 @@ export const profileSlice = createSlice({
 export const whenExitHandler = async (dispatch: any) => {
   dispatch(setIsAuthenticated(false))
   dispatch(cleanUpUserInfo())
+  dispatch(setBasketItems([]))
   await resetGenericPassword()
 }
 
@@ -141,6 +144,28 @@ export const updateUserData =
 
     if (req.ok) {
       dispatch(setUserInfo(newInfo))
+    }
+  }
+
+export const updateUserPassword =
+  (newPass: string) =>
+  async (dispatch: any, getState: () => StoreStateType) => {
+    const req = await fetch('http://89.108.71.146:8000/personality/', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: getState().profile.authToken ?? '',
+      },
+      body: JSON.stringify({
+        password: newPass,
+      }),
+    })
+
+    if (req.ok) {
+      const prevCreds = await getGenericPassword()
+      if (prevCreds)
+        storePassword({user: prevCreds.username, password: newPass})
     }
   }
 

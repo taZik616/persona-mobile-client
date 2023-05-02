@@ -76,7 +76,7 @@ export const ProductCard = ({
           <View style={{width}}>
             {singleImage ? (
               <Image
-                resizeMode="cover"
+                resizeMode="contain"
                 style={styles.singleImage}
                 source={{uri: previewImages[0]}}
               />
@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
   addToCartButton: {
     paddingVertical: 8,
     paddingHorizontal: 10,
+    marginTop: 4,
     alignItems: 'center',
     borderColor: Color.primaryGray,
     borderRadius: 8,

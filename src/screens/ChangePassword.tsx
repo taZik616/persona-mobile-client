@@ -8,6 +8,8 @@ import * as yup from 'yup'
 import {ChangePassword} from 'src/components/ChangePassword'
 import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
+import {useTypedDispatch} from 'src/store'
+import {updateUserPassword} from 'src/store/profileSlice'
 
 const passwordEditSchema = yup
   .object({
@@ -21,6 +23,7 @@ type PasswordEditType = yup.InferType<typeof passwordEditSchema>
 
 export const ChangePasswordScreen = () => {
   const {goBack, navigate} = useTypedNavigation()
+  const dispatch = useTypedDispatch()
   const changePasswordRef = useRef<any>()
 
   const form = useForm<PasswordEditType>({
@@ -49,6 +52,7 @@ export const ChangePasswordScreen = () => {
             changePasswordRef.current?.setError('Пароли не совпадают')
           } else {
             vibration.success()
+            dispatch(updateUserPassword(newPassword))
             goBack()
           }
         },

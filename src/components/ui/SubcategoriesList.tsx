@@ -30,7 +30,7 @@ export const SubcategoriesList = memo(
           <FastImage
             style={styles.image}
             resizeMode="contain"
-            source={{uri: item.image}}
+            source={{uri: item.image, priority: FastImage.priority.high}}
           />
           <Spacer height={8} />
           <Text center cg4 numberOfLines={2}>

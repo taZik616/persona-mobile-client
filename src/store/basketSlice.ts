@@ -64,9 +64,10 @@ export const basketSlice = createSlice({
   },
 })
 
-const {setItems, removeItem, addItem} = basketSlice.actions
+const {removeItem, addItem} = basketSlice.actions
 
 export const {
+  setItems: setBasketItems,
   selectItem: selectBasketItem,
   deselectItem: deselectBasketItem,
   clearSelect: clearBasketSelect,
@@ -84,7 +85,7 @@ export const addItemToBasket =
  */
 export const loadItemsToBasket = async (dispatch: any) => {
   // await delay(2000) // const res = await fetch(`url/...`)
-  dispatch(setItems(fakeData))
+  dispatch(setBasketItems(fakeData))
 }
 /**
  * Удалить элемент по productId из корзины

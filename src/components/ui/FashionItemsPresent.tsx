@@ -86,7 +86,11 @@ export const FashionItem = memo(({onPress, ...item}: FashionItemProps) => {
   return (
     <Pressable onPress={() => onPress?.(item)}>
       <View style={styles.containerForHorizontalScroll}>
-        <Image style={styles.img} source={{uri: previewImages[0]}} />
+        <Image
+          resizeMode="contain"
+          style={styles.img}
+          source={{uri: previewImages[0]}}
+        />
         <Spacer height={8} />
         <View style={styles.brandOrNameContainer}>
           <Image

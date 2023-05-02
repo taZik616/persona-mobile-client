@@ -28,10 +28,9 @@ export const ProductCardRow = memo(
         <Spacer width={8} />
         <View style={styles.body}>
           <Spacer height={4} />
-          <Text numberOfLines={3} gp2>
+          <Text lineHeight={24} numberOfLines={3} gp2>
             {title}
           </Text>
-          <Spacer height={4} />
           <Text numberOfLines={2} gp4>
             {categoryName}
           </Text>
@@ -78,5 +77,6 @@ const styles = StyleSheet.create({
   },
   infoRight: {
     maxWidth: '40%',
+    paddingTop: 6,
   },
 })
