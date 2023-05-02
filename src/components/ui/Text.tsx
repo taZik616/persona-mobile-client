@@ -87,7 +87,8 @@ export const Text = ({
         gp4 && styles.gp4,
         gp5 && styles.gp5,
         style,
-        {maxWidth, lineHeight, color},
+        lineHeight ? {lineHeight} : undefined,
+        {maxWidth, color},
         center && styles.center,
         right && styles.right,
       ]}

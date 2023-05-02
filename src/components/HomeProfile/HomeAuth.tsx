@@ -7,7 +7,11 @@ import {captureException} from 'src/helpers'
 import {storePassword} from 'src/helpers/keychain'
 import {vibration} from 'src/services/vibration'
 import {useTypedDispatch} from 'src/store'
-import {getUserData, setIsAuthenticated} from 'src/store/profileSlice'
+import {
+  getUserData,
+  setAuthToken,
+  setIsAuthenticated,
+} from 'src/store/profileSlice'
 import {
   useCreateUserAndSendCodeMutation,
   useLoginMutation,
@@ -94,10 +98,11 @@ export const HomeAuth = ({
       if (res?.error?.data?.message) {
         vibration.error()
         setRequestError(res.error.data.message)
-      } else if (res?.data?.success) {
+      } else if (res?.data?.success && res.data.token) {
         vibration.success()
         dispatch(setIsAuthenticated(true))
-        dispatch(getUserData(telephone))
+        dispatch(setAuthToken(res.data.token))
+        dispatch(getUserData)
         await storePassword({user: telephone, password})
       } else {
         vibration.error()
@@ -122,7 +127,8 @@ export const HomeAuth = ({
       } else if (res?.data?.success) {
         vibration.success()
         dispatch(setIsAuthenticated(true))
-        dispatch(getUserData(telephone))
+        dispatch(setAuthToken(res.data.token))
+        dispatch(getUserData)
         onCloseModal()
         await storePassword({user: telephone, password: code})
       }

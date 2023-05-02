@@ -41,12 +41,14 @@ export const PersonalEditScreen = () => {
 
   const {email, dob, name, surname} = useTypedSelector(selectProfile)
 
+  const isValidDob = !isNaN(Date.parse(dob ?? ''))
+
   const form = useForm<PersonalEditType>({
     mode: 'onChange',
     resolver: yupResolver(personalEditSchema),
     defaultValues: {
       email,
-      dob: dob ? new Date(dob) : undefined,
+      dob: dob && isValidDob ? new Date(dob) : undefined,
       name,
       surname,
     },

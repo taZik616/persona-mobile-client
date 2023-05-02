@@ -4,6 +4,8 @@ import {resetGenericPassword} from 'react-native-keychain'
 import {loadItemsToBasket} from './basketSlice'
 import {loadItemsToFavorites} from './favoritesSlice'
 
+import {StoreStateType} from '.'
+
 interface initialStateType {
   isAuthenticated: boolean
   phoneNumber: string
@@ -15,6 +17,7 @@ interface initialStateType {
   subPush: boolean
   subEmail: boolean
   allowAppNotification: boolean
+  authToken: string | undefined
 }
 
 const initialState: initialStateType = {
@@ -28,6 +31,7 @@ const initialState: initialStateType = {
   subPush: false,
   subEmail: false,
   allowAppNotification: false,
+  authToken: undefined,
 }
 type updatableInfo = {
   name: string
@@ -60,6 +64,7 @@ export const profileSlice = createSlice({
       state.phoneNumber = ''
       state.dob = undefined
       state.email = undefined
+      state.authToken = undefined
     },
     setSubSms: (state, action: PayloadAction<boolean>) => {
       state.subSms = action.payload
@@ -74,35 +79,32 @@ export const profileSlice = createSlice({
       if (state.allowAppNotification !== action.payload)
         state.allowAppNotification = action.payload
     },
+    setAuthToken: (state, action: PayloadAction<string>) => {
+      const token = action.payload
+      if (state.authToken !== token) state.authToken = token
+    },
   },
 })
 
-export const cleanUserDataAndKeychain = async (dispatch: any) => {
-  await resetGenericPassword()
+export const whenExitHandler = async (dispatch: any) => {
+  dispatch(setIsAuthenticated(false))
   dispatch(cleanUpUserInfo())
+  await resetGenericPassword()
 }
 
-export const getUserData = (phoneNumber: string) => async (dispatch: any) => {
+export const getUserData = async (
+  dispatch: any,
+  getState: () => StoreStateType,
+) => {
   dispatch(loadItemsToFavorites)
   dispatch(loadItemsToBasket)
-  // dispatch(
-  //   setUserInfo({
-  //     dob: '2021-04-18T02:07:17.000Z',
-  //     email: 'vadim.prssoloff@gmail.com',
-  //     name: 'User',
-  //     surname: 'Super',
-  //   }),
-  // )
-  // dispatch(setPhoneNumber(phoneNumber))
   const req = await fetch('http://89.108.71.146:8000/getpersonal/', {
     method: 'PATCH',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: getState().profile.authToken ?? '',
     },
-    body: JSON.stringify({
-      Phone: phoneNumber,
-    }),
   })
   const data = await req.json()
 
@@ -115,31 +117,31 @@ export const getUserData = (phoneNumber: string) => async (dispatch: any) => {
         email: data.email,
       }),
     )
-    dispatch(setPhoneNumber(phoneNumber))
+    dispatch(setPhoneNumber(data.Phone))
   }
 }
 
 export const updateUserData =
-  (newInfo: updatableInfo) => async (dispatch: any) => {
-    // const req = await fetch('http://89.108.71.146:8000/personality/', {
-    //   method: 'PUT',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     Surname: newInfo.surname,
-    //     Name: newInfo.name,
-    //     Date_of_birth: newInfo.dob,
-    //     email: newInfo.email,
-    //   }),
-    // })
-    // const data = await req.json()
-    // console.log('🚀 - data:', data)
+  (newInfo: updatableInfo) =>
+  async (dispatch: any, getState: () => StoreStateType) => {
+    const req = await fetch('http://89.108.71.146:8000/personality/', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: getState().profile.authToken ?? '',
+      },
+      body: JSON.stringify({
+        Surname: newInfo.surname,
+        Name: newInfo.name,
+        Date_of_birth: newInfo.dob,
+        email: newInfo.email,
+      }),
+    })
 
-    // if (req.ok) {
-    dispatch(setUserInfo(newInfo))
-    // }
+    if (req.ok) {
+      dispatch(setUserInfo(newInfo))
+    }
   }
 
 export const {
@@ -151,5 +153,6 @@ export const {
   setSubEmail,
   setSubPush,
   setAllowAppNotification,
+  setAuthToken,
 } = profileSlice.actions
 export const profileReducer = profileSlice.reducer

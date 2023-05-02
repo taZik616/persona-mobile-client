@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
@@ -198,6 +198,7 @@ interface getProductsBody {
   filterByPrice?: 'True' | 'False'
   reverse?: 'True' | 'False'
   search?: string
+  ipp?: number
 }
 
 /**
@@ -233,6 +234,7 @@ export const useProductsList = ({
   filterByPrice = 'False',
   reverse,
   search,
+  ipp = ITEMS_PER_PAGE,
 }: getProductsBody) => {
   const [curData, setCurData] = useState<ProductsDataI | undefined>(undefined)
   const countRef = useRef(start)
@@ -266,7 +268,7 @@ export const useProductsList = ({
         }
       : undefined
 
-  const fetchRes = useCallback(async () => {
+  const fetchRes = async () => {
     const res = await fetch('http://89.108.71.146:8000/sort_by_lite/', {
       method: 'PATCH',
       headers: {
@@ -279,7 +281,7 @@ export const useProductsList = ({
         Price: filterByPrice,
         reverse,
         'start count': countRef.current,
-        'end count': countRef.current + ITEMS_PER_PAGE,
+        'end count': countRef.current + ipp,
         Search: search,
       }),
     })
@@ -290,7 +292,7 @@ export const useProductsList = ({
         data: [...(pr?.data ?? []), ...(data?.data ?? [])],
       }))
     }
-  }, [])
+  }
 
   useEffect(() => {
     countRef.current = start
@@ -304,7 +306,7 @@ export const useProductsList = ({
       curData?.count == null ||
       countRef.current < curData?.count
     ) {
-      countRef.current = countRef.current + ITEMS_PER_PAGE
+      countRef.current = countRef.current + ipp
       fetchRes()
     }
   }

@@ -25,6 +25,7 @@ export const Personal = ({
   const {email, dob, name, surname, phoneNumber} =
     useTypedSelector(selectProfile)
 
+  const isValidDob = !isNaN(Date.parse(dob ?? ''))
   return (
     <>
       <Header
@@ -41,7 +42,11 @@ export const Personal = ({
           <InfoLine value={surname} field="Фамилия" />
           <Spacer height={18} />
           <InfoLine
-            value={dob ? format(new Date(dob), 'dd.MM.yyyy') : undefined}
+            value={
+              dob && isValidDob
+                ? format(new Date(dob), 'dd.MM.yyyy')
+                : undefined
+            }
             field="Дата рождения"
           />
           <Spacer height={30} />
