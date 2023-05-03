@@ -247,7 +247,7 @@ export const useProductsList = ({
   sortBy = 'stock',
   sortedValues = '1',
   filterByPrice = 'False',
-  reverse,
+  reverse = 'False',
   search,
   ipp = ITEMS_PER_PAGE,
 }: getProductsBody) => {

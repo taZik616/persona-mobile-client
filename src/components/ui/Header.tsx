@@ -53,7 +53,7 @@ export const Header = memo(
     onPressRightText,
     onSearchSubmit,
   }: HeaderProps) => {
-    const {goBack} = useTypedNavigation()
+    const {goBack, navigate} = useTypedNavigation()
     const [isSearching, setIsSearching] = useState(false)
 
     const handleSearchSubmit = useCallback(
@@ -62,8 +62,10 @@ export const Header = memo(
         if (onSearchSubmit) {
           onSearchSubmit(text)
         } else {
-          // default behaviour here
-          console.log('Search - handleSubmit:', text)
+          navigate('allProducts', {
+            showGenderSelect: true,
+            search: text,
+          })
         }
       },
       [onSearchSubmit],

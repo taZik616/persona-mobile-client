@@ -35,6 +35,12 @@ export type RootStackParamList = {
   buy: undefined
   fastBuy: {product: ProductInBasketI}
   giftCard: undefined
+  allProducts: {
+    showGenderSelect?: boolean
+    brandIds?: string[]
+    categoryId?: string
+    search?: string
+  }
 }
 
 export type CatalogStackParamList = {

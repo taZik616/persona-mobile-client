@@ -20,17 +20,26 @@ export const HomeMainScreen = () => {
     (item: HomeMainContentItem, id: string) => {
       switch (item.type) {
         case MainContentItemType.BrandsList:
-          console.log('BrandsList:', item, id)
-          break
         case MainContentItemType.BrandsSwiper:
-          console.log('BrandsSwiper:', item, id)
+          const brandId = item.items.find(a => a.id === id)?.brandId
+          if (brandId) {
+            navigate('allProducts', {
+              brandIds: [brandId],
+              showGenderSelect: false,
+            })
+          }
           break
         case MainContentItemType.CategoriesList:
-          console.log('CategoriesList:', item, id)
+          const categoryId = item.items.find(a => a.id === id)?.categoryId
+          if (categoryId) {
+            navigate('allProducts', {
+              categoryId,
+              showGenderSelect: false,
+            })
+          }
           break
         case MainContentItemType.FashionList:
         case MainContentItemType.FashionSwiper:
-          console.log('FashionList or FashionSwiper:', item, id)
           const productIds = item.items.find(a => a.id === id)?.productIds
           if (productIds) {
             fashionPresentRef.current?.setProductIds(productIds)

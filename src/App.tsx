@@ -8,6 +8,7 @@ import {navigator} from 'src/navigator'
 import {Home} from 'src/screens/Home'
 import {RootStackParamList} from 'src/types'
 
+import {AllProductsScreen} from './screens/AllProducts'
 import {BasketScreen} from './screens/Basket'
 import {BuyScreen} from './screens/Buy'
 import {ChangePasswordScreen} from './screens/ChangePassword'
@@ -93,6 +94,7 @@ export const App = () => {
           <Stack.Screen name="buy" component={BuyScreen} />
           <Stack.Screen name="fastBuy" component={FastBuyScreen} />
           <Stack.Screen name="giftCard" component={GiftCardScreen} />
+          <Stack.Screen name="allProducts" component={AllProductsScreen} />
           {__DEV__ ? (
             <>
               {/* @ts-ignore */}
