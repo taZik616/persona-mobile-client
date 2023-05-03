@@ -1,4 +1,10 @@
-import React, {forwardRef, memo, useImperativeHandle, useState} from 'react'
+import React, {
+  forwardRef,
+  memo,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react'
 
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
@@ -13,18 +19,42 @@ interface HomeNewProductsProps {
   onPressProduct?: (item: ProductPreviewInfo) => void
   onPressSort?: () => void
 }
+type SortsT =
+  | 'priceFromLow'
+  | 'priceFromTop'
+  | 'firstTheOldOnes'
+  | 'latestUpdated'
 
 export const HomeNewProducts = memo(
   forwardRef<any, HomeNewProductsProps>(
     ({onPressProduct, onPressSort}, ref) => {
       const {isMenSelected, onChangeGender, values} = useGender()
-      const [sort, setSort] = useState<'True' | 'False' | undefined>(undefined)
+      const [sort, setSort] = useState<SortsT>('latestUpdated')
 
       useImperativeHandle(ref, () => ({
         setSort,
       }))
 
       useScreenBlockCurrent()
+
+      const sorting = useMemo(() => {
+        let filterByPrice: 'True' | 'False' = 'False'
+        let reverse: 'True' | 'False' = 'False'
+        switch (sort) {
+          case 'priceFromLow':
+            filterByPrice = 'True'
+            break
+          case 'priceFromTop':
+            filterByPrice = 'True'
+            reverse = 'True'
+            break
+          case 'firstTheOldOnes':
+            reverse = 'True'
+            break
+        }
+
+        return {reverse, filterByPrice}
+      }, [sort])
 
       return (
         <>
@@ -39,8 +69,8 @@ export const HomeNewProducts = memo(
             showFilter
             showCounter
             search={isMenSelected ? 'муж' : 'жен'}
-            reverse={sort}
-            filterByPrice={sort ? 'True' : 'False'}
+            reverse={sorting.reverse}
+            filterByPrice={sorting.filterByPrice}
             sortBy={`stock`}
             sortedValues={`1`}
             // sortBy="stock new"
