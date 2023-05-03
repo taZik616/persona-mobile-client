@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from 'react'
 
+import {APP_API_URL} from '@env'
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
 import {captureException} from 'src/helpers'
@@ -25,7 +26,7 @@ const transformBrandsResponse = (data: any) => {
 export const shopApi = createApi({
   reducerPath: 'shopApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://89.108.71.146:8000/',
+    baseUrl: `${APP_API_URL}/`,
     prepareHeaders: (headers, {getState}) => {
       const token = (getState() as StoreStateType).profile.authToken ?? ''
       headers.set('Authorization', token)
@@ -257,28 +258,7 @@ export const useProductsList = ({
     data
       ? {
           count: data.Count,
-          data: data.Products.map(
-            ({
-              Collection,
-              url,
-              brand,
-              previewImages,
-              title,
-              largeImages,
-              isAvailable,
-              ...item
-            }: any) =>
-              ({
-                ...item,
-                previewImages: previewImages.split(';'),
-                isAvailable: isAvailable === '1',
-                title: title === 'None' ? undefined : title,
-                largeImages: largeImages.split(';'),
-                brandImage: url === 'None' ? undefined : url,
-                collection: Collection === 'None' ? undefined : Collection,
-                brandName: brand,
-              } as ProductPreviewInfo),
-          ),
+          data: transformProductsResponse(data.Products),
         }
       : undefined
 
@@ -326,4 +306,29 @@ export const useProductsList = ({
   }
 
   return {curData, loadNext}
+}
+
+export const transformProductsResponse = (data: any[]) => {
+  return data.map(
+    ({
+      Collection,
+      url,
+      brand,
+      previewImages,
+      title,
+      largeImages,
+      isAvailable,
+      ...item
+    }: any) =>
+      ({
+        ...item,
+        previewImages: previewImages.split(';'),
+        isAvailable: isAvailable === '1',
+        title: title === 'None' ? undefined : title,
+        largeImages: largeImages.split(';'),
+        brandImage: url === 'None' ? undefined : url,
+        collection: Collection === 'None' ? undefined : Collection,
+        brandName: brand,
+      } as ProductPreviewInfo),
+  )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {APP_API_URL} from '@env'
 import {ScrollView} from 'react-native'
 
 import {Color} from 'src/themes'
@@ -26,9 +27,9 @@ export const GiftCard = ({onPressSelectNominal}: GiftCardProps) => {
         <Swiper
           borderRadius={CARD_BORDER_RADIUS}
           images={[
-            'http://89.108.71.146:8000/another_images/PersonaCard.jpg',
-            'http://89.108.71.146:8000/another_images/PersonaCard.jpg',
-            'http://89.108.71.146:8000/another_images/PersonaCard.jpg',
+            `${APP_API_URL}/another_images/PersonaCard.jpg`,
+            `${APP_API_URL}/another_images/PersonaCard.jpg`,
+            `${APP_API_URL}/another_images/PersonaCard.jpg`,
           ]}
         />
         <SafeLandscapeView safeArea>

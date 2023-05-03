@@ -1,3 +1,4 @@
+import {APP_API_URL} from '@env'
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import {getGenericPassword, resetGenericPassword} from 'react-native-keychain'
 
@@ -103,7 +104,7 @@ export const getUserData = async (
 ) => {
   dispatch(loadItemsToFavorites)
   dispatch(loadItemsToBasket)
-  const req = await fetch('http://89.108.71.146:8000/getpersonal/', {
+  const req = await fetch(`${APP_API_URL}/getpersonal/`, {
     method: 'PATCH',
     headers: {
       Accept: 'application/json',
@@ -129,7 +130,7 @@ export const getUserData = async (
 export const updateUserData =
   (newInfo: updatableInfo) =>
   async (dispatch: any, getState: () => StoreStateType) => {
-    const req = await fetch('http://89.108.71.146:8000/personality/', {
+    const req = await fetch(`${APP_API_URL}/personality/`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -151,7 +152,7 @@ export const updateUserData =
 
 export const updateUserPassword = async (curPass: string, newPass: string) => {
   try {
-    const req = await fetch('http://89.108.71.146:8000/personality/', {
+    const req = await fetch(`${APP_API_URL}/personality/`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
