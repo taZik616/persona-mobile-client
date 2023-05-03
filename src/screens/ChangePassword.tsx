@@ -2,13 +2,11 @@ import React, {useMemo, useRef} from 'react'
 
 import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
-import {getGenericPassword} from 'react-native-keychain'
 import * as yup from 'yup'
 
 import {ChangePassword} from 'src/components/ChangePassword'
 import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
-import {useTypedDispatch} from 'src/store'
 import {updateUserPassword} from 'src/store/profileSlice'
 
 const passwordEditSchema = yup
@@ -23,7 +21,6 @@ type PasswordEditType = yup.InferType<typeof passwordEditSchema>
 
 export const ChangePasswordScreen = () => {
   const {goBack, navigate} = useTypedNavigation()
-  const dispatch = useTypedDispatch()
   const changePasswordRef = useRef<any>()
 
   const form = useForm<PasswordEditType>({
@@ -40,20 +37,25 @@ export const ChangePasswordScreen = () => {
           currentPassword,
           newPasswordConfirmation,
         }: PasswordEditType) => {
-          const creds = await getGenericPassword()
-
-          if (creds && currentPassword !== creds.password) {
-            vibration.error()
-            changePasswordRef.current?.setError(
-              'Пароль от аккаунта и введенный не совпадают',
-            )
-          } else if (newPassword !== newPasswordConfirmation) {
+          // const creds = await getGenericPassword()
+          // if (creds && currentPassword !== creds.password) {
+          //   vibration.error()
+          //   changePasswordRef.current?.setError(
+          //     'Пароль от аккаунта и введенный не совпадают',
+          //   )
+          // } else
+          if (newPassword !== newPasswordConfirmation) {
             vibration.error()
             changePasswordRef.current?.setError('Пароли не совпадают')
           } else {
-            vibration.success()
-            dispatch(updateUserPassword(newPassword))
-            goBack()
+            const error = await updateUserPassword(currentPassword, newPassword)
+            if (error) {
+              vibration.error()
+              changePasswordRef.current?.setError(error)
+            } else {
+              vibration.success()
+              goBack()
+            }
           }
         },
         (error: any) => {

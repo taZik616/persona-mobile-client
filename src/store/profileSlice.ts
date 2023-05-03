@@ -1,12 +1,14 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import {getGenericPassword, resetGenericPassword} from 'react-native-keychain'
 
+import {captureException} from 'src/helpers'
 import {storePassword} from 'src/helpers/keychain'
+import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
 import {loadItemsToBasket, setBasketItems} from './basketSlice'
 import {loadItemsToFavorites} from './favoritesSlice'
 
-import {StoreStateType} from '.'
+import {StoreStateType, store} from '.'
 
 interface initialStateType {
   isAuthenticated: boolean
@@ -147,18 +149,18 @@ export const updateUserData =
     }
   }
 
-export const updateUserPassword =
-  (newPass: string) =>
-  async (dispatch: any, getState: () => StoreStateType) => {
+export const updateUserPassword = async (curPass: string, newPass: string) => {
+  try {
     const req = await fetch('http://89.108.71.146:8000/personality/', {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: getState().profile.authToken ?? '',
+        Authorization: store.getState().profile.authToken ?? '',
       },
       body: JSON.stringify({
-        password: newPass,
+        password: curPass,
+        new_password: newPass,
       }),
     })
 
@@ -167,7 +169,17 @@ export const updateUserPassword =
       if (prevCreds)
         storePassword({user: prevCreds.username, password: newPass})
     }
+    const res = await req.json()
+    if (res.success) {
+      return
+    } else {
+      return res?.failed || UNKNOWN_ERROR_MSG
+    }
+  } catch (error) {
+    captureException(error)
+    return UNKNOWN_ERROR_MSG
   }
+}
 
 export const {
   setIsAuthenticated,

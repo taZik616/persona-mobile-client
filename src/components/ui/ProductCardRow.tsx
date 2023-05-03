@@ -28,7 +28,7 @@ export const ProductCardRow = memo(
         <Spacer width={8} />
         <View style={styles.body}>
           <Spacer height={4} />
-          <Text lineHeight={24} numberOfLines={3} gp2>
+          <Text lineHeight={24} numberOfLines={2} gp2>
             {title}
           </Text>
           <Text numberOfLines={2} gp4>

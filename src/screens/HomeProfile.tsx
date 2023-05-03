@@ -19,7 +19,6 @@ export const HomeProfileScreen = () => {
   const onPressRecentlyItem = (item: ProductPreviewInfo) =>
     navigate('productDetail', {item, productId: item.productId})
   const onPressExit = () => {
-    console.log('exit')
     dispatch(whenExitHandler)
   }
 
