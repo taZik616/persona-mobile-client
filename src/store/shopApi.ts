@@ -6,6 +6,8 @@ import {captureException} from 'src/helpers'
 import {ProductPreviewInfo, ProductsDataI, helpDetailKey} from 'src/types'
 import {groupByAlphabetical} from 'src/variables/groupByAlphabetical'
 
+import {StoreStateType} from '.'
+
 const transformBrandsResponse = (data: any) => {
   try {
     return data
@@ -24,6 +26,11 @@ export const shopApi = createApi({
   reducerPath: 'shopApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://89.108.71.146:8000/',
+    prepareHeaders: (headers, {getState}) => {
+      const token = (getState() as StoreStateType).profile.authToken ?? ''
+      headers.set('Authorization', token)
+      return headers
+    },
   }),
   endpoints: build => ({
     getAllBrands: build.query({
@@ -148,6 +155,12 @@ export const shopApi = createApi({
         },
       }),
     }),
+    getOrders: build.query({
+      query: () => ({
+        url: 'order/',
+        method: 'PATCH',
+      }),
+    }),
   }),
 })
 
@@ -188,6 +201,7 @@ export const {
   useChangePasswordMutation,
   useGetMainContentQuery,
   useGetCategoriesQuery,
+  useGetOrdersQuery,
 } = shopApi
 
 const ITEMS_PER_PAGE = 30

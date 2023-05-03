@@ -18,7 +18,7 @@ export const HomeNewProducts = memo(
   forwardRef<any, HomeNewProductsProps>(
     ({onPressProduct, onPressSort}, ref) => {
       const {isMenSelected, onChangeGender, values} = useGender()
-      const [sort, setSort] = useState('')
+      const [sort, setSort] = useState<'True' | 'False' | undefined>(undefined)
 
       useImperativeHandle(ref, () => ({
         setSort,
@@ -38,8 +38,11 @@ export const HomeNewProducts = memo(
           <RenderProductList
             showFilter
             showCounter
-            sortBy="stock"
-            sortedValues="1"
+            search={isMenSelected ? 'муж' : 'жен'}
+            reverse={sort}
+            filterByPrice={sort ? 'True' : 'False'}
+            sortBy={`stock`}
+            sortedValues={`1`}
             // sortBy="stock new"
             // sortedValues="1;True"
             onPressSort={onPressSort}

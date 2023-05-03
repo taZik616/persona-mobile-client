@@ -67,9 +67,10 @@ export const HomeAuth = ({
     async (formData: RegistryFormType) => {
       try {
         const res: any = await createUserSendCode(formData)
-        if (res?.error?.data.message) {
+        console.log('🚀 - res:', res)
+        if (res?.error?.data?.error) {
           vibration.error()
-          setRequestError(res?.error?.data.message)
+          setRequestError(res.error.data.error)
           return
         } else if (res?.data?.success) {
           vibration.success()
@@ -95,7 +96,7 @@ export const HomeAuth = ({
         username: telephone,
         password,
       })
-      if (res?.error?.data?.message) {
+      if (res?.error?.data?.error) {
         vibration.error()
         setRequestError(res.error.data.message)
       } else if (res?.data?.success && res.data.token) {

@@ -3,6 +3,7 @@ import React, {memo} from 'react'
 import {FlashList} from '@shopify/flash-list'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
+import {useGetOrdersQuery} from 'src/store/shopApi'
 import {OrderInfoInterface} from 'src/types'
 
 import {Header} from '../ui/Header'
@@ -17,6 +18,8 @@ interface OrdersProps {
 
 export const Orders = memo(
   ({onPressProductItem, orders, onPressOrder}: OrdersProps) => {
+    const data = useGetOrdersQuery({})
+    console.log('🚀 - data:', data.currentData)
     return (
       <>
         <Header title="Ваши заказы" showBack hideSearch hideBasket />

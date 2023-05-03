@@ -19,9 +19,12 @@ export const HomeNewProductsScreen = () => {
   }, [])
 
   const onChangeSort = useCallback((id: string) => {
-    console.log('onChangeSort:', id)
-    componentRef.current?.setSort(id)
+    componentRef.current?.setSort(id === 'priceFromLow' ? 'False' : 'True')
   }, [])
+
+  // const onClearSort = useCallback(() => {
+  //   componentRef.current?.setSort(undefined)
+  // }, [])
 
   return (
     <>
@@ -40,16 +43,16 @@ export const HomeNewProductsScreen = () => {
 }
 
 const sortOptions: SortItemI[] = [
-  {
-    name: 'Новые поступления',
-    id: 'new',
-  },
+  // {
+  //   name: 'Новые поступления',
+  //   id: 'new',
+  // },
   {
     name: 'По возрастанию цены',
     id: 'priceFromLow',
   },
   {
-    name: 'Новые поступления',
+    name: 'По убыванию цены',
     id: 'priceFromTop',
   },
 ]
