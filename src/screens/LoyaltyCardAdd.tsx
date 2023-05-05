@@ -1,10 +1,11 @@
-import React, {useRef, useState} from 'react'
+import React, {useCallback, useRef, useState} from 'react'
 
 import ImagePicker from 'react-native-image-crop-picker'
 import {recognizeTextFromLocalImage} from 'react-native-text-recognizer'
 
 import {LoyaltyCardAdd} from 'src/components/LoyaltyCardAdd'
 import {ActionsSheet} from 'src/components/ui/ActionsSheet'
+import {OTPModal, OTPModalRefType} from 'src/components/ui/OTPModal'
 import {captureException} from 'src/helpers'
 import {findCardNumberInArray} from 'src/helpers/findCardNumberInArray'
 import {
@@ -19,11 +20,14 @@ export const LoyaltyCardAddScreen = () => {
     useCameraPermissions()
   const {isAllowed: isAllowedGallery, requestGalleryPermission} =
     useGalleryPermissions()
+  const otpModalRef = useRef<OTPModalRefType>(null)
 
   const [isOpenAS, setIsOpenAS] = useState(false)
   const componentRef = useRef<any>(null)
+  // const [loyaltyCodeSend] = useLoyaltyCodeSendMutation()
+  // const [loyaltyCodeValidate] = useLoyaltyCodeValidateMutation()
 
-  const handleRecognize = async (localImgPath: string) => {
+  const handleRecognize = useCallback(async (localImgPath: string) => {
     const res = await recognizeTextFromLocalImage(localImgPath)
 
     const cardNumber = findCardNumberInArray(res)
@@ -37,14 +41,14 @@ export const LoyaltyCardAddScreen = () => {
       vibration.error()
       componentRef.current?.setError?.('Не удалось распознать номер карты.')
     }
-  }
+  }, [])
 
-  const onPressScanCard = () => {
+  const onPressScanCard = useCallback(() => {
     vibration.light()
     setIsOpenAS(true)
-  }
+  }, [])
 
-  const takePhoto = async () => {
+  const takePhoto = useCallback(async () => {
     try {
       setIsOpenAS(false)
 
@@ -58,9 +62,9 @@ export const LoyaltyCardAddScreen = () => {
     } catch (error) {
       captureException(error)
     }
-  }
+  }, [isAllowedCamera, requestCameraPermission, handleRecognize])
 
-  const choicePhoto = async () => {
+  const choicePhoto = useCallback(async () => {
     setIsOpenAS(false)
     const canChoicePhoto = isAllowedGallery
       ? true
@@ -70,15 +74,46 @@ export const LoyaltyCardAddScreen = () => {
       const img = await ImagePicker.openPicker(imagePickerCardConfig)
       handleRecognize(img.path)
     }
-  }
+  }, [isAllowedGallery, requestGalleryPermission, handleRecognize])
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     setIsOpenAS(false)
-  }
+  }, [])
+
+  const sendVerifySms = useCallback(
+    () => () => {
+      vibration.rigid()
+      // loyaltyCodeSend({userPhone:telephone})// Тут вообще не должен быть телефон
+      otpModalRef.current?.resetTimer()
+    },
+    [],
+  )
+
+  const onVerify = useCallback(() => {
+    otpModalRef.current?.openModal()
+    sendVerifySms()
+    setTimeout(() => {
+      otpModalRef.current?.setTextInfo(
+        'На номер владельца данной карты лояльности отправлен вызов с кодом подтверждения',
+      )
+    }, 300)
+  }, [sendVerifySms])
+
+  const onCloseModal = useCallback(() => {
+    otpModalRef.current?.closeModal()
+  }, [])
+
+  const onCheckOtp = useCallback(() => {
+    // loyaltyCodeValidate
+  }, [])
 
   return (
     <>
-      <LoyaltyCardAdd ref={componentRef} onPressScanCard={onPressScanCard} />
+      <LoyaltyCardAdd
+        ref={componentRef}
+        onNext={onVerify}
+        onPressScanCard={onPressScanCard}
+      />
       {isOpenAS && (
         <ActionsSheet
           firstOpt="Сделать фотографию"
@@ -88,6 +123,12 @@ export const LoyaltyCardAddScreen = () => {
           onPressSecondOpt={choicePhoto}
         />
       )}
+      <OTPModal
+        sendVerifySms={sendVerifySms}
+        onSubmit={onCheckOtp}
+        onCloseModal={onCloseModal}
+        ref={otpModalRef}
+      />
     </>
   )
 }

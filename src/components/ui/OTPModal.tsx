@@ -28,6 +28,7 @@ interface OTPModalProps {
 
 export interface OTPModalRefType {
   setPhoneNumber: (phoneNum: string) => void
+  setTextInfo: (text: string | undefined) => void
   resetTimer: () => void
   setError: (error: string) => void
   openModal: () => void
@@ -39,6 +40,7 @@ export const OTPModal = memo(
     ({onCloseModal, sendVerifySms, onSubmit}, ref) => {
       const [otpCode, setOtpCode] = useState('')
       const [phone, setPhone] = useState('')
+      const [textInfo, setTextInfo] = useState<string | undefined>(undefined)
       const [error, setError] = useState('')
 
       const [showSmsConfirmModal, setShowSmsConfirmModal] = useState(false)
@@ -55,6 +57,12 @@ export const OTPModal = memo(
           timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
         },
         setError,
+        setTextInfo(text) {
+          setTextInfo(text)
+          timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
+          console.log('🚀 - resetTimer:', timerRef.current)
+        },
+
         openModal: () => {
           setShowSmsConfirmModal(true)
           setShowModal(true)
@@ -106,13 +114,19 @@ export const OTPModal = memo(
                     Подтвердить
                   </Button>
                   <Spacer height={16} />
-                  <Text center style={styles.text}>
-                    <Text gp1>
-                      Мы направили телефонный звонок с кодом подтверждения на
-                      номер{' '}
+                  {textInfo ? (
+                    <Text center gp1 style={styles.text}>
+                      {textInfo}
                     </Text>
-                    <Text gp6>{phone}</Text>
-                  </Text>
+                  ) : (
+                    <Text center style={styles.text}>
+                      <Text gp1>
+                        Мы направили телефонный звонок с кодом подтверждения на
+                        номер{' '}
+                      </Text>
+                      <Text gp6>{phone}</Text>
+                    </Text>
+                  )}
                   <Spacer height={8} />
                   <ResendTimer
                     onResend={sendVerifySms?.(phone)}
@@ -130,41 +144,43 @@ export const OTPModal = memo(
   ),
 )
 
-const ResendTimer = forwardRef(({onResend}: {onResend?: () => void}, ref) => {
-  const [seconds, setSeconds] = useState(0)
-  const intervalId = useRef<number>(0)
+const ResendTimer = memo(
+  forwardRef(({onResend}: {onResend?: () => void}, ref) => {
+    const [seconds, setSeconds] = useState(0)
+    const intervalId = useRef<number>(0)
 
-  useImperativeHandle(ref, () => ({
-    resetTimer(secondsAmount: number) {
-      clearInterval(intervalId.current)
-      setSeconds(secondsAmount)
+    useImperativeHandle(ref, () => ({
+      resetTimer(secondsAmount: number) {
+        clearInterval(intervalId.current)
+        setSeconds(secondsAmount)
 
-      intervalId.current = setInterval(() => {
-        setSeconds(pr => {
-          if (pr <= 1) {
-            clearInterval(intervalId.current)
-            return pr - 1
-          } else {
-            return pr - 1
-          }
-        })
-      }, 1000)
-    },
-  }))
+        intervalId.current = setInterval(() => {
+          setSeconds(pr => {
+            if (pr <= 1) {
+              clearInterval(intervalId.current)
+              return pr - 1
+            } else {
+              return pr - 1
+            }
+          })
+        }, 1000)
+      },
+    }))
 
-  return seconds > 0 ? (
-    <Text center style={styles.text}>
-      <Text gp1>Запросить повторный звонок можно будет через </Text>
-      <Text gp6>{formatSecondsTimer(seconds)}</Text>
-    </Text>
-  ) : (
-    <TouchableOpacity onPress={onResend}>
-      <Text center color={Color.primary} gp1 style={styles.text}>
-        Получить новый код
+    return seconds > 0 ? (
+      <Text center style={styles.text}>
+        <Text gp1>Запросить повторный звонок можно будет через </Text>
+        <Text gp6>{formatSecondsTimer(seconds)}</Text>
       </Text>
-    </TouchableOpacity>
-  )
-})
+    ) : (
+      <TouchableOpacity onPress={onResend}>
+        <Text center color={Color.primary} gp1 style={styles.text}>
+          Получить новый код
+        </Text>
+      </TouchableOpacity>
+    )
+  }),
+)
 
 const styles = StyleSheet.create({
   modalPopup: {

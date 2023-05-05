@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {memo, useEffect} from 'react'
 
 import {Keyboard, StyleSheet, View, useWindowDimensions} from 'react-native'
 import {TouchableOpacity} from 'react-native-gesture-handler'
@@ -27,81 +27,84 @@ const timingInAnimationConfig: WithTimingConfig = {
   easing: Easing.out(Easing.quad),
 }
 
-export const ActionsSheet = ({
-  firstOpt,
-  onPressFirstOpt,
-  secondOpt,
-  onCancel,
-  onPressSecondOpt,
-  title,
-}: ActionsSheetProps) => {
-  const {height: H} = useWindowDimensions()
+export const ActionsSheet = memo(
+  ({
+    firstOpt,
+    onPressFirstOpt,
+    secondOpt,
+    onCancel,
+    onPressSecondOpt,
+    title,
+  }: ActionsSheetProps) => {
+    const {height: H} = useWindowDimensions()
 
-  const fullyOpen = 0
-  const fullyClosed = H * 0.45
+    const fullyOpen = 0
+    const fullyClosed = H * 0.45
 
-  const fadeAnim = useSharedValue(fullyClosed)
+    const fadeAnim = useSharedValue(fullyClosed)
 
-  const fadeOut = (endCallback?: () => void) => {
-    const onEnd = () => endCallback?.()
-    fadeAnim.value = withTiming(fullyClosed, timingOutAnimationConfig, () =>
-      runOnJS(onEnd)(),
+    const fadeOut = (endCallback?: () => void) => {
+      const onEnd = () => endCallback?.()
+      fadeAnim.value = withTiming(fullyClosed, timingOutAnimationConfig, () =>
+        runOnJS(onEnd)(),
+      )
+    }
+
+    useEffect(() => {
+      Keyboard.dismiss()
+      fadeAnim.value = withTiming(fullyOpen, timingInAnimationConfig)
+    }, [fadeAnim])
+
+    const bgAnimation = useAnimatedStyle(() => ({
+      opacity: interpolate(fadeAnim.value, [fullyOpen, fullyClosed], [0.5, 0]),
+    }))
+
+    const slideFromBottomAnimation = useAnimatedStyle(() => ({
+      transform: [{translateY: fadeAnim.value}],
+    }))
+
+    const handleSecondOpt = () => fadeOut(onPressSecondOpt)
+
+    const handleFirstOpt = () => fadeOut(onPressFirstOpt)
+
+    const handleCancel = () => fadeOut(onCancel)
+
+    return (
+      <View style={StyleSheet.absoluteFillObject}>
+        <Animated.View style={[styles.animateView, bgAnimation]} />
+        <Animated.View
+          style={[styles.animateViewFade, slideFromBottomAnimation]}>
+          <View style={styles.top}>
+            {title && (
+              <Text color={Color.primaryGray} gp1 style={styles.t8}>
+                {title}
+              </Text>
+            )}
+            <View style={styles.line} />
+            <TouchableOpacity style={styles.margin} onPress={handleFirstOpt}>
+              <Text color={Color.textBlue1} gp5>
+                {firstOpt}
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.line} />
+            <TouchableOpacity style={styles.margin} onPress={handleSecondOpt}>
+              <Text color={Color.textBlue1} gp5>
+                {secondOpt}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.bottom}>
+            <TouchableOpacity style={styles.margin} onPress={handleCancel}>
+              <Text color={Color.textRed1} gp5>
+                Отмена
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+      </View>
     )
-  }
-
-  useEffect(() => {
-    Keyboard.dismiss()
-    fadeAnim.value = withTiming(fullyOpen, timingInAnimationConfig)
-  }, [fadeAnim])
-
-  const bgAnimation = useAnimatedStyle(() => ({
-    opacity: interpolate(fadeAnim.value, [fullyOpen, fullyClosed], [0.5, 0]),
-  }))
-
-  const slideFromBottomAnimation = useAnimatedStyle(() => ({
-    transform: [{translateY: fadeAnim.value}],
-  }))
-
-  const handleSecondOpt = () => fadeOut(onPressSecondOpt)
-
-  const handleFirstOpt = () => fadeOut(onPressFirstOpt)
-
-  const handleCancel = () => fadeOut(onCancel)
-
-  return (
-    <View style={StyleSheet.absoluteFillObject}>
-      <Animated.View style={[styles.animateView, bgAnimation]} />
-      <Animated.View style={[styles.animateViewFade, slideFromBottomAnimation]}>
-        <View style={styles.top}>
-          {title && (
-            <Text color={Color.primaryGray} gp1 style={styles.t8}>
-              {title}
-            </Text>
-          )}
-          <View style={styles.line} />
-          <TouchableOpacity style={styles.margin} onPress={handleFirstOpt}>
-            <Text color={Color.textBlue1} gp5>
-              {firstOpt}
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.line} />
-          <TouchableOpacity style={styles.margin} onPress={handleSecondOpt}>
-            <Text color={Color.textBlue1} gp5>
-              {secondOpt}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.bottom}>
-          <TouchableOpacity style={styles.margin} onPress={handleCancel}>
-            <Text color={Color.textRed1} gp5>
-              Отмена
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Animated.View>
-    </View>
-  )
-}
+  },
+)
 
 const styles = StyleSheet.create({
   top: {

@@ -130,6 +130,25 @@ export const shopApi = createApi({
         },
       }),
     }),
+    loyaltyCodeSend: build.mutation({
+      query: ({userPhone}: Omit<LoyaltyCodeValidateBody, 'code'>) => ({
+        url: 'loyaltycard/',
+        method: 'POST',
+        body: {
+          UserPhone: userPhone, // Тут по номеру карты должно быть и данные о юззере беруться по токену
+        },
+      }),
+    }),
+    loyaltyCodeValidate: build.mutation({
+      query: ({userPhone, code}: LoyaltyCodeValidateBody) => ({
+        url: 'loyaltycardvalidate/',
+        method: 'PUT',
+        body: {
+          UserPhone: userPhone,
+          code,
+        },
+      }),
+    }),
     getHelpDetails: build.query({
       query: (type: helpDetailKey) => ({
         url: `${type}/`,
@@ -165,6 +184,10 @@ export const shopApi = createApi({
   }),
 })
 
+interface LoyaltyCodeValidateBody {
+  userPhone: string
+  code: string
+}
 interface getCategoriesBody {
   gender?: 'men' | 'women'
   category?: 'Main' | string
@@ -198,8 +221,10 @@ export const {
   useGetHelpDetailsQuery,
   useLoginMutation,
   useRecoveryPasswordSendCodeMutation,
-  useRecoveryPasswordVerifyCodeMutation,
   useChangePasswordMutation,
+  useLoyaltyCodeSendMutation,
+  useLoyaltyCodeValidateMutation,
+  useRecoveryPasswordVerifyCodeMutation,
   useGetMainContentQuery,
   useGetCategoriesQuery,
   useGetOrdersQuery,
