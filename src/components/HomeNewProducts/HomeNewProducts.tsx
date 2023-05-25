@@ -2,10 +2,11 @@ import React, {forwardRef, memo, useImperativeHandle, useState} from 'react'
 
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
+import {ProductsParams} from 'src/store/shopApi'
 import {ProductPreviewInfo} from 'src/types'
 
 import {Header} from '../ui/Header'
-import {ListOrderType, RenderProductList} from '../ui/RenderProductList'
+import {RenderProductList} from '../ui/RenderProductList'
 import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
 import {Spacer} from '../ui/Spacer'
 
@@ -18,10 +19,11 @@ export const HomeNewProducts = memo(
   forwardRef<any, HomeNewProductsProps>(
     ({onPressProduct, onPressSort}, ref) => {
       const {isMenSelected, onChangeGender, values} = useGender()
-      const [sort, setSort] = useState<ListOrderType>('latestUpdated')
+      const [ordering, setOrdering] =
+        useState<ProductsParams['ordering']>('-lastUpdate')
 
       useImperativeHandle(ref, () => ({
-        setSort,
+        setOrdering,
       }))
 
       useScreenBlockCurrent()
@@ -38,12 +40,9 @@ export const HomeNewProducts = memo(
           <RenderProductList
             showFilter
             showCounter
-            search={isMenSelected ? 'муж' : 'жен'}
-            listOrder={sort}
-            sortBy={`stock`}
-            sortedValues={`1`}
-            // sortBy="stock new"
-            // sortedValues="1;True"
+            gender={isMenSelected ? 'men' : 'women'}
+            ordering={ordering}
+            isNew="True"
             onPressSort={onPressSort}
             onPressProduct={onPressProduct}
           />

@@ -12,7 +12,7 @@ import {selectProfile, useTypedSelector} from 'src/store'
 import {
   useRecoveryPasswordSendCodeMutation,
   useRecoveryPasswordVerifyCodeMutation,
-} from 'src/store/shopApi'
+} from 'src/store/shopApi/shopApi'
 import {PHONE_VALIDATION_REGEXP, UNKNOWN_ERROR_MSG} from 'src/variables'
 
 const phoneEnterSchema = yup

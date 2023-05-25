@@ -1,10 +1,11 @@
 import React from 'react'
 
+import {APP_API_URL} from '@env'
 import {nanoid} from '@reduxjs/toolkit'
 import {FlatList, ScrollView} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
-import {useGetCategoriesQuery} from 'src/store/shopApi'
+import {useCategoriesQuery} from 'src/store/shopApi/shopApi'
 import {CategoryI} from 'src/types'
 
 import {CategoryCardWHM} from './CategoryCard'
@@ -23,7 +24,10 @@ export const HomeCatalogCategories = ({
   onPressGiftCard,
 }: HomeCatalogCategoriesProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
-  const data = useGetCategoriesQuery({gender: isMenSelected ? 'men' : 'women'})
+  const data = useCategoriesQuery({
+    gender: isMenSelected ? 'men' : 'women',
+    level: 1,
+  })
 
   return (
     <>
@@ -38,26 +42,22 @@ export const HomeCatalogCategories = ({
         <Spacer height={16} />
         <FlatList
           scrollEnabled={false}
-          renderItem={({item: {title, image, fullTitle, categoryId}}) => (
+          renderItem={({item}) => (
             <CategoryCardWHM
-              imgUri={image}
-              title={title}
-              onPress={
-                categoryId ? id => onPressCategory?.(id, fullTitle) : undefined
-              }
-              categoryId={categoryId}
+              {...item}
+              onPress={id => onPressCategory?.(id, item.name)}
             />
           )}
           ItemSeparatorComponent={() => <Spacer height={16} />}
-          keyExtractor={(a, id) => a.categoryId || String(id)}
+          keyExtractor={a => a.categoryId}
           data={
             data.currentData ? data.currentData : emptyArr // скелетон нет нужды делать, так можно)
           }
         />
         <Spacer height={16} />
         <CategoryCardWHM
-          imgUri="https://vadim-backet.s3.eu-central-1.amazonaws.com/catalog_card.jpg"
-          title="ПОДАРОЧНАЯ КАРТА"
+          image={`${APP_API_URL}/media/another-images/catalog_card.jpg`}
+          name="ПОДАРОЧНАЯ КАРТА"
           onPress={onPressGiftCard}
           categoryId="gift card"
         />
@@ -68,9 +68,8 @@ export const HomeCatalogCategories = ({
 }
 
 const emptyEl = (): CategoryI => ({
-  title: '',
+  name: '',
   image: '',
-  fullTitle: '',
   categoryId: nanoid(),
 })
 const emptyArr = [emptyEl(), emptyEl(), emptyEl(), emptyEl()]

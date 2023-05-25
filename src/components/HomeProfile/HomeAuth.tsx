@@ -16,7 +16,7 @@ import {
   useCreateUserAndSendCodeMutation,
   useLoginMutation,
   useVerifyUserCodeMutation,
-} from 'src/store/shopApi'
+} from 'src/store/shopApi/shopApi'
 import {Color} from 'src/themes'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 

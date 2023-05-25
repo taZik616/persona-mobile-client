@@ -3,7 +3,7 @@ import React, {useCallback, useRef} from 'react'
 import {HomeNewProducts} from 'src/components/HomeNewProducts'
 import {SortSelect, SortSelectRefType} from 'src/components/ui/SortSelect'
 import {useTypedNavigation} from 'src/hooks'
-import {ProductPreviewInfo, SortItemI} from 'src/types'
+import {OrderingItemI, ProductPreviewInfo} from 'src/types'
 
 export const HomeNewProductsScreen = () => {
   const {navigate} = useTypedNavigation()
@@ -43,21 +43,21 @@ export const HomeNewProductsScreen = () => {
   )
 }
 
-const sortOptions: SortItemI[] = [
+const sortOptions: OrderingItemI[] = [
   {
     name: 'Сначала обновления',
-    id: 'latestUpdated',
+    id: '-lastUpdate',
   },
   {
     name: 'Сначала старые',
-    id: 'firstTheOldOnes',
+    id: 'lastUpdate',
   },
   {
     name: 'По возрастанию цены',
-    id: 'priceFromLow',
+    id: 'price',
   },
   {
     name: 'По убыванию цены',
-    id: 'priceFromTop',
+    id: '-price',
   },
 ]

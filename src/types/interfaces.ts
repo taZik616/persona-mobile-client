@@ -1,3 +1,5 @@
+import {ProductsParams} from 'src/store/shopApi'
+
 export interface OrderInfoInterface {
   id: string
   status: 'rejected' | 'progress' | 'completed'
@@ -19,18 +21,37 @@ export interface CategoryOrBrandInterface {
   logoUri?: string
 }
 
+export interface BrandType {
+  brandId: string
+  name: string
+  logo: string
+  description: string
+  gender: 'men' | 'women'
+  isTop: boolean
+}
+export interface ProductImage {
+  priority: number
+  compressedImage: string
+  originalImage: string
+}
+export interface ProductVariant {
+  size: string
+  color: string
+  colorHex: string
+  uniqueId: string
+  price: number
+  isAvailable: boolean
+}
 export interface ProductPreviewInfo {
   productId: string
-  title: string
+  productName: string
   price: number
-  previewImages: string[]
   priceGroup: string
-  isAvailable: boolean
-  largeImages: string[]
-  brandImage?: string
   collection?: string
-  brandName?: string
-  categoryName?: string
+  onlyOneVariant?: string
+  isAvailable: boolean
+  brand?: BrandType
+  images: ProductImage[]
 }
 
 export interface ProductsDataI {
@@ -38,38 +59,39 @@ export interface ProductsDataI {
   data: ProductPreviewInfo[]
 }
 export interface ProductInBasketI extends ProductPreviewInfo {
-  size?: string
-  color?: string
+  variant: ProductVariant
 }
+
+export interface ProductInFavoritesI extends ProductPreviewInfo {}
 
 export interface ProductDetailInfo {
   productId: string
-  title: string
-  description: string
-  code: string
-  brand: string
-  specifications: {
-    [name: string]: {name: string; value: string}
-    // manufacturer?: {name: 'Мануфактура'; value: 'хорошая'}
-    // country?: {name: 'Страна'; value: 'Россия'}
-  }
+  productName: string
   price: number
   priceGroup: string
+  onlyOneVariant: boolean
+  collection: string
+  brand?: BrandType
+  images: ProductImage[]
+  variants: ProductVariant[]
+  description: string
   isAvailable: boolean
-  largeImages: string[]
-  brandImage?: string
-  collection?: string
-  brandName?: string
+
+  manufacturer: string
+  country: string
+  podklad: string
+  sostav: string
 }
 
 export interface CategoryI {
-  image: string
-  title: string
   categoryId: string
-  fullTitle?: string
+  name: string
+  gender?: 'men' | 'women'
+  parentId?: string
+  image?: string
 }
 
-export interface SortItemI {
+export interface OrderingItemI {
   name: string
-  id: string
+  id: ProductsParams['ordering']
 }

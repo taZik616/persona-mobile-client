@@ -1,4 +1,4 @@
-export type helpDetailKey =
+export type helpfulInfoKey =
   | 'exchange_and_return'
   | 'terms_of_sale'
   | 'privacy_policy'

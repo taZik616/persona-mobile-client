@@ -34,9 +34,8 @@ export const FashionItemsPresent = memo(
     ({onPressProduct}, ref) => {
       const [productIds, setProductIds] = useState<string[]>([])
       const {curData} = useProductsList({
-        sortBy: 'IdProduct',
-        sortedValues: productIds.join(','),
-        ipp: 80,
+        productId: productIds.join(','),
+        page_size: 80,
       })
 
       const {paddingHorizontal} = useHorizontalMargins({safeArea: true})

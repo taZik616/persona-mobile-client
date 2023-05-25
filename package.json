@@ -11,7 +11,8 @@
     "link-asset": "npx react-native-asset",
     "fast-clean": "cd android && ./gradlew clean && cd .. && watchman watch-del-all && yarn cache clean && yarn start --reset-cache",
     "postinstall": "patch-package && react-native setup-ios-permissions",
-    "release:apk:android": "cd android && ./gradlew assembleRelease"
+    "release:apk:android": "cd android && ./gradlew assembleRelease",
+    "release:aab:android": "cd android && ./gradlew bundleRelease"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.1",
@@ -24,6 +25,7 @@
     "@react-navigation/native-stack": "^6.9.12",
     "@reduxjs/toolkit": "^1.9.3",
     "@shopify/flash-list": "^1.4.2",
+    "axios": "^1.4.0",
     "date-fns": "^2.29.3",
     "deprecated-react-native-prop-types": "^4.0.0",
     "markdown-it-block-embed": "^0.0.3",

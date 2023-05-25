@@ -5,30 +5,30 @@ import FastImage from 'react-native-fast-image'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {Color} from 'src/themes'
+import {CategoryI} from 'src/types'
 
 import {Text} from '../ui/Text'
 
-interface CategoryCardProps {
-  imgUri: string
-  categoryId: string
-  title: string
+interface CategoryCardProps extends CategoryI {
   onPress?: (categoryId: string) => void
 }
 
 export const CategoryCard = memo(
-  ({imgUri, title, categoryId, onPress}: CategoryCardProps) => {
+  ({name, image, categoryId, onPress}: CategoryCardProps) => {
     return (
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={() => onPress?.(categoryId)}
         style={styles.container}>
-        <FastImage
-          resizeMode={FastImage.resizeMode.cover}
-          source={{uri: imgUri, priority: FastImage.priority.high}}
-          style={StyleSheet.absoluteFill}
-        />
+        {image && (
+          <FastImage
+            resizeMode={FastImage.resizeMode.cover}
+            source={{uri: image, priority: FastImage.priority.high}}
+            style={StyleSheet.absoluteFill}
+          />
+        )}
         <Text numberOfLines={2} style={styles.title} cg1>
-          {title}
+          {name}
         </Text>
       </TouchableOpacity>
     )

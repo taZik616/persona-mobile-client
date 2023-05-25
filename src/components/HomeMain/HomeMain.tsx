@@ -4,7 +4,7 @@ import {FlashList} from '@shopify/flash-list'
 import {ScrollView} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
-import {useGetMainContentQuery} from 'src/store/shopApi'
+import {useMainContentQuery} from 'src/store/shopApi'
 import {HomeMainContentI, HomeMainContentItem} from 'src/types'
 import {CARD_BORDER_RADIUS} from 'src/variables'
 
@@ -27,7 +27,7 @@ export const HomeMain = ({
   onPressGiftCard,
 }: HomeMainProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
-  const page = useGetMainContentQuery(isMenSelected ? 'men' : 'women')
+  const page = useMainContentQuery(isMenSelected ? 'men' : 'women')
 
   const curData = page.currentData as HomeMainContentI | undefined
 

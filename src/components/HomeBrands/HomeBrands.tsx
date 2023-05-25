@@ -10,7 +10,10 @@ import {FlatList, SectionList, StyleSheet} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
 import {vibration} from 'src/services/vibration'
-import {useGetBrandsBySexQuery, useGetTopBrandsQuery} from 'src/store/shopApi'
+import {
+  useGetBrandsBySexQuery,
+  useGetTopBrandsQuery,
+} from 'src/store/shopApi/shopApi'
 import {IS_IOS} from 'src/variables'
 
 import {LoadingSkeleton} from './LoadingSkeleton'

@@ -1,7 +1,7 @@
 import React, {memo, useMemo, useState} from 'react'
 
 import {useTypedRoute} from 'src/hooks'
-import {useGetProductByIdQuery} from 'src/store/shopApi'
+import {useGetProductByIdQuery} from 'src/store/shopApi/shopApi'
 
 import {SafeLandscapeView} from '../ui/SafeLandscapeView'
 import {Spacer} from '../ui/Spacer'

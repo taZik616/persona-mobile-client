@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo} from 'react'
+import React, {memo, useCallback} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 import {StyleSheet} from 'react-native'
@@ -6,7 +6,7 @@ import {StyleSheet} from 'react-native'
 import {getProductsCountString} from 'src/helpers'
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useProductListHelper} from 'src/hooks/useProductListHelper'
-import {useProductsList} from 'src/store/shopApi'
+import {ProductsParams, useProductsList} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo, ProductsDataI} from 'src/types'
 
@@ -17,23 +17,10 @@ import {LoadingProductListSkeleton} from './Skeletons/LoadingProductList'
 import {Spacer} from './Spacer'
 import {Text} from './Text'
 
-export type ListOrderType =
-  | 'priceFromLow'
-  | 'priceFromTop'
-  | 'firstTheOldOnes'
-  | 'latestUpdated'
-
-interface RenderProductListProps {
+interface RenderProductListProps extends ProductsParams {
   renderHeader?: (curData: ProductsDataI) => JSX.Element
   onPressProduct?: (item: ProductPreviewInfo) => void
   onPressSort?: () => void
-  sortBy?: string
-  sortedValues?: string
-  start?: number
-  listOrder?: ListOrderType
-  //filterByPrice?: 'True' | 'False'
-  //reverse?: 'True' | 'False'
-  search?: string
   showCounter?: boolean
   showFilter?: boolean
 }
@@ -45,33 +32,12 @@ export const RenderProductList = memo(
     showCounter,
     onPressSort,
     showFilter,
-    listOrder,
-    ...queryValues
+    ...queryParams
   }: RenderProductListProps) => {
-    const sorting = useMemo(() => {
-      let filterByPrice: 'True' | 'False' = 'False'
-      let reverse: 'True' | 'False' = 'False'
-      switch (listOrder) {
-        case 'priceFromLow':
-          filterByPrice = 'True'
-          break
-        case 'priceFromTop':
-          filterByPrice = 'True'
-          reverse = 'True'
-          break
-        case 'firstTheOldOnes':
-          reverse = 'True'
-          break
-      }
-
-      return {reverse, filterByPrice}
-    }, [listOrder])
-
     const {curData, loadNext} = useProductsList({
-      ...queryValues,
-      filterByPrice: sorting.filterByPrice,
-      reverse: sorting.reverse,
+      ...queryParams,
     })
+    console.log('🚀 - curData:', curData)
 
     useScreenBlockCurrent()
     const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()

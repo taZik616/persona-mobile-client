@@ -7,7 +7,7 @@ import * as yup from 'yup'
 import {RecoveryPasswordConfirm} from 'src/components/RecoveryPasswordConfirm'
 import {useTypedNavigation, useTypedRoute} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
-import {useChangePasswordMutation} from 'src/store/shopApi'
+import {useChangePasswordMutation} from 'src/store/shopApi/shopApi'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
 const recPassConfirmSchema = yup

@@ -11,7 +11,7 @@ import React, {
 
 import {SectionList, StyleSheet, TextInput, View} from 'react-native'
 
-import {useGetAllBrandsQuery} from 'src/store/shopApi'
+import {useGetAllBrandsQuery} from 'src/store/shopApi/shopApi'
 import {Color} from 'src/themes'
 
 import {BrandGroupTitle} from './BrandGroupTitle'

@@ -1,13 +1,11 @@
 import {APP_API_URL} from '@env'
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
+import axios from 'axios'
 
 import {getArrayOfField} from 'src/helpers'
 import {ProductInBasketI} from 'src/types'
 
-import {transformProductsResponse} from './shopApi'
-
 import {StoreStateType} from '.'
-
 interface BasketSliceState {
   items: ProductInBasketI[]
   counter: number
@@ -46,12 +44,15 @@ export const basketSlice = createSlice({
         state.productIds = getArrayOfField(state.items, 'productId')
       }
     },
-    removeItem: (state, action: PayloadAction<string>) => {
-      const id = action.payload
-      state.items = state.items.filter(it => it.productId !== id)
+    removeItem: (state, action: PayloadAction<ProductInBasketI>) => {
+      const productId = action.payload.productId
+      const variantId = action.payload.variant.uniqueId
+      state.items = state.items.filter(
+        it => it.productId !== productId && it.variant.uniqueId !== variantId,
+      )
       state.counter = state.items.length
       state.productIds = getArrayOfField(state.items, 'productId')
-      state.selectedItemIds = state.selectedItemIds.filter(a => a !== id)
+      state.selectedItemIds = state.selectedItemIds.filter(a => a !== productId)
     },
     selectItem: (state, action: PayloadAction<string>) => {
       const productId = action.payload
@@ -83,16 +84,13 @@ export const {
 export const addItemToBasket =
   (item: ProductInBasketI) =>
   async (dispatch: any, getState: () => StoreStateType) => {
-    fetch('http://89.108.71.146:8000/basket/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: getState().profile.authToken ?? '',
+    const token = getState().profile.authToken ?? ''
+    axios.put(`${APP_API_URL}/api/v1/basket`, {
+      headers: {Authorization: `Token ${token}`},
+      data: {
+        productId: item.productId,
+        variantId: item.variant.uniqueId,
       },
-      body: JSON.stringify({
-        IdProduct: item.productId,
-      }),
     })
     dispatch(addItem(item))
   }
@@ -103,135 +101,34 @@ export const loadItemsToBasket = async (
   dispatch: any,
   getState: () => StoreStateType,
 ) => {
-  const res = await (
-    await fetch(`${APP_API_URL}/basket/`, {
-      method: 'PATCH',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: getState().profile.authToken ?? '',
-      },
-    })
-  ).json()
+  const token = getState().profile.authToken ?? ''
+  const res = await axios.get(`${APP_API_URL}/api/v1/basket`, {
+    headers: {Authorization: `Token ${token}`},
+  })
 
-  if (Array.isArray(res.Products)) {
-    // console.log(
-    //   '🚀 - transformProductsResponse(res):',
-    //   transformProductsResponse(res),
-    // )
-    dispatch(setBasketItems(transformProductsResponse(res.Products)))
+  if (Array.isArray(res.data.items)) {
+    const data = res.data.items.map((a: any) => ({
+      ...a.product,
+      variant: a.variant,
+    }))
+    dispatch(setBasketItems(data))
   }
 }
 /**
  * Удалить элемент по productId из корзины
  */
 export const removeItemFromBasket =
-  (productId: string) =>
+  (item: ProductInBasketI) =>
   async (dispatch: any, getState: () => StoreStateType) => {
-    fetch('http://89.108.71.146:8000/basket/', {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: getState().profile.authToken ?? '',
+    const token = getState().profile.authToken ?? ''
+    await axios.delete(`${APP_API_URL}/api/v1/basket`, {
+      headers: {Authorization: `Token ${token}`},
+      data: {
+        productId: item.productId,
+        variantId: item.variant.uniqueId,
       },
-      body: JSON.stringify({
-        IdProduct: productId,
-      }),
     })
-    dispatch(removeItem(productId))
+    dispatch(removeItem(item))
   }
 
 export const basketReducer = basketSlice.reducer
-
-// const fakeData: ProductInBasketI[] = [
-//   {
-//     productId: '68567',
-//     price: 18780,
-//     priceGroup: 'Основная',
-//     isAvailable: true,
-//     previewImages: [
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109173648_x_5472_IMG_0778_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109173648_x_5472_IMG_0783_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109173648_x_5472_IMG_0775_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109173648_x_5472_IMG_0776_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109173648_x_5472_IMG_0772_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109173648_x_5472_IMG_0773_compressed.jpg',
-//     ],
-//     title: 'Перчатки PAUL SHARK',
-//     largeImages: [
-//       'http://89.108.71.146:8000/IMGS_Path/202109173648_x_5472_IMG_0778_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109173648_x_5472_IMG_0783_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109173648_x_5472_IMG_0775_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109173648_x_5472_IMG_0776_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109173648_x_5472_IMG_0772_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109173648_x_5472_IMG_0773_compressed.jpg',
-//     ],
-//     brandImage: 'http://89.108.71.146:8000/CAT_logo/599/paul_dfgdfgshark.png',
-//     brandName: 'PAUL SHARK',
-//   },
-//   {
-//     productId: '68563',
-//     price: 12060,
-//     priceGroup: 'Основная',
-//     isAvailable: true,
-//     previewImages: [
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109273000_x_4500_83_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_285_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_292_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_282_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_281_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109273000_x_4500_84_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109273000_x_4500_87_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_289_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_290_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_291_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_286_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_288_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202110033000_x_4500_287_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109273000_x_4500_85_compressed.jpg',
-//     ],
-//     title: 'Шапка PAUL SHARK',
-//     largeImages: [
-//       'http://89.108.71.146:8000/IMGS_Path/202109273000_x_4500_83_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_285_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_292_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_282_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_281_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109273000_x_4500_84_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109273000_x_4500_87_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_289_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_290_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_291_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_286_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_288_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202110033000_x_4500_287_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109273000_x_4500_85_compressed.jpg',
-//     ],
-//     brandImage: 'http://89.108.71.146:8000/CAT_logo/599/paul_dfgdfgshark.png',
-//     brandName: 'PAUL SHARK',
-//   },
-//   {
-//     productId: '68560',
-//     price: 72660,
-//     priceGroup: 'Основная',
-//     isAvailable: false,
-//     previewImages: [
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109283000_x_4500_127_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109283000_x_4500_126_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109283000_x_4500_128_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109283000_x_4500_129_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Preview/preview_202109283000_x_4500_130_compressed.jpg',
-//     ],
-//     title: 'Жилет PAUL SHARK',
-//     largeImages: [
-//       'http://89.108.71.146:8000/IMGS_Path/202109283000_x_4500_127_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109283000_x_4500_126_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109283000_x_4500_128_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109283000_x_4500_129_compressed.jpg',
-//       'http://89.108.71.146:8000/IMGS_Path/202109283000_x_4500_130_compressed.jpg',
-//     ],
-//     brandImage: 'http://89.108.71.146:8000/CAT_logo/599/paul_dfgdfgshark.png',
-//     brandName: 'PAUL SHARK',
-//   },
-// ]
