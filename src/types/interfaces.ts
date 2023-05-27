@@ -29,6 +29,14 @@ export interface BrandType {
   gender: 'men' | 'women'
   isTop: boolean
 }
+
+export interface CategoryType {
+  categoryId: number
+  name: string
+  gender: 'men' | 'women'
+  parentId: string
+  image?: string
+}
 export interface ProductImage {
   priority: number
   compressedImage: string
@@ -81,14 +89,6 @@ export interface ProductDetailInfo {
   country: string
   podklad: string
   sostav: string
-}
-
-export interface CategoryI {
-  categoryId: string
-  name: string
-  gender?: 'men' | 'women'
-  parentId?: string
-  image?: string
 }
 
 export interface OrderingItemI {

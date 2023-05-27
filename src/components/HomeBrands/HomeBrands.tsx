@@ -8,12 +8,11 @@ import React, {
 
 import {FlatList, SectionList, StyleSheet} from 'react-native'
 
+import {groupByAlphabetical} from 'src/helpers'
 import {useGender} from 'src/hooks/useGender'
 import {vibration} from 'src/services/vibration'
-import {
-  useGetBrandsBySexQuery,
-  useGetTopBrandsQuery,
-} from 'src/store/shopApi/shopApi'
+import {useBrandsQuery} from 'src/store/shopApi/shopApi'
+import {BrandType} from 'src/types'
 import {IS_IOS} from 'src/variables'
 
 import {LoadingSkeleton} from './LoadingSkeleton'
@@ -39,7 +38,9 @@ export const HomeBrands = memo(
   ({onPressBrand, onPressSearch}: HomeBrandsProps) => {
     const {isMenSelected, onChangeGender, values} = useGender()
 
-    const allBrands = useGetBrandsBySexQuery(isMenSelected ? 'men' : 'women')
+    const allBrands = useBrandsQuery({
+      //gender: isMenSelected ? 'men' : 'women',
+    })
 
     const listRef = useRef<SectionList>(null)
     const topBrandsRef = useRef<any>(null)
@@ -61,11 +62,16 @@ export const HomeBrands = memo(
       }
     }, [])
 
+    const sections = useMemo(() => {
+      if (!allBrands.currentData) return allBrands.currentData
+      return groupByAlphabetical(allBrands.currentData, 'name')
+    }, [allBrands.currentData])
+
     return (
       <>
         <Header title="Бренды" onPressSearch={onPressSearch} />
         <AlphabetVerticalSelector
-          data={allBrands.currentData ?? []}
+          data={sections ?? []}
           onChangeLetter={handleScrollToLetter}
         />
         <SelectorTwoOptions
@@ -77,7 +83,7 @@ export const HomeBrands = memo(
         <SectionList
           ref={listRef}
           removeClippedSubviews
-          refreshing={allBrands.isFetching && !!allBrands.currentData}
+          refreshing={allBrands.isFetching && !!sections}
           onRefresh={() => {
             allBrands.refetch()
             topBrandsRef.current.refetch()
@@ -93,7 +99,7 @@ export const HomeBrands = memo(
             <BrandRowItem
               onPress={onPressBrand}
               isLoading={allBrands.isLoading}
-              item={item}
+              brand={item}
             />
           )}
           ListEmptyComponent={<LoadingSkeleton />}
@@ -103,8 +109,7 @@ export const HomeBrands = memo(
           )}
           ListFooterComponent={<Spacer height={46} />}
           keyExtractor={_brandKeyExtractor}
-          sections={allBrands.currentData ?? []}
-          // sections={[{title: 'A',data: [{id: '1',name: 'AGNONA',},],},{title: 'B',data: [{id: '1',name: 'BARRETT',}, {id: '2',name: 'BILLIONAIRE',},{id: '3',name: 'BOGNER',},],},]}
+          sections={sections ?? []}
         />
       </>
     )
@@ -118,7 +123,10 @@ interface TopBrandsHeaderProps {
 
 const TopBrandsHeader = memo(
   forwardRef(({isMenSelected, onPressBrand}: TopBrandsHeaderProps, ref) => {
-    const topBrands = useGetTopBrandsQuery(isMenSelected)
+    const topBrands = useBrandsQuery({
+      gender: isMenSelected ? 'men' : 'women',
+      isTop: 'True',
+    })
     const topBrandIsLoading = topBrands.isLoading && topBrands.isFetching
 
     useImperativeHandle(ref, () => ({
@@ -141,7 +149,7 @@ const TopBrandsHeader = memo(
               <TopBrandItem
                 onPress={onPressBrand}
                 isLoading={isLoading}
-                item={item}
+                brand={item}
               />
             )
           }}
@@ -160,7 +168,7 @@ const TopBrandsHeader = memo(
   }),
 )
 
-const _brandKeyExtractor = (item: any, id: number) => item?.id ?? id
+const _brandKeyExtractor = (item: BrandType, id: number) => item?.brandId ?? id
 
 const styles = StyleSheet.create({
   topBrandGap: {

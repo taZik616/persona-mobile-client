@@ -4,24 +4,25 @@ import {Image, TouchableOpacity} from 'react-native'
 import {StyleSheet, View} from 'react-native'
 
 import {Color} from 'src/themes'
+import {BrandType} from 'src/types'
 
 interface TopBrandItemProps {
   isLoading?: boolean
-  item: any
+  brand: BrandType
   onPress?: (item: any) => void
 }
 
 export const TopBrandItem = memo(
-  ({item, isLoading, onPress}: TopBrandItemProps) => {
+  ({brand, isLoading, onPress}: TopBrandItemProps) => {
     return (
       <TouchableOpacity
-        onPress={() => !isLoading && onPress?.(item)}
+        onPress={() => !isLoading && onPress?.(brand)}
         style={styles.topBrandContainer}>
         {!isLoading ? (
           <Image
             style={styles.flexOne}
             resizeMode="center"
-            source={{uri: item.logo}}
+            source={{uri: brand.logo}}
           />
         ) : (
           <View style={styles.skeletonContainer}>

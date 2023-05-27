@@ -7,7 +7,7 @@ export const HomeCatalogCategoriesScreen = () => {
   const {navigate} = useTypedNavigation()
 
   const onPressCategory = useCallback(
-    (categoryId: string, fullTitle: string) => {
+    (categoryId: number, fullTitle: string) => {
       navigate('home', {
         screen: 'homeCatalog',
         params: {

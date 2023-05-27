@@ -1,12 +1,10 @@
 import React from 'react'
 
 import {APP_API_URL} from '@env'
-import {nanoid} from '@reduxjs/toolkit'
 import {FlatList, ScrollView} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
-import {useCategoriesQuery} from 'src/store/shopApi/shopApi'
-import {CategoryI} from 'src/types'
+import {useCategoriesQuery} from 'src/store/shopApi'
 
 import {CategoryCardWHM} from './CategoryCard'
 
@@ -15,7 +13,7 @@ import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
 import {Spacer} from '../ui/Spacer'
 
 interface HomeCatalogCategoriesProps {
-  onPressCategory?: (categoryId: string, fullTitle: string) => void
+  onPressCategory?: (categoryId: number, fullTitle: string) => void
   onPressGiftCard?: () => void
 }
 
@@ -24,7 +22,7 @@ export const HomeCatalogCategories = ({
   onPressGiftCard,
 }: HomeCatalogCategoriesProps) => {
   const {isMenSelected, onChangeGender, values} = useGender()
-  const data = useCategoriesQuery({
+  const {currentData} = useCategoriesQuery({
     gender: isMenSelected ? 'men' : 'women',
     level: 1,
   })
@@ -45,13 +43,13 @@ export const HomeCatalogCategories = ({
           renderItem={({item}) => (
             <CategoryCardWHM
               {...item}
-              onPress={id => onPressCategory?.(id, item.name)}
+              onPress={id => item.name && onPressCategory?.(id, item.name)}
             />
           )}
           ItemSeparatorComponent={() => <Spacer height={16} />}
           keyExtractor={a => a.categoryId}
           data={
-            data.currentData ? data.currentData : emptyArr // скелетон нет нужды делать, так можно)
+            currentData ? currentData : emptyArr // скелетон нет нужды делать, так можно)
           }
         />
         <Spacer height={16} />
@@ -59,6 +57,7 @@ export const HomeCatalogCategories = ({
           image={`${APP_API_URL}/media/another-images/catalog_card.jpg`}
           name="ПОДАРОЧНАЯ КАРТА"
           onPress={onPressGiftCard}
+          // @ts-ignore
           categoryId="gift card"
         />
         <Spacer height={28} />
@@ -67,9 +66,9 @@ export const HomeCatalogCategories = ({
   )
 }
 
-const emptyEl = (): CategoryI => ({
+const emptyEl = () => ({
   name: '',
   image: '',
-  categoryId: nanoid(),
+  categoryId: Math.random(),
 })
 const emptyArr = [emptyEl(), emptyEl(), emptyEl(), emptyEl()]

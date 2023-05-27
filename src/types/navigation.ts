@@ -46,11 +46,11 @@ export type RootStackParamList = {
 export type CatalogStackParamList = {
   categories: undefined
   subcategories: {
-    categoryId: string
+    categoryId: number
     headerTitle: string
   }
   products: {
-    categoryId: string
-    subcategoryId: string
+    categoryId: number
+    subcategoryId: number
   }
 }

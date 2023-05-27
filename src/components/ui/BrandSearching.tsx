@@ -11,8 +11,10 @@ import React, {
 
 import {SectionList, StyleSheet, TextInput, View} from 'react-native'
 
-import {useGetAllBrandsQuery} from 'src/store/shopApi/shopApi'
+import {groupByAlphabetical} from 'src/helpers'
+import {useBrandsQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
+import {BrandType} from 'src/types'
 
 import {BrandGroupTitle} from './BrandGroupTitle'
 import {BrandRowItem} from './BrandRowItem'
@@ -36,7 +38,13 @@ export const BrandSearching = memo(
     ({onCompleteSelect}, ref) => {
       const [searchText, setSearchText] = useState('')
       const bottomSheetRef = useRef<BottomSheetRefType>(null)
-      const allBrands = useGetAllBrandsQuery({})
+      const {
+        currentData: temp,
+        isFetching,
+        isLoading,
+        refetch,
+      } = useBrandsQuery({})
+      const brand = temp as BrandType[] | undefined
 
       useImperativeHandle(ref, () => ({
         open: bottomSheetRef.current?.open,
@@ -50,8 +58,8 @@ export const BrandSearching = memo(
       const onClose = useCallback(() => setSearchText(''), [])
 
       const content = useMemo(() => {
-        const sections = allBrands.currentData
-          ?.map(a => {
+        const sections = groupByAlphabetical(brand ?? [], 'name')
+          .map(a => {
             return {
               title: a.title,
               data: a.data.filter((b: any) =>
@@ -88,15 +96,15 @@ export const BrandSearching = memo(
               }
               scrollEnabled={false}
               removeClippedSubviews
-              refreshing={allBrands.isFetching && !!allBrands.currentData}
+              refreshing={isFetching && !!brand}
               onRefresh={() => {
-                allBrands.refetch()
+                refetch()
               }}
               renderItem={({item}) => (
                 <BrandRowItem
                   onPress={onCompleteSelect}
-                  isLoading={allBrands.isLoading}
-                  item={item}
+                  isLoading={isLoading}
+                  brand={item}
                 />
               )}
               showsVerticalScrollIndicator={false}
@@ -109,12 +117,7 @@ export const BrandSearching = memo(
             <Spacer height={20} />
           </View>
         )
-      }, [
-        allBrands.currentData,
-        searchText,
-        allBrands.isLoading,
-        onCompleteSelect,
-      ])
+      }, [brand, searchText, isLoading, onCompleteSelect])
 
       return (
         <BottomSheet
@@ -130,7 +133,7 @@ export const BrandSearching = memo(
     },
   ),
 )
-const _brandKeyExtractor = (item: any, id: number) => item.id ?? id
+const _brandKeyExtractor = (item: BrandType, id: number) => item?.brandId ?? id
 
 const styles = StyleSheet.create({
   search: {

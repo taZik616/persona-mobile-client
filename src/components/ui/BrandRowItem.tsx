@@ -4,25 +4,26 @@ import {Pressable} from 'react-native'
 import {StyleSheet} from 'react-native'
 
 import {Color} from 'src/themes'
+import {BrandType} from 'src/types'
 
 import {SafeLandscapeView} from './SafeLandscapeView'
 import {Text} from './Text'
 
 interface BrandRowItemProps {
-  item: any
+  brand: BrandType
   isLoading?: boolean
   onPress?: (brand: any) => void
 }
 
 export const BrandRowItem = memo(
-  ({item, isLoading, onPress}: BrandRowItemProps) => {
+  ({brand, isLoading, onPress}: BrandRowItemProps) => {
     return (
       <SafeLandscapeView safeArea>
         <Pressable
-          onPress={() => !isLoading && onPress?.(item)}
+          onPress={() => !isLoading && onPress?.(brand)}
           style={styles.brandItemContainer}>
           <Text numberOfLines={1} gp4>
-            {item.name}
+            {brand.name}
           </Text>
         </Pressable>
       </SafeLandscapeView>

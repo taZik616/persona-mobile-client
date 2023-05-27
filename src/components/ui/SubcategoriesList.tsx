@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image'
 import {s} from 'react-native-size-matters'
 
 import {vibration} from 'src/services/vibration'
-import {CategoryI} from 'src/types'
+import {CategoryType} from 'src/types'
 
 import {SafeLandscapeView} from './SafeLandscapeView'
 import {SubcategoriesListSkeleton} from './Skeletons/SubcategoriesList'
@@ -13,16 +13,16 @@ import {Spacer} from './Spacer'
 import {Text} from './Text'
 
 interface SubcategoriesListProps {
-  subcategories: CategoryI[]
-  onPressItem?: (item: CategoryI) => void
+  subcategories: CategoryType[]
+  onPressItem?: (catId: number) => void
 }
 
 export const SubcategoriesList = memo(
   ({subcategories, onPressItem}: SubcategoriesListProps) => {
-    const renderItem = ({item}: {item: CategoryI}) => {
+    const renderItem = ({item}: {item: CategoryType}) => {
       const handlePress = () => {
         vibration.light()
-        onPressItem?.(item)
+        onPressItem?.(item.categoryId)
       }
 
       return (
@@ -34,7 +34,7 @@ export const SubcategoriesList = memo(
           />
           <Spacer height={8} />
           <Text center cg4 numberOfLines={2}>
-            {item.title.toUpperCase()}
+            {item.name.toUpperCase()}
           </Text>
         </Pressable>
       )
@@ -43,7 +43,7 @@ export const SubcategoriesList = memo(
     return (
       <SafeLandscapeView style={styles.flexOne} safeArea>
         <FlatList
-          keyExtractor={item => item.categoryId}
+          keyExtractor={item => String(item.categoryId)}
           renderItem={renderItem}
           ListEmptyComponent={<SubcategoriesListSkeleton />}
           showsVerticalScrollIndicator={false}

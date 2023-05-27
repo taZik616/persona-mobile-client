@@ -6,8 +6,8 @@ import {ProductPreviewInfo} from 'src/types'
 
 export const HomeCatalogProductsScreen = () => {
   const {navigate} = useTypedNavigation()
-  const onPressProduct = (item: ProductPreviewInfo) => {
-    navigate('productDetail', {item, productId: item.productId})
+  const onPressProduct = (product: ProductPreviewInfo) => {
+    navigate('productDetail', {product, productId: product.productId})
   }
   return <HomeCatalogProducts onPressProduct={onPressProduct} />
 }

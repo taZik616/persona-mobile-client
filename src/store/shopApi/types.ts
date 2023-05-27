@@ -21,7 +21,7 @@ export interface ChangePasswordBody {
 
 export interface CategoriesBody {
   gender?: 'men' | 'women'
-  parentId?: string
+  parentId?: number
   ordering?: string
   level?: number
 }
@@ -46,8 +46,8 @@ export interface ProductsParams {
     | '-price' // priceFromTop
     | 'lastUpdate' // latestUpdated
     | '-lastUpdate' //firstTheOldOnes
-  subcategoryId?: string
-  categoryId?: string
+  subcategoryId?: number
+  categoryId?: number
   priceGroup?: string
   search?: string
   isNew?: 'True' | 'False'

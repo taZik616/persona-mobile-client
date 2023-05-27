@@ -87,10 +87,10 @@ export const shopApi = createApi({
       }),
     }),
     categories: build.query({
-      query: (body: CategoriesBody) => ({
-        url: 'categories/',
-        method: 'PATCH',
-        body,
+      query: (params: CategoriesBody) => ({
+        url: 'categories',
+        method: 'GET',
+        params,
       }),
     }),
     // loyaltyCodeSend: build.mutation({

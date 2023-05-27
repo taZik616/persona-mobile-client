@@ -5,12 +5,12 @@ import FastImage from 'react-native-fast-image'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {Color} from 'src/themes'
-import {CategoryI} from 'src/types'
+import {CategoryType} from 'src/types'
 
 import {Text} from '../ui/Text'
 
-interface CategoryCardProps extends CategoryI {
-  onPress?: (categoryId: string) => void
+interface CategoryCardProps extends CategoryType {
+  onPress?: (categoryId: number) => void
 }
 
 export const CategoryCard = memo(

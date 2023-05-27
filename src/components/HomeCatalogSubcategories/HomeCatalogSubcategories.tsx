@@ -1,14 +1,13 @@
 import React from 'react'
 
 import {useTypedRouteCatalogStack} from 'src/hooks'
-import {useGetCategoriesQuery} from 'src/store/shopApi/shopApi'
-import {CategoryI} from 'src/types'
+import {useCategoriesQuery} from 'src/store/shopApi/shopApi'
 
 import {Header} from '../ui/Header'
 import {SubcategoriesList} from '../ui/SubcategoriesList'
 
 interface HomeCatalogSubcategoriesProps {
-  onPressSubCategory?: (item: CategoryI) => void
+  onPressSubCategory?: (catId: number) => void
 }
 
 export const HomeCatalogSubcategories = ({
@@ -17,7 +16,9 @@ export const HomeCatalogSubcategories = ({
   const {headerTitle, categoryId} =
     useTypedRouteCatalogStack<'subcategories'>().params
 
-  const data = useGetCategoriesQuery({category: categoryId})
+  const data = useCategoriesQuery({
+    parentId: categoryId,
+  })
 
   return (
     <>
