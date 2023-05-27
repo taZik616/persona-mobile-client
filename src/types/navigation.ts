@@ -1,7 +1,7 @@
 import {NavigatorScreenParams} from '@react-navigation/native'
 
 import {ProductInBasketI, ProductPreviewInfo} from './interfaces'
-import {helpDetailKey} from './utils'
+import {helpfulInfoKey} from './utils'
 
 export type TabParamList = {
   homeMain: undefined
@@ -14,12 +14,12 @@ export type TabParamList = {
 
 export type RootStackParamList = {
   home?: NavigatorScreenParams<TabParamList>
-  productDetail: {productId: string; item?: ProductPreviewInfo}
+  productDetail: {productId: string; product?: ProductPreviewInfo}
   loyaltyCardAdd: undefined
   help: undefined
   helpDetail: {
     title: string
-    queryPath: helpDetailKey
+    queryPath: helpfulInfoKey
   }
   personalEdit: undefined
   personal: undefined

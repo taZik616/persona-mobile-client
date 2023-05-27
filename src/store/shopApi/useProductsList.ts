@@ -8,23 +8,38 @@ import {ProductsDataI} from 'src/types'
 
 interface useProductsListParams extends ProductsParams {}
 
+// Я не просто так `...params` не использую, будет бесконечный цикл в useEffect,
+// тк объекты сравниваются по ссылке, а ссылка будет меняться при любом ре-рендере
 export const useProductsList = ({
-  page = 0,
-  ...params
+  page = 1,
+  brand__brandId,
+  productId,
+  page_size = 50,
+  ordering,
+  subcategoryId,
+  categoryId,
+  priceGroup,
+  search,
+  isNew,
+  gender,
 }: useProductsListParams) => {
   const [curData, setCurData] = useState<ProductsDataI | undefined>(undefined)
   const pageNumberRef = useRef(page)
 
   const fetchProducts = async () => {
     const res = await axios.get(`${APP_API_URL}/api/v1/products`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
       method: 'GET',
       params: {
-        ...params,
-        page_size: params.page_size || 50,
+        brand__brandId,
+        productId,
+        page_size,
+        ordering,
+        subcategoryId,
+        categoryId,
+        priceGroup,
+        search,
+        isNew,
+        gender,
         page: pageNumberRef.current,
       },
     })
@@ -33,7 +48,7 @@ export const useProductsList = ({
     if (data) {
       setCurData(pr => ({
         count: data.count,
-        data: [...(pr?.data ?? []), ...(data?.data ?? [])],
+        products: [...(pr?.products ?? []), ...(data?.products ?? [])],
       }))
     }
   }
@@ -42,7 +57,19 @@ export const useProductsList = ({
     pageNumberRef.current = page
     setCurData(undefined)
     fetchProducts()
-  }, [params, page])
+  }, [
+    brand__brandId,
+    productId,
+    page_size,
+    ordering,
+    subcategoryId,
+    categoryId,
+    priceGroup,
+    search,
+    isNew,
+    gender,
+    page,
+  ])
 
   const loadNext = () => {
     if (

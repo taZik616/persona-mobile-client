@@ -20,7 +20,7 @@ export const shopApi = createApi({
     baseUrl: `${APP_API_URL}/api/v1/`,
     prepareHeaders: (headers, {getState}) => {
       const token = (getState() as StoreStateType).profile.authToken ?? ''
-      headers.set('Authorization', `Token ${token}`)
+      token && headers.set('Authorization', `Token ${token}`)
       return headers
     },
   }),

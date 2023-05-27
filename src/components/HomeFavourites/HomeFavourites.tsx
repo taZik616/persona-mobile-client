@@ -39,7 +39,7 @@ export const HomeFavourites = memo(({onPressProduct}: HomeFavouritesProps) => {
       <FlashList
         key={numColumns}
         numColumns={numColumns}
-        estimatedItemSize={379} // if !showAddToBasket - 351
+        estimatedItemSize={351}
         contentContainerStyle={contentPaddingsStyle}
         ListEmptyComponent={<FavoritesListEmpty isAvailable={isAvailable} />}
         ListHeaderComponent={
@@ -57,7 +57,6 @@ export const HomeFavourites = memo(({onPressProduct}: HomeFavouritesProps) => {
           <ProductCard
             width={cardWidth}
             topRightIcon="cross"
-            showAddToBasket
             onPress={onPressProduct}
             {...item}
           />

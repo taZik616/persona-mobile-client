@@ -56,7 +56,7 @@ export interface ProductPreviewInfo {
 
 export interface ProductsDataI {
   count: number
-  data: ProductPreviewInfo[]
+  products: ProductPreviewInfo[]
 }
 export interface ProductInBasketI extends ProductPreviewInfo {
   variant: ProductVariant

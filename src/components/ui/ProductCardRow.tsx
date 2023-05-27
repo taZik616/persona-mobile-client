@@ -15,24 +15,32 @@ interface ProductCardRowProps extends ProductInBasketI {
 
 export const ProductCardRow = memo(
   ({onPress, ...item}: ProductCardRowProps) => {
-    const {previewImages, size, color, price, title, categoryName} = item
-    const image = previewImages[0]
+    const {
+      images,
+      variant: {size, colorHex},
+      price,
+      brand,
+      productName,
+    } = item
+    const image = images[0].compressedImage
 
     return (
       <Pressable onPress={() => onPress?.(item)} style={styles.container}>
-        <Image
-          resizeMode="contain"
-          style={styles.image}
-          source={{uri: image}}
-        />
+        {image && (
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={{uri: image}}
+          />
+        )}
         <Spacer width={8} />
         <View style={styles.body}>
           <Spacer height={4} />
           <Text lineHeight={24} numberOfLines={2} gp2>
-            {title}
+            {brand?.name}
           </Text>
           <Text numberOfLines={2} gp4>
-            {categoryName}
+            {productName}
           </Text>
         </View>
         <Spacer width={8} />
@@ -42,10 +50,14 @@ export const ProductCardRow = memo(
             {cleanNumber(price, ' ', 0)} ₽
           </Text>
           <Spacer height={2} />
-          {color && (
-            <Text right gp4>
-              {color}
-            </Text>
+          {colorHex && (
+            <View style={styles.colorContainer}>
+              <Text right gp4>
+                Цвет:
+              </Text>
+              <Spacer width={6} />
+              <View style={[styles.colorBlock, {backgroundColor: colorHex}]} />
+            </View>
           )}
           <Spacer height={2} />
           {size && (
@@ -69,6 +81,15 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
+  },
+  colorContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  colorBlock: {
+    width: 20,
+    height: 20,
   },
   image: {
     height: 90,

@@ -23,14 +23,19 @@ interface ProductDetailProps extends ProductPreviewInfo {
 
 export const ProductDetail = memo(
   ({onPressFastBuy, onPressAddToBasket, ...item}: ProductDetailProps) => {
-    const {largeImages, priceGroup, collection, brandImage, title, price} = item
+    const {images, priceGroup, collection, brand, productName, price} = item
 
     return (
       <>
         <Header showBack hideSearch />
         <ScrollView>
           <Spacer height={16} />
-          {largeImages && <Swiper type="big-image" images={largeImages} />}
+          {images && (
+            <Swiper
+              type="big-image"
+              images={images.map(a => a.originalImage)}
+            />
+          )}
           <Spacer height={8} />
           <SafeLandscapeView safeArea>
             <Text center color={Color.primary} gp1>{`${priceGroup ?? ''}${
@@ -40,13 +45,13 @@ export const ProductDetail = memo(
             <View style={styles.row}>
               <Spacer width={24} />
               <View style={styles.headInfoContainer}>
-                {brandImage && (
+                {brand?.logo && (
                   <>
-                    <Img maxHeight={35} uri={brandImage} />
+                    <Img maxHeight={35} uri={brand.logo} />
                     <Spacer height={10} />
                   </>
                 )}
-                <Text gp4>{title}</Text>
+                <Text gp4>{productName}</Text>
                 <Spacer height={6} />
                 <Text gp4>{price} ₽</Text>
               </View>

@@ -9,6 +9,7 @@ import React, {
 
 import {FlatList, Image, Pressable, StyleSheet, View} from 'react-native'
 
+import {BottomSheet, BottomSheetRefType} from 'src/components/bottom-sheet'
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {useProductsList} from 'src/store/shopApi'
 import {ProductPreviewInfo} from 'src/types'
@@ -16,8 +17,6 @@ import {IS_ANDROID} from 'src/variables'
 
 import {FashionItemsPresentSkeleton} from './Skeletons/FashionItemsPresent'
 import {Spacer} from './Spacer'
-
-import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
 
 interface FashionItemsPresentProps {
   onPressProduct?: (item: ProductPreviewInfo) => void
@@ -48,9 +47,9 @@ export const FashionItemsPresent = memo(
       }))
 
       const content = useMemo(() => {
-        return curData?.data.length ? (
+        return curData?.products.length ? (
           <FlatList
-            data={curData.data}
+            data={curData.products}
             contentContainerStyle={[styles.listContainer, paddingHorizontal]}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -62,7 +61,7 @@ export const FashionItemsPresent = memo(
         ) : (
           <FashionItemsPresentSkeleton />
         )
-      }, [curData?.data, paddingHorizontal])
+      }, [curData?.products, paddingHorizontal])
       return (
         <BottomSheet
           fixAndroidHorizontalList={IS_ANDROID}
@@ -80,7 +79,7 @@ interface FashionItemProps extends ProductPreviewInfo {
 }
 
 export const FashionItem = memo(({onPress, ...item}: FashionItemProps) => {
-  const {previewImages, brandImage} = item
+  const {images, brand} = item
 
   return (
     <Pressable onPress={() => onPress?.(item)}>
@@ -88,14 +87,14 @@ export const FashionItem = memo(({onPress, ...item}: FashionItemProps) => {
         <Image
           resizeMode="contain"
           style={styles.img}
-          source={{uri: previewImages[0]}}
+          source={{uri: images[0].compressedImage}}
         />
         <Spacer height={8} />
         <View style={styles.brandOrNameContainer}>
           <Image
             resizeMode="contain"
             style={styles.brandLogo}
-            source={{uri: brandImage}}
+            source={{uri: brand?.logo}}
           />
         </View>
       </View>

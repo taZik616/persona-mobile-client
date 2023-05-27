@@ -1,25 +1,12 @@
 import React, {memo} from 'react'
 
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import {Image, Pressable, StyleSheet, View} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
 
 import {capitalize, cleanNumber} from 'src/helpers'
-import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
-import {
-  selectBasketIds,
-  selectIsAuthenticated,
-  useTypedDispatch,
-  useTypedSelector,
-} from 'src/store'
-import {addItemToBasket} from 'src/store/basketSlice'
+import {useTypedDispatch} from 'src/store'
 import {removeItemFromFavorites} from 'src/store/favoritesSlice'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
@@ -33,7 +20,6 @@ import {Text} from './Text'
 interface ProductCardProps extends ProductPreviewInfo {
   onPress?: (item: ProductPreviewInfo) => void
   topRightIcon?: 'star' | 'cross'
-  showAddToBasket?: boolean
   width?: number
   hidePrice?: boolean
   singleImage?: boolean
@@ -42,21 +28,19 @@ interface ProductCardProps extends ProductPreviewInfo {
 export const ProductCard = ({
   onPress,
   topRightIcon,
-  showAddToBasket,
   hidePrice,
   singleImage,
   width = 200,
   ...item
 }: ProductCardProps) => {
   const {
-    title,
-    previewImages,
+    productName,
+    images,
     price,
-    brandImage,
+    brand,
     collection,
     isAvailable,
     priceGroup,
-    brandName,
     productId,
   } = item
 
@@ -78,33 +62,36 @@ export const ProductCard = ({
               <Image
                 resizeMode="contain"
                 style={styles.singleImage}
-                source={{uri: previewImages[0]}}
+                source={{uri: images[0].compressedImage}}
               />
             ) : (
-              <ImagesLooping width={width} images={previewImages} />
+              <ImagesLooping
+                width={width}
+                images={images.map(a => a.compressedImage)}
+              />
             )}
 
             <Spacer height={6} />
-            {brandImage ? (
+            {brand?.logo ? (
               <FastImage
-                key={brandImage}
+                key={brand.brandId + brand.logo}
                 style={styles.brandImage}
                 resizeMode="contain"
-                source={{uri: brandImage, priority: FastImage.priority.high}}
+                source={{uri: brand.logo, priority: FastImage.priority.high}}
               />
             ) : (
               <View style={styles.brandName}>
                 <Text numberOfLines={1} center gp1>
-                  {brandName?.toUpperCase()}
+                  {brand?.name?.toUpperCase()}
                 </Text>
               </View>
             )}
             <Spacer height={8} />
             <View style={styles.textContentContainer}>
-              {title ? (
+              {productName ? (
                 <>
                   <Text numberOfLines={1} center gp4>
-                    {capitalize(title)}
+                    {capitalize(productName)}
                   </Text>
                   <Spacer height={6} />
                 </>
@@ -132,43 +119,38 @@ export const ProductCard = ({
             </View>
           </View>
         </GestureDetector>
-        {showAddToBasket ? (
-          <AddBasketButton item={item} width={width} />
-        ) : (
-          <></>
-        )}
         <Spacer height={16} />
       </View>
     </View>
   )
 }
 
-interface AddBasketButtonProps {
-  item: ProductPreviewInfo
-  width: number
-}
+// interface AddBasketButtonProps {
+//   item: ProductPreviewInfo
+//   width: number
+// }
 
-const AddBasketButton = memo(({item, width}: AddBasketButtonProps) => {
-  const dispatch = useTypedDispatch()
-  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
-  const inBasket = useTypedSelector(selectBasketIds).includes(item.productId)
+// const AddBasketButton = memo(({item, width}: AddBasketButtonProps) => {
+//   const dispatch = useTypedDispatch()
+//   const isAuthenticated = useTypedSelector(selectIsAuthenticated)
+//   const inBasket = useTypedSelector(selectBasketIds).includes(item.productId)
 
-  const handlePress = () => {
-    if (isAuthenticated) {
-      dispatch(addItemToBasket(item))
-    } else {
-      showAlertBasketLocked()
-    }
-  }
-  return (
-    <TouchableOpacity
-      disabled={inBasket}
-      onPress={handlePress}
-      style={[styles.addToCartButton, {width}]}>
-      <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
-    </TouchableOpacity>
-  )
-})
+//   const handlePress = () => {
+//     if (isAuthenticated) {
+//       dispatch(addItemToBasket(item))
+//     } else {
+//       showAlertBasketLocked()
+//     }
+//   }
+//   return (
+//     <TouchableOpacity
+//       disabled={inBasket}
+//       onPress={handlePress}
+//       style={[styles.addToCartButton, {width}]}>
+//       <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
+//     </TouchableOpacity>
+//   )
+// })
 
 interface RemoveProps {
   productId: string
@@ -216,15 +198,15 @@ const styles = StyleSheet.create({
     top: 6,
     zIndex: 1,
   },
-  addToCartButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    marginTop: 4,
-    alignItems: 'center',
-    borderColor: Color.primaryGray,
-    borderRadius: 8,
-    borderWidth: 1,
-  },
+  // addToCartButton: {
+  //   paddingVertical: 8,
+  //   paddingHorizontal: 10,
+  //   marginTop: 4,
+  //   alignItems: 'center',
+  //   borderColor: Color.primaryGray,
+  //   borderRadius: 8,
+  //   borderWidth: 1,
+  // },
   singleImage: {
     flex: 1,
     aspectRatio: '140/180',

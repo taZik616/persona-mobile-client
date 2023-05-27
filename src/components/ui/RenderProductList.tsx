@@ -37,7 +37,6 @@ export const RenderProductList = memo(
     const {curData, loadNext} = useProductsList({
       ...queryParams,
     })
-    console.log('🚀 - curData:', curData)
 
     useScreenBlockCurrent()
     const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
@@ -57,7 +56,7 @@ export const RenderProductList = memo(
         onEndReached={loadNext}
         // refreshing={queryObj.isFetching && !!curData?.data}
         // onRefresh={queryObj.refetch}
-        estimatedItemSize={351} // if showAddToBasket - 379
+        estimatedItemSize={351}
         contentContainerStyle={contentPaddingsStyle}
         renderItem={({item}) => (
           <ProductCard
@@ -77,7 +76,7 @@ export const RenderProductList = memo(
           )
         }
         keyExtractor={item => item.productId}
-        data={curData?.data ?? []}
+        data={curData?.products ?? []}
       />
     )
   },
