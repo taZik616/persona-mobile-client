@@ -16,8 +16,8 @@ export const HomeProfileScreen = () => {
   const onPressRecoverPassword = () => navigate('recoveryPasswordEnterPhone')
   const onPressOrders = () => navigate('orders')
   const onPressSubscription = () => navigate('subscriptions')
-  const onPressRecentlyItem = (item: ProductPreviewInfo) =>
-    navigate('productDetail', {item, productId: item.productId})
+  const onPressRecentlyItem = (product: ProductPreviewInfo) =>
+    navigate('productDetail', {product, productId: product.productId})
   const onPressExit = () => {
     dispatch(whenExitHandler)
   }

@@ -1,47 +1,52 @@
 import React, {useMemo} from 'react'
 
+import {
+  HorizontalBrandsList,
+  HorizontalCategoriesList,
+} from 'src/components/ui/HorizontalLists'
+import {RenderFashionList} from 'src/components/ui/HorizontalLists/RenderFashionList'
+import {Spacer} from 'src/components/ui/Spacer'
+import {Swiper} from 'src/components/ui/Swiper'
+import {Text} from 'src/components/ui/Text'
 import {HomeMainContentItem, MainContentItemType} from 'src/types'
 
-import {RenderFashionList} from '../ui/RenderFashionList'
-import {RenderHorizontalList} from '../ui/RenderHorizontalList'
-import {Spacer} from '../ui/Spacer'
-import {Swiper} from '../ui/Swiper'
-import {Text} from '../ui/Text'
-
 type RenderContentProps = {
-  onPressItem?: (item: HomeMainContentItem, id: string) => void
+  onPressItem?: (contentPart: HomeMainContentItem, item: any) => void
 } & HomeMainContentItem
 
-export const RenderContent = ({onPressItem, ...item}: RenderContentProps) => {
-  const {title, type, items} = item
+export const RenderContent = ({
+  onPressItem,
+  ...contentPart
+}: RenderContentProps) => {
+  const {title, type, items} = contentPart
 
   const renderContent = useMemo(() => {
     switch (type) {
       case MainContentItemType.BrandsList:
         return (
-          <RenderHorizontalList
-            onPressItem={id => onPressItem?.(item, id)}
-            data={items}
+          <HorizontalBrandsList
+            onPressItem={(_, id) => onPressItem?.(contentPart, items[id])}
+            brands={items}
           />
         )
       case MainContentItemType.BrandsSwiper:
         return (
           <Swiper
-            onPress={id => onPressItem?.(item, items[id].id)}
+            onPress={id => onPressItem?.(contentPart, items[id])}
             images={items.map(a => a.imgUri)}
           />
         )
       case MainContentItemType.CategoriesList:
         return (
-          <RenderHorizontalList
-            onPressItem={id => onPressItem?.(item, id)}
-            data={items}
+          <HorizontalCategoriesList
+            onPressItem={(_, id) => onPressItem?.(contentPart, items[id])}
+            categories={items}
           />
         )
       case MainContentItemType.FashionList:
         return (
           <RenderFashionList
-            onPressItem={id => onPressItem?.(item, id)}
+            onPressItem={id => onPressItem?.(contentPart, items[id])}
             data={items}
           />
         )
@@ -49,7 +54,7 @@ export const RenderContent = ({onPressItem, ...item}: RenderContentProps) => {
         return (
           <Swiper
             hasVibration
-            onPress={id => onPressItem?.(item, items[id].id)}
+            onPress={id => onPressItem?.(contentPart, items[id])}
             images={items.map(a => a.imgUri)}
           />
         )

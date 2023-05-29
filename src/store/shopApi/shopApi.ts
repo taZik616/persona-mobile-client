@@ -83,7 +83,7 @@ export const shopApi = createApi({
       query: (gender: 'men' | 'women') => ({
         url: 'main-content',
         method: 'GET',
-        body: {gender},
+        params: {gender},
       }),
     }),
     categories: build.query({
@@ -132,4 +132,5 @@ export const {
   useLoginMutation,
   useRecoveryPasswordSendCodeMutation,
   useChangePasswordMutation,
+  useCreateUserAndSendCodeMutation,
 } = shopApi

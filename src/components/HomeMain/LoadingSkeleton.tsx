@@ -16,7 +16,7 @@ export const LoadingSkeleton = () => {
     <>
       <BlockSkeleton center />
       <Spacer height={16} width={SCREEN_W / 2} />
-      <ScrollView horizontal>
+      <ScrollView showsHorizontalScrollIndicator={false} horizontal>
         <SafeLandscapeView style={styles.row} safeArea>
           <ListItemSkeleton />
           <ListItemSkeleton />

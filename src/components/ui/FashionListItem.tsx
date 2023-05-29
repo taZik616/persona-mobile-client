@@ -6,18 +6,18 @@ import {vibration} from 'src/services/vibration'
 import {FashionListItemT} from 'src/types'
 
 interface FashionListItemProps extends FashionListItemT {
-  onPress?: (id: string) => void
+  onPress?: () => void
 }
 
 export const FashionListItem = memo(
   ({onPress, ...item}: FashionListItemProps) => {
-    const {imgUri, id} = item
+    const {imgUri} = item
 
     return (
       <Pressable
         onPress={() => {
           vibration.soft()
-          onPress?.(id)
+          onPress?.()
         }}>
         <Image style={styles.img} source={{uri: imgUri}} />
       </Pressable>

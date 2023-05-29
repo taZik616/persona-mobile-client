@@ -7,6 +7,7 @@ import {
 } from 'src/components/ui/FashionItemsPresent'
 import {useTypedNavigation} from 'src/hooks'
 import {
+  AnyContentPartItem,
   HomeMainContentItem,
   MainContentItemType,
   ProductPreviewInfo,
@@ -17,30 +18,18 @@ export const HomeMainScreen = () => {
   const {navigate} = useTypedNavigation()
 
   const onPressContentItem = useCallback(
-    (item: HomeMainContentItem, id: string) => {
-      switch (item.type) {
+    (contentPart: HomeMainContentItem, item: AnyContentPartItem) => {
+      switch (contentPart.type) {
         case MainContentItemType.BrandsList:
         case MainContentItemType.BrandsSwiper:
-          const brandId = item.items.find(a => a.id === id)?.brandId
-          if (brandId) {
-            navigate('allProducts', {
-              brandIds: [brandId],
-              showGenderSelect: false,
-            })
-          }
+          navigate('allProducts', item.queryFilters)
           break
         case MainContentItemType.CategoriesList:
-          const categoryId = item.items.find(a => a.id === id)?.categoryId
-          if (categoryId) {
-            navigate('allProducts', {
-              categoryId,
-              showGenderSelect: false,
-            })
-          }
+          navigate('allProducts', item.queryFilters)
           break
         case MainContentItemType.FashionList:
         case MainContentItemType.FashionSwiper:
-          const productIds = item.items.find(a => a.id === id)?.productIds
+          const {productIds} = item
           if (productIds) {
             fashionPresentRef.current?.setProductIds(productIds)
             fashionPresentRef.current?.open?.()
@@ -50,8 +39,8 @@ export const HomeMainScreen = () => {
     },
     [],
   )
-  const onPressProduct = useCallback((item: ProductPreviewInfo) => {
-    navigate('productDetail', {item, productId: item.productId})
+  const onPressProduct = useCallback((product: ProductPreviewInfo) => {
+    navigate('productDetail', {product, productId: product.productId})
   }, [])
 
   const onPressGiftCard = () => {

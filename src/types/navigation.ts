@@ -1,5 +1,7 @@
 import {NavigatorScreenParams} from '@react-navigation/native'
 
+import {ProductsParams} from 'src/store/shopApi'
+
 import {ProductInBasketI, ProductPreviewInfo} from './interfaces'
 import {helpfulInfoKey} from './utils'
 
@@ -35,12 +37,7 @@ export type RootStackParamList = {
   buy: undefined
   fastBuy: {product: ProductInBasketI}
   giftCard: undefined
-  allProducts: {
-    showGenderSelect?: boolean
-    brandIds?: string[]
-    categoryId?: string
-    search?: string
-  }
+  allProducts?: ProductsParams & {showGenderSelect?: boolean}
 }
 
 export type CatalogStackParamList = {

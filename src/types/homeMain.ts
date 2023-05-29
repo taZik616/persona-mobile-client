@@ -1,3 +1,7 @@
+import {ProductsParams} from 'src/store/shopApi'
+
+import {BrandType, CategoryType} from './interfaces'
+
 export enum MainContentItemType {
   BrandsSwiper = 'BrandsSwiper',
   BrandsList = 'BrandsList',
@@ -6,17 +10,17 @@ export enum MainContentItemType {
   FashionSwiper = 'FashionSwiper',
 }
 
-export interface HomeMainContentI {
-  mainSwiperImages: string[]
-  bannerCard?: string
-  otherContent: HomeMainContentItem[]
+export type MainSwiperImages = {
+  id: number
+  imageUrl: string
+  productFilters: ProductsParams
 }
 
 export type BrandsListItem = {
   id: string
-  brandId: string
+  brand: BrandType
   imgUri: string
-  logoUri: string
+  queryFilters?: ProductsParams
 }
 export interface BrandsList {
   type: MainContentItemType.BrandsList
@@ -25,8 +29,9 @@ export interface BrandsList {
 
 export type BrandsSwiperItem = {
   id: string
-  brandId: string
+  brand: BrandType
   imgUri: string
+  queryFilters?: ProductsParams
 }
 export interface BrandsSwiper {
   type: MainContentItemType.BrandsSwiper
@@ -35,9 +40,9 @@ export interface BrandsSwiper {
 
 export type CategoriesListItem = {
   id: string
-  categoryId: string
   imgUri: string
-  name: string
+  category: CategoryType
+  queryFilters?: ProductsParams
 }
 export interface CategoriesList {
   type: MainContentItemType.CategoriesList
@@ -46,8 +51,8 @@ export interface CategoriesList {
 
 export type FashionListItemT = {
   id: string
-  productIds: string[]
   imgUri: string
+  productIds: string[]
 }
 export interface FashionList {
   type: MainContentItemType.FashionList
@@ -64,6 +69,12 @@ export interface FashionSwiper {
   items: FashionSwiperItem[]
 }
 
+export type AnyContentPartItem = FashionSwiperItem &
+  FashionListItemT &
+  CategoriesListItem &
+  BrandsSwiperItem &
+  BrandsSwiperItem
+
 export type HomeMainContentItem = (
   | BrandsList
   | BrandsSwiper
@@ -71,3 +82,9 @@ export type HomeMainContentItem = (
   | FashionList
   | FashionSwiper
 ) & {title: string}
+
+export interface HomeMainContentI {
+  mainSwiperImages: MainSwiperImages[]
+  bannerCard?: string
+  otherContent: HomeMainContentItem[]
+}

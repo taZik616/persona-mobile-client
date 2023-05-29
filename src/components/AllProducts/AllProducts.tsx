@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react'
+import React, {memo} from 'react'
 
 import {useTypedRoute} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
@@ -10,14 +10,12 @@ import {Spacer} from '../ui/Spacer'
 
 export const AllProducts = memo(() => {
   const {isMenSelected, onChangeGender, values} = useGender()
-  const {brandIds, search, showGenderSelect, categoryId} =
-    useTypedRoute<'allProducts'>().params
-
-  const [searchingText, setSearchingText] = useState<string | undefined>(search)
+  const {showGenderSelect, ...queryParams} =
+    useTypedRoute<'allProducts'>().params || {}
 
   return (
     <>
-      <Header onSearchSubmit={setSearchingText} showBack />
+      <Header showBack />
       {showGenderSelect ? (
         <>
           <Spacer height={8} />
@@ -31,12 +29,7 @@ export const AllProducts = memo(() => {
       ) : (
         <></>
       )}
-      <RenderProductList
-        sortBy={`stock ${categoryId ? 'Subdivision_ID' : ''}`} // Brand
-        sortedValues={`1${categoryId ? `;${categoryId}` : ''}`} // brandIds?.join(',')
-        showCounter
-        search={searchingText}
-      />
+      <RenderProductList {...queryParams} showCounter />
     </>
   )
 })

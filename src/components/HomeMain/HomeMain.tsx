@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useCallback, useMemo} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 import {ScrollView} from 'react-native'
 
+import {useTypedNavigation} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
 import {useMainContentQuery} from 'src/store/shopApi'
-import {HomeMainContentI, HomeMainContentItem} from 'src/types'
+import {
+  AnyContentPartItem,
+  HomeMainContentI,
+  HomeMainContentItem,
+} from 'src/types'
 import {CARD_BORDER_RADIUS} from 'src/variables'
 
 import {LoadingSkeleton} from './LoadingSkeleton'
@@ -18,7 +23,10 @@ import {Spacer} from '../ui/Spacer'
 import {Swiper} from '../ui/Swiper'
 
 interface HomeMainProps {
-  onPressContentItem?: (item: HomeMainContentItem, id: string) => void
+  onPressContentItem?: (
+    contentPart: HomeMainContentItem,
+    item: AnyContentPartItem,
+  ) => void
   onPressGiftCard?: () => void
 }
 
@@ -26,10 +34,23 @@ export const HomeMain = ({
   onPressContentItem,
   onPressGiftCard,
 }: HomeMainProps) => {
+  const {navigate} = useTypedNavigation()
   const {isMenSelected, onChangeGender, values} = useGender()
   const page = useMainContentQuery(isMenSelected ? 'men' : 'women')
 
   const curData = page.currentData as HomeMainContentI | undefined
+
+  const swiperImages = useMemo(() => {
+    return curData?.mainSwiperImages.map(a => a.imageUrl)
+  }, [curData])
+
+  const onPressSwiperImage = useCallback(
+    (index: number) => {
+      const {productFilters} = curData?.mainSwiperImages[index] || {}
+      navigate('allProducts', productFilters)
+    },
+    [curData],
+  )
 
   return (
     <>
@@ -46,7 +67,11 @@ export const HomeMain = ({
           <LoadingSkeleton />
         ) : (
           <>
-            <Swiper images={curData.mainSwiperImages} />
+            {swiperImages ? (
+              <Swiper onPress={onPressSwiperImage} images={swiperImages} />
+            ) : (
+              <></>
+            )}
             {curData.bannerCard ? (
               <>
                 <Spacer height={16} />
@@ -69,7 +94,7 @@ export const HomeMain = ({
               onPress={onPressGiftCard}
               borderRadius={CARD_BORDER_RADIUS}
               uri={
-                'https://vadim-backet.s3.eu-central-1.amazonaws.com/PersonaCard.png'
+                'http://89.108.71.146:2006/media/another-images/PersonaCard.png'
               }
             />
           </>
