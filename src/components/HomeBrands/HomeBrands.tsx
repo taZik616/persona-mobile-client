@@ -29,7 +29,7 @@ import {LoadingSkeleton} from './LoadingSkeleton'
 import {TopBrandItem} from './TopBrandItem'
 
 interface HomeBrandsProps {
-  onPressBrand?: (brand: any) => void
+  onPressBrand?: (brandId: string) => void
   onPressSearch?: () => void
 }
 
@@ -40,7 +40,7 @@ export const HomeBrands = memo(
     const {isMenSelected, onChangeGender, values} = useGender()
 
     const allBrands = useBrandsQuery({
-      //gender: isMenSelected ? 'men' : 'women',
+      gender: isMenSelected ? 'men' : 'women',
     })
 
     const listRef = useRef<SectionList>(null)
@@ -92,15 +92,15 @@ export const HomeBrands = memo(
           ListHeaderComponent={
             <TopBrandsHeader
               ref={topBrandsRef}
-              onPressBrand={onPressBrand}
+              onPressBrand={b => onPressBrand?.(b.brandId)}
               isMenSelected={isMenSelected}
             />
           }
           renderItem={({item}) => (
             <BrandRowItem
-              onPress={onPressBrand}
+              onPress={b => onPressBrand?.(b.brandId)}
               isLoading={allBrands.isLoading}
-              brand={item}
+              {...item}
             />
           )}
           ListEmptyComponent={<LoadingSkeleton />}
@@ -119,7 +119,7 @@ export const HomeBrands = memo(
 
 interface TopBrandsHeaderProps {
   isMenSelected: boolean
-  onPressBrand?: (brand: any) => void
+  onPressBrand?: (brand: BrandType) => void
 }
 
 const TopBrandsHeader = memo(
@@ -150,7 +150,7 @@ const TopBrandsHeader = memo(
               <TopBrandItem
                 onPress={onPressBrand}
                 isLoading={isLoading}
-                brand={item}
+                {...item}
               />
             )
           }}

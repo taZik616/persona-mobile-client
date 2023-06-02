@@ -48,6 +48,7 @@ export const useProductsList = ({
         },
       })
       const {data} = res
+
       if (data) {
         setProducts(pr => ({
           count: data.count,
@@ -88,7 +89,7 @@ export const useProductsList = ({
   const loadNext = useCallback(() => {
     pageNumberRef.current = pageNumberRef.current + 1
     fetchProducts()
-  }, [])
+  }, [fetchProducts])
 
   return {products, loadNext, reset, isLoad}
 }

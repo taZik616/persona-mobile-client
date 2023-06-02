@@ -8,7 +8,7 @@ import {useGender} from 'src/hooks/useGender'
 
 export const AllProducts = memo(() => {
   const {isMenSelected, onChangeGender, values} = useGender()
-  const {showGenderSelect, ...queryParams} =
+  const {showGenderSelect, showCategoriesFilter, showFilter, ...queryParams} =
     useTypedRoute<'allProducts'>().params || {}
 
   return (
@@ -29,8 +29,10 @@ export const AllProducts = memo(() => {
       )}
       <ProductList
         {...queryParams}
+        showCategoriesFilter={showCategoriesFilter ?? true}
         gender={isMenSelected ? 'men' : 'women'}
         showCounter
+        showFilter={showFilter}
       />
     </>
   )

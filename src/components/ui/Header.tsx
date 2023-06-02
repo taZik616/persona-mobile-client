@@ -66,6 +66,9 @@ export const Header = memo(
           navigate('allProducts', {
             showGenderSelect: true,
             search: text,
+            page: 1,
+            showFilter: true,
+            showCategoriesFilter: true,
           })
         }
       },

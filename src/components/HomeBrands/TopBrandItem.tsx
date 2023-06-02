@@ -6,14 +6,13 @@ import {StyleSheet, View} from 'react-native'
 import {Color} from 'src/themes'
 import {BrandType} from 'src/types'
 
-interface TopBrandItemProps {
+interface TopBrandItemProps extends BrandType {
   isLoading?: boolean
-  brand: BrandType
-  onPress?: (item: any) => void
+  onPress?: (item: BrandType) => void
 }
 
 export const TopBrandItem = memo(
-  ({brand, isLoading, onPress}: TopBrandItemProps) => {
+  ({isLoading, onPress, ...brand}: TopBrandItemProps) => {
     return (
       <TouchableOpacity
         onPress={() => !isLoading && onPress?.(brand)}

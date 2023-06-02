@@ -45,6 +45,7 @@ export type BottomSheetProps = {
   closeDistance?: number
   showClose?: boolean
   rightIcon?: JSX.Element
+  stickyComponent?: JSX.Element
   onPressRight?: () => void
   fillMax?: boolean
   hasBottomTabs?: boolean
@@ -81,6 +82,7 @@ export const BottomSheet = memo(
         onPressRight,
         rightIcon,
         showClose,
+        stickyComponent,
         closeDistance,
         fillMax,
         hasBottomTabs = true, // Фиксит клавиатуру
@@ -284,19 +286,7 @@ export const BottomSheet = memo(
               </SafeLandscapeView>
             </GestureDetector>
             {fixAndroidHorizontalList ? (
-              <Animated.ScrollView
-                bounces={false}
-                showsVerticalScrollIndicator={false}
-                scrollEventThrottle={1}
-                onScrollBeginDrag={e => {
-                  scrollOffset.value = e.nativeEvent.contentOffset.y
-                }}>
-                {children}
-                <Animated.View style={keyboardSafe} />
-              </Animated.ScrollView>
-            ) : (
-              <GestureDetector
-                gesture={Gesture.Simultaneous(panGesture, scrollViewGesture)}>
+              <>
                 <Animated.ScrollView
                   bounces={false}
                   showsVerticalScrollIndicator={false}
@@ -307,7 +297,25 @@ export const BottomSheet = memo(
                   {children}
                   <Animated.View style={keyboardSafe} />
                 </Animated.ScrollView>
-              </GestureDetector>
+                {stickyComponent}
+              </>
+            ) : (
+              <>
+                <GestureDetector
+                  gesture={Gesture.Simultaneous(panGesture, scrollViewGesture)}>
+                  <Animated.ScrollView
+                    bounces={false}
+                    showsVerticalScrollIndicator={false}
+                    scrollEventThrottle={1}
+                    onScrollBeginDrag={e => {
+                      scrollOffset.value = e.nativeEvent.contentOffset.y
+                    }}>
+                    {children}
+                    <Animated.View style={keyboardSafe} />
+                  </Animated.ScrollView>
+                </GestureDetector>
+                {stickyComponent}
+              </>
             )}
           </Animated.View>
         </View>

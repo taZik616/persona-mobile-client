@@ -1,55 +1,86 @@
-import React, {memo, useCallback, useRef, useState} from 'react'
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
+import {ScrollView} from 'react-native'
 import {SortSelect, SortSelectRefType} from 'ui/bottom-sheets/SortSelect'
 import {ProductCard} from 'ui/cards'
 import {BrandSearching, BrandSearchingRefType, Spacer} from 'ui/index'
 import {LoadingProductListSkeleton} from 'ui/Skeletons/LoadingProductList'
 
 import {useProductListHelper, useScreenBlockCurrent} from 'src/hooks'
+import {useGender} from 'src/hooks/useGender'
 import {OrderingType, ProductsParams, useProductsList} from 'src/store/shopApi'
-import {OrderingItemI, ProductPreviewInfo, ProductsDataI} from 'src/types'
+import {BrandType, OrderingItemI, ProductPreviewInfo} from 'src/types'
 
 import {Counter} from './Counter'
-import {Filter} from './ProductFilters'
+import {Filter, FilterRefType} from './ProductFilters'
 import {SizeSelect} from './SizeSelect'
 
 interface ProductListProps extends ProductsParams {
-  renderHeader?: (curData: ProductsDataI) => JSX.Element
   onPressProduct?: (item: ProductPreviewInfo) => void
   showCounter?: boolean
   showFilter?: boolean
+  showCategoriesFilter?: boolean
 }
 
 export const ProductList = memo(
   ({
-    renderHeader,
     onPressProduct,
     showCounter,
     showFilter,
+    showCategoriesFilter,
     ...queryParams
   }: ProductListProps) => {
     const [params, setParams] = useState<ProductsParams>(queryParams)
-    const {products, loadNext, isLoad, reset} = useProductsList({
+    const {isMenSelected} = useGender()
+    const {products, loadNext, isLoad} = useProductsList({
       ...params,
+      gender: isMenSelected ? 'men' : 'women',
     })
+
+    useEffect(() => {
+      setParams(queryParams)
+    }, [isMenSelected])
 
     useScreenBlockCurrent()
     const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
     const sortSelectRef = useRef<SortSelectRefType>(null)
     const brandSelectRef = useRef<BrandSearchingRefType>(null)
     const sizeSelectRef = useRef<BrandSearchingRefType>(null)
+    const filterRef = useRef<FilterRefType>(null)
 
     const onChangeSort = useCallback((ordering: OrderingType) => {
       setParams(pr => ({...pr, ordering}))
+      sortSelectRef.current?.close?.()
     }, [])
 
-    const onChangeBrand = useCallback((brandIds: string) => {
-      setParams(pr => ({...pr, brandIds}))
+    const onChangeBrand = useCallback(
+      (brandIds: string, brands: BrandType[]) => {
+        setParams(pr => ({...pr, brandIds}))
+        filterRef.current?.setBrandFilters(brands)
+        brandSelectRef.current?.close?.()
+        brandSelectRef.current?.cleanSelections()
+      },
+      [],
+    )
+
+    const onChangeCategory = useCallback((categoryId?: number) => {
+      setParams(pr => ({...pr, categoryId}))
+    }, [])
+
+    const onRemoveBrandFilter = useCallback((brandId: string) => {
+      setParams(pr => ({
+        ...pr,
+        brandIds: pr.brandIds
+          ?.split(',')
+          .filter((b: string) => b !== brandId)
+          .join(','),
+      }))
     }, [])
 
     const onChangeSize = useCallback((sizes: string) => {
       console.log(sizes)
+      sizeSelectRef.current?.close?.()
       //setParams(pr => ({...pr, brandIds}))
     }, [])
 
@@ -65,43 +96,68 @@ export const ProductList = memo(
       sizeSelectRef.current?.open?.()
     }, [])
 
-    return products ? (
+    return (
       <>
-        <FlashList
-          key={numColumns}
-          numColumns={numColumns}
-          onEndReached={loadNext}
-          refreshing={isLoad}
-          onRefresh={reset}
-          estimatedItemSize={351}
-          contentContainerStyle={contentPaddingsStyle}
-          renderItem={({item}) => (
-            <ProductCard
-              width={cardWidth}
-              topRightIcon="star"
-              onPress={onPressProduct}
-              {...item}
+        <ScrollView
+          onScroll={({nativeEvent}) => {
+            const {layoutMeasurement, contentOffset, contentSize} = nativeEvent
+            const isScrolledToEnd =
+              layoutMeasurement.height + contentOffset.y >= contentSize.height
+
+            if (isScrolledToEnd) {
+              products?.products.length && loadNext()
+            }
+          }}>
+          {showFilter && (
+            <Filter
+              key={isMenSelected ? 'men' : 'women'}
+              ref={filterRef}
+              showCategories={showCategoriesFilter}
+              onPressSize={onPressSize}
+              onPressSort={onPressSort}
+              onPressBrands={onPressBrands}
+              onChangeCategory={onChangeCategory}
+              onRemoveBrand={onRemoveBrandFilter}
             />
           )}
-          ListHeaderComponent={
-            renderHeader?.(products) ?? (
+          <FlashList
+            scrollEnabled={false}
+            directionalLockEnabled={false}
+            key={numColumns}
+            numColumns={numColumns}
+            refreshing={isLoad}
+            estimatedItemSize={351}
+            contentContainerStyle={contentPaddingsStyle}
+            renderItem={({item}) => (
+              <ProductCard
+                width={cardWidth}
+                topRightIcon="star"
+                onPress={onPressProduct}
+                {...item}
+              />
+            )}
+            ListHeaderComponent={
               <>
-                {showFilter && (
-                  <Filter
-                    sizes={products.filters.sizes}
-                    onPressSize={onPressSize}
-                    onPressSort={onPressSort}
-                    onPressBrands={onPressBrands}
-                  />
+                {showCounter && products && <Counter count={products.count} />}
+                {!showCounter && products && !showFilter ? (
+                  <Spacer height={20} />
+                ) : (
+                  <></>
                 )}
-                {showCounter && <Counter count={products.count} />}
-                {!showCounter && !showFilter ? <Spacer height={20} /> : <></>}
               </>
-            )
-          }
-          keyExtractor={item => item.productId}
-          data={products?.products ?? []}
-        />
+            }
+            ListEmptyComponent={
+              isLoad ? (
+                <LoadingProductListSkeleton
+                  width={cardWidth}
+                  numColumns={numColumns}
+                />
+              ) : undefined
+            }
+            keyExtractor={(item: any, id) => item?.productId ?? String(id)}
+            data={products?.products ?? []}
+          />
+        </ScrollView>
         <SortSelect
           ref={sortSelectRef}
           onChangeSort={onChangeSort}
@@ -109,16 +165,11 @@ export const ProductList = memo(
         />
         <BrandSearching ref={brandSelectRef} onCompleteSelect={onChangeBrand} />
         <SizeSelect
-          sizes={[...new Set(products.filters.sizes)].filter(Boolean)}
+          sizes={[...new Set(products?.filters.sizes)].filter(Boolean)}
+          onChangeSizes={onChangeSize}
           ref={sizeSelectRef}
         />
       </>
-    ) : (
-      <LoadingProductListSkeleton
-        width={cardWidth}
-        style={contentPaddingsStyle}
-        numColumns={numColumns}
-      />
     )
   },
 )

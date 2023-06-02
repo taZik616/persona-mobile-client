@@ -45,28 +45,37 @@ export const SizeSelect = memo(
         close: bottomSheetRef.current?.close,
       }))
 
-      const onSubmitSizes = () => {
-        onChangeSizes?.(selected.join(','))
-      }
-
-      const onSelectSizes = (size: string) => {
-        setSelected(pr => {
-          if (!pr.includes(size)) {
-            return [...pr, size]
-          } else {
-            return pr.filter(a => a !== size)
-          }
-        })
-        onChangeSizes?.(selected.join(','))
-      }
-
       const content = useMemo(() => {
+        const onSubmitSizes = () => {
+          onChangeSizes?.(selected.join(','))
+        }
+
+        const onSelectSizes = (size: string) => {
+          setSelected(pr => {
+            if (!pr.includes(size)) {
+              return [...pr, size]
+            } else {
+              return pr.filter(a => a !== size)
+            }
+          })
+        }
         return (
           <SafeLandscapeView>
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={styles.scrollContainer}>
               <Spacer height={16} />
+              {!sizes.length ? (
+                <>
+                  <Spacer height={8} />
+                  <Text color={Color.primaryGray} center gp4>
+                    Варианты размера отсутствуют
+                  </Text>
+                  <Spacer height={16} />
+                </>
+              ) : (
+                <></>
+              )}
               <FlatList
                 horizontal
                 contentContainerStyle={styles.listContainer}
@@ -97,8 +106,10 @@ export const SizeSelect = memo(
               />
             </ScrollView>
             <Spacer height={16} />
-            <Button onPress={onSubmitSizes}>Выбрать</Button>
-            <Spacer height={20} />
+            <Button disabled={selected.length === 0} onPress={onSubmitSizes}>
+              Выбрать
+            </Button>
+            <Spacer height={24} withBottomInsets />
           </SafeLandscapeView>
         )
       }, [sizes, selected])

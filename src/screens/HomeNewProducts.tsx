@@ -2,7 +2,7 @@ import React, {useCallback, useRef} from 'react'
 
 import {HomeNewProducts} from 'src/components/HomeNewProducts'
 import {useTypedNavigation} from 'src/hooks'
-import {OrderingItemI, ProductPreviewInfo} from 'src/types'
+import {ProductPreviewInfo} from 'src/types'
 
 export const HomeNewProductsScreen = () => {
   const {navigate} = useTypedNavigation()

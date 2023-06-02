@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {Header} from 'ui/index'
-import {RenderProductList} from 'ui/product-list'
+import {ProductList} from 'ui/product-list'
 
 import {useTypedRouteCatalogStack} from 'src/hooks'
 import {ProductPreviewInfo} from 'src/types'
@@ -18,7 +18,7 @@ export const HomeCatalogProducts = ({
   return (
     <>
       <Header showBack />
-      <RenderProductList
+      <ProductList
         showCounter
         subcategoryId={subcategoryId}
         onPressProduct={onPressProduct}

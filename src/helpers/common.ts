@@ -50,8 +50,10 @@ export const getProductsCountString = (count: number) => {
     return `${count} товаров`
   } else if (count > 1) {
     return `${count} товара`
-  } else {
+  } else if (count === 1) {
     return `${count} товар`
+  } else {
+    return `Товаров не найдено`
   }
 }
 

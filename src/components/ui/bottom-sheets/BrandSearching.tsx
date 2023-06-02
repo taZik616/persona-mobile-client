@@ -11,27 +11,30 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {SectionList, StyleSheet, TextInput, View} from 'react-native'
-import {SafeLandscapeView, Spacer, Text} from 'ui/index'
+import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 import {BrandGroupTitle, BrandRowItem} from 'ui/index'
 
 import {groupByAlphabetical} from 'src/helpers'
+import {vibration} from 'src/services/vibration'
 import {useBrandsQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {BrandType} from 'src/types'
 
 interface BrandSearchingProps {
-  onCompleteSelect?: (brand: any) => void
+  onCompleteSelect?: (brandIds: string, brands: BrandType[]) => void
 }
 
 export interface BrandSearchingRefType {
   open?: () => void
   close?: () => void
+  cleanSelections: () => void
 }
 
 export const BrandSearching = memo(
   forwardRef<BrandSearchingRefType, BrandSearchingProps>(
     ({onCompleteSelect}, ref) => {
       const [searchText, setSearchText] = useState('')
+      const [selectedIds, setSelectedIds] = useState<string[]>([])
       const bottomSheetRef = useRef<BottomSheetRefType>(null)
       const {
         currentData: temp,
@@ -39,11 +42,12 @@ export const BrandSearching = memo(
         isLoading,
         refetch,
       } = useBrandsQuery({})
-      const brand = temp as BrandType[] | undefined
+      const brands = temp as BrandType[] | undefined
 
       useImperativeHandle(ref, () => ({
         open: bottomSheetRef.current?.open,
         close: bottomSheetRef.current?.close,
+        cleanSelections: () => setSelectedIds([]),
       }))
 
       useEffect(() => {
@@ -53,7 +57,7 @@ export const BrandSearching = memo(
       const onClose = useCallback(() => setSearchText(''), [])
 
       const content = useMemo(() => {
-        const sections = groupByAlphabetical(brand ?? [], 'name')
+        const sections = groupByAlphabetical(brands ?? [], 'name')
           .map(a => {
             return {
               title: a.title,
@@ -63,6 +67,13 @@ export const BrandSearching = memo(
             }
           })
           .filter(a => a.data.length > 0)
+        const onPressItem = ({brandId}: BrandType) => {
+          vibration.selection()
+          setSelectedIds(pr => {
+            if (pr.includes(brandId)) return pr.filter(a => a !== brandId)
+            return [...pr, brandId]
+          })
+        }
 
         return (
           <View>
@@ -91,15 +102,16 @@ export const BrandSearching = memo(
               }
               scrollEnabled={false}
               removeClippedSubviews
-              refreshing={isFetching && !!brand}
+              refreshing={isFetching && !!brands}
               onRefresh={() => {
                 refetch()
               }}
               renderItem={({item}) => (
                 <BrandRowItem
-                  onPress={onCompleteSelect}
+                  isSelected={selectedIds.includes(item.brandId)}
+                  onPress={onPressItem}
                   isLoading={isLoading}
-                  brand={item}
+                  {...item}
                 />
               )}
               showsVerticalScrollIndicator={false}
@@ -109,10 +121,30 @@ export const BrandSearching = memo(
               keyExtractor={_brandKeyExtractor}
               sections={sections || []}
             />
-            <Spacer height={20} />
+            <Spacer height={100} />
           </View>
         )
-      }, [brand, searchText, isLoading, onCompleteSelect])
+      }, [brands, selectedIds, searchText, isLoading])
+
+      const button = useMemo(() => {
+        const onSubmit = () => {
+          if (brands)
+            onCompleteSelect?.(
+              selectedIds.join(','),
+              selectedIds
+                .map(a => brands.find(b => b.brandId === a))
+                .filter(Boolean) as BrandType[],
+            )
+        }
+
+        return (
+          <SafeLandscapeView safeArea style={styles.button}>
+            <Button disabled={!selectedIds.length} onPress={onSubmit}>
+              Показать
+            </Button>
+          </SafeLandscapeView>
+        )
+      }, [brands, selectedIds, onCompleteSelect])
 
       return (
         <BottomSheet
@@ -121,6 +153,7 @@ export const BrandSearching = memo(
           onClose={onClose}
           title="БРЕНДЫ"
           fillMax
+          stickyComponent={button}
           ref={bottomSheetRef}>
           {content}
         </BottomSheet>
@@ -140,5 +173,10 @@ const styles = StyleSheet.create({
     fontFamily: 'GothamPro',
     fontSize: 13,
     color: Color.primaryBlack,
+  },
+  button: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 20,
   },
 })

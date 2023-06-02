@@ -1,15 +1,20 @@
 import React, {useCallback, useRef} from 'react'
 
-import {BrandSearching, BrandSearchingRefType} from 'ui/BrandSearching'
-
 import {HomeBrands} from 'src/components/HomeBrands'
+import {
+  BrandSearching,
+  BrandSearchingRefType,
+} from 'src/components/ui/bottom-sheets/BrandSearching'
+import {useTypedNavigation} from 'src/hooks'
 
 export const HomeBrandsScreen = () => {
   const brandSearchingRef = useRef<BrandSearchingRefType>(null)
+  const {navigate} = useTypedNavigation()
 
-  const onPressBrand = useCallback((brand: any) => {
-    console.log('Brand pressed:', JSON.stringify(brand))
+  const onSelectBrand = useCallback((brandIds: string) => {
+    navigate('allProducts', {brandIds})
     brandSearchingRef.current?.close?.()
+    brandSearchingRef.current?.cleanSelections()
   }, [])
 
   const onPressSearch = useCallback(() => {
@@ -18,8 +23,11 @@ export const HomeBrandsScreen = () => {
 
   return (
     <>
-      <HomeBrands onPressSearch={onPressSearch} onPressBrand={onPressBrand} />
-      <BrandSearching onCompleteSelect={onPressBrand} ref={brandSearchingRef} />
+      <HomeBrands onPressSearch={onPressSearch} onPressBrand={onSelectBrand} />
+      <BrandSearching
+        onCompleteSelect={onSelectBrand}
+        ref={brandSearchingRef}
+      />
     </>
   )
 }

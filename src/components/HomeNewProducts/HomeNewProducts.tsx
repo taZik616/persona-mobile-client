@@ -36,7 +36,7 @@ export const HomeNewProducts = memo(
         <ProductList
           showFilter
           showCounter
-          gender={isMenSelected ? 'men' : 'women'}
+          showCategoriesFilter
           ordering={ordering}
           isNew="True"
           onPressProduct={onPressProduct}
