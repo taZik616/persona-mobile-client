@@ -1,8 +1,6 @@
 import React from 'react'
 
-import {SafeLandscapeView} from './SafeLandscapeView'
-import {Spacer} from './Spacer'
-import {Text} from './Text'
+import {SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface BrandGroupTitleProps {
   title: string

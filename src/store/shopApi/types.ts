@@ -36,16 +36,18 @@ export interface CreateUserAndSendCodeBody {
   lastName?: string
 }
 
+export type OrderingType =
+  | 'price' // priceFromLow
+  | '-price' // priceFromTop
+  | 'lastUpdate' // latestUpdated
+  | '-lastUpdate' //firstTheOldOnes
+
 export interface ProductsParams {
   productId?: string
-  brand__brandId?: string
+  brandIds?: string
   page?: number
   page_size?: number
-  ordering?:
-    | 'price' // priceFromLow
-    | '-price' // priceFromTop
-    | 'lastUpdate' // latestUpdated
-    | '-lastUpdate' //firstTheOldOnes
+  ordering?: OrderingType
   subcategoryId?: number
   categoryId?: number
   priceGroup?: string

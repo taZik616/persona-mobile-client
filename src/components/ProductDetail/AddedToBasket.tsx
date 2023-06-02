@@ -6,14 +6,11 @@ import React, {
   useRef,
 } from 'react'
 
+import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {Image, Pressable, StyleSheet, View} from 'react-native'
+import {Button, SafeLandscapeView, Spacer} from 'ui/index'
 
 import {ProductPreviewInfo} from 'src/types'
-
-import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
-import {Button} from '../ui/Button'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
 
 interface AddedToBasketProps {
   onPressGoBasket?: () => void

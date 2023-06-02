@@ -2,16 +2,17 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
+import {
+  Button,
+  FormTextInput,
+  Header,
+  KeyboardSafeArea,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {Color} from 'src/themes'
-
-import {Button} from '../ui/Button'
-import {FormTextInput} from '../ui/FormTextInput'
-import {Header} from '../ui/Header'
-import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface ChangePasswordProps {
   onPressRecovery?: () => void

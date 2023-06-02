@@ -1,13 +1,11 @@
 import React, {memo} from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
+import {Spacer, Text} from 'ui/index'
 
 import {cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
 import {ProductInBasketI} from 'src/types'
-
-import {Spacer} from './Spacer'
-import {Text} from './Text'
 
 interface ProductCardRowProps extends ProductInBasketI {
   onPress?: (item: ProductInBasketI) => void

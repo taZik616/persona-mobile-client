@@ -1,21 +1,23 @@
 import React, {memo} from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
+import {ShopBagLightIcon} from 'ui/icons/common'
+import {
+  Button,
+  Header,
+  Img,
+  SafeLandscapeView,
+  Spacer,
+  StarProduct,
+  Swiper,
+  Text,
+} from 'ui/index'
 
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
 import {DetailsSection} from './DetailsSection'
 
-import {Button} from '../ui/Button'
-import {Header} from '../ui/Header'
-import {ShopBagLightIcon} from '../ui/icons/common'
-import {Img} from '../ui/Img'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {StarProduct} from '../ui/StarProduct'
-import {Swiper} from '../ui/Swiper'
-import {Text} from '../ui/Text'
 interface ProductDetailProps extends ProductPreviewInfo {
   onPressFastBuy?: () => void
   onPressAddToBasket?: () => void

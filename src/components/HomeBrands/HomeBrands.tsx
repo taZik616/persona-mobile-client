@@ -7,25 +7,26 @@ import React, {
 } from 'react'
 
 import {FlatList, SectionList, StyleSheet} from 'react-native'
+import {
+  AlphabetVerticalSelector,
+  BrandGroupTitle,
+  BrandRowItem,
+  Header,
+  SafeLandscapeView,
+  SelectorTwoOptions,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {groupByAlphabetical} from 'src/helpers'
 import {useGender} from 'src/hooks/useGender'
 import {vibration} from 'src/services/vibration'
-import {useBrandsQuery} from 'src/store/shopApi/shopApi'
+import {useBrandsQuery} from 'src/store/shopApi'
 import {BrandType} from 'src/types'
 import {IS_IOS} from 'src/variables'
 
 import {LoadingSkeleton} from './LoadingSkeleton'
 import {TopBrandItem} from './TopBrandItem'
-
-import {AlphabetVerticalSelector} from '../ui/AlphabetVerticalSelector'
-import {BrandGroupTitle} from '../ui/BrandGroupTitle'
-import {BrandRowItem} from '../ui/BrandRowItem'
-import {Header} from '../ui/Header'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface HomeBrandsProps {
   onPressBrand?: (brand: any) => void

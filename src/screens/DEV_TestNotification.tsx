@@ -1,10 +1,8 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
+import {Button, SafeLandscapeView, Spacer} from 'ui/index'
 
-import {Button} from 'src/components/ui/Button'
-import {SafeLandscapeView} from 'src/components/ui/SafeLandscapeView'
-import {Spacer} from 'src/components/ui/Spacer'
 import {useNotifeePermissions} from 'src/hooks/useNotifeePermissions'
 import {notifications} from 'src/services/notifications'
 import {vibration} from 'src/services/vibration'

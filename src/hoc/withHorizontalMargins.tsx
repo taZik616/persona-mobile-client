@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {SafeLandscapeView} from 'src/components/ui/SafeLandscapeView'
+import {SafeLandscapeView} from 'ui/SafeLandscapeView'
 
 export function withHorizontalMargins<TProps>(
   Component: React.JSXElementConstructor<TProps>,

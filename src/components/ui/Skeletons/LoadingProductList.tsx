@@ -2,10 +2,9 @@ import React, {memo} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native'
+import {Spacer} from 'ui/index'
 
 import {ProductCardSkeleton} from './ProductCard'
-
-import {Spacer} from '../Spacer'
 
 interface LoadingSkeletonProps {
   width?: number

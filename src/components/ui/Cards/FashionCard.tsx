@@ -5,25 +5,23 @@ import {Image, Pressable, StyleSheet} from 'react-native'
 import {vibration} from 'src/services/vibration'
 import {FashionListItemT} from 'src/types'
 
-interface FashionListItemProps extends FashionListItemT {
+interface FashionCardProps extends FashionListItemT {
   onPress?: () => void
 }
 
-export const FashionListItem = memo(
-  ({onPress, ...item}: FashionListItemProps) => {
-    const {imgUri} = item
+export const FashionCard = memo(({onPress, ...item}: FashionCardProps) => {
+  const {imgUri} = item
 
-    return (
-      <Pressable
-        onPress={() => {
-          vibration.soft()
-          onPress?.()
-        }}>
-        <Image style={styles.img} source={{uri: imgUri}} />
-      </Pressable>
-    )
-  },
-)
+  return (
+    <Pressable
+      onPress={() => {
+        vibration.soft()
+        onPress?.()
+      }}>
+      <Image style={styles.img} source={{uri: imgUri}} />
+    </Pressable>
+  )
+})
 
 const styles = StyleSheet.create({
   containerForHorizontalScroll: {

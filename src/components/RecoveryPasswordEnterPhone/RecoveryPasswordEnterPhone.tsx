@@ -2,17 +2,18 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView, StyleSheet} from 'react-native'
+import {Logo} from 'ui/icons/logo'
+import {
+  Button,
+  FormTextInput,
+  Header,
+  KeyboardSafeArea,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {Color} from 'src/themes'
-
-import {Button} from '../ui/Button'
-import {FormTextInput} from '../ui/FormTextInput'
-import {Header} from '../ui/Header'
-import {Logo} from '../ui/icons/logo'
-import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface RecoveryPasswordEnterPhoneProps {
   onSubmit?: () => void

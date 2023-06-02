@@ -1,10 +1,8 @@
 import React, {useCallback, useRef} from 'react'
 
+import {BrandSearching, BrandSearchingRefType} from 'ui/BrandSearching'
+
 import {HomeBrands} from 'src/components/HomeBrands'
-import {
-  BrandSearching,
-  BrandSearchingRefType,
-} from 'src/components/ui/BrandSearching'
 
 export const HomeBrandsScreen = () => {
   const brandSearchingRef = useRef<BrandSearchingRefType>(null)

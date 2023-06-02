@@ -3,11 +3,10 @@ import React, {useMemo} from 'react'
 import {
   HorizontalBrandsList,
   HorizontalCategoriesList,
-} from 'src/components/ui/HorizontalLists'
-import {RenderFashionList} from 'src/components/ui/HorizontalLists/RenderFashionList'
-import {Spacer} from 'src/components/ui/Spacer'
-import {Swiper} from 'src/components/ui/Swiper'
-import {Text} from 'src/components/ui/Text'
+} from 'ui/horizontal-lists'
+import {FashionList} from 'ui/horizontal-lists'
+import {Spacer, Swiper, Text} from 'ui/index'
+
 import {HomeMainContentItem, MainContentItemType} from 'src/types'
 
 type RenderContentProps = {

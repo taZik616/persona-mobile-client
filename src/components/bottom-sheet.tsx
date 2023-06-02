@@ -29,17 +29,14 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated'
 import {initialWindowMetrics} from 'react-native-safe-area-context'
+import {CrossIcon} from 'ui/icons/common'
+import {SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {useAndroidStatusBarAnimation} from 'src/hooks'
 import {useIsPortrait} from 'src/hooks/useIsPortrait'
 import {Color} from 'src/themes'
 import {sheetPointsT} from 'src/types'
 import {IS_IOS, SCREEN_H, SCREEN_W, SPRING_ANIM_CONF} from 'src/variables'
-
-import {CrossIcon} from './ui/icons/common'
-import {SafeLandscapeView} from './ui/SafeLandscapeView'
-import {Spacer} from './ui/Spacer'
-import {Text} from './ui/Text'
 
 export type BottomSheetProps = {
   children?: React.ReactNode

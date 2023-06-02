@@ -1,14 +1,12 @@
 import React from 'react'
 
 import {FlatList, StyleSheet} from 'react-native'
+import {ProductCard} from 'ui/cards'
+import {Spacer, Text} from 'ui/index'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {selectRecentlyWatched, useTypedSelector} from 'src/store'
 import {ProductPreviewInfo} from 'src/types'
-
-import {ProductCard} from '../ui/ProductCard'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface RecentlyWatchedListProps {
   onPressItem?: (item: ProductPreviewInfo) => void

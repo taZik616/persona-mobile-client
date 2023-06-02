@@ -1,40 +1,36 @@
-import React, {memo, useMemo} from 'react'
+import React, {memo} from 'react'
 
-import {ScrollView, StyleSheet} from 'react-native'
-import {Col, Rows, Table, TableWrapper} from 'react-native-table-component'
+import {StyleSheet} from 'react-native'
+import {WebView} from 'react-native-webview'
+import {Header, Loading, SafeLandscapeView, Spacer} from 'ui/index'
 
-import {longestStringInDoubleArr} from 'src/helpers'
-import {Color} from 'src/themes'
-import {IS_IOS} from 'src/variables'
-
-import {Header} from '../ui/Header'
-import {Spacer} from '../ui/Spacer'
+import {useSizeChartQuery} from 'src/store/shopApi'
 
 interface SizeChartProps {
-  titles: string[]
-  data: string[][]
   headerTitle: string
 }
 
-const CELL_H = 40
+export const SizeChart = memo(({headerTitle}: SizeChartProps) => {
+  // const dataWidthArr = useMemo(() => {
+  //   const maxWidthItem = longestStringInDoubleArr(data)
+  //   return data[0].map(() => maxWidthItem.length * 11 + 20)
+  // }, [])
+  const sizes = useSizeChartQuery({})
 
-export const SizeChart = memo(({titles, headerTitle, data}: SizeChartProps) => {
-  const dataWidthArr = useMemo(() => {
-    const maxWidthItem = longestStringInDoubleArr(data)
-    return data[0].map(() => maxWidthItem.length * 11 + 20)
-  }, [])
   return (
     <>
-      <Header
-        showBack
-        hideBasket
-        hideSearch
-        title={headerTitle}
-        subtitle="таблица размеров"
-      />
-      <ScrollView bounces={false} nestedScrollEnabled>
-        <Spacer height={16} />
-        <ScrollView
+      <Header showBack hideBasket hideSearch title={headerTitle} />
+      {sizes.isLoading && !sizes.currentData?.page ? (
+        <Loading />
+      ) : (
+        <SafeLandscapeView style={styles.flexOne} safeArea>
+          <Spacer height={16} />
+          <WebView
+            originWhitelist={['*']}
+            source={{html: sizes.currentData.page}}
+          />
+          <Spacer withBottomInsets height={16} />
+          {/* <ScrollView
           bounces={false}
           showsHorizontalScrollIndicator={false}
           style={styles.tableWrapper}
@@ -55,35 +51,37 @@ export const SizeChart = memo(({titles, headerTitle, data}: SizeChartProps) => {
               />
             </TableWrapper>
           </Table>
-        </ScrollView>
-        <Spacer withBottomInsets height={16} />
-      </ScrollView>
+        </ScrollView> */}
+        </SafeLandscapeView>
+      )}
     </>
   )
 })
 
+// const CELL_H = 40
 const styles = StyleSheet.create({
-  wrapper: {flexDirection: 'row'},
-  tableWrapper: {alignSelf: 'center'},
-  title: {
-    backgroundColor: Color.tablePrimary,
-    zIndex: 2,
-    maxWidth: 150,
-    textAlign: 'left',
-  },
-  row: {
-    height: CELL_H,
-  },
-  text: {
-    marginHorizontal: 10,
-    fontFamily: 'GothamPro',
-    fontSize: 13,
-    lineHeight: IS_IOS ? 15.4 : 16,
-    color: Color.primaryBlack,
-    paddingVertical: 4,
-  },
-  centerText: {
-    textAlign: 'center',
-  },
-  borders: {borderWidth: 1, borderColor: Color.border},
+  flexOne: {flex: 1},
+  // wrapper: {flexDirection: 'row'},
+  // tableWrapper: {alignSelf: 'center'},
+  // title: {
+  //   backgroundColor: Color.tablePrimary,
+  //   zIndex: 2,
+  //   maxWidth: 150,
+  //   textAlign: 'left',
+  // },
+  // row: {
+  //   height: CELL_H,
+  // },
+  // text: {
+  //   marginHorizontal: 10,
+  //   fontFamily: 'GothamPro',
+  //   fontSize: 13,
+  //   lineHeight: IS_IOS ? 15.4 : 16,
+  //   color: Color.primaryBlack,
+  //   paddingVertical: 4,
+  // },
+  // centerText: {
+  //   textAlign: 'center',
+  // },
+  // borders: {borderWidth: 1, borderColor: Color.border},
 })

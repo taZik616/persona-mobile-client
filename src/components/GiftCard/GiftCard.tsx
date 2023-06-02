@@ -2,17 +2,18 @@ import React from 'react'
 
 import {APP_API_URL} from '@env'
 import {ScrollView} from 'react-native'
+import {
+  Button,
+  Header,
+  SafeLandscapeView,
+  Spacer,
+  Swiper,
+  Text,
+  ViewToggler,
+} from 'ui/index'
 
 import {Color} from 'src/themes'
 import {CARD_BORDER_RADIUS} from 'src/variables'
-
-import {Button} from '../ui/Button'
-import {Header} from '../ui/Header'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Swiper} from '../ui/Swiper'
-import {Text} from '../ui/Text'
-import {ViewToggler} from '../ui/ViewToggler'
 
 interface GiftCardProps {
   onPressSelectNominal?: () => void

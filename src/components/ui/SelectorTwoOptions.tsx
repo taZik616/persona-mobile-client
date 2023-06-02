@@ -8,12 +8,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
+import {Spacer, Text} from 'ui/index'
 
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
-
-import {Spacer} from './Spacer'
-import {Text} from './Text'
 
 interface SelectorTwoOptionsProps {
   onChange?(option: string): void

@@ -1,15 +1,10 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
+import {Header, SafeLandscapeView, Spacer, Switch, Text} from 'ui/index'
 
 import {selectSubs, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
-
-import {Header} from '../ui/Header'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Switch} from '../ui/Switch'
-import {Text} from '../ui/Text'
 
 interface SubscriptionsProps {
   onChangeEmailSub?: (enabled: boolean) => void

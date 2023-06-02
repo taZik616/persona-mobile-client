@@ -1,9 +1,8 @@
 import React, {memo} from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
+import {Spacer, Text} from 'ui/index'
 
-import {Spacer} from 'src/components/ui/Spacer'
-import {Text} from 'src/components/ui/Text'
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {CategoryType} from 'src/types'
 
@@ -19,11 +18,9 @@ export const CategoryCard = memo(
         <View style={styles.containerForHorizontalScroll}>
           <Image style={styles.img} source={{uri: image}} />
           <Spacer height={8} />
-          <View style={styles.brandOrNameContainer}>
-            <Text center cg3>
-              {name.toUpperCase()}
-            </Text>
-          </View>
+          <Text center numberOfLines={1} cg3>
+            {name.toUpperCase()}
+          </Text>
         </View>
       </Pressable>
     )
@@ -44,11 +41,5 @@ const styles = StyleSheet.create({
   logoImage: {
     width: '100%',
     height: '100%',
-  },
-  brandOrNameContainer: {
-    height: 26,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })

@@ -1,12 +1,10 @@
 import React, {memo} from 'react'
 
 import {useWindowDimensions} from 'react-native'
+import {SafeLandscapeView, Spacer} from 'ui/index'
+import {BlockSkeleton} from 'ui/Skeletons/Block'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
-
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {BlockSkeleton} from '../ui/Skeletons/Block'
-import {Spacer} from '../ui/Spacer'
 
 export const LoadingSkeleton = memo(() => {
   const {width} = useWindowDimensions()

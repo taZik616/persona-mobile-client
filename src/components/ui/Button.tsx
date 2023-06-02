@@ -1,11 +1,9 @@
 import React from 'react'
 
 import {StyleProp, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native'
+import {Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
-
-import {Spacer} from './Spacer'
-import {Text} from './Text'
 
 interface ButtonT {
   children: string

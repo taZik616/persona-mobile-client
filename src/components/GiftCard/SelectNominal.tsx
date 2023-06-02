@@ -7,17 +7,13 @@ import React, {
   useState,
 } from 'react'
 
+import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
+import {CheckIcon, CircleCheckmarkIcon} from 'ui/icons/common'
+import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
-
-import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
-import {Button} from '../ui/Button'
-import {CheckIcon, CircleCheckmarkIcon} from '../ui/icons/common'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface SelectNominalProps {
   onSubmit?: (count: number, cost: number) => void

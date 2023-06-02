@@ -1,6 +1,20 @@
 import React from 'react'
 
 import {Image, ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
+import {
+  CartLightIcon,
+  InfoLightIcon,
+  MailLightIcon,
+  ProfileLightIcon,
+} from 'ui/icons/common'
+import {
+  Button,
+  Header,
+  MenuButton,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {selectIsAuthenticated, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
@@ -8,19 +22,6 @@ import {ProductPreviewInfo} from 'src/types'
 
 import {HomeAuth} from './HomeAuth'
 import {RecentlyWatchedList} from './RecentlyWatchedList'
-
-import {Button} from '../ui/Button'
-import {Header} from '../ui/Header'
-import {
-  CartLightIcon,
-  InfoLightIcon,
-  MailLightIcon,
-  ProfileLightIcon,
-} from '../ui/icons/common'
-import {MenuButton} from '../ui/MenuButton'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 export type HomeProfileProps = {
   onPressAddCard?: () => void
@@ -58,7 +59,7 @@ export const HomeProfile = ({
               <Image
                 style={styles.personaCardImage}
                 source={{
-                  uri: 'https://vadim-backet.s3.eu-central-1.amazonaws.com/PersonaCard.png',
+                  uri: 'http://89.108.71.146:2006/media/another-images/PersonaCard.png',
                 }}
               />
               <Spacer width={12} />

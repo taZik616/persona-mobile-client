@@ -14,16 +14,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import {CameraIcon} from 'ui/icons/common'
+import {
+  Header,
+  KeyboardSafeArea,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {Color} from 'src/themes'
 import {CARD_ASPECT_RATIO} from 'src/variables'
-
-import {Header} from '../ui/Header'
-import {CameraIcon} from '../ui/icons/common'
-import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface LoyaltyCardAddProps {
   onPressScanCard?: () => void

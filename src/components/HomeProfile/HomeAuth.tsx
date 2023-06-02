@@ -2,6 +2,16 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
+import {InfoLightIcon} from 'ui/icons/common'
+import {
+  Button,
+  KeyboardSafeArea,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+  ViewTogglerWHM,
+} from 'ui/index'
+import {OTPModal, OTPModalRefType} from 'ui/OTP'
 
 import {captureException} from 'src/helpers'
 import {storePassword} from 'src/helpers/keychain'
@@ -15,22 +25,12 @@ import {
 import {
   useCreateUserAndSendCodeMutation,
   useLoginMutation,
-  useVerifyUserCodeMutation,
 } from 'src/store/shopApi/shopApi'
 import {Color} from 'src/themes'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
 import {LoginForm, LoginFormType} from './LoginForm'
 import {RegistryForm, RegistryFormType} from './RegistryForm'
-
-import {Button} from '../ui/Button'
-import {InfoLightIcon} from '../ui/icons/common'
-import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {OTPModal, OTPModalRefType} from '../ui/OTPModal'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
-import {ViewTogglerWHM} from '../ui/ViewToggler'
 
 interface HomeAuthProps {
   onPressHelp?: () => void
@@ -46,7 +46,6 @@ export const HomeAuth = ({
 
   const otpModalRef = useRef<OTPModalRefType>(null)
   const [createUserSendCode] = useCreateUserAndSendCodeMutation()
-  const [verifyCode] = useVerifyUserCodeMutation()
   const [login] = useLoginMutation()
 
   const dispatch = useTypedDispatch()
@@ -54,7 +53,7 @@ export const HomeAuth = ({
   const sendVerifySms = useCallback(
     (telephone: string) => () => {
       vibration.rigid()
-      createUserSendCode({telephone})
+      //createUserSendCode({phoneNumber: telephone})
       otpModalRef.current?.resetTimer()
     },
     [],
@@ -77,7 +76,7 @@ export const HomeAuth = ({
           otpModalRef.current?.openModal()
           // На всякий случай
           setTimeout(() => {
-            otpModalRef.current?.setPhoneNumber(formData.telephone)
+            otpModalRef.current?.setPhoneNumber(formData.phoneNumber)
           }, 300)
         } else {
           vibration.error()
@@ -121,11 +120,11 @@ export const HomeAuth = ({
 
   const onRegistryCheckOtp = useCallback(
     async (code: string, telephone: string) => {
-      const res: any = await verifyCode({code, telephone})
+      const res: any = await login({password: code, username: telephone})
       if (res?.data?.failed) {
         vibration.error()
         otpModalRef.current?.setError(res.data.failed)
-      } else if (res?.data?.success) {
+      } else if (res?.data?.token) {
         vibration.success()
         dispatch(setIsAuthenticated(true))
         dispatch(setAuthToken(res.data.token))

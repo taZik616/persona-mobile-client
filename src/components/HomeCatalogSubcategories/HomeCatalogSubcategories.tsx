@@ -1,10 +1,9 @@
 import React from 'react'
 
+import {Header, SubcategoriesList} from 'ui/index'
+
 import {useTypedRouteCatalogStack} from 'src/hooks'
 import {useCategoriesQuery} from 'src/store/shopApi/shopApi'
-
-import {Header} from '../ui/Header'
-import {SubcategoriesList} from '../ui/SubcategoriesList'
 
 interface HomeCatalogSubcategoriesProps {
   onPressSubCategory?: (catId: number) => void

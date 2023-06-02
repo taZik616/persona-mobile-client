@@ -5,16 +5,12 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
 import {StyleSheet} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
+import {Button, FormTextInput, Spacer, Text} from 'ui/index'
 import * as yup from 'yup'
 
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 import {PHONE_VALIDATION_REGEXP} from 'src/variables'
-
-import {Button} from '../ui/Button'
-import {FormTextInput} from '../ui/FormTextInput'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 const loginSchema = yup
   .object({

@@ -1,9 +1,7 @@
 import React from 'react'
 
 import {StyleSheet, TouchableOpacity} from 'react-native'
-
-import {Spacer} from './Spacer'
-import {Text} from './Text'
+import {Spacer, Text} from 'ui/index'
 
 interface MenuButtonProps {
   leftIcon: JSX.Element

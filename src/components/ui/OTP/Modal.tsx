@@ -9,16 +9,16 @@ import React, {
 import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 import {Keyframe} from 'react-native-reanimated'
+import {Button} from 'ui/Button'
+import {Header} from 'ui/Header'
+import {Spacer} from 'ui/Spacer'
+import {Text} from 'ui/Text'
 
 import {formatSecondsTimer} from 'src/helpers'
 import {Color} from 'src/themes'
 import {RESEND_SMS_TIMEOUT_SECONDS} from 'src/variables'
 
-import {Button} from './Button'
-import {Header} from './Header'
-import {OTPTextInput} from './OTPTextInput'
-import {Spacer} from './Spacer'
-import {Text} from './Text'
+import {OTPTextInput} from './TextInput'
 
 interface OTPModalProps {
   onCloseModal?: () => void

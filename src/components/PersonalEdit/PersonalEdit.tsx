@@ -2,16 +2,17 @@ import React from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
+import {
+  FormDateTime,
+  FormTextInput,
+  Header,
+  KeyboardSafeArea,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {YEAR_IN_MS} from 'src/variables'
-
-import {FormDateTime} from '../ui/FormDateTime'
-import {FormTextInput} from '../ui/FormTextInput'
-import {Header} from '../ui/Header'
-import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface PersonalEditProps {
   onSubmit?: () => void

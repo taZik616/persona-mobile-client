@@ -4,16 +4,12 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
 import {StyleSheet} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
+import {Button, FormTextInput, Spacer, Text} from 'ui/index'
 import * as yup from 'yup'
 
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 import {PHONE_VALIDATION_REGEXP} from 'src/variables'
-
-import {Button} from '../ui/Button'
-import {FormTextInput} from '../ui/FormTextInput'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 const registrySchema = yup
   .object({
@@ -29,7 +25,7 @@ const registrySchema = yup
       .min(2, 'Слишком короткая фамилия')
       .max(35, 'Фамилия слишком длинная')
       .trim(),
-    telephone: yup
+    phoneNumber: yup
       .string()
       .trim()
       .required('Обязательное поле')
@@ -72,12 +68,12 @@ export const RegistryForm = memo(
           <FormTextInput
             placeholder="Фамилия"
             name="lastName"
-            nextField="telephone"
+            nextField="phoneNumber"
           />
           <Spacer height={16} />
           <FormTextInput
             keyboardType="phone-pad"
-            name="telephone"
+            name="phoneNumber"
             placeholder="Номер телефона"
           />
           <Spacer height={16} />

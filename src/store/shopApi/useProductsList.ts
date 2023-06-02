@@ -1,8 +1,9 @@
-import {useEffect, useRef, useState} from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 
 import {APP_API_URL} from '@env'
 import axios from 'axios'
 
+import {captureException} from 'src/helpers'
 import {ProductsParams} from 'src/store/shopApi/types'
 import {ProductsDataI} from 'src/types'
 
@@ -12,7 +13,7 @@ interface useProductsListParams extends ProductsParams {}
 // тк объекты сравниваются по ссылке, а ссылка будет меняться при любом ре-рендере
 export const useProductsList = ({
   page = 1,
-  brand__brandId,
+  brandIds,
   productId,
   page_size = 50,
   ordering,
@@ -23,42 +24,49 @@ export const useProductsList = ({
   isNew,
   gender,
 }: useProductsListParams) => {
-  const [curData, setCurData] = useState<ProductsDataI | undefined>(undefined)
+  const [products, setProducts] = useState<ProductsDataI | undefined>(undefined)
+  const [isLoad, setIsLoad] = useState(true)
   const pageNumberRef = useRef(page)
 
   const fetchProducts = async () => {
-    const res = await axios.get(`${APP_API_URL}/api/v1/products`, {
-      method: 'GET',
-      params: {
-        brand__brandId,
-        productId,
-        page_size,
-        ordering,
-        subcategoryId,
-        categoryId,
-        priceGroup,
-        search,
-        isNew,
-        gender,
-        page: pageNumberRef.current,
-      },
-    })
-
-    const {data} = res
-    if (data) {
-      setCurData(pr => ({
-        count: data.count,
-        products: [...(pr?.products ?? []), ...(data?.products ?? [])],
-      }))
+    try {
+      setIsLoad(true)
+      const res = await axios.get(`${APP_API_URL}/api/v1/products`, {
+        method: 'GET',
+        params: {
+          brandIds,
+          productId,
+          page_size,
+          ordering,
+          subcategoryId,
+          categoryId,
+          priceGroup,
+          search,
+          isNew,
+          gender,
+          page: pageNumberRef.current,
+        },
+      })
+      const {data} = res
+      if (data) {
+        setProducts(pr => ({
+          count: data.count,
+          products: [...(pr?.products ?? []), ...(data?.products ?? [])],
+          filters: data.filters,
+        }))
+      }
+    } catch (e) {
+      captureException(e)
     }
+    setIsLoad(false)
   }
 
   useEffect(() => {
     pageNumberRef.current = page
-    setCurData(undefined)
+    setProducts(undefined)
     fetchProducts()
   }, [
-    brand__brandId,
+    brandIds,
     productId,
     page_size,
     ordering,
@@ -71,16 +79,16 @@ export const useProductsList = ({
     page,
   ])
 
-  const loadNext = () => {
-    if (
-      pageNumberRef.current == null ||
-      curData?.count == null ||
-      pageNumberRef.current < curData?.count
-    ) {
-      pageNumberRef.current = pageNumberRef.current + 1
-      fetchProducts()
-    }
-  }
+  const reset = useCallback(() => {
+    pageNumberRef.current = page
+    setProducts(undefined)
+    fetchProducts()
+  }, [])
 
-  return {curData, loadNext}
+  const loadNext = useCallback(() => {
+    pageNumberRef.current = pageNumberRef.current + 1
+    fetchProducts()
+  }, [])
+
+  return {products, loadNext, reset, isLoad}
 }

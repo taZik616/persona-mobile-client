@@ -38,6 +38,12 @@ export const shopApi = createApi({
         method: 'GET',
       }),
     }),
+    sizeChart: build.query({
+      query: () => ({
+        url: 'sizes-page',
+        method: 'GET',
+      }),
+    }),
     createUserAndSendCode: build.mutation({
       query: (body: CreateUserAndSendCodeBody) => ({
         url: 'registry-send-code',
@@ -127,6 +133,7 @@ export const {
   useCategoriesQuery,
   useHelpfulInfoQuery,
   useMainContentQuery,
+  useSizeChartQuery,
   useProductDetailQuery,
   useRecoveryPasswordConfirmMutation,
   useLoginMutation,

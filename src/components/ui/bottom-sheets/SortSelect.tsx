@@ -7,22 +7,19 @@ import React, {
   useState,
 } from 'react'
 
+import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {FlatList, Pressable, StyleSheet, View} from 'react-native'
+import {CheckIcon} from 'ui/icons/common'
+import {Spacer, Text} from 'ui/index'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
+import {OrderingType} from 'src/store/shopApi'
 import {Color} from 'src/themes'
-import {SortItemI} from 'src/types'
-
-import {CheckIcon} from './icons/common'
-import {Spacer} from './Spacer'
-import {Text} from './Text'
-
-import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
+import {OrderingItemI} from 'src/types'
 
 interface SortSelectProps {
-  onChangeSort?: (id: string) => void
-  defaultSortId?: string
-  options: SortItemI[]
+  onChangeSort?: (sortValue: OrderingType) => void
+  sortingVariants: OrderingItemI[]
 }
 
 export interface SortSelectRefType {
@@ -32,9 +29,9 @@ export interface SortSelectRefType {
 
 export const SortSelect = memo(
   forwardRef<SortSelectRefType, SortSelectProps>(
-    ({onChangeSort, defaultSortId = '', options}, ref) => {
+    ({onChangeSort, sortingVariants}, ref) => {
       const {paddingHorizontal} = useHorizontalMargins({safeArea: true})
-      const [selected, setSelected] = useState(defaultSortId)
+      const [selected, setSelected] = useState(sortingVariants[0].value)
 
       const bottomSheetRef = useRef<BottomSheetRefType>(null)
       useImperativeHandle(ref, () => ({
@@ -42,29 +39,32 @@ export const SortSelect = memo(
         close: bottomSheetRef.current?.close,
       }))
 
-      const onPressSortItem = (id: string) => {
-        setSelected(id)
-        onChangeSort?.(id)
+      const onPressSortItem = (value: string) => {
+        const item = sortingVariants.find(a => a.value === value)
+        if (item) {
+          setSelected(item.value)
+          onChangeSort?.(item?.value)
+        }
       }
 
       const content = useMemo(() => {
         return (
           <FlatList
-            data={options}
+            data={sortingVariants}
             contentContainerStyle={[styles.listContainer, paddingHorizontal]}
             scrollEnabled={false}
-            keyExtractor={it => it.id}
+            keyExtractor={it => it.value}
             ItemSeparatorComponent={() => <View style={styles.line} />}
             renderItem={({item}) => (
               <SortSelectItem
                 {...item}
-                isSelected={selected === item.id}
+                isSelected={selected === item.value}
                 onPress={onPressSortItem}
               />
             )}
           />
         )
-      }, [options, selected, paddingHorizontal, onPressSortItem])
+      }, [sortingVariants, selected, paddingHorizontal, onPressSortItem])
 
       return (
         <BottomSheet
@@ -79,17 +79,15 @@ export const SortSelect = memo(
   ),
 )
 
-interface SortSelectItemProps {
-  name: string
-  id: string
-  onPress?: (id: string) => void
+interface SortSelectItemProps extends OrderingItemI {
+  onPress?: (value: OrderingType) => void
   isSelected?: boolean
 }
 
 export const SortSelectItem = memo(
-  ({onPress, name, isSelected, id}: SortSelectItemProps) => {
+  ({onPress, name, isSelected, value}: SortSelectItemProps) => {
     return (
-      <Pressable style={styles.itemContainer} onPress={() => onPress?.(id)}>
+      <Pressable style={styles.itemContainer} onPress={() => onPress?.(value)}>
         <Text style={styles.rowText} numberOfLines={1} gp4>
           {name}
         </Text>

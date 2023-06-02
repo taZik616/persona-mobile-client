@@ -2,14 +2,15 @@ import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
 import Markdown from 'react-native-markdown-display'
+import {
+  ConnectionError,
+  Header,
+  Loading,
+  SafeLandscapeView,
+  Spacer,
+} from 'ui/index'
 
 import {useMarkdownProps} from 'src/hooks'
-
-import {ConnectionError} from '../ui/ConnectionError'
-import {Header} from '../ui/Header'
-import {Loading} from '../ui/Loading'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
 
 interface HelpDetailProps {
   title: string

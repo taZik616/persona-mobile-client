@@ -14,6 +14,8 @@ import {
   Swipeable,
 } from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
+import {CrossIcon, StarEmptyIcon, StarFilledIcon} from 'ui/icons/common'
+import {Checkmark, ImagesLooping, Spacer, Text} from 'ui/index'
 
 import {capitalize, cleanNumber} from 'src/helpers'
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
@@ -31,12 +33,6 @@ import {
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
-import {Checkmark} from './Checkmark'
-import {CrossIcon, StarEmptyIcon, StarFilledIcon} from './icons/common'
-import {ImagesLooping} from './ImagesLooping'
-import {Spacer} from './Spacer'
-import {Text} from './Text'
-
 interface BasketCardProps extends ProductPreviewInfo {
   onPress?: (item: ProductPreviewInfo) => void
   onChangeSelect?: (item: ProductPreviewInfo, isSelected: boolean) => void
@@ -45,11 +41,10 @@ export const BasketCard = memo(
   ({onPress, onChangeSelect, ...item}: BasketCardProps) => {
     const {
       price,
-      title,
+      productName,
       collection,
       priceGroup,
-      brandImage,
-      brandName,
+      brand,
       isAvailable,
       productId,
     } = item
@@ -88,7 +83,10 @@ export const BasketCard = memo(
                 )}>
                 <View style={styles.images}>
                   <View>
-                    <ImagesLooping width={110} images={item.previewImages} />
+                    <ImagesLooping
+                      width={110}
+                      images={item.images.map(a => a.compressedImage)}
+                    />
                   </View>
                 </View>
               </GestureDetector>
@@ -100,25 +98,25 @@ export const BasketCard = memo(
             </View>
             <Pressable onPress={() => onPress && onPress(item)}>
               <Spacer height={4} />
-              {brandImage ? (
+              {brand?.logo ? (
                 <Image
                   style={styles.brandImage}
                   resizeMode="contain"
-                  source={{uri: brandImage}}
+                  source={{uri: brand.logo}}
                 />
               ) : (
                 <View style={styles.brandName}>
                   <Text numberOfLines={1} center gp1>
-                    {brandName?.toUpperCase()}
+                    {brand?.name?.toUpperCase()}
                   </Text>
                 </View>
               )}
               <Spacer height={4} />
               <View style={styles.textContentContainer}>
-                {title ? (
+                {productName ? (
                   <>
                     <Text numberOfLines={1} center gp4>
-                      {capitalize(title)}
+                      {capitalize(productName)}
                     </Text>
                     <Spacer height={6} />
                   </>

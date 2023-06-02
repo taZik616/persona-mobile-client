@@ -1,12 +1,11 @@
 import React, {memo} from 'react'
 
 import {FlatList, StyleSheet, View} from 'react-native'
+import {Spacer} from 'ui/index'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 
 import {BlockSkeleton} from './Block'
-
-import {Spacer} from '../Spacer'
 
 const empty = Array(5).fill('')
 

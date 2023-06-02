@@ -2,18 +2,19 @@ import React, {forwardRef, memo, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
+import {
+  Button,
+  FormTextInput,
+  Header,
+  KeyboardSafeArea,
+  ProductCardRow,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {useTypedRoute} from 'src/hooks'
 import {Color} from 'src/themes'
-
-import {Button} from '../ui/Button'
-import {FormTextInput} from '../ui/FormTextInput'
-import {Header} from '../ui/Header'
-import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {ProductCardRow} from '../ui/ProductCardRow'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface FastBuyProps {
   onSubmit?: () => void

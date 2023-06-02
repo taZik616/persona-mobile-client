@@ -1,15 +1,14 @@
 import React from 'react'
 
 import {Pressable, StyleSheet} from 'react-native'
+import {tabBarIcons} from 'ui/icons/tab-bar-icons'
+import {Spacer, Text} from 'ui/index'
 
 import {selectFavoritesCounter, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 import {IS_ANDROID, SCREEN_W} from 'src/variables'
 
-import {tabBarIcons} from './icons/tab-bar-icons'
 import {IconWithCounterBadge} from './IconWithCounterBadge'
-import {Spacer} from './Spacer'
-import {Text} from './Text'
 
 interface TabProps {
   onPress?: () => void

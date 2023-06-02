@@ -1,11 +1,9 @@
 import React from 'react'
 
 import {StyleSheet, View} from 'react-native'
+import {Spacer, Text} from 'ui/index'
 
 import {cleanNumber} from 'src/helpers'
-
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface CostLineProps {
   cost: string | number

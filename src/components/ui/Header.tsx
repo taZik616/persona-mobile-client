@@ -1,6 +1,15 @@
 import React, {memo, useCallback, useState} from 'react'
 
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
+import {BackArrowIcon} from 'ui/icons/common'
+import {Logo} from 'ui/icons/logo'
+import {
+  HeaderSearching,
+  IconWithCounterBadge,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
 import {useTypedNavigation} from 'src/hooks'
@@ -10,14 +19,6 @@ import {
   useTypedSelector,
 } from 'src/store'
 import {Color} from 'src/themes'
-
-import {HeaderSearching} from './HeaderSearching'
-import {BackArrowIcon} from './icons/common'
-import {Logo} from './icons/logo'
-import {IconWithCounterBadge} from './IconWithCounterBadge'
-import {SafeLandscapeView} from './SafeLandscapeView'
-import {Spacer} from './Spacer'
-import {Text} from './Text'
 
 interface HeaderProps {
   onPressSearch?: () => void

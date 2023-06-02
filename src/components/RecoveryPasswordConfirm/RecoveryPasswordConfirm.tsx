@@ -2,15 +2,16 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
+import {
+  FormTextInput,
+  Header,
+  KeyboardSafeArea,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 import {Color} from 'src/themes'
-
-import {FormTextInput} from '../ui/FormTextInput'
-import {Header} from '../ui/Header'
-import {KeyboardSafeArea} from '../ui/KeyboardSafeArea'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface RecPassConfirmProps {
   onSubmit?: () => void

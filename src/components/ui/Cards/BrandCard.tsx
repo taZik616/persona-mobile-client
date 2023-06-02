@@ -1,8 +1,8 @@
 import React, {memo} from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
+import {Spacer} from 'ui/index'
 
-import {Spacer} from 'src/components/ui/Spacer'
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {BrandType} from 'src/types'
 
@@ -19,7 +19,7 @@ export const BrandCard = memo(
         <View style={styles.containerForHorizontalScroll}>
           <Image style={styles.img} source={{uri: imgUri}} />
           <Spacer height={8} />
-          <View style={styles.brandOrNameContainer}>
+          <View style={styles.brandContainer}>
             <Image
               resizeMode="contain"
               style={styles.logoImage}
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  brandOrNameContainer: {
+  brandContainer: {
     height: 26,
     width: '100%',
     alignItems: 'center',

@@ -1,6 +1,8 @@
 import React, {memo, useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
+import {ProductCard} from 'ui/cards'
+import {Header, Spacer, ViewToggler} from 'ui/index'
 
 import {getProductsCountString} from 'src/helpers'
 import {useScreenBlockCurrent} from 'src/hooks'
@@ -9,11 +11,6 @@ import {selectFavorites, useTypedSelector} from 'src/store'
 import {ProductPreviewInfo} from 'src/types'
 
 import {FavoritesListEmpty} from './FavoritesListEmpty'
-
-import {Header} from '../ui/Header'
-import {ProductCard} from '../ui/ProductCard'
-import {Spacer} from '../ui/Spacer'
-import {ViewToggler} from '../ui/ViewToggler'
 
 interface HomeFavouritesProps {
   onPressProduct?: (item: ProductPreviewInfo) => void

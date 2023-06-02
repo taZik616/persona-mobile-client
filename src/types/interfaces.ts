@@ -1,4 +1,4 @@
-import {ProductsParams} from 'src/store/shopApi'
+import {OrderingType} from 'src/store/shopApi'
 
 export interface OrderInfoInterface {
   id: string
@@ -12,13 +12,6 @@ export interface OrderItemInterface {
   title: string
   category: string
   image: string
-}
-
-export interface CategoryOrBrandInterface {
-  id: string
-  uri: string
-  name?: string
-  logoUri?: string
 }
 
 export interface BrandType {
@@ -55,6 +48,7 @@ export interface ProductPreviewInfo {
   productName: string
   price: number
   priceGroup: string
+  discountPercent: number
   collection?: string
   onlyOneVariant?: string
   isAvailable: boolean
@@ -65,6 +59,9 @@ export interface ProductPreviewInfo {
 export interface ProductsDataI {
   count: number
   products: ProductPreviewInfo[]
+  filters: {
+    sizes: string[]
+  }
 }
 export interface ProductInBasketI extends ProductPreviewInfo {
   variant: ProductVariant
@@ -77,6 +74,7 @@ export interface ProductDetailInfo {
   productName: string
   price: number
   priceGroup: string
+  discountPercent: number
   onlyOneVariant: boolean
   collection: string
   brand?: BrandType
@@ -93,5 +91,5 @@ export interface ProductDetailInfo {
 
 export interface OrderingItemI {
   name: string
-  id: ProductsParams['ordering']
+  value: OrderingType
 }

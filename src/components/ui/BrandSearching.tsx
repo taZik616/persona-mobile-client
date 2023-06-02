@@ -9,20 +9,15 @@ import React, {
   useState,
 } from 'react'
 
+import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {SectionList, StyleSheet, TextInput, View} from 'react-native'
+import {SafeLandscapeView, Spacer, Text} from 'ui/index'
+import {BrandGroupTitle, BrandRowItem} from 'ui/index'
 
 import {groupByAlphabetical} from 'src/helpers'
 import {useBrandsQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {BrandType} from 'src/types'
-
-import {BrandGroupTitle} from './BrandGroupTitle'
-import {BrandRowItem} from './BrandRowItem'
-import {SafeLandscapeView} from './SafeLandscapeView'
-import {Spacer} from './Spacer'
-import {Text} from './Text'
-
-import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
 
 interface BrandSearchingProps {
   onCompleteSelect?: (brand: any) => void

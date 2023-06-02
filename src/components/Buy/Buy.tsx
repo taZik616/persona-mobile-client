@@ -1,20 +1,21 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {
+  Button,
+  FormTextInput,
+  Header,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+  ViewToggler,
+} from 'ui/ViewToggler'
 
 import {useScreenBlockPortrait} from 'src/hooks'
 import {selectBasketSelectedItems, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 
 import {CostLine} from './CostLine'
-
-import {Button} from '../ui/Button'
-import {FormTextInput} from '../ui/FormTextInput'
-import {Header} from '../ui/Header'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
-import {ViewToggler} from '../ui/ViewToggler'
 
 interface BuyProps {
   onPressAddCard?: () => void

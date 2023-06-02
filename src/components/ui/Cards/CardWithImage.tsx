@@ -16,7 +16,7 @@ interface CardWithImageProps {
   uri: string
   autoWidth?: boolean
   style?: StyleProp<ViewStyle>
-  borderRadius?: number | string
+  borderRadius?: number
   onPress?: () => void
 }
 
@@ -37,11 +37,7 @@ export const CardWithImage = memo(
           source={{
             uri,
           }}
-          style={[
-            styles.image,
-            // eslint-disable-next-line react-native/no-inline-styles
-            {borderRadius: borderRadius ? borderRadius : 10},
-          ]}
+          style={[styles.image, {borderRadius: borderRadius ?? 10}]}
         />
       </Pressable>
     )

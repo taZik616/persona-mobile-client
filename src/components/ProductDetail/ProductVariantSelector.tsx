@@ -8,20 +8,21 @@ import React, {
   useState,
 } from 'react'
 
+import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native'
-import Animated, {FadeInRight, FadeOutLeft} from 'react-native-reanimated'
+import {CrossIcon, HangerIcon} from 'ui/icons/common'
+import {
+  Button,
+  SafeLandscapeView,
+  Spacer,
+  WheelPicker,
+  WheelPickerRefType,
+} from 'ui/index'
 
 import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 import {ProductVariant} from 'src/types'
-
-import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
-import {Button} from '../ui/Button'
-import {CrossIcon, HangerIcon} from '../ui/icons/common'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {WheelPicker, WheelPickerRefType} from '../ui/WheelPicker'
 
 interface SizeSelectorProps {
   variants: ProductVariant[]
@@ -123,7 +124,7 @@ const ContentView = memo(
     return (
       <SafeLandscapeView>
         {page === 'sizes' ? (
-          <Animated.View style={styles.flexOne} exiting={FadeOutLeft}>
+          <View style={styles.flexOne}>
             <Spacer height={16} />
             <WheelPicker
               ref={wheelPickerRef}
@@ -134,9 +135,9 @@ const ContentView = memo(
               Продолжить
             </Button>
             <Spacer withBottomInsets height={56} />
-          </Animated.View>
+          </View>
         ) : (
-          <Animated.View entering={FadeInRight}>
+          <View>
             <FlatList
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -190,7 +191,7 @@ const ContentView = memo(
               Завершить
             </Button>
             <Spacer withBottomInsets height={56} />
-          </Animated.View>
+          </View>
         )}
       </SafeLandscapeView>
     )

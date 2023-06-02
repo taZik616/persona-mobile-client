@@ -6,8 +6,9 @@ import {
   ProductDetail,
   ProductVariantSelector,
   ProductVariantSelectorRefType,
-} from 'src/components/ProductDetail'
-import {ProductDetailSkeleton} from 'src/components/ui/Skeletons/ProductDetail'
+} from 'components/ProductDetail'
+import {ProductDetailSkeleton} from 'ui/Skeletons/ProductDetail'
+
 import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
 import {useTypedNavigation, useTypedRoute} from 'src/hooks'
 import {

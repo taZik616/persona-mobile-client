@@ -1,10 +1,11 @@
 import React, {useCallback, useRef} from 'react'
 
-import {HomeMain} from 'src/components/HomeMain'
 import {
   FashionItemsPresent,
   FashionItemsPresentRefType,
-} from 'src/components/ui/FashionItemsPresent'
+} from 'ui/bottom-sheets/FashionItemsPresent'
+
+import {HomeMain} from 'src/components/HomeMain'
 import {useTypedNavigation} from 'src/hooks'
 import {
   AnyContentPartItem,

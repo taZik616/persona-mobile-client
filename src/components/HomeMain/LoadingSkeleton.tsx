@@ -1,15 +1,12 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
+import {SafeLandscapeView, Spacer, Swiper} from 'ui/index'
+import {BlockSkeleton} from 'ui/Skeletons/Block'
+import {ListItemSkeleton} from 'ui/Skeletons/ListItem'
+import {CardSkeleton} from 'ui/Skeletons/Swiper'
 
 import {SCREEN_W} from 'src/variables'
-
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {BlockSkeleton} from '../ui/Skeletons/Block'
-import {ListItemSkeleton} from '../ui/Skeletons/ListItem'
-import {CardSkeleton} from '../ui/Skeletons/Swiper'
-import {Spacer} from '../ui/Spacer'
-import {Swiper} from '../ui/Swiper'
 
 export const LoadingSkeleton = () => {
   return (

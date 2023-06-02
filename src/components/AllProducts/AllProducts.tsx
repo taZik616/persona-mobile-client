@@ -1,12 +1,10 @@
 import React, {memo} from 'react'
 
+import {Header, SelectorTwoOptions, Spacer} from 'ui/index'
+import {ProductList} from 'ui/product-list'
+
 import {useTypedRoute} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
-
-import {Header} from '../ui/Header'
-import {RenderProductList} from '../ui/RenderProductList'
-import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
-import {Spacer} from '../ui/Spacer'
 
 export const AllProducts = memo(() => {
   const {isMenSelected, onChangeGender, values} = useGender()
@@ -29,7 +27,11 @@ export const AllProducts = memo(() => {
       ) : (
         <></>
       )}
-      <RenderProductList {...queryParams} showCounter />
+      <ProductList
+        {...queryParams}
+        gender={isMenSelected ? 'men' : 'women'}
+        showCounter
+      />
     </>
   )
 })

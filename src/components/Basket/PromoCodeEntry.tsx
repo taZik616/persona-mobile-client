@@ -7,16 +7,11 @@ import React, {
   useState,
 } from 'react'
 
+import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {useFormContext} from 'react-hook-form'
+import {Button, FormTextInput, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
-
-import {BottomSheet, BottomSheetRefType} from '../bottom-sheet'
-import {Button} from '../ui/Button'
-import {FormTextInput} from '../ui/FormTextInput'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {Text} from '../ui/Text'
 
 interface PromoCodeEntryProps {
   onSubmit?: () => void

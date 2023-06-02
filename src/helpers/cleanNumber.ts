@@ -4,8 +4,10 @@ export function cleanNumber(
   number: string | number,
   delimiter = ' ',
   precision = NUM_PRECISION,
+  discountPercent = 0,
 ) {
-  const num = parseFloat(String(number).trim().replace(/ /g, ''))
+  let num = parseFloat(String(number).trim().replace(/ /g, ''))
+  num = num - num * (discountPercent / 100)
   if (num < 1 / Math.pow(10, NUM_PRECISION)) {
     precision += 1
   }

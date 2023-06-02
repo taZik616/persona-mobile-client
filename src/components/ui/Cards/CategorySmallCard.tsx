@@ -1,39 +1,29 @@
 import React from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
+import {Spacer, Text} from 'ui/index'
 
-import {CategoryOrBrandInterface} from 'src/types'
+import {CategoryType} from 'src/types'
 
-import {Spacer} from './Spacer'
-import {Text} from './Text'
-
-interface CategorySmallCardProps extends CategoryOrBrandInterface {
-  onPress?: (item: CategoryOrBrandInterface) => void
+interface CategorySmallCardProps extends CategoryType {
+  onPress?: (item: CategoryType) => void
 }
 
 export const CategorySmallCard = ({
   onPress,
   ...item
 }: CategorySmallCardProps) => {
-  const {uri, name, logoUri} = item
+  const {name, image} = item
 
   return (
     <View style={styles.root}>
       <Pressable onPress={() => onPress?.(item)} style={styles.card}>
-        <Image style={styles.img} source={{uri}} />
+        <Image style={styles.img} source={{uri: image}} />
         <Spacer height={8} />
         <View style={styles.brandOrNameContainer}>
-          {logoUri ? (
-            <Image
-              resizeMode="contain"
-              style={styles.logoImage}
-              source={{uri: logoUri}}
-            />
-          ) : (
-            <Text center cg3>
-              {(name ?? '').toUpperCase()}
-            </Text>
-          )}
+          <Text center cg3>
+            {(name ?? '').toUpperCase()}
+          </Text>
         </View>
       </Pressable>
     </View>
@@ -52,10 +42,6 @@ const styles = StyleSheet.create({
   },
   img: {
     flex: 1,
-  },
-  logoImage: {
-    width: '100%',
-    height: '100%',
   },
   brandOrNameContainer: {
     height: 26,

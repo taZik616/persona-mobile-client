@@ -1,14 +1,12 @@
 import React from 'react'
 
 import {StyleSheet, View} from 'react-native'
+import {Spacer, Tab} from 'ui/index'
 
 import {useTypedNavigation} from 'src/hooks'
 import {Color} from 'src/themes'
 import {TabParamList} from 'src/types'
 import {IS_IOS} from 'src/variables'
-
-import {Spacer} from './Spacer'
-import {Tab} from './Tab'
 
 interface TabBarProps {
   routes: {

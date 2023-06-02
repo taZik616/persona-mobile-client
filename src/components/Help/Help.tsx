@@ -1,10 +1,6 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
-
-import {helpDetailKey} from 'src/types'
-
-import {Header} from '../ui/Header'
 import {
   ContactsIcon,
   DeliveryIcon,
@@ -12,13 +8,13 @@ import {
   PaymentIcon,
   PrivacyPolicyIcon,
   SellConditionIcon,
-} from '../ui/icons/common'
-import {MenuButton} from '../ui/MenuButton'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
+} from 'ui/icons/common'
+import {Header, MenuButton, SafeLandscapeView, Spacer} from 'ui/index'
+
+import {helpfulInfoKey} from 'src/types'
 
 interface HelpProps {
-  onPressDetail?: (key: helpDetailKey, title: string) => void
+  onPressDetail?: (key: helpfulInfoKey, title: string) => void
 }
 
 export const Help = ({onPressDetail}: HelpProps) => {

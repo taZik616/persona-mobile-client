@@ -4,18 +4,14 @@ import {Image, Pressable, StyleSheet, View} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
+import {CrossIcon} from 'ui/icons/common'
+import {ImagesLooping, Spacer, StarProduct, Text} from 'ui/index'
 
 import {capitalize, cleanNumber} from 'src/helpers'
 import {useTypedDispatch} from 'src/store'
 import {removeItemFromFavorites} from 'src/store/favoritesSlice'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
-
-import {CrossIcon} from './icons/common'
-import {ImagesLooping} from './ImagesLooping'
-import {Spacer} from './Spacer'
-import {StarProduct} from './StarProduct'
-import {Text} from './Text'
 
 interface ProductCardProps extends ProductPreviewInfo {
   onPress?: (item: ProductPreviewInfo) => void
@@ -40,7 +36,7 @@ export const ProductCard = ({
     brand,
     collection,
     isAvailable,
-    priceGroup,
+    discountPercent,
     productId,
   } = item
 
@@ -98,19 +94,38 @@ export const ProductCard = ({
               ) : (
                 <></>
               )}
-              {(priceGroup || collection) && (
+              {collection ? (
                 <>
                   <Text color={Color.primary} numberOfLines={1} center gp4>
-                    {capitalize(collection ? collection : priceGroup)}
+                    {capitalize(collection)}
                   </Text>
                   <Spacer height={6} />
                 </>
+              ) : (
+                <></>
               )}
               {price && !hidePrice ? (
                 <>
-                  <Text numberOfLines={1} center gp5>
-                    {cleanNumber(price, ' ', 0)} ₽
-                  </Text>
+                  <View style={styles.priceContainer}>
+                    <Text numberOfLines={1} center gp4>
+                      {cleanNumber(price, ' ', 0, discountPercent)} ₽
+                    </Text>
+                    {discountPercent ? (
+                      <>
+                        <Spacer width={8} />
+                        <Text
+                          style={styles.priceWithoutDiscount}
+                          numberOfLines={1}
+                          color={Color.primaryGray}
+                          center
+                          gp1>
+                          {cleanNumber(price, ' ', 0)}
+                        </Text>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
                   <Spacer height={6} />
                 </>
               ) : (
@@ -210,5 +225,13 @@ const styles = StyleSheet.create({
   singleImage: {
     flex: 1,
     aspectRatio: '140/180',
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  priceWithoutDiscount: {
+    textDecorationLine: 'line-through',
+    textDecorationColor: Color.textBase1,
   },
 })

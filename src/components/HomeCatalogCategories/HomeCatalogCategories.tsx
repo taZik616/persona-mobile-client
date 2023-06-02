@@ -2,15 +2,12 @@ import React from 'react'
 
 import {APP_API_URL} from '@env'
 import {FlatList, ScrollView} from 'react-native'
+import {Header, SelectorTwoOptions, Spacer} from 'ui/index'
 
 import {useGender} from 'src/hooks/useGender'
 import {useCategoriesQuery} from 'src/store/shopApi'
 
 import {CategoryCardWHM} from './CategoryCard'
-
-import {Header} from '../ui/Header'
-import {SelectorTwoOptions} from '../ui/SelectorTwoOptions'
-import {Spacer} from '../ui/Spacer'
 
 interface HomeCatalogCategoriesProps {
   onPressCategory?: (categoryId: number, fullTitle: string) => void

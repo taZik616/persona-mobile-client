@@ -1,15 +1,11 @@
 import React, {memo} from 'react'
 
 import {StyleSheet, View} from 'react-native'
+import {Button, Spacer, Swiper, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
 
 import {BlockSkeleton} from './Block'
-
-import {Button} from '../Button'
-import {Spacer} from '../Spacer'
-import {Swiper} from '../Swiper'
-import {Text} from '../Text'
 
 interface ProductDetailSkeletonProps {
   hasError: boolean

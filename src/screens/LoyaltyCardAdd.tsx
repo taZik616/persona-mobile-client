@@ -1,11 +1,11 @@
 import React, {useCallback, useRef, useState} from 'react'
 
+import {LoyaltyCardAdd} from 'components/LoyaltyCardAdd'
 import ImagePicker from 'react-native-image-crop-picker'
 import {recognizeTextFromLocalImage} from 'react-native-text-recognizer'
+import {ActionsSheet} from 'ui/ActionsSheet'
+import {OTPModal, OTPModalRefType} from 'ui/OTP'
 
-import {LoyaltyCardAdd} from 'src/components/LoyaltyCardAdd'
-import {ActionsSheet} from 'src/components/ui/ActionsSheet'
-import {OTPModal, OTPModalRefType} from 'src/components/ui/OTPModal'
 import {captureException} from 'src/helpers'
 import {findCardNumberInArray} from 'src/helpers/findCardNumberInArray'
 import {

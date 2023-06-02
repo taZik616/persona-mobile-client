@@ -1,18 +1,18 @@
 import React, {useCallback, useMemo, useRef} from 'react'
 
 import {yupResolver} from '@hookform/resolvers/yup'
+import {RecoveryPasswordEnterPhone} from 'components/RecoveryPasswordEnterPhone'
 import {FormProvider, useForm} from 'react-hook-form'
+import {OTPModal, OTPModalRefType} from 'ui/OTP'
 import * as yup from 'yup'
 
-import {RecoveryPasswordEnterPhone} from 'src/components/RecoveryPasswordEnterPhone'
-import {OTPModal, OTPModalRefType} from 'src/components/ui/OTPModal'
 import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
 import {selectProfile, useTypedSelector} from 'src/store'
 import {
   useRecoveryPasswordSendCodeMutation,
   useRecoveryPasswordVerifyCodeMutation,
-} from 'src/store/shopApi/shopApi'
+} from 'src/store/shopApi'
 import {PHONE_VALIDATION_REGEXP, UNKNOWN_ERROR_MSG} from 'src/variables'
 
 const phoneEnterSchema = yup

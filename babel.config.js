@@ -10,6 +10,8 @@ module.exports = {
         alias: {
           src: './src',
           assets: './assets',
+          ui: './src/components/ui',
+          components: './src/components',
         },
       },
     ],

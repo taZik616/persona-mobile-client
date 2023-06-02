@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 
 import {FlatList, Image, Pressable, StyleSheet, View} from 'react-native'
+import {Spacer} from 'ui/index'
 
 import {BottomSheet, BottomSheetRefType} from 'src/components/bottom-sheet'
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
@@ -15,8 +16,7 @@ import {useProductsList} from 'src/store/shopApi'
 import {ProductPreviewInfo} from 'src/types'
 import {IS_ANDROID} from 'src/variables'
 
-import {FashionItemsPresentSkeleton} from './Skeletons/FashionItemsPresent'
-import {Spacer} from './Spacer'
+import {FashionItemsPresentSkeleton} from '../Skeletons/FashionItemsPresent'
 
 interface FashionItemsPresentProps {
   onPressProduct?: (item: ProductPreviewInfo) => void

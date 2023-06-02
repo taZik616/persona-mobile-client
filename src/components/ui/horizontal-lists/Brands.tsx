@@ -1,21 +1,20 @@
 import React from 'react'
 
 import {FlatList, StyleSheet} from 'react-native'
+import {BrandCard} from 'ui/cards'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
-import {FashionListItemT} from 'src/types'
+import {BrandsListItem} from 'src/types'
 
-import {FashionListItem} from '../FashionListItem'
-
-interface RenderFashionListProps {
-  data: FashionListItemT[]
-  onPressItem?: (id: number) => void
+interface HorizontalBrandsListProps {
+  onPressItem?: (brandId: string, idInList: number) => void
+  brands: BrandsListItem[]
 }
 
-export const RenderFashionList = ({
-  data,
+export const HorizontalBrandsList = ({
   onPressItem,
-}: RenderFashionListProps) => {
+  brands,
+}: HorizontalBrandsListProps) => {
   const {paddingHorizontal} = useHorizontalMargins({safeArea: true})
   return (
     <FlatList
@@ -23,10 +22,15 @@ export const RenderFashionList = ({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={[styles.categoryContainer, paddingHorizontal]}
       renderItem={({item, index}) => (
-        <FashionListItem onPress={() => onPressItem?.(index)} {...item} />
+        <BrandCard
+          idInList={index}
+          onPress={onPressItem}
+          imgUri={item.imgUri}
+          {...item.brand}
+        />
       )}
       keyExtractor={i => i.id}
-      data={data}
+      data={brands}
     />
   )
 }

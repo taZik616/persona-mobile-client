@@ -1,6 +1,14 @@
 import React, {memo, useCallback, useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
+import {BasketCardWHM} from 'ui/cards/BasketCard'
+import {
+  Button,
+  Header,
+  SafeLandscapeView,
+  Spacer,
+  ViewTogglerWHM,
+} from 'ui/index'
 
 import {cleanNumber, getProductsCountString} from 'src/helpers'
 import {
@@ -13,13 +21,6 @@ import {deselectBasketItem, selectBasketItem} from 'src/store/basketSlice'
 import {ProductPreviewInfo} from 'src/types'
 
 import {BasketListEmpty} from './BasketListEmpty'
-
-import {BasketCardWHM} from '../ui/BasketCard'
-import {Button} from '../ui/Button'
-import {Header} from '../ui/Header'
-import {SafeLandscapeView} from '../ui/SafeLandscapeView'
-import {Spacer} from '../ui/Spacer'
-import {ViewTogglerWHM} from '../ui/ViewToggler'
 
 interface BasketProps {
   onPressPromoEntry?: () => void
