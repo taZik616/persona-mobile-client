@@ -27,10 +27,12 @@ interface FilterProps {
   onPressBrands?: () => void
   onChangeCategory?: (categoryId?: number) => void
   onRemoveBrand?: (brandId: string) => void
+  onRemoveSize?: (size: string) => void
 }
 
 export interface FilterRefType {
   setBrandFilters: (brands: BrandType[]) => void
+  setSizesFilters: (sizes: string[]) => void
 }
 
 export const Filter = memo(
@@ -43,6 +45,7 @@ export const Filter = memo(
         onPressSort,
         onRemoveBrand,
         onChangeCategory,
+        onRemoveSize,
       },
       ref,
     ) => {
@@ -67,6 +70,15 @@ export const Filter = memo(
             ...pr.filter(a => !a.isBrand),
             ...brandFilters,
           ])
+        },
+        setSizesFilters: sizes => {
+          const sizeFilters: any[] = sizes.map(a => ({
+            id: `size-${a}`,
+            name: a,
+            status: 'removable',
+            isSize: true,
+          }))
+          setFiltersSecond(pr => [...pr.filter(a => !a.isSize), ...sizeFilters])
         },
       }))
 
@@ -126,12 +138,18 @@ export const Filter = memo(
         [onPressSort, onPressSize, onPressBrands, onChangeCategory],
       )
 
-      const onRemoveFilter = (id: string) => {
-        if (id.startsWith('brand-')) {
-          onRemoveBrand?.(id.split('brand-')[1])
-          setFiltersFirst(pr => pr.filter(a => a.id !== id))
-        }
-      }
+      const onRemoveFilter = useCallback(
+        (id: string) => {
+          if (id.startsWith('brand-')) {
+            onRemoveBrand?.(id.split('brand-')[1])
+            setFiltersFirst(pr => pr.filter(a => a.id !== id))
+          } else if (id.startsWith('size-')) {
+            onRemoveSize?.(id.split('size-')[1])
+            setFiltersSecond(pr => pr.filter(a => a.id !== id))
+          }
+        },
+        [onRemoveBrand, onRemoveSize],
+      )
 
       return (
         <>
@@ -172,7 +190,11 @@ export const Filter = memo(
             ItemSeparatorComponent={() => <Spacer width={12} />}
             keyExtractor={it => it.id}
             renderItem={({item}) => (
-              <FilterItem onPress={onPressFilter} {...item} />
+              <FilterItem
+                onPress={onPressFilter}
+                onRemove={onRemoveFilter}
+                {...item}
+              />
             )}
             data={filtersSecond}
           />
@@ -190,6 +212,7 @@ type FilterItemType = {
   status?: 'active' | 'passive' | 'removable'
   isCat?: boolean
   isBrand?: boolean
+  isSize?: boolean
 }
 
 const FILTERS_FIRST_DEFAULT: FilterItemType[] = [

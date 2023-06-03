@@ -14,7 +14,7 @@ import {BrandType, OrderingItemI, ProductPreviewInfo} from 'src/types'
 
 import {Counter} from './Counter'
 import {Filter, FilterRefType} from './ProductFilters'
-import {SizeSelect} from './SizeSelect'
+import {SizeSelect, SizeSelectRefType} from './SizeSelect'
 
 interface ProductListProps extends ProductsParams {
   onPressProduct?: (item: ProductPreviewInfo) => void
@@ -46,7 +46,7 @@ export const ProductList = memo(
     const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
     const sortSelectRef = useRef<SortSelectRefType>(null)
     const brandSelectRef = useRef<BrandSearchingRefType>(null)
-    const sizeSelectRef = useRef<BrandSearchingRefType>(null)
+    const sizeSelectRef = useRef<SizeSelectRefType>(null)
     const filterRef = useRef<FilterRefType>(null)
 
     const onChangeSort = useCallback((ordering: OrderingType) => {
@@ -78,10 +78,21 @@ export const ProductList = memo(
       }))
     }, [])
 
+    const onRemoveSizeFilter = useCallback((size: string) => {
+      setParams(pr => ({
+        ...pr,
+        sizes: pr.sizes
+          ?.split(',')
+          .filter((b: string) => b !== size)
+          .join(','),
+      }))
+    }, [])
+
     const onChangeSize = useCallback((sizes: string) => {
-      console.log(sizes)
+      setParams(pr => ({...pr, sizes}))
+      filterRef.current?.setSizesFilters(sizes.split(','))
       sizeSelectRef.current?.close?.()
-      //setParams(pr => ({...pr, brandIds}))
+      sizeSelectRef.current?.cleanSelections()
     }, [])
 
     const onPressBrands = useCallback(() => {
@@ -118,6 +129,7 @@ export const ProductList = memo(
               onPressBrands={onPressBrands}
               onChangeCategory={onChangeCategory}
               onRemoveBrand={onRemoveBrandFilter}
+              onRemoveSize={onRemoveSizeFilter}
             />
           )}
           <FlashList

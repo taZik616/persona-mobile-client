@@ -32,6 +32,7 @@ interface SizeSelectProps {
 export interface SizeSelectRefType {
   open?: () => void
   close?: () => void
+  cleanSelections: () => void
 }
 
 export const SizeSelect = memo(
@@ -43,6 +44,7 @@ export const SizeSelect = memo(
       useImperativeHandle(ref, () => ({
         open: bottomSheetRef.current?.open,
         close: bottomSheetRef.current?.close,
+        cleanSelections: () => setSelected([]),
       }))
 
       const content = useMemo(() => {

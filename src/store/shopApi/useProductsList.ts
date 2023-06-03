@@ -23,6 +23,7 @@ export const useProductsList = ({
   search,
   isNew,
   gender,
+  sizes,
 }: useProductsListParams) => {
   const [products, setProducts] = useState<ProductsDataI | undefined>(undefined)
   const [isLoad, setIsLoad] = useState(true)
@@ -45,6 +46,7 @@ export const useProductsList = ({
           isNew,
           gender,
           page: pageNumberRef.current,
+          sizes,
         },
       })
       const {data} = res
@@ -78,6 +80,7 @@ export const useProductsList = ({
     isNew,
     gender,
     page,
+    sizes,
   ])
 
   const reset = useCallback(() => {

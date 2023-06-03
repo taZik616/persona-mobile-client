@@ -54,4 +54,5 @@ export interface ProductsParams {
   search?: string
   isNew?: 'True' | 'False'
   gender?: 'men' | 'women'
+  sizes?: string
 }

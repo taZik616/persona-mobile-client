@@ -20,6 +20,8 @@ export const HomeCatalogProducts = ({
       <Header showBack />
       <ProductList
         showCounter
+        showFilter
+        showCategoriesFilter
         subcategoryId={subcategoryId}
         onPressProduct={onPressProduct}
       />
