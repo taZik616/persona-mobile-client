@@ -7,7 +7,7 @@ import {persistReducer} from 'redux-persist'
 import {getArrayOfField} from 'src/helpers'
 import {ProductInFavoritesI} from 'src/types'
 
-import {StoreStateType} from '.'
+import {store} from '.'
 
 interface FavoritesSliceState {
   items: ProductInFavoritesI[]
@@ -52,32 +52,25 @@ export const favoritesSlice = createSlice({
 })
 
 const {setItems, removeItem, addItem} = favoritesSlice.actions
-
+export const {setItems: setFavoritesItems} = favoritesSlice.actions
 /**
  * Добавить 1 элемент в избранное
  */
 export const addItemToFavorites =
-  (item: ProductInFavoritesI) =>
-  async (dispatch: any, getState: () => StoreStateType) => {
-    const token = getState().profile.authToken ?? ''
-    if (token) {
-      axios.put(`${APP_API_URL}/api/v1/favorites`, {
-        headers: {Authorization: `Token ${token}`},
-        data: {
-          productId: item.productId,
-        },
-      })
-    }
+  (item: ProductInFavoritesI) => async (dispatch: any) => {
+    const token = store.getState().profile.authToken ?? ''
+    axios.put(
+      `${APP_API_URL}/api/v1/favorites`,
+      {productId: item.productId},
+      {headers: {Authorization: token ? `Token ${token}` : ''}},
+    )
     dispatch(addItem(item))
   }
 /**
  * Загрузить с сервера избранные товары пользователя
  */
-export const loadItemsToFavorites = async (
-  dispatch: any,
-  getState: () => StoreStateType,
-) => {
-  const token = getState().profile.authToken ?? ''
+export const loadItemsToFavorites = async (dispatch: any) => {
+  const token = store.getState().profile.authToken ?? ''
   if (token) {
     const res = await axios.get(`${APP_API_URL}/api/v1/favorites`, {
       headers: {Authorization: `Token ${token}`},
@@ -92,15 +85,12 @@ export const loadItemsToFavorites = async (
  * Удалить элемент по productId из избранного
  */
 export const removeItemFromFavorites =
-  (productId: string) =>
-  async (dispatch: any, getState: () => StoreStateType) => {
-    const token = getState().profile.authToken ?? ''
-    if (token) {
-      await axios.delete(`${APP_API_URL}/api/v1/favorites`, {
-        headers: {Authorization: `Token ${token}`},
-        data: {productId},
-      })
-    }
+  (productId: string) => async (dispatch: any) => {
+    const token = store.getState().profile.authToken ?? ''
+    axios.delete(`${APP_API_URL}/api/v1/favorites`, {
+      headers: {Authorization: token ? `Token ${token}` : ''},
+      data: {productId},
+    })
     dispatch(removeItem(productId))
   }
 

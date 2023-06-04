@@ -18,10 +18,10 @@ export const Personal = ({
   onPressChangePassword,
   onPressChangeInfo,
 }: PersonalProps) => {
-  const {email, dob, name, surname, phoneNumber} =
+  const {email, birthday, firstName, lastName, phoneNumber} =
     useTypedSelector(selectProfile)
 
-  const isValidDob = !isNaN(Date.parse(dob ?? ''))
+  const isValidDob = !isNaN(Date.parse(birthday ?? ''))
   return (
     <>
       <Header
@@ -33,14 +33,14 @@ export const Personal = ({
       <ScrollView>
         <SafeLandscapeView safeArea>
           <Spacer height={24} />
-          <InfoLine value={name} field="Имя" />
+          <InfoLine value={firstName} field="Имя" />
           <Spacer height={18} />
-          <InfoLine value={surname} field="Фамилия" />
+          <InfoLine value={lastName} field="Фамилия" />
           <Spacer height={18} />
           <InfoLine
             value={
-              dob && isValidDob
-                ? format(new Date(dob), 'dd.MM.yyyy')
+              birthday && isValidDob
+                ? format(new Date(birthday), 'dd.MM.yyyy')
                 : undefined
             }
             field="Дата рождения"

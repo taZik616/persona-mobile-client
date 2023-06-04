@@ -13,6 +13,7 @@ import {
   Text,
 } from 'ui/index'
 
+import {cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
@@ -25,7 +26,15 @@ interface ProductDetailProps extends ProductPreviewInfo {
 
 export const ProductDetail = memo(
   ({onPressFastBuy, onPressAddToBasket, ...item}: ProductDetailProps) => {
-    const {images, priceGroup, collection, brand, productName, price} = item
+    const {
+      images,
+      priceGroup,
+      collection,
+      brand,
+      productName,
+      price,
+      discountPercent,
+    } = item
 
     return (
       <>
@@ -55,7 +64,22 @@ export const ProductDetail = memo(
                 )}
                 <Text gp4>{productName}</Text>
                 <Spacer height={6} />
-                <Text gp4>{price} ₽</Text>
+                <View style={styles.flexRow}>
+                  {discountPercent ? (
+                    <>
+                      <Text gp5>{cleanNumber(price, ' ', 0)} ₽</Text>
+                      <Spacer width={16} />
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  <Text
+                    color={Color.primaryGray}
+                    style={styles.priceWithoutDiscount}
+                    gp5>
+                    {cleanNumber(price, ' ', 0, discountPercent)} ₽
+                  </Text>
+                </View>
               </View>
               <StarProduct item={item} />
             </View>
@@ -100,5 +124,9 @@ const styles = StyleSheet.create({
   headInfoContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  priceWithoutDiscount: {
+    textDecorationLine: 'line-through',
+    textDecorationColor: Color.textBase1,
   },
 })

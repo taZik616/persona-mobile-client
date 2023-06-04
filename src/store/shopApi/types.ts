@@ -8,10 +8,15 @@ export interface RecoveryPasswordSendCodeBody {
   phoneNumber: string
 }
 
-export interface RecoveryPasswordConfirmBody {
+export interface RecoveryPasswordCompleteBody {
   phoneNumber: string
   supposedCode: string
   newPassword: string
+}
+
+export interface RecoveryPasswordCheckBody {
+  phoneNumber: string
+  supposedCode: string
 }
 
 export interface ChangePasswordBody {
@@ -34,6 +39,10 @@ export interface CreateUserAndSendCodeBody {
   phoneNumber: string
   firstName?: string
   lastName?: string
+}
+
+export interface ResendRegistryCodeBody {
+  phoneNumber: string
 }
 
 export type OrderingType =

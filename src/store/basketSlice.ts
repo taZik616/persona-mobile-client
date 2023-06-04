@@ -5,7 +5,7 @@ import axios from 'axios'
 import {getArrayOfField} from 'src/helpers'
 import {ProductInBasketI} from 'src/types'
 
-import {StoreStateType} from '.'
+import {store} from '.'
 interface BasketSliceState {
   items: ProductInBasketI[]
   counter: number
@@ -21,6 +21,8 @@ const initialState: BasketSliceState = {
   selectedItemIds: [],
 }
 
+type SelectionIds = {productId: string; variantId: string}
+
 export const basketSlice = createSlice({
   name: 'basket',
   initialState,
@@ -30,9 +32,7 @@ export const basketSlice = createSlice({
       state.items = items
       state.counter = items.length
       state.productIds = getArrayOfField(items, 'productId')
-      state.selectedItemIds = state.selectedItemIds.filter(a =>
-        items.some(b => b.productId === a),
-      )
+      state.selectedItemIds = []
     },
     addItem: (state, action: PayloadAction<ProductInBasketI>) => {
       const newItem = action.payload
@@ -54,15 +54,19 @@ export const basketSlice = createSlice({
       state.productIds = getArrayOfField(state.items, 'productId')
       state.selectedItemIds = state.selectedItemIds.filter(a => a !== productId)
     },
-    selectItem: (state, action: PayloadAction<string>) => {
-      const productId = action.payload
-      if (!state.selectedItemIds.includes(productId)) {
-        state.selectedItemIds = [...state.selectedItemIds, productId]
+    selectItem: (state, action: PayloadAction<SelectionIds>) => {
+      const {productId, variantId} = action.payload
+      const selectionId = `${productId}-${variantId}`
+      if (!state.selectedItemIds.includes(selectionId)) {
+        state.selectedItemIds = [...state.selectedItemIds, selectionId]
       }
     },
-    deselectItem: (state, action: PayloadAction<string>) => {
-      const productId = action.payload
-      state.selectedItemIds = state.selectedItemIds.filter(a => a !== productId)
+    deselectItem: (state, action: PayloadAction<SelectionIds>) => {
+      const {productId, variantId} = action.payload
+      const selectionId = `${productId}-${variantId}`
+      state.selectedItemIds = state.selectedItemIds.filter(
+        a => a !== selectionId,
+      )
     },
     clearSelect: state => {
       state.selectedItemIds = []
@@ -82,28 +86,25 @@ export const {
  * Добавить 1 элемент в корзину
  */
 export const addItemToBasket =
-  (item: ProductInBasketI) =>
-  async (dispatch: any, getState: () => StoreStateType) => {
-    const token = getState().profile.authToken ?? ''
-    axios.put(`${APP_API_URL}/api/v1/basket`, {
-      headers: {Authorization: `Token ${token}`},
-      data: {
+  (item: ProductInBasketI) => async (dispatch: any) => {
+    const token = store.getState().profile.authToken ?? ''
+    axios.put(
+      `${APP_API_URL}/api/v1/basket`,
+      {
         productId: item.productId,
         variantId: item.variant.uniqueId,
       },
-    })
+      {headers: {Authorization: token ? `Token ${token}` : ''}},
+    )
     dispatch(addItem(item))
   }
 /**
  * Загрузить с сервера корзину пользователя
  */
-export const loadItemsToBasket = async (
-  dispatch: any,
-  getState: () => StoreStateType,
-) => {
-  const token = getState().profile.authToken ?? ''
+export const loadItemsToBasket = async (dispatch: any) => {
+  const token = store.getState().profile.authToken ?? ''
   const res = await axios.get(`${APP_API_URL}/api/v1/basket`, {
-    headers: {Authorization: `Token ${token}`},
+    headers: {Authorization: token ? `Token ${token}` : ''},
   })
 
   if (Array.isArray(res.data.items)) {
@@ -118,15 +119,14 @@ export const loadItemsToBasket = async (
  * Удалить элемент по productId из корзины
  */
 export const removeItemFromBasket =
-  (item: ProductInBasketI) =>
-  async (dispatch: any, getState: () => StoreStateType) => {
-    const token = getState().profile.authToken ?? ''
-    await axios.delete(`${APP_API_URL}/api/v1/basket`, {
-      headers: {Authorization: `Token ${token}`},
+  (item: ProductInBasketI) => async (dispatch: any) => {
+    const token = store.getState().profile.authToken ?? ''
+    axios.delete(`${APP_API_URL}/api/v1/basket`, {
       data: {
         productId: item.productId,
         variantId: item.variant.uniqueId,
       },
+      headers: {Authorization: token ? `Token ${token}` : ''},
     })
     dispatch(removeItem(item))
   }

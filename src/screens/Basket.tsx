@@ -33,8 +33,8 @@ export const BasketScreen = () => {
   })
   // const dispatch = useTypedDispatch()
 
-  const onPressBasketItem = (item: ProductPreviewInfo) => {
-    navigate('productDetail', {item, productId: item.productId})
+  const onPressBasketItem = (product: ProductPreviewInfo) => {
+    navigate('productDetail', {product, productId: product.productId})
   }
 
   const onSubmitPromoCode = useMemo(

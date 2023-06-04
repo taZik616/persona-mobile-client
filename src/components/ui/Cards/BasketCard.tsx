@@ -31,11 +31,11 @@ import {
   removeItemFromFavorites,
 } from 'src/store/favoritesSlice'
 import {Color} from 'src/themes'
-import {ProductPreviewInfo} from 'src/types'
+import {ProductInBasketI} from 'src/types'
 
-interface BasketCardProps extends ProductPreviewInfo {
-  onPress?: (item: ProductPreviewInfo) => void
-  onChangeSelect?: (item: ProductPreviewInfo, isSelected: boolean) => void
+interface BasketCardProps extends ProductInBasketI {
+  onPress?: (item: ProductInBasketI) => void
+  onChangeSelect?: (item: ProductInBasketI, isSelected: boolean) => void
 }
 export const BasketCard = memo(
   ({onPress, onChangeSelect, ...item}: BasketCardProps) => {
@@ -45,8 +45,8 @@ export const BasketCard = memo(
       collection,
       priceGroup,
       brand,
+      discountPercent,
       isAvailable,
-      productId,
     } = item
     const swipeableRef = useRef<any>(null)
     const onClose = useCallback(() => swipeableRef.current?.close(), [])
@@ -61,11 +61,7 @@ export const BasketCard = memo(
             <LeftAction item={item} onClose={onClose} progress={progress} />
           )}
           renderRightActions={progress => (
-            <RightAction
-              productId={productId}
-              onClose={onClose}
-              progress={progress}
-            />
+            <RightAction product={item} onClose={onClose} progress={progress} />
           )}>
           <View style={styles.container}>
             <View style={styles.topRowContainer}>
@@ -93,7 +89,23 @@ export const BasketCard = memo(
               <Pressable
                 onPress={() => onPress && onPress(item)}
                 style={styles.costContainer}>
-                <Text gp5>{cleanNumber(price, ' ', 0)} ₽</Text>
+                {discountPercent ? (
+                  <>
+                    <Text
+                      style={styles.priceWithoutDiscount}
+                      color={Color.primaryGray}
+                      numberOfLines={1}
+                      gp5>
+                      {cleanNumber(price, ' ', 0)} ₽
+                    </Text>
+                    <Spacer height={8} />
+                  </>
+                ) : (
+                  <></>
+                )}
+                <Text numberOfLines={1} gp5>
+                  {cleanNumber(price, ' ', 0, discountPercent)} ₽
+                </Text>
               </Pressable>
             </View>
             <Pressable onPress={() => onPress && onPress(item)}>
@@ -104,12 +116,14 @@ export const BasketCard = memo(
                   resizeMode="contain"
                   source={{uri: brand.logo}}
                 />
-              ) : (
+              ) : brand?.name ? (
                 <View style={styles.brandName}>
                   <Text numberOfLines={1} center gp1>
                     {brand?.name?.toUpperCase()}
                   </Text>
                 </View>
+              ) : (
+                <Spacer height={8} />
               )}
               <Spacer height={4} />
               <View style={styles.textContentContainer}>
@@ -123,7 +137,7 @@ export const BasketCard = memo(
                 ) : (
                   <></>
                 )}
-                {(priceGroup || collection) && (
+                {collection && (
                   <>
                     <Text color={Color.primary} numberOfLines={1} center gp4>
                       {capitalize(collection ? collection : priceGroup)}
@@ -142,7 +156,7 @@ export const BasketCard = memo(
 
 const WrappedCheckBox = memo(({onChangeSelect, item}: any) => {
   const isSelected = useTypedSelector(selectBasketSelectedIds).includes(
-    item.productId,
+    `${item.productId}-${item.variant.uniqueId}`,
   )
   return (
     <Checkmark
@@ -157,7 +171,7 @@ export const BasketCardWHM = withHorizontalMargins(BasketCard)
 interface LeftActionProps {
   onClose?: () => void
   progress: RNAnimated.AnimatedInterpolation<number>
-  item: ProductPreviewInfo
+  item: ProductInBasketI
 }
 
 export const LeftAction = memo(({progress, item, onClose}: LeftActionProps) => {
@@ -208,10 +222,10 @@ export const LeftAction = memo(({progress, item, onClose}: LeftActionProps) => {
 interface RightActionProps {
   onClose?: () => void
   progress: RNAnimated.AnimatedInterpolation<number>
-  productId: string
+  product: ProductInBasketI
 }
 
-const RightAction = memo(({onClose, progress, productId}: RightActionProps) => {
+const RightAction = memo(({onClose, progress, product}: RightActionProps) => {
   const dispatch = useTypedDispatch()
   const scale = progress.interpolate({
     inputRange: [0, 0, 1, 2],
@@ -225,7 +239,7 @@ const RightAction = memo(({onClose, progress, productId}: RightActionProps) => {
     <RectButton
       onPress={() => {
         onClose?.()
-        dispatch(removeItemFromBasket(productId))
+        dispatch(removeItemFromBasket(product))
       }}
       style={styles.swipeableBtnR}>
       <RNAnimated.View
@@ -309,5 +323,9 @@ const styles = StyleSheet.create({
     color: Color.white,
     textAlign: 'center',
     lineHeight: 16,
+  },
+  priceWithoutDiscount: {
+    textDecorationLine: 'line-through',
+    textDecorationColor: Color.textBase1,
   },
 })

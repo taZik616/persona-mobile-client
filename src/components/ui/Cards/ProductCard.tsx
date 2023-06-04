@@ -203,7 +203,8 @@ const styles = StyleSheet.create({
   },
   textContentContainer: {
     width: '100%',
-    height: 60,
+    minHeight: 26,
+    maxHeight: 60,
     justifyContent: 'center',
     paddingHorizontal: 10,
   },

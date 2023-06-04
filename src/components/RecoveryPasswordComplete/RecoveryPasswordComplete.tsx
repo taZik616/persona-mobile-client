@@ -17,7 +17,7 @@ interface RecPassConfirmProps {
   onSubmit?: () => void
 }
 
-export const RecoveryPasswordConfirm = forwardRef<any, RecPassConfirmProps>(
+export const RecoveryPasswordComplete = forwardRef<any, RecPassConfirmProps>(
   ({onSubmit}, ref) => {
     const {
       formState: {isValid},

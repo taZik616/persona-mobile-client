@@ -25,7 +25,8 @@ import {
 import {
   useCreateUserAndSendCodeMutation,
   useLoginMutation,
-} from 'src/store/shopApi/shopApi'
+  useResendRegistryCodeMutation,
+} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
@@ -46,15 +47,20 @@ export const HomeAuth = ({
 
   const otpModalRef = useRef<OTPModalRefType>(null)
   const [createUserSendCode] = useCreateUserAndSendCodeMutation()
+  const [resendRegistryCode] = useResendRegistryCodeMutation()
   const [login] = useLoginMutation()
 
   const dispatch = useTypedDispatch()
 
-  const sendVerifySms = useCallback(
-    (telephone: string) => () => {
+  const resendVerifySms = useCallback(
+    (phoneNumber: string) => () => {
       vibration.rigid()
-      //createUserSendCode({phoneNumber: telephone})
-      otpModalRef.current?.resetTimer()
+      const res: any = resendRegistryCode({phoneNumber})
+      if (res?.error?.data?.error) {
+        otpModalRef.current?.setError(res.error.data.error)
+      } else if (res?.data?.success) {
+        otpModalRef.current?.resetTimer()
+      }
     },
     [],
   )
@@ -95,10 +101,11 @@ export const HomeAuth = ({
         username: telephone,
         password,
       })
-      if (res?.error?.data?.error) {
+      const error = res?.error?.data?.error
+      if (error) {
         vibration.error()
-        setRequestError(res.error.data.message)
-      } else if (res?.data?.success && res.data.token) {
+        setRequestError(error)
+      } else if (res.data.token) {
         vibration.success()
         dispatch(setIsAuthenticated(true))
         dispatch(setAuthToken(res.data.token))
@@ -121,10 +128,10 @@ export const HomeAuth = ({
   const onRegistryCheckOtp = useCallback(
     async (code: string, telephone: string) => {
       const res: any = await login({password: code, username: telephone})
-      if (res?.data?.failed) {
+      if (res?.error?.data?.error) {
         vibration.error()
-        otpModalRef.current?.setError(res.data.failed)
-      } else if (res?.data?.token) {
+        otpModalRef.current?.setError(res.error.data.error)
+      } else if (res?.data?.success && res.data.token) {
         vibration.success()
         dispatch(setIsAuthenticated(true))
         dispatch(setAuthToken(res.data.token))
@@ -187,7 +194,7 @@ export const HomeAuth = ({
       </ScrollView>
       <OTPModal
         ref={otpModalRef}
-        sendVerifySms={sendVerifySms}
+        sendVerifySms={resendVerifySms}
         onSubmit={onRegistryCheckOtp}
         onCloseModal={onCloseModal}
       />

@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 
 import {yupResolver} from '@hookform/resolvers/yup'
+import {format} from 'date-fns'
 import {FormProvider, useForm} from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -12,24 +13,23 @@ import {updateUserData} from 'src/store/profileSlice'
 
 const personalEditSchema = yup
   .object({
-    email: yup
-      .string()
-      .trim()
-      .required('Обязательное поле')
-      .email('Это поле должно содержать email адрес'),
-    name: yup
+    email: yup.string().trim().email('Это поле должно содержать email адрес'),
+    firstName: yup
       .string()
       .required('Обязательное поле')
       .min(2, 'Слишком короткое имя')
       .max(35, 'Имя слишком длинное')
       .trim(),
-    surname: yup
+    lastName: yup
       .string()
       .required('Обязательное поле')
       .min(2, 'Слишком короткая фамилия')
       .max(35, 'Фамилия слишком длинная')
       .trim(),
-    dob: yup.date().max(new Date(), 'Дата должна быть в прошлом'),
+    birthday: yup
+      .date()
+      .max(new Date(), 'Дата должна быть в прошлом')
+      .optional(),
   })
   .required()
 
@@ -39,28 +39,31 @@ export const PersonalEditScreen = () => {
   const {goBack} = useTypedNavigation()
   const dispatch = useTypedDispatch()
 
-  const {email, dob, name, surname} = useTypedSelector(selectProfile)
+  const {email, firstName, lastName, birthday} = useTypedSelector(selectProfile)
 
-  const isValidDob = !isNaN(Date.parse(dob ?? ''))
+  const isValidDob = !isNaN(Date.parse(birthday ?? ''))
 
   const form = useForm<PersonalEditType>({
     mode: 'onChange',
     resolver: yupResolver(personalEditSchema),
     defaultValues: {
       email,
-      dob: dob && isValidDob ? new Date(dob) : undefined,
-      name,
-      surname,
+      birthday: birthday && isValidDob ? new Date(birthday) : undefined,
+      firstName,
+      lastName,
     },
   })
 
   const onSubmit = useMemo(
     () =>
       form.handleSubmit(
-        async ({dob: dateOfBirth, ...data}: PersonalEditType) => {
-          await dispatch(
-            updateUserData({...data, dob: dateOfBirth?.toString()}),
-          )
+        async ({birthday: dob, ...data}: PersonalEditType) => {
+          let formattedDate: string | undefined
+          if (dob) {
+            formattedDate = format(dob, 'yyyy-MM-dd')
+          }
+
+          await dispatch(updateUserData({...data, birthday: formattedDate}))
           vibration.success()
           goBack()
         },

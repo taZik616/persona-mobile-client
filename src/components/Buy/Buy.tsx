@@ -9,7 +9,7 @@ import {
   Spacer,
   Text,
   ViewToggler,
-} from 'ui/ViewToggler'
+} from 'ui/index'
 
 import {useScreenBlockPortrait} from 'src/hooks'
 import {selectBasketSelectedItems, useTypedSelector} from 'src/store'

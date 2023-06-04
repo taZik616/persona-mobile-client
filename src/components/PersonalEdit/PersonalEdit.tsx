@@ -36,13 +36,17 @@ export const PersonalEdit = ({onSubmit}: PersonalEditProps) => {
         <ScrollView>
           <SafeLandscapeView safeArea>
             <Spacer height={20} />
-            <FormTextInput placeholder="Имя" name="name" nextField="surname" />
+            <FormTextInput
+              placeholder="Имя"
+              name="firstName"
+              nextField="lastName"
+            />
             <Spacer height={16} />
-            <FormTextInput placeholder="Фамилия" name="surname" />
+            <FormTextInput placeholder="Фамилия" name="lastName" />
             <Spacer height={16} />
             <FormDateTime
               placeholder="Дата рождения"
-              name="dob"
+              name="birthday"
               maximumDate={new Date(Date.now() - 6 * YEAR_IN_MS)}
             />
             <Spacer height={20} />

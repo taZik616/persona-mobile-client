@@ -10,8 +10,10 @@ import {
   CreateUserAndSendCodeBody,
   GetBrandsBody,
   LoginBody,
-  RecoveryPasswordConfirmBody,
+  RecoveryPasswordCheckBody,
+  RecoveryPasswordCompleteBody,
   RecoveryPasswordSendCodeBody,
+  ResendRegistryCodeBody,
 } from './types'
 
 export const shopApi = createApi({
@@ -51,6 +53,13 @@ export const shopApi = createApi({
         body,
       }),
     }),
+    resendRegistryCode: build.mutation({
+      query: (body: ResendRegistryCodeBody) => ({
+        url: 'registry-send-code',
+        method: 'PUT',
+        body,
+      }),
+    }),
     login: build.mutation({
       query: (body: LoginBody) => ({
         url: 'login',
@@ -65,10 +74,17 @@ export const shopApi = createApi({
         body,
       }),
     }),
-    recoveryPasswordConfirm: build.mutation({
-      query: (body: RecoveryPasswordConfirmBody) => ({
-        url: 'recovery-password-confirm/',
-        method: 'PUT',
+    recoveryPasswordCheck: build.mutation({
+      query: (body: RecoveryPasswordCheckBody) => ({
+        url: 'recovery-password-check',
+        method: 'POST',
+        body,
+      }),
+    }),
+    recoveryPasswordComplete: build.mutation({
+      query: (body: RecoveryPasswordCompleteBody) => ({
+        url: 'recovery-password-complete',
+        method: 'POST',
         body,
       }),
     }),
@@ -135,9 +151,11 @@ export const {
   useMainContentQuery,
   useSizeChartQuery,
   useProductDetailQuery,
-  useRecoveryPasswordConfirmMutation,
+  useRecoveryPasswordCheckMutation,
+  useRecoveryPasswordCompleteMutation,
   useLoginMutation,
   useRecoveryPasswordSendCodeMutation,
   useChangePasswordMutation,
   useCreateUserAndSendCodeMutation,
+  useResendRegistryCodeMutation,
 } = shopApi

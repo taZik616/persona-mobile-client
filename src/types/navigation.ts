@@ -27,8 +27,9 @@ export type RootStackParamList = {
   personal: undefined
   changePassword: undefined
   recoveryPasswordEnterPhone: undefined
-  recoveryPasswordConfirm: {
-    telephone: string
+  recoveryPasswordComplete: {
+    phoneNumber: string
+    code: string
   }
   orders: undefined
   subscriptions: undefined

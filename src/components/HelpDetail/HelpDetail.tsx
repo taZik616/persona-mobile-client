@@ -16,6 +16,7 @@ interface HelpDetailProps {
   title: string
   isLoading: boolean
   isError?: boolean
+  error: string
   onPressRetry?: () => void
   content?: string
 }
@@ -25,6 +26,7 @@ export const HelpDetail = ({
   content,
   isLoading,
   isError,
+  error,
   onPressRetry,
 }: HelpDetailProps) => {
   const mdProps = useMarkdownProps(0.3)
@@ -44,7 +46,7 @@ export const HelpDetail = ({
               <Spacer withBottomInsets height={48} />
             </>
           ) : (
-            <ConnectionError onPressRetry={onPressRetry} />
+            <ConnectionError error={error} onPressRetry={onPressRetry} />
           )}
         </SafeLandscapeView>
       </ScrollView>

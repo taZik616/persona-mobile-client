@@ -24,7 +24,7 @@ import {OrdersScreen} from './screens/Orders'
 import {PersonalScreen} from './screens/Personal'
 import {PersonalEditScreen} from './screens/PersonalEdit'
 import {ProductDetailScreen} from './screens/ProductDetail'
-import {RecoveryPasswordConfirmScreen} from './screens/RecoveryPasswordConfirm'
+import {RecoveryPasswordCompleteScreen} from './screens/RecoveryPasswordComplete'
 import {RecoveryPasswordEnterPhoneScreen} from './screens/RecoveryPasswordEnterPhone'
 import {SizeChartScreen} from './screens/SizeChart'
 import {SubscriptionsScreen} from './screens/Subscriptions'
@@ -80,8 +80,8 @@ export const App = () => {
             component={RecoveryPasswordEnterPhoneScreen}
           />
           <Stack.Screen
-            name="recoveryPasswordConfirm"
-            component={RecoveryPasswordConfirmScreen}
+            name="recoveryPasswordComplete"
+            component={RecoveryPasswordCompleteScreen}
           />
           <Stack.Screen name="orders" component={OrdersScreen} />
           <Stack.Screen name="subscriptions" component={SubscriptionsScreen} />

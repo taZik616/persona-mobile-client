@@ -4,59 +4,61 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
 import * as yup from 'yup'
 
-import {RecoveryPasswordConfirm} from 'src/components/RecoveryPasswordConfirm'
+import {RecoveryPasswordComplete} from 'src/components/RecoveryPasswordComplete'
 import {useTypedNavigation, useTypedRoute} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
-import {useChangePasswordMutation} from 'src/store/shopApi/shopApi'
+import {useRecoveryPasswordCompleteMutation} from 'src/store/shopApi'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
-const recPassConfirmSchema = yup
+const recPassCompleteSchema = yup
   .object({
     newPassword: yup.string().required('Обязательное поле'),
     newPasswordConfirmation: yup.string().required('Обязательное поле'),
   })
   .required()
 
-type RecPassConfirmType = yup.InferType<typeof recPassConfirmSchema>
+type RecPassCompleteType = yup.InferType<typeof recPassCompleteSchema>
 
-export const RecoveryPasswordConfirmScreen = () => {
-  const recPassConfirmRef = useRef<any>()
+export const RecoveryPasswordCompleteScreen = () => {
+  const recPassCompleteRef = useRef<any>()
 
-  const [changePassword] = useChangePasswordMutation()
+  const [completeRecovery] = useRecoveryPasswordCompleteMutation()
 
-  const form = useForm<RecPassConfirmType>({
+  const form = useForm<RecPassCompleteType>({
     mode: 'onChange',
-    resolver: yupResolver(recPassConfirmSchema),
+    resolver: yupResolver(recPassCompleteSchema),
   })
 
-  const {telephone} = useTypedRoute<'recoveryPasswordConfirm'>().params || {}
+  const {phoneNumber, code} =
+    useTypedRoute<'recoveryPasswordComplete'>().params || {}
 
   const {popToTop} = useTypedNavigation()
 
   const onSubmitForm = useMemo(
     () =>
       form.handleSubmit(
-        async ({newPassword, newPasswordConfirmation}: RecPassConfirmType) => {
+        async ({newPassword, newPasswordConfirmation}: RecPassCompleteType) => {
           if (newPassword !== newPasswordConfirmation) {
             vibration.error()
-            recPassConfirmRef.current.setError('Пароли не совпадают')
+            recPassCompleteRef.current.setError('Пароли не совпадают')
             return
           }
-          const res: any = await changePassword({
-            telephone,
-            password: newPassword,
+          const res: any = await completeRecovery({
+            phoneNumber,
+            supposedCode: code,
+            newPassword,
           })
 
-          const failedRes = res?.error?.data?.failed
+          const error = res?.error?.data?.error
           if (res?.data?.success) {
             vibration.success()
             popToTop()
-          } else if (failedRes) {
+          } else if (error) {
             vibration.error()
-            recPassConfirmRef.current.setError(failedRes)
+            recPassCompleteRef.current.setError(error)
           } else {
             vibration.error()
-            recPassConfirmRef.current.setError(UNKNOWN_ERROR_MSG)
+            recPassCompleteRef.current.setError(UNKNOWN_ERROR_MSG)
           }
         },
         (error: any) => {
@@ -69,8 +71,8 @@ export const RecoveryPasswordConfirmScreen = () => {
 
   return (
     <FormProvider {...form}>
-      <RecoveryPasswordConfirm
-        ref={recPassConfirmRef}
+      <RecoveryPasswordComplete
+        ref={recPassCompleteRef}
         onSubmit={onSubmitForm}
       />
     </FormProvider>

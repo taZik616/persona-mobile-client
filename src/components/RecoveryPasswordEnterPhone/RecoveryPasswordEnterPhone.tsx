@@ -49,7 +49,7 @@ export const RecoveryPasswordEnterPhone = forwardRef<
               autoCapitalize="none"
               keyboardType="phone-pad"
               placeholder="Телефон"
-              name="telephone"
+              name="phoneNumber"
             />
             <Spacer height={16} />
             <Button gp5 disabled={!isValid} onPress={onSubmit}>

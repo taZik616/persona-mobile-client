@@ -42,6 +42,7 @@ export interface ProductVariant {
   uniqueId: string
   price: number
   isAvailable: boolean
+  discountPercent: number
 }
 export interface ProductPreviewInfo {
   productId: string

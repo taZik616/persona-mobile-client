@@ -10,14 +10,14 @@ import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
 import {selectProfile, useTypedSelector} from 'src/store'
 import {
+  useRecoveryPasswordCheckMutation,
   useRecoveryPasswordSendCodeMutation,
-  useRecoveryPasswordVerifyCodeMutation,
 } from 'src/store/shopApi'
 import {PHONE_VALIDATION_REGEXP, UNKNOWN_ERROR_MSG} from 'src/variables'
 
 const phoneEnterSchema = yup
   .object({
-    telephone: yup
+    phoneNumber: yup
       .string()
       .trim()
       .required('Обязательное поле')
@@ -32,15 +32,15 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
   const otpRef = useRef<OTPModalRefType>(null)
 
   const [sendCode] = useRecoveryPasswordSendCodeMutation()
-  const [verifyCode] = useRecoveryPasswordVerifyCodeMutation()
+  const [checkCode] = useRecoveryPasswordCheckMutation()
 
-  const {phoneNumber} = useTypedSelector(selectProfile)
+  const {phoneNumber: profilePhoneNumber} = useTypedSelector(selectProfile)
 
   const form = useForm<PhoneEnterType>({
     mode: 'onChange',
     resolver: yupResolver(phoneEnterSchema),
     defaultValues: {
-      telephone: phoneNumber,
+      phoneNumber: profilePhoneNumber,
     },
   })
 
@@ -49,16 +49,17 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
   const onSubmitForm = useMemo(
     () =>
       form.handleSubmit(
-        async ({telephone}: PhoneEnterType) => {
-          const res: any = await sendCode({telephone})
-          const failedRes = res?.error?.data?.failed
+        async ({phoneNumber}: PhoneEnterType) => {
+          const res: any = await sendCode({phoneNumber})
+
+          const error = res?.error?.data?.error
           if (res?.data?.success) {
             vibration.success()
             otpRef.current?.openModal()
-            setTimeout(() => otpRef.current?.setPhoneNumber(telephone), 300)
-          } else if (failedRes) {
+            setTimeout(() => otpRef.current?.setPhoneNumber(phoneNumber), 300)
+          } else if (error) {
             vibration.error()
-            enterPhoneRef.current.setError(failedRes)
+            enterPhoneRef.current.setError(error)
           } else {
             vibration.error()
             enterPhoneRef.current.setError(UNKNOWN_ERROR_MSG)
@@ -72,26 +73,31 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
     [],
   )
 
-  const submitOtpCode = useCallback(async (code: string, telephone: string) => {
-    const res: any = await verifyCode({telephone, code})
+  const submitOtpCode = useCallback(
+    async (code: string, phoneNumber: string) => {
+      const res: any = await checkCode({phoneNumber, supposedCode: code})
 
-    const failedRes = res?.error?.data?.failed
-
-    if (res?.data?.success) {
-      vibration.success()
-      navigate('recoveryPasswordConfirm', {telephone})
-    } else if (failedRes) {
-      vibration.error()
-      otpRef.current?.setError(failedRes)
-    } else {
-      vibration.error()
-      otpRef.current?.setError(UNKNOWN_ERROR_MSG)
-    }
-  }, [])
+      const error = res?.error?.data?.error
+      if (res?.data?.success) {
+        vibration.success()
+        onCloseModal()
+        setTimeout(() => {
+          navigate('recoveryPasswordComplete', {phoneNumber, code})
+        }, 250)
+      } else if (error) {
+        vibration.error()
+        otpRef.current?.setError(error)
+      } else {
+        vibration.error()
+        otpRef.current?.setError(UNKNOWN_ERROR_MSG)
+      }
+    },
+    [],
+  )
 
   const resendCode = useCallback(
-    (telephone: string) => async () => {
-      const res: any = await sendCode({telephone})
+    (phoneNumber: string) => async () => {
+      const res: any = await sendCode({phoneNumber})
       const failedRes = res?.error?.data?.failed
       if (res?.data?.success) {
         vibration.success()
@@ -116,7 +122,7 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
       <FormProvider {...form}>
         <RecoveryPasswordEnterPhone
           ref={enterPhoneRef}
-          disablePhoneInput={!!phoneNumber}
+          disablePhoneInput={!!profilePhoneNumber}
           onSubmit={onSubmitForm}
         />
       </FormProvider>

@@ -18,7 +18,7 @@ import {
   useTypedSelector,
 } from 'src/store'
 import {deselectBasketItem, selectBasketItem} from 'src/store/basketSlice'
-import {ProductPreviewInfo} from 'src/types'
+import {ProductInBasketI, ProductPreviewInfo} from 'src/types'
 
 import {BasketListEmpty} from './BasketListEmpty'
 
@@ -38,11 +38,17 @@ export const Basket = memo(
 
     const curData = items?.filter(it => it.isAvailable === isAvailable)
     const onChangeSelect = useCallback(
-      (product: ProductPreviewInfo, isSelected: boolean) => {
+      (product: ProductInBasketI, isSelected: boolean) => {
         dispatch(
           isSelected
-            ? selectBasketItem(product.productId)
-            : deselectBasketItem(product.productId),
+            ? selectBasketItem({
+                productId: product.productId,
+                variantId: product.variant.uniqueId,
+              })
+            : deselectBasketItem({
+                productId: product.productId,
+                variantId: product.variant.uniqueId,
+              }),
         )
       },
       [],
@@ -104,9 +110,24 @@ const BuyBtn = memo(({onPress}: {onPress?: () => void}) => {
 })
 const WrappedHeader = memo(() => {
   const selected = useTypedSelector(selectBasketSelectedIds)
+  const selectionParsed = selected.map(a => ({
+    productId: a.split('-')[0],
+    variantId: a.split('-')[1],
+  }))
   const total = useTypedSelector(selectBasket)
-    .filter(a => selected.includes(a.productId))
-    .reduce((acc, el) => acc + el.price, 0)
+    .filter(
+      a =>
+        selectionParsed.findIndex(
+          b =>
+            b.productId === a.productId && b.variantId === a.variant.uniqueId,
+        ) !== -1,
+    )
+    .reduce((acc, el) => {
+      const {price} = el.variant
+
+      return acc + (price - price * (el.variant.discountPercent / 100))
+    }, 0)
+  console.log('🚀 - total:', total)
   return (
     <Header
       title="Корзина"
