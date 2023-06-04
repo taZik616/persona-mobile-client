@@ -5,11 +5,12 @@ import {StoreStateType} from 'src/store'
 import {helpfulInfoKey} from 'src/types'
 
 import {
-  CategoriesBody,
+  CategoriesParams,
   ChangePasswordBody,
   CreateUserAndSendCodeBody,
   GetBrandsBody,
   LoginBody,
+  MightBeInterestedParams,
   RecoveryPasswordCheckBody,
   RecoveryPasswordCompleteBody,
   RecoveryPasswordSendCodeBody,
@@ -109,8 +110,15 @@ export const shopApi = createApi({
       }),
     }),
     categories: build.query({
-      query: (params: CategoriesBody) => ({
+      query: (params: CategoriesParams) => ({
         url: 'categories',
+        method: 'GET',
+        params,
+      }),
+    }),
+    mightBeInterested: build.query({
+      query: (params: MightBeInterestedParams) => ({
+        url: 'might-be-interested',
         method: 'GET',
         params,
       }),
@@ -151,6 +159,7 @@ export const {
   useMainContentQuery,
   useSizeChartQuery,
   useProductDetailQuery,
+  useMightBeInterestedQuery,
   useRecoveryPasswordCheckMutation,
   useRecoveryPasswordCompleteMutation,
   useLoginMutation,

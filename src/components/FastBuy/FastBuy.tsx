@@ -2,12 +2,12 @@ import React, {forwardRef, memo, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
+import {ProductCardRow} from 'ui/cards'
 import {
   Button,
   FormTextInput,
   Header,
   KeyboardSafeArea,
-  ProductCardRow,
   SafeLandscapeView,
   Spacer,
   Text,

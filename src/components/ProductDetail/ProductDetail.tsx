@@ -1,6 +1,7 @@
 import React, {memo} from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
+import {HorizontalProductsList} from 'ui/horizontal-lists'
 import {ShopBagLightIcon} from 'ui/icons/common'
 import {
   Button,
@@ -14,6 +15,8 @@ import {
 } from 'ui/index'
 
 import {cleanNumber} from 'src/helpers'
+import {useTypedNavigation} from 'src/hooks'
+import {useMightBeInterestedQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
@@ -33,8 +36,18 @@ export const ProductDetail = memo(
       brand,
       productName,
       price,
+      productId,
       discountPercent,
     } = item
+
+    const recommendation = useMightBeInterestedQuery({
+      productId,
+    })
+
+    const {push} = useTypedNavigation()
+    const onPressProduct = (product: ProductPreviewInfo) => {
+      push('productDetail', {product, productId: product.productId})
+    }
 
     return (
       <>
@@ -91,7 +104,13 @@ export const ProductDetail = memo(
             <Text center cg2>
               С ЧЕМ НОСИТЬ
             </Text>
-            <Spacer height={18} />
+            <Spacer height={16} />
+            <HorizontalProductsList
+              onPressItem={onPressProduct}
+              isLoading={!recommendation.currentData}
+              products={recommendation.currentData}
+            />
+            <Spacer height={32} />
             <View style={styles.flexRow}>
               <Button onPress={onPressFastBuy} variant="outline">
                 Быстрая покупка

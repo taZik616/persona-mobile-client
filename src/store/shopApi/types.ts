@@ -24,11 +24,15 @@ export interface ChangePasswordBody {
   newPassword: string
 }
 
-export interface CategoriesBody {
+export interface CategoriesParams {
   gender?: 'men' | 'women'
   parentId?: number
   ordering?: string
   level?: number
+}
+
+export interface MightBeInterestedParams {
+  productId: string
 }
 
 export interface LoginBody {
