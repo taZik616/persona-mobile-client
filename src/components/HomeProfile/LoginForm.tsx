@@ -5,20 +5,16 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
 import {StyleSheet} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
-import {Button, FormTextInput, Spacer, Text} from 'ui/index'
 import * as yup from 'yup'
 
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
-import {PHONE_VALIDATION_REGEXP} from 'src/variables'
+
+import {Button, FormTextInput, Spacer, Text} from 'ui/index'
 
 const loginSchema = yup
   .object({
-    telephone: yup
-      .string()
-      .trim()
-      .required('Обязательное поле')
-      .matches(PHONE_VALIDATION_REGEXP, 'Введен не корректный номер телефона'),
+    telephone: yup.string().trim().required('Обязательное поле'),
     password: yup.string().required('Обязательное поле'),
   })
   .required()

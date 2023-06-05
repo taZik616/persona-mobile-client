@@ -14,8 +14,6 @@ import {
   Swipeable,
 } from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
-import {CrossIcon, StarEmptyIcon, StarFilledIcon} from 'ui/icons/common'
-import {Checkmark, ImagesLooping, Spacer, Text} from 'ui/index'
 
 import {capitalize, cleanNumber} from 'src/helpers'
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
@@ -33,6 +31,9 @@ import {
 import {Color} from 'src/themes'
 import {ProductInBasketI} from 'src/types'
 
+import {CrossIcon, StarEmptyIcon, StarFilledIcon} from 'ui/icons/common'
+import {Checkmark, ImagesLooping, Spacer, Text} from 'ui/index'
+
 interface BasketCardProps extends ProductInBasketI {
   onPress?: (item: ProductInBasketI) => void
   onChangeSelect?: (item: ProductInBasketI, isSelected: boolean) => void
@@ -47,9 +48,12 @@ export const BasketCard = memo(
       brand,
       discountPercent,
       isAvailable,
+      variant: {colorHex, size},
     } = item
     const swipeableRef = useRef<any>(null)
     const onClose = useCallback(() => swipeableRef.current?.close(), [])
+
+    const handlePress = () => onPress && onPress(item)
 
     return (
       <View style={styles.root}>
@@ -86,9 +90,7 @@ export const BasketCard = memo(
                   </View>
                 </View>
               </GestureDetector>
-              <Pressable
-                onPress={() => onPress && onPress(item)}
-                style={styles.costContainer}>
+              <Pressable onPress={handlePress} style={styles.costContainer}>
                 {discountPercent ? (
                   <>
                     <Text
@@ -108,7 +110,7 @@ export const BasketCard = memo(
                 </Text>
               </Pressable>
             </View>
-            <Pressable onPress={() => onPress && onPress(item)}>
+            <Pressable onPress={handlePress}>
               <Spacer height={4} />
               {brand?.logo ? (
                 <Image
@@ -145,6 +147,20 @@ export const BasketCard = memo(
                     <Spacer height={6} />
                   </>
                 )}
+              </View>
+              <View style={styles.variantInfoBlock}>
+                {colorHex ? (
+                  <View style={styles.colorContainer}>
+                    <Text gp4>Цвет:</Text>
+                    <Spacer width={6} />
+                    <View
+                      style={[styles.colorBlock, {backgroundColor: colorHex}]}
+                    />
+                  </View>
+                ) : (
+                  <></>
+                )}
+                {size ? <Text gp4>{`Размер: ${size}`}</Text> : <></>}
               </View>
             </Pressable>
           </View>
@@ -264,7 +280,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     overflow: 'hidden',
-
     borderColor: Color.secondaryGray,
   },
   container: {
@@ -327,5 +342,19 @@ const styles = StyleSheet.create({
   priceWithoutDiscount: {
     textDecorationLine: 'line-through',
     textDecorationColor: Color.textBase1,
+  },
+  colorContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  colorBlock: {
+    width: 16,
+    height: 16,
+  },
+  variantInfoBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
 })

@@ -4,12 +4,12 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
 import {StyleSheet} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
-import {Button, FormTextInput, Spacer, Text} from 'ui/index'
 import * as yup from 'yup'
 
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
-import {PHONE_VALIDATION_REGEXP} from 'src/variables'
+
+import {Button, FormTextInput, Spacer, Text} from 'ui/index'
 
 const registrySchema = yup
   .object({
@@ -18,19 +18,16 @@ const registrySchema = yup
       .required('Обязательное поле')
       .min(2, 'Слишком короткое имя')
       .max(35, 'Имя слишком длинное')
-      .trim(),
+      .trim()
+      .matches(/^\S*$/, 'Пробелы не разрешены в имени'),
     lastName: yup
       .string()
       .required('Обязательное поле')
       .min(2, 'Слишком короткая фамилия')
       .max(35, 'Фамилия слишком длинная')
-      .trim(),
-    phoneNumber: yup
-      .string()
       .trim()
-      .required('Обязательное поле')
-      .matches(PHONE_VALIDATION_REGEXP, 'Введен не корректный номер телефона')
-      .trim(),
+      .matches(/^\S*$/, 'Пробелы не разрешены в фамилии'),
+    phoneNumber: yup.string().trim().required('Обязательное поле').trim(),
   })
   .required()
 export type RegistryFormType = yup.InferType<typeof registrySchema>

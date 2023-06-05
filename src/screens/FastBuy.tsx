@@ -6,16 +6,10 @@ import * as yup from 'yup'
 
 import {FastBuy, FastBuyRefType} from 'src/components/FastBuy'
 import {vibration} from 'src/services/vibration'
-import {PHONE_VALIDATION_REGEXP} from 'src/variables'
 
 const fastBuySchema = yup
   .object({
-    telephone: yup
-      .string()
-      .trim()
-      .required('Обязательное поле')
-      .matches(PHONE_VALIDATION_REGEXP, 'Введен не корректный номер телефона')
-      .trim(),
+    telephone: yup.string().trim().required('Обязательное поле').trim(),
     name: yup
       .string()
       .required('Обязательное поле')

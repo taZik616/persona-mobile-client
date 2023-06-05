@@ -9,14 +9,15 @@ import React, {
 import {Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 import {Keyframe} from 'react-native-reanimated'
-import {Button} from 'ui/Button'
-import {Header} from 'ui/Header'
-import {Spacer} from 'ui/Spacer'
-import {Text} from 'ui/Text'
 
 import {formatSecondsTimer} from 'src/helpers'
 import {Color} from 'src/themes'
 import {RESEND_SMS_TIMEOUT_SECONDS} from 'src/variables'
+
+import {Button} from 'ui/Button'
+import {Header} from 'ui/Header'
+import {Spacer} from 'ui/Spacer'
+import {Text} from 'ui/Text'
 
 import {OTPTextInput} from './TextInput'
 
@@ -33,6 +34,7 @@ export interface OTPModalRefType {
   setError: (error: string) => void
   openModal: () => void
   closeModal: () => void
+  setTimer: (seconds: number) => void
 }
 
 export const OTPModal = memo(
@@ -56,11 +58,13 @@ export const OTPModal = memo(
         resetTimer() {
           timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
         },
+        setTimer(seconds) {
+          timerRef.current?.resetTimer?.(seconds)
+        },
         setError,
         setTextInfo(text) {
           setTextInfo(text)
           timerRef.current?.resetTimer?.(RESEND_SMS_TIMEOUT_SECONDS)
-          console.log('🚀 - resetTimer:', timerRef.current)
         },
 
         openModal: () => {

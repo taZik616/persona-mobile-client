@@ -1,16 +1,24 @@
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 import {ScrollView} from 'react-native'
-import {SortSelect, SortSelectRefType} from 'ui/bottom-sheets/SortSelect'
+
+import {useGender, useProductListHelper, useScreenBlockCurrent} from 'src/hooks'
+import {OrderingType, ProductsParams, useProductsList} from 'src/store/shopApi'
+import {BrandType, OrderingItemI, ProductPreviewInfo} from 'src/types'
+
+import {SortSelect, SortSelectRefType} from 'ui/bottom-sheets'
 import {ProductCard} from 'ui/cards'
 import {BrandSearching, BrandSearchingRefType, Spacer} from 'ui/index'
 import {LoadingProductListSkeleton} from 'ui/Skeletons/LoadingProductList'
-
-import {useProductListHelper, useScreenBlockCurrent} from 'src/hooks'
-import {useGender} from 'src/hooks/useGender'
-import {OrderingType, ProductsParams, useProductsList} from 'src/store/shopApi'
-import {BrandType, OrderingItemI, ProductPreviewInfo} from 'src/types'
 
 import {Counter} from './Counter'
 import {Filter, FilterRefType} from './ProductFilters'
@@ -21,169 +29,188 @@ interface ProductListProps extends ProductsParams {
   showCounter?: boolean
   showFilter?: boolean
   showCategoriesFilter?: boolean
+  genderIgnore?: boolean
+}
+
+export interface ProductListRef {
+  setParams: React.Dispatch<React.SetStateAction<ProductsParams>>
 }
 
 export const ProductList = memo(
-  ({
-    onPressProduct,
-    showCounter,
-    showFilter,
-    showCategoriesFilter,
-    ...queryParams
-  }: ProductListProps) => {
-    const [params, setParams] = useState<ProductsParams>(queryParams)
-    const {isMenSelected} = useGender()
-    const {products, loadNext, isLoad} = useProductsList({
-      ...params,
-      gender: isMenSelected ? 'men' : 'women',
-    })
-
-    useEffect(() => {
-      setParams(queryParams)
-    }, [isMenSelected])
-
-    useScreenBlockCurrent()
-    const {numColumns, cardWidth, contentPaddingsStyle} = useProductListHelper()
-    const sortSelectRef = useRef<SortSelectRefType>(null)
-    const brandSelectRef = useRef<BrandSearchingRefType>(null)
-    const sizeSelectRef = useRef<SizeSelectRefType>(null)
-    const filterRef = useRef<FilterRefType>(null)
-
-    const onChangeSort = useCallback((ordering: OrderingType) => {
-      setParams(pr => ({...pr, ordering}))
-      sortSelectRef.current?.close?.()
-    }, [])
-
-    const onChangeBrand = useCallback(
-      (brandIds: string, brands: BrandType[]) => {
-        setParams(pr => ({...pr, brandIds}))
-        filterRef.current?.setBrandFilters(brands)
-        brandSelectRef.current?.close?.()
-        brandSelectRef.current?.cleanSelections()
+  forwardRef<ProductListRef, ProductListProps>(
+    (
+      {
+        onPressProduct,
+        showCounter,
+        showFilter,
+        showCategoriesFilter,
+        genderIgnore,
+        ...defaultParams
       },
-      [],
-    )
+      ref,
+    ) => {
+      const sortSelectRef = useRef<SortSelectRefType>(null)
+      const brandSelectRef = useRef<BrandSearchingRefType>(null)
+      const sizeSelectRef = useRef<SizeSelectRefType>(null)
+      const filterRef = useRef<FilterRefType>(null)
 
-    const onChangeCategory = useCallback((categoryId?: number) => {
-      setParams(pr => ({...pr, categoryId}))
-    }, [])
-
-    const onRemoveBrandFilter = useCallback((brandId: string) => {
-      setParams(pr => ({
-        ...pr,
-        brandIds: pr.brandIds
-          ?.split(',')
-          .filter((b: string) => b !== brandId)
-          .join(','),
+      const [params, setParams] = useState<ProductsParams>(defaultParams)
+      const {isMenSelected} = useGender()
+      useImperativeHandle(ref, () => ({
+        setParams,
       }))
-    }, [])
 
-    const onRemoveSizeFilter = useCallback((size: string) => {
-      setParams(pr => ({
-        ...pr,
-        sizes: pr.sizes
-          ?.split(',')
-          .filter((b: string) => b !== size)
-          .join(','),
-      }))
-    }, [])
+      useEffect(() => {
+        setParams(defaultParams)
+      }, [isMenSelected])
 
-    const onChangeSize = useCallback((sizes: string) => {
-      setParams(pr => ({...pr, sizes}))
-      filterRef.current?.setSizesFilters(sizes.split(','))
-      sizeSelectRef.current?.close?.()
-      sizeSelectRef.current?.cleanSelections()
-    }, [])
+      useScreenBlockCurrent()
+      const {numColumns, cardWidth, contentPaddingsStyle} =
+        useProductListHelper()
+      const {products, loadNext, isLoad} = useProductsList({
+        ...params,
+        gender: isMenSelected ? 'men' : 'women',
+      })
 
-    const onPressBrands = useCallback(() => {
-      brandSelectRef.current?.open?.()
-    }, [])
+      const onChangeSort = useCallback((ordering: OrderingType) => {
+        setParams(pr => ({...pr, ordering}))
+        sortSelectRef.current?.close?.()
+      }, [])
 
-    const onPressSort = useCallback(() => {
-      sortSelectRef.current?.open?.()
-    }, [])
+      const onChangeBrand = useCallback(
+        (brandIds: string, brands: BrandType[]) => {
+          setParams(pr => ({...pr, brandIds}))
+          filterRef.current?.setBrandFilters(brands)
+          brandSelectRef.current?.close?.()
+          brandSelectRef.current?.cleanSelections()
+        },
+        [],
+      )
 
-    const onPressSize = useCallback(() => {
-      sizeSelectRef.current?.open?.()
-    }, [])
+      const onChangeCategory = useCallback((categoryId?: number) => {
+        setParams(pr => ({...pr, categoryId}))
+      }, [])
 
-    return (
-      <>
-        <ScrollView
-          onScroll={({nativeEvent}) => {
-            const {layoutMeasurement, contentOffset, contentSize} = nativeEvent
-            const isScrolledToEnd =
-              layoutMeasurement.height + contentOffset.y >= contentSize.height
+      const onChangeSize = useCallback((sizes: string) => {
+        setParams(pr => ({...pr, sizes}))
+        filterRef.current?.setSizesFilters(sizes.split(','))
+        sizeSelectRef.current?.close?.()
+        sizeSelectRef.current?.cleanSelections()
+      }, [])
 
-            if (isScrolledToEnd) {
-              products?.products.length && loadNext()
-            }
-          }}>
-          {showFilter && (
-            <Filter
-              key={isMenSelected ? 'men' : 'women'}
-              ref={filterRef}
-              showCategories={showCategoriesFilter}
-              onPressSize={onPressSize}
-              onPressSort={onPressSort}
-              onPressBrands={onPressBrands}
-              onChangeCategory={onChangeCategory}
-              onRemoveBrand={onRemoveBrandFilter}
-              onRemoveSize={onRemoveSizeFilter}
-            />
-          )}
-          <FlashList
-            scrollEnabled={false}
-            directionalLockEnabled={false}
-            key={numColumns}
-            numColumns={numColumns}
-            refreshing={isLoad}
-            estimatedItemSize={351}
-            contentContainerStyle={contentPaddingsStyle}
-            renderItem={({item}) => (
-              <ProductCard
-                width={cardWidth}
-                topRightIcon="star"
-                onPress={onPressProduct}
-                {...item}
+      const onRemoveBrandFilter = useCallback((brandId: string) => {
+        setParams(pr => ({
+          ...pr,
+          brandIds: pr.brandIds
+            ?.split(',')
+            .filter((b: string) => b !== brandId)
+            .join(','),
+        }))
+      }, [])
+
+      const onRemoveSizeFilter = useCallback((size: string) => {
+        setParams(pr => ({
+          ...pr,
+          sizes: pr.sizes
+            ?.split(',')
+            .filter((b: string) => b !== size)
+            .join(','),
+        }))
+      }, [])
+
+      const onPressBrands = useCallback(() => {
+        brandSelectRef.current?.open?.()
+      }, [])
+
+      const onPressSort = useCallback(() => {
+        sortSelectRef.current?.open?.()
+      }, [])
+
+      const onPressSize = useCallback(() => {
+        sizeSelectRef.current?.open?.()
+      }, [])
+
+      return (
+        <>
+          <ScrollView
+            onScroll={({nativeEvent}) => {
+              const {layoutMeasurement, contentOffset, contentSize} =
+                nativeEvent
+              const isScrolledToEnd =
+                layoutMeasurement.height + contentOffset.y >= contentSize.height
+
+              if (isScrolledToEnd && products?.products.length) loadNext()
+            }}>
+            {showFilter && (
+              <Filter
+                key={isMenSelected ? 'men' : 'women'}
+                ref={filterRef}
+                showCategories={showCategoriesFilter && !genderIgnore}
+                onPressSize={onPressSize}
+                onPressSort={onPressSort}
+                onPressBrands={onPressBrands}
+                onChangeCategory={onChangeCategory}
+                onRemoveBrand={onRemoveBrandFilter}
+                onRemoveSize={onRemoveSizeFilter}
               />
             )}
-            ListHeaderComponent={
-              <>
-                {showCounter && products && <Counter count={products.count} />}
-                {!showCounter && products && !showFilter ? (
-                  <Spacer height={20} />
-                ) : (
-                  <></>
-                )}
-              </>
-            }
-            ListEmptyComponent={
-              isLoad ? (
-                <LoadingProductListSkeleton
+            <FlashList
+              scrollEnabled={false}
+              key={numColumns}
+              numColumns={numColumns}
+              estimatedItemSize={351}
+              contentContainerStyle={contentPaddingsStyle}
+              renderItem={({item}) => (
+                <ProductCard
                   width={cardWidth}
-                  numColumns={numColumns}
+                  topRightIcon="star"
+                  onPress={onPressProduct}
+                  {...item}
                 />
-              ) : undefined
-            }
-            keyExtractor={(item: any, id) => item?.productId ?? String(id)}
-            data={products?.products ?? []}
+              )}
+              ListHeaderComponent={
+                <>
+                  {showCounter && products && (
+                    <Counter count={products.count} />
+                  )}
+                  {!showCounter && products && !showFilter ? (
+                    <Spacer height={20} />
+                  ) : (
+                    <></>
+                  )}
+                </>
+              }
+              ListEmptyComponent={
+                isLoad ? (
+                  <LoadingProductListSkeleton
+                    width={cardWidth}
+                    numColumns={numColumns}
+                  />
+                ) : undefined
+              }
+              keyExtractor={(_, id) => String(id)}
+              data={products?.products ?? []}
+            />
+            <Spacer height={16} />
+          </ScrollView>
+          <SortSelect
+            ref={sortSelectRef}
+            onChangeSort={onChangeSort}
+            sortingVariants={SORTING_VARIANTS}
           />
-        </ScrollView>
-        <SortSelect
-          ref={sortSelectRef}
-          onChangeSort={onChangeSort}
-          sortingVariants={SORTING_VARIANTS}
-        />
-        <BrandSearching ref={brandSelectRef} onCompleteSelect={onChangeBrand} />
-        <SizeSelect
-          sizes={[...new Set(products?.filters.sizes)].filter(Boolean)}
-          onChangeSizes={onChangeSize}
-          ref={sizeSelectRef}
-        />
-      </>
-    )
-  },
+          <BrandSearching
+            ref={brandSelectRef}
+            onCompleteSelect={onChangeBrand}
+          />
+          <SizeSelect
+            sizes={[...new Set(products?.filters.sizes)].filter(Boolean)}
+            onChangeSizes={onChangeSize}
+            ref={sizeSelectRef}
+          />
+        </>
+      )
+    },
+  ),
 )
 
 const SORTING_VARIANTS: OrderingItemI[] = [

@@ -1,47 +1,30 @@
-import React, {forwardRef, memo, useImperativeHandle, useState} from 'react'
-
-import {Header, SelectorTwoOptions, Spacer} from 'ui/index'
-import {ProductList} from 'ui/product-list'
+import React from 'react'
 
 import {useScreenBlockCurrent} from 'src/hooks'
-import {useGender} from 'src/hooks/useGender'
-import {ProductsParams} from 'src/store/shopApi'
 import {ProductPreviewInfo} from 'src/types'
+
+import {Header, SelectorTwoOptionsGender, Spacer} from 'ui/index'
+import {ProductList} from 'ui/product-list'
 
 interface HomeNewProductsProps {
   onPressProduct?: (item: ProductPreviewInfo) => void
 }
 
-export const HomeNewProducts = memo(
-  forwardRef<any, HomeNewProductsProps>(({onPressProduct}, ref) => {
-    const {isMenSelected, onChangeGender, values} = useGender()
-    const [ordering, setOrdering] =
-      useState<ProductsParams['ordering']>('-lastUpdate')
+export const HomeNewProducts = ({onPressProduct}: HomeNewProductsProps) => {
+  useScreenBlockCurrent()
 
-    useImperativeHandle(ref, () => ({
-      setOrdering,
-    }))
-
-    useScreenBlockCurrent()
-
-    return (
-      <>
-        <Header title="Новые поступления" />
-        <SelectorTwoOptions
-          isSecondActive={isMenSelected}
-          onChange={onChangeGender}
-          values={values}
-        />
-        <Spacer height={8} />
-        <ProductList
-          showFilter
-          showCounter
-          showCategoriesFilter
-          ordering={ordering}
-          isNew="True"
-          onPressProduct={onPressProduct}
-        />
-      </>
-    )
-  }),
-)
+  return (
+    <>
+      <Header title="Новые поступления" />
+      <SelectorTwoOptionsGender />
+      <Spacer height={8} />
+      <ProductList
+        showFilter
+        showCounter
+        showCategoriesFilter
+        isNew="True"
+        onPressProduct={onPressProduct}
+      />
+    </>
+  )
+}

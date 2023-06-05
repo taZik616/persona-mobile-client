@@ -7,7 +7,6 @@ import {
   ProductVariantSelector,
   ProductVariantSelectorRefType,
 } from 'components/ProductDetail'
-import {ProductDetailSkeleton} from 'ui/Skeletons/ProductDetail'
 
 import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
 import {useTypedNavigation, useTypedRoute} from 'src/hooks'
@@ -20,6 +19,8 @@ import {addItemToBasket} from 'src/store/basketSlice'
 import {addItemToRecently} from 'src/store/recentlyWatchedSlice'
 import {useProductDetailQuery} from 'src/store/shopApi'
 import {ProductDetailInfo, ProductPreviewInfo, ProductVariant} from 'src/types'
+
+import {ProductDetailSkeleton} from 'ui/Skeletons/ProductDetail'
 
 export const ProductDetailScreen = () => {
   const addedToBasketRef = useRef<AddedToBasketRefType>(null)

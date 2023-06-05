@@ -21,6 +21,11 @@
                 "pattern": "src/**",
                 "group": "external",
                 "position": "after"
+              },
+              {
+                "pattern": "ui/**",
+                "group": "external",
+                "position": "after"
               }
             ],
             "pathGroupsExcludedImportTypes": ["react"],

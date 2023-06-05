@@ -39,7 +39,7 @@ export type RootStackParamList = {
   fastBuy: {product: ProductInBasketI}
   giftCard: undefined
   allProducts?: ProductsParams & {
-    showGenderSelect?: boolean
+    genderIgnore?: boolean
     showCategoriesFilter?: boolean
     showFilter?: boolean
   }

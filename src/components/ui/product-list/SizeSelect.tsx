@@ -9,20 +9,20 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {
-  FlatList,
   Pressable,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native'
-import {CheckIcon} from 'ui/icons/common'
-import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {vibration} from 'src/services/vibration'
 import {OrderingType} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {OrderingItemI} from 'src/types'
+
+import {CheckIcon} from 'ui/icons/common'
+import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface SizeSelectProps {
   onChangeSizes?: (sizes: string) => void
@@ -78,11 +78,8 @@ export const SizeSelect = memo(
               ) : (
                 <></>
               )}
-              <FlatList
-                horizontal
-                contentContainerStyle={styles.listContainer}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item}) => {
+              <View style={styles.listContainer}>
+                {sizes.map(item => {
                   const isSelected = selected.includes(item)
                   const onPress = () => {
                     vibration.selection()
@@ -90,6 +87,7 @@ export const SizeSelect = memo(
                   }
                   return (
                     <TouchableOpacity
+                      key={item}
                       style={styles.rectContainer}
                       onPress={onPress}>
                       {isSelected ? (
@@ -102,10 +100,8 @@ export const SizeSelect = memo(
                       </View>
                     </TouchableOpacity>
                   )
-                }}
-                keyExtractor={a => a}
-                data={sizes}
-              />
+                })}
+              </View>
             </ScrollView>
             <Spacer height={16} />
             <Button disabled={selected.length === 0} onPress={onSubmitSizes}>
@@ -184,5 +180,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   scrollContainer: {maxHeight: 300},
-  listContainer: {flexWrap: 'wrap', width: '100%'},
+  listContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+  },
 })

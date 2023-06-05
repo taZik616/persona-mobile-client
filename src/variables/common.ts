@@ -19,8 +19,6 @@ export const SPRING_ANIM_CONF: WithSpringConfig = {
 }
 export const NUM_PRECISION = 1
 
-export const PHONE_VALIDATION_REGEXP =
-  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
 export const CARD_ASPECT_RATIO = 1.68
 export const CARD_BORDER_RADIUS = 32
 export const RESEND_SMS_TIMEOUT_SECONDS = 60 * 6

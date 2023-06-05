@@ -1,10 +1,11 @@
 import React, {memo} from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
-import {Spacer} from 'ui/index'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {BrandType} from 'src/types'
+
+import {Spacer} from 'ui/index'
 
 interface BrandCardProps extends BrandType {
   idInList: number

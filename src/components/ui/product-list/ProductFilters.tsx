@@ -11,12 +11,13 @@ import {APP_API_URL} from '@env'
 import {FlashList} from '@shopify/flash-list'
 import axios from 'axios'
 import {StyleSheet} from 'react-native'
-import {SortIcon} from 'ui/icons/common'
-import {Spacer} from 'ui/Spacer'
 
 import {useGender} from 'src/hooks/useGender'
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {BrandType} from 'src/types'
+
+import {SortIcon} from 'ui/icons/common'
+import {Spacer} from 'ui/Spacer'
 
 import {FilterItem} from './FilterItem'
 
@@ -35,6 +36,9 @@ export interface FilterRefType {
   setSizesFilters: (sizes: string[]) => void
 }
 
+/**
+ * @param showCategories - должен быть статичным
+ */
 export const Filter = memo(
   forwardRef<FilterRefType, FilterProps>(
     (
@@ -66,8 +70,11 @@ export const Filter = memo(
             status: 'removable',
             isBrand: true,
           }))
+          const brandsStatus = brandFilters.length ? 'active' : 'passive'
           setFiltersFirst(pr => [
-            ...pr.filter(a => !a.isBrand),
+            ...pr
+              .filter(a => !a.isBrand)
+              .map(a => (a.id === 'brands' ? {...a, status: brandsStatus} : a)),
             ...brandFilters,
           ])
         },
@@ -100,10 +107,8 @@ export const Filter = memo(
         }
         if (showCategories) {
           filtersWithCategories()
-        } else {
-          setFiltersFirst(FILTERS_FIRST_DEFAULT)
         }
-      }, [showCategories, isMenSelected])
+      }, [isMenSelected])
 
       const onPressFilter = useCallback(
         (id: string) => {
@@ -142,7 +147,15 @@ export const Filter = memo(
         (id: string) => {
           if (id.startsWith('brand-')) {
             onRemoveBrand?.(id.split('brand-')[1])
-            setFiltersFirst(pr => pr.filter(a => a.id !== id))
+            setFiltersFirst(pr => {
+              const filtered = pr.filter(a => a.id !== id)
+              const brandsStatus = filtered.some(a => a.isBrand)
+                ? 'active'
+                : 'passive'
+              return filtered.map(a =>
+                a.id === 'brands' ? {...a, status: brandsStatus} : a,
+              )
+            })
           } else if (id.startsWith('size-')) {
             onRemoveSize?.(id.split('size-')[1])
             setFiltersSecond(pr => pr.filter(a => a.id !== id))
@@ -168,13 +181,6 @@ export const Filter = memo(
                 onPress={onPressFilter}
                 onRemove={onRemoveFilter}
                 {...item}
-                status={
-                  item.id === 'brands'
-                    ? filtersFirst.findIndex(a => a.isBrand) === -1
-                      ? 'passive'
-                      : 'active'
-                    : item.status
-                }
               />
             )}
             data={filtersFirst}

@@ -92,6 +92,22 @@ export const profileSlice = createSlice({
   },
 })
 
+export const onSuccessfulLogin =
+  ({token, user, password}: OnSuccessfulLoginParams) =>
+  async (dispatch: any) => {
+    dispatch(setIsAuthenticated(true))
+    dispatch(setAuthToken(token))
+    dispatch(getUserData)
+    if (user && password) {
+      await storePassword({user, password})
+    }
+  }
+interface OnSuccessfulLoginParams {
+  token: string
+  user?: string
+  password?: string
+}
+
 export const whenExitHandler = async (dispatch: any) => {
   dispatch(setIsAuthenticated(false))
   dispatch(cleanUpUserInfo())

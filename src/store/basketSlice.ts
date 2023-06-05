@@ -37,7 +37,11 @@ export const basketSlice = createSlice({
     addItem: (state, action: PayloadAction<ProductInBasketI>) => {
       const newItem = action.payload
       if (
-        state.items.findIndex(it => it.productId === newItem.productId) === -1
+        state.items.findIndex(
+          it =>
+            it.productId === newItem.productId &&
+            it.variant.uniqueId === newItem.variant.uniqueId,
+        ) === -1
       ) {
         state.items = [...state.items, newItem]
         state.counter = state.items.length

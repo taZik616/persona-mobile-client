@@ -1,6 +1,11 @@
 import React from 'react'
 
 import {Image, ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
+
+import {selectIsAuthenticated, useTypedSelector} from 'src/store'
+import {Color} from 'src/themes'
+import {ProductPreviewInfo} from 'src/types'
+
 import {
   CartLightIcon,
   InfoLightIcon,
@@ -15,10 +20,6 @@ import {
   Spacer,
   Text,
 } from 'ui/index'
-
-import {selectIsAuthenticated, useTypedSelector} from 'src/store'
-import {Color} from 'src/themes'
-import {ProductPreviewInfo} from 'src/types'
 
 import {HomeAuth} from './HomeAuth'
 import {RecentlyWatchedList} from './RecentlyWatchedList'

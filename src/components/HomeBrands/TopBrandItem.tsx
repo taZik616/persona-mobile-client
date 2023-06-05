@@ -20,7 +20,7 @@ export const TopBrandItem = memo(
         {!isLoading ? (
           <Image
             style={styles.flexOne}
-            resizeMode="center"
+            resizeMode="contain"
             source={{uri: brand.logo}}
           />
         ) : (
@@ -49,5 +49,6 @@ const styles = StyleSheet.create({
     aspectRatio: '100/45',
     minHeight: 45,
     maxHeight: 70,
+    padding: 2,
   },
 })

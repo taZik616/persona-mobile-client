@@ -1,14 +1,6 @@
 import React, {memo, useCallback, useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
-import {BasketCardWHM} from 'ui/cards/BasketCard'
-import {
-  Button,
-  Header,
-  SafeLandscapeView,
-  Spacer,
-  ViewTogglerWHM,
-} from 'ui/index'
 
 import {cleanNumber, getProductsCountString} from 'src/helpers'
 import {
@@ -19,6 +11,15 @@ import {
 } from 'src/store'
 import {deselectBasketItem, selectBasketItem} from 'src/store/basketSlice'
 import {ProductInBasketI, ProductPreviewInfo} from 'src/types'
+
+import {BasketCardWHM} from 'ui/cards/BasketCard'
+import {
+  Button,
+  Header,
+  SafeLandscapeView,
+  Spacer,
+  ViewTogglerWHM,
+} from 'ui/index'
 
 import {BasketListEmpty} from './BasketListEmpty'
 
@@ -36,7 +37,7 @@ export const Basket = memo(
 
     const isAvailable = options[0].value === filter
 
-    const curData = items?.filter(it => it.isAvailable === isAvailable)
+    const curData = items.filter(it => it.isAvailable === isAvailable)
     const onChangeSelect = useCallback(
       (product: ProductInBasketI, isSelected: boolean) => {
         dispatch(
@@ -59,7 +60,7 @@ export const Basket = memo(
         <FlashList
           data={curData}
           estimatedItemSize={230}
-          keyExtractor={it => it.productId + filter}
+          keyExtractor={it => it.productId + it.variant.uniqueId + filter}
           ListEmptyComponent={<BasketListEmpty isAvailable={isAvailable} />}
           ListHeaderComponent={
             <>

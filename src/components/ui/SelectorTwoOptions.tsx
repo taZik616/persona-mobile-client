@@ -10,6 +10,7 @@ import Animated, {
 } from 'react-native-reanimated'
 import {Spacer, Text} from 'ui/index'
 
+import {useGender} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 
@@ -97,6 +98,17 @@ export const SelectorTwoOptions = memo(
     )
   },
 )
+
+export const SelectorTwoOptionsGender = memo(() => {
+  const {isMenSelected, onChangeGender, values} = useGender()
+  return (
+    <SelectorTwoOptions
+      isSecondActive={isMenSelected}
+      onChange={onChangeGender}
+      values={values}
+    />
+  )
+})
 
 const styles = StyleSheet.create({
   container: {

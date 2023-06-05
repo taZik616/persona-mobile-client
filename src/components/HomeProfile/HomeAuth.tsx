@@ -2,6 +2,19 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
+
+import {captureException} from 'src/helpers'
+import {vibration} from 'src/services/vibration'
+import {useTypedDispatch} from 'src/store'
+import {onSuccessfulLogin, setIsAuthenticated} from 'src/store/profileSlice'
+import {
+  useCreateUserAndSendCodeMutation,
+  useLoginMutation,
+  useResendRegistryCodeMutation,
+} from 'src/store/shopApi'
+import {Color} from 'src/themes'
+import {UNKNOWN_ERROR_MSG} from 'src/variables'
+
 import {InfoLightIcon} from 'ui/icons/common'
 import {
   Button,
@@ -12,23 +25,6 @@ import {
   ViewTogglerWHM,
 } from 'ui/index'
 import {OTPModal, OTPModalRefType} from 'ui/OTP'
-
-import {captureException} from 'src/helpers'
-import {storePassword} from 'src/helpers/keychain'
-import {vibration} from 'src/services/vibration'
-import {useTypedDispatch} from 'src/store'
-import {
-  getUserData,
-  setAuthToken,
-  setIsAuthenticated,
-} from 'src/store/profileSlice'
-import {
-  useCreateUserAndSendCodeMutation,
-  useLoginMutation,
-  useResendRegistryCodeMutation,
-} from 'src/store/shopApi'
-import {Color} from 'src/themes'
-import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
 import {LoginForm, LoginFormType} from './LoginForm'
 import {RegistryForm, RegistryFormType} from './RegistryForm'
@@ -53,13 +49,15 @@ export const HomeAuth = ({
   const dispatch = useTypedDispatch()
 
   const resendVerifySms = useCallback(
-    (phoneNumber: string) => () => {
+    (phoneNumber: string) => async () => {
       vibration.rigid()
-      const res: any = resendRegistryCode({phoneNumber})
-      if (res?.error?.data?.error) {
-        otpModalRef.current?.setError(res.error.data.error)
+      const res: any = await resendRegistryCode({phoneNumber})
+      const error = res?.error?.data?.error
+      if (error) {
+        otpModalRef.current?.setError(error)
       } else if (res?.data?.success) {
         otpModalRef.current?.resetTimer()
+        otpModalRef.current?.setError('')
       }
     },
     [],
@@ -72,10 +70,10 @@ export const HomeAuth = ({
     async (formData: RegistryFormType) => {
       try {
         const res: any = await createUserSendCode(formData)
-
-        if (res?.error?.data?.error) {
+        const error = res?.error?.data?.error
+        if (error) {
           vibration.error()
-          setRequestError(res.error.data.error)
+          setRequestError(error)
           return
         } else if (res?.data?.success) {
           vibration.success()
@@ -83,6 +81,7 @@ export const HomeAuth = ({
           // На всякий случай
           setTimeout(() => {
             otpModalRef.current?.setPhoneNumber(formData.phoneNumber)
+            otpModalRef.current?.setTimer(10)
           }, 300)
         } else {
           vibration.error()
@@ -102,15 +101,19 @@ export const HomeAuth = ({
         password,
       })
       const error = res?.error?.data?.error
+      const token = res?.data?.token
       if (error) {
         vibration.error()
         setRequestError(error)
-      } else if (res.data.token) {
+      } else if (token) {
         vibration.success()
-        dispatch(setIsAuthenticated(true))
-        dispatch(setAuthToken(res.data.token))
-        dispatch(getUserData)
-        await storePassword({user: telephone, password})
+        dispatch(
+          onSuccessfulLogin({
+            token,
+            user: telephone,
+            password,
+          }),
+        )
       } else {
         vibration.error()
         setRequestError(UNKNOWN_ERROR_MSG)
@@ -128,16 +131,21 @@ export const HomeAuth = ({
   const onRegistryCheckOtp = useCallback(
     async (code: string, telephone: string) => {
       const res: any = await login({password: code, username: telephone})
-      if (res?.error?.data?.error) {
+      const error = res?.error?.data?.error
+      const token = res?.data?.token
+      if (error) {
         vibration.error()
-        otpModalRef.current?.setError(res.error.data.error)
-      } else if (res?.data?.success && res.data.token) {
+        otpModalRef.current?.setError(error)
+      } else if (token) {
         vibration.success()
-        dispatch(setIsAuthenticated(true))
-        dispatch(setAuthToken(res.data.token))
-        dispatch(getUserData)
+        dispatch(
+          onSuccessfulLogin({
+            token,
+            user: telephone,
+            password: code,
+          }),
+        )
         onCloseModal()
-        await storePassword({user: telephone, password: code})
       }
     },
     [onCloseModal],

@@ -3,7 +3,6 @@ import React, {useCallback, useMemo, useRef} from 'react'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {RecoveryPasswordEnterPhone} from 'components/RecoveryPasswordEnterPhone'
 import {FormProvider, useForm} from 'react-hook-form'
-import {OTPModal, OTPModalRefType} from 'ui/OTP'
 import * as yup from 'yup'
 
 import {useTypedNavigation} from 'src/hooks'
@@ -13,15 +12,13 @@ import {
   useRecoveryPasswordCheckMutation,
   useRecoveryPasswordSendCodeMutation,
 } from 'src/store/shopApi'
-import {PHONE_VALIDATION_REGEXP, UNKNOWN_ERROR_MSG} from 'src/variables'
+import {UNKNOWN_ERROR_MSG} from 'src/variables'
+
+import {OTPModal, OTPModalRefType} from 'ui/OTP'
 
 const phoneEnterSchema = yup
   .object({
-    phoneNumber: yup
-      .string()
-      .trim()
-      .required('Обязательное поле')
-      .matches(PHONE_VALIDATION_REGEXP, 'Введен не корректный номер телефона'),
+    phoneNumber: yup.string().trim().required('Обязательное поле'),
   })
   .required()
 

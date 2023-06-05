@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {useColorScheme} from 'react-native'
 
+import {useAutoLogin} from 'src/hooks'
 import {navigator} from 'src/navigator'
 import {Home} from 'src/screens/Home'
 import {RootStackParamList} from 'src/types'
@@ -43,6 +44,7 @@ const gestureEnabled = {
 
 export const App = () => {
   const isDark = useColorScheme() === 'dark'
+  useAutoLogin()
   return (
     <NavigationContainer
       theme={{

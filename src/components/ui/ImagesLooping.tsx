@@ -26,7 +26,11 @@ export const ImagesLooping = memo(({width, images}: ImagesLoopingProps) => {
   const prevX = useSharedValue(0)
 
   const [curId, setCurId] = useState(-initialId)
-  const curData = arrayLooping(images, 5, curId)
+  const curData = arrayLooping(
+    images,
+    images.length > 4 ? images.length : 4,
+    curId,
+  )
 
   useAnimatedReaction(
     () => {
@@ -105,7 +109,7 @@ const Item = ({item, offsetX, width}: ItemProps) => {
       style={[styles.imageContainer, {width}, anim]}>
       <FastImage
         style={styles.image}
-        resizeMode="cover"
+        resizeMode="contain"
         source={{
           uri: item.item,
         }}

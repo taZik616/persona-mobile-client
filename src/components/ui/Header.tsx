@@ -1,15 +1,6 @@
 import React, {memo, useCallback, useState} from 'react'
 
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
-import {BackArrowIcon} from 'ui/icons/common'
-import {Logo} from 'ui/icons/logo'
-import {
-  HeaderSearching,
-  IconWithCounterBadge,
-  SafeLandscapeView,
-  Spacer,
-  Text,
-} from 'ui/index'
 
 import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
 import {useTypedNavigation} from 'src/hooks'
@@ -19,6 +10,16 @@ import {
   useTypedSelector,
 } from 'src/store'
 import {Color} from 'src/themes'
+
+import {BackArrowIcon} from 'ui/icons/common'
+import {Logo} from 'ui/icons/logo'
+import {
+  HeaderSearching,
+  IconWithCounterBadge,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+} from 'ui/index'
 
 interface HeaderProps {
   onPressSearch?: () => void
@@ -64,11 +65,9 @@ export const Header = memo(
           onSearchSubmit(text)
         } else {
           navigate('allProducts', {
-            showGenderSelect: true,
+            genderIgnore: true,
             search: text,
-            page: 1,
             showFilter: true,
-            showCategoriesFilter: true,
           })
         }
       },

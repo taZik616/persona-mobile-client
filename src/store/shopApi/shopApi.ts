@@ -56,8 +56,8 @@ export const shopApi = createApi({
     }),
     resendRegistryCode: build.mutation({
       query: (body: ResendRegistryCodeBody) => ({
-        url: 'registry-send-code',
-        method: 'PUT',
+        url: 'registry-resend-code',
+        method: 'POST',
         body,
       }),
     }),

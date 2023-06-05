@@ -1,6 +1,13 @@
 import React, {memo} from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
+
+import {cleanNumber} from 'src/helpers'
+import {useTypedNavigation} from 'src/hooks'
+import {useMightBeInterestedQuery} from 'src/store/shopApi'
+import {Color} from 'src/themes'
+import {ProductPreviewInfo} from 'src/types'
+
 import {HorizontalProductsList} from 'ui/horizontal-lists'
 import {ShopBagLightIcon} from 'ui/icons/common'
 import {
@@ -13,12 +20,6 @@ import {
   Swiper,
   Text,
 } from 'ui/index'
-
-import {cleanNumber} from 'src/helpers'
-import {useTypedNavigation} from 'src/hooks'
-import {useMightBeInterestedQuery} from 'src/store/shopApi'
-import {Color} from 'src/themes'
-import {ProductPreviewInfo} from 'src/types'
 
 import {DetailsSection} from './DetailsSection'
 
@@ -99,18 +100,18 @@ export const ProductDetail = memo(
             <Spacer height={16} />
           </SafeLandscapeView>
           <DetailsSection />
+          <Spacer height={22} />
+          <Text center cg2>
+            С ЧЕМ НОСИТЬ
+          </Text>
+          <Spacer height={16} />
+          <HorizontalProductsList
+            onPressItem={onPressProduct}
+            isLoading={!recommendation.currentData}
+            products={recommendation.currentData}
+          />
+          <Spacer height={32} />
           <SafeLandscapeView safeArea>
-            <Spacer height={22} />
-            <Text center cg2>
-              С ЧЕМ НОСИТЬ
-            </Text>
-            <Spacer height={16} />
-            <HorizontalProductsList
-              onPressItem={onPressProduct}
-              isLoading={!recommendation.currentData}
-              products={recommendation.currentData}
-            />
-            <Spacer height={32} />
             <View style={styles.flexRow}>
               <Button onPress={onPressFastBuy} variant="outline">
                 Быстрая покупка

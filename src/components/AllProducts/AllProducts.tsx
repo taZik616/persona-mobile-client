@@ -1,27 +1,43 @@
-import React, {memo} from 'react'
-
-import {Header, SelectorTwoOptions, Spacer} from 'ui/index'
-import {ProductList} from 'ui/product-list'
+import React, {memo, useCallback, useEffect, useRef} from 'react'
 
 import {useTypedRoute} from 'src/hooks'
-import {useGender} from 'src/hooks/useGender'
+import {useTypedDispatch} from 'src/store'
+import {toggleGender} from 'src/store/genderSlice'
+import {ProductPreviewInfo} from 'src/types'
 
-export const AllProducts = memo(() => {
-  const {isMenSelected, onChangeGender, values} = useGender()
-  const {showGenderSelect, showCategoriesFilter, showFilter, ...queryParams} =
-    useTypedRoute<'allProducts'>().params || {}
+import {Header, SelectorTwoOptionsGender, Spacer} from 'ui/index'
+import {ProductList, ProductListRef} from 'ui/product-list'
+interface AllProductsProps {
+  onPressProduct?: (item: ProductPreviewInfo) => void
+}
+
+export const AllProducts = memo(({onPressProduct}: AllProductsProps) => {
+  const dispatch = useTypedDispatch()
+  const listRef = useRef<ProductListRef>(null)
+  const {
+    genderIgnore,
+    showCategoriesFilter,
+    showFilter,
+    gender,
+    ...queryParams
+  } = useTypedRoute<'allProducts'>().params || {}
+
+  useEffect(() => {
+    if (gender) {
+      dispatch(toggleGender(gender))
+    }
+  }, [gender])
+
+  const onChangeSearch = useCallback((search: string) => {
+    listRef.current?.setParams(pr => ({...pr, search}))
+  }, [])
 
   return (
     <>
-      <Header showBack />
-      {showGenderSelect ? (
+      <Header showBack onSearchSubmit={onChangeSearch} />
+      {!genderIgnore ? (
         <>
-          <Spacer height={8} />
-          <SelectorTwoOptions
-            isSecondActive={isMenSelected}
-            onChange={onChangeGender}
-            values={values}
-          />
+          <SelectorTwoOptionsGender />
           <Spacer height={8} />
         </>
       ) : (
@@ -29,9 +45,11 @@ export const AllProducts = memo(() => {
       )}
       <ProductList
         {...queryParams}
+        ref={listRef}
         showCategoriesFilter={showCategoriesFilter ?? true}
-        gender={isMenSelected ? 'men' : 'women'}
+        genderIgnore
         showCounter
+        onPressProduct={onPressProduct}
         showFilter={showFilter}
       />
     </>

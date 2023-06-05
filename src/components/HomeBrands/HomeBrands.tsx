@@ -7,6 +7,14 @@ import React, {
 } from 'react'
 
 import {FlatList, SectionList, StyleSheet} from 'react-native'
+
+import {groupByAlphabetical} from 'src/helpers'
+import {useGender} from 'src/hooks'
+import {vibration} from 'src/services/vibration'
+import {useBrandsQuery} from 'src/store/shopApi'
+import {BrandType} from 'src/types'
+import {IS_IOS} from 'src/variables'
+
 import {
   AlphabetVerticalSelector,
   BrandGroupTitle,
@@ -17,13 +25,6 @@ import {
   Spacer,
   Text,
 } from 'ui/index'
-
-import {groupByAlphabetical} from 'src/helpers'
-import {useGender} from 'src/hooks/useGender'
-import {vibration} from 'src/services/vibration'
-import {useBrandsQuery} from 'src/store/shopApi'
-import {BrandType} from 'src/types'
-import {IS_IOS} from 'src/variables'
 
 import {LoadingSkeleton} from './LoadingSkeleton'
 import {TopBrandItem} from './TopBrandItem'
