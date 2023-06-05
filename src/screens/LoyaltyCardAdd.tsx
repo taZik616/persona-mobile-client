@@ -3,8 +3,6 @@ import React, {useCallback, useRef, useState} from 'react'
 import {LoyaltyCardAdd} from 'components/LoyaltyCardAdd'
 import ImagePicker from 'react-native-image-crop-picker'
 import {recognizeTextFromLocalImage} from 'react-native-text-recognizer'
-import {ActionsSheet} from 'ui/ActionsSheet'
-import {OTPModal, OTPModalRefType} from 'ui/OTP'
 
 import {captureException} from 'src/helpers'
 import {findCardNumberInArray} from 'src/helpers/findCardNumberInArray'
@@ -14,6 +12,9 @@ import {
 } from 'src/hooks/usePermissions'
 import {vibration} from 'src/services/vibration'
 import {imagePickerCardConfig} from 'src/variables'
+
+import {ActionsSheet} from 'ui/ActionsSheet'
+import {OTPModal, OTPModalRefType} from 'ui/OTP'
 
 export const LoyaltyCardAddScreen = () => {
   const {isAllowed: isAllowedCamera, requestCameraPermission} =

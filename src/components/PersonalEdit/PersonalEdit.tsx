@@ -2,6 +2,9 @@ import React from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
+
+import {YEAR_IN_MS} from 'src/variables'
+
 import {
   FormDateTime,
   FormTextInput,
@@ -11,8 +14,6 @@ import {
   Spacer,
   Text,
 } from 'ui/index'
-
-import {YEAR_IN_MS} from 'src/variables'
 
 interface PersonalEditProps {
   onSubmit?: () => void

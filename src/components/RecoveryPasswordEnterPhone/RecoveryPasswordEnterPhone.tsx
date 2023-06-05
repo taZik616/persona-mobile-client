@@ -2,6 +2,9 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView, StyleSheet} from 'react-native'
+
+import {Color} from 'src/themes'
+
 import {Logo} from 'ui/icons/logo'
 import {
   Button,
@@ -12,8 +15,6 @@ import {
   Spacer,
   Text,
 } from 'ui/index'
-
-import {Color} from 'src/themes'
 
 interface RecoveryPasswordEnterPhoneProps {
   onSubmit?: () => void

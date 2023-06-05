@@ -1,9 +1,10 @@
 import React from 'react'
 
 import {StyleSheet, View} from 'react-native'
-import {Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {Spacer, Text} from 'ui/index'
 
 interface InfoLineProps {
   field: string

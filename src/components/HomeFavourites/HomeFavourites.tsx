@@ -1,14 +1,15 @@
 import React, {memo, useState} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
-import {ProductCard} from 'ui/cards'
-import {Header, Spacer, ViewToggler} from 'ui/index'
 
 import {getProductsCountString} from 'src/helpers'
 import {useScreenBlockCurrent} from 'src/hooks'
 import {useProductListHelper} from 'src/hooks/useProductListHelper'
 import {selectFavorites, useTypedSelector} from 'src/store'
 import {ProductPreviewInfo} from 'src/types'
+
+import {ProductCard} from 'ui/cards'
+import {Header, Spacer, ViewToggler} from 'ui/index'
 
 import {FavoritesListEmpty} from './FavoritesListEmpty'
 

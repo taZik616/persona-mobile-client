@@ -1,10 +1,11 @@
 import React from 'react'
 
 import {FlatList, StyleSheet} from 'react-native'
-import {BrandCard} from 'ui/cards'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {BrandsListItem} from 'src/types'
+
+import {BrandCard} from 'ui/cards'
 
 interface HorizontalBrandsListProps {
   onPressItem?: (brandId: string, idInList: number) => void

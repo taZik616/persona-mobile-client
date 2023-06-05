@@ -3,10 +3,11 @@ import React, {memo} from 'react'
 import {FlatList, Pressable, StyleSheet} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {s} from 'react-native-size-matters'
-import {Spacer, Text} from 'ui/index'
 
 import {vibration} from 'src/services/vibration'
 import {CategoryType} from 'src/types'
+
+import {Spacer, Text} from 'ui/index'
 
 import {SafeLandscapeView} from './SafeLandscapeView'
 import {SubcategoriesListSkeleton} from './Skeletons/SubcategoriesList'

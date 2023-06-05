@@ -2,11 +2,12 @@ import React, {memo} from 'react'
 
 import {Pressable} from 'react-native'
 import {StyleSheet} from 'react-native'
-import {CheckIcon} from 'ui/icons/common'
-import {SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
 import {BrandType} from 'src/types'
+
+import {CheckIcon} from 'ui/icons/common'
+import {SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface BrandRowItemProps extends BrandType {
   isLoading?: boolean

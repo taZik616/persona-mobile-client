@@ -9,14 +9,15 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated'
-import {CardWithImage} from 'ui/cards/CardWithImage'
-import {Img, Spacer} from 'ui/index'
-import {SwiperSkeleton} from 'ui/Skeletons/Swiper'
 
 import {useIsPortrait} from 'src/hooks/useIsPortrait'
 import {vibration} from 'src/services/vibration'
 import {Color} from 'src/themes'
 import {IS_ANDROID, SCREEN_H, SCREEN_W} from 'src/variables'
+
+import {CardWithImage} from 'ui/cards/CardWithImage'
+import {Img, Spacer} from 'ui/index'
+import {SwiperSkeleton} from 'ui/Skeletons/Swiper'
 
 interface SwiperProps {
   type?: 'card-image' | 'big-image' | 'card-image-skeleton'

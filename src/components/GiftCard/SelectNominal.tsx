@@ -9,11 +9,12 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
-import {CheckIcon, CircleCheckmarkIcon} from 'ui/icons/common'
-import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
+
+import {CheckIcon, CircleCheckmarkIcon} from 'ui/icons/common'
+import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface SelectNominalProps {
   onSubmit?: (count: number, cost: number) => void

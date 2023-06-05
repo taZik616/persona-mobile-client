@@ -11,14 +11,15 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {SectionList, StyleSheet, TextInput, View} from 'react-native'
-import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
-import {BrandGroupTitle, BrandRowItem} from 'ui/index'
 
 import {groupByAlphabetical} from 'src/helpers'
 import {vibration} from 'src/services/vibration'
 import {useBrandsQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {BrandType} from 'src/types'
+
+import {BrandGroupTitle, BrandRowItem} from 'ui/index'
+import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface BrandSearchingProps {
   onCompleteSelect?: (brandIds: string, brands: BrandType[]) => void

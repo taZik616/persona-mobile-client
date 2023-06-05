@@ -1,12 +1,13 @@
 import React from 'react'
 
 import {FlatList, ScrollView, StyleSheet} from 'react-native'
-import {ProductCard} from 'ui/cards'
-import {SafeLandscapeView} from 'ui/SafeLandscapeView'
-import {ListItemSkeleton} from 'ui/Skeletons/ListItem'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {ProductPreviewInfo} from 'src/types'
+
+import {ProductCard} from 'ui/cards'
+import {SafeLandscapeView} from 'ui/SafeLandscapeView'
+import {ListItemSkeleton} from 'ui/Skeletons/ListItem'
 
 interface HorizontalProductsListProps {
   onPressItem?: (prod: ProductPreviewInfo) => void

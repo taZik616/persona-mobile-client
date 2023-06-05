@@ -1,6 +1,11 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native'
+
+import {useScreenBlockPortrait} from 'src/hooks'
+import {selectBasketSelectedItems, useTypedSelector} from 'src/store'
+import {Color} from 'src/themes'
+
 import {
   Button,
   FormTextInput,
@@ -10,10 +15,6 @@ import {
   Text,
   ViewToggler,
 } from 'ui/index'
-
-import {useScreenBlockPortrait} from 'src/hooks'
-import {selectBasketSelectedItems, useTypedSelector} from 'src/store'
-import {Color} from 'src/themes'
 
 import {CostLine} from './CostLine'
 

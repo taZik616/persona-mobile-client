@@ -2,6 +2,9 @@ import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
 import Markdown from 'react-native-markdown-display'
+
+import {useMarkdownProps} from 'src/hooks'
+
 import {
   ConnectionError,
   Header,
@@ -9,8 +12,6 @@ import {
   SafeLandscapeView,
   Spacer,
 } from 'ui/index'
-
-import {useMarkdownProps} from 'src/hooks'
 
 interface HelpDetailProps {
   title: string

@@ -1,10 +1,5 @@
 import React, {useCallback, useRef} from 'react'
 
-import {
-  FashionItemsPresent,
-  FashionItemsPresentRefType,
-} from 'ui/bottom-sheets/FashionItemsPresent'
-
 import {HomeMain} from 'src/components/HomeMain'
 import {useTypedNavigation} from 'src/hooks'
 import {
@@ -13,6 +8,11 @@ import {
   MainContentItemType,
   ProductPreviewInfo,
 } from 'src/types'
+
+import {
+  FashionItemsPresent,
+  FashionItemsPresentRefType,
+} from 'ui/bottom-sheets/FashionItemsPresent'
 
 export const HomeMainScreen = () => {
   const fashionPresentRef = useRef<FashionItemsPresentRefType>(null)

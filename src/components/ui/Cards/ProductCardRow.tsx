@@ -1,11 +1,12 @@
 import React, {memo} from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
-import {Spacer, Text} from 'ui/index'
 
 import {cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
 import {ProductInBasketI} from 'src/types'
+
+import {Spacer, Text} from 'ui/index'
 
 interface ProductCardRowProps extends ProductInBasketI {
   onPress?: (item: ProductInBasketI) => void
@@ -60,7 +61,7 @@ export const ProductCardRow = memo(
           <Spacer height={2} />
           {size && (
             <Text right gp4>
-              {size}
+              {`Размер: ${size}`}
             </Text>
           )}
         </View>

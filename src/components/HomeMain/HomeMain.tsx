@@ -2,8 +2,6 @@ import React, {useCallback, useMemo} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
 import {ScrollView} from 'react-native'
-import {CardWithImageWHM} from 'ui/cards/CardWithImage'
-import {Header, SelectorTwoOptions, Spacer, Swiper} from 'ui/index'
 
 import {useTypedNavigation} from 'src/hooks'
 import {useGender} from 'src/hooks/useGender'
@@ -14,6 +12,9 @@ import {
   HomeMainContentItem,
 } from 'src/types'
 import {CARD_BORDER_RADIUS} from 'src/variables'
+
+import {CardWithImageWHM} from 'ui/cards/CardWithImage'
+import {Header, SelectorTwoOptions, Spacer, Swiper} from 'ui/index'
 
 import {LoadingSkeleton} from './LoadingSkeleton'
 import {RenderContent} from './RenderContent'

@@ -2,6 +2,10 @@ import React, {forwardRef, memo, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
+
+import {useTypedRoute} from 'src/hooks'
+import {Color} from 'src/themes'
+
 import {ProductCardRow} from 'ui/cards'
 import {
   Button,
@@ -12,9 +16,6 @@ import {
   Spacer,
   Text,
 } from 'ui/index'
-
-import {useTypedRoute} from 'src/hooks'
-import {Color} from 'src/themes'
 
 interface FastBuyProps {
   onSubmit?: () => void

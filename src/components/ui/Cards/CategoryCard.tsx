@@ -1,10 +1,11 @@
 import React, {memo} from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
-import {Spacer, Text} from 'ui/index'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {CategoryType} from 'src/types'
+
+import {Spacer, Text} from 'ui/index'
 
 interface CategoryCardProps extends CategoryType {
   idInList: number

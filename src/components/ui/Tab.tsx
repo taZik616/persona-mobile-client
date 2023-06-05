@@ -1,12 +1,13 @@
 import React from 'react'
 
 import {Pressable, StyleSheet} from 'react-native'
-import {tabBarIcons} from 'ui/icons/tab-bar-icons'
-import {Spacer, Text} from 'ui/index'
 
 import {selectFavoritesCounter, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 import {IS_ANDROID, SCREEN_W} from 'src/variables'
+
+import {tabBarIcons} from 'ui/icons/tab-bar-icons'
+import {Spacer, Text} from 'ui/index'
 
 import {IconWithCounterBadge} from './IconWithCounterBadge'
 

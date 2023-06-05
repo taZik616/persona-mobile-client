@@ -10,6 +10,12 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native'
+
+import {useTypedNavigation} from 'src/hooks'
+import {vibration} from 'src/services/vibration'
+import {Color} from 'src/themes'
+import {ProductVariant} from 'src/types'
+
 import {CrossIcon, HangerIcon} from 'ui/icons/common'
 import {
   Button,
@@ -18,11 +24,6 @@ import {
   WheelPicker,
   WheelPickerRefType,
 } from 'ui/index'
-
-import {useTypedNavigation} from 'src/hooks'
-import {vibration} from 'src/services/vibration'
-import {Color} from 'src/themes'
-import {ProductVariant} from 'src/types'
 
 interface SizeSelectorProps {
   variants: ProductVariant[]

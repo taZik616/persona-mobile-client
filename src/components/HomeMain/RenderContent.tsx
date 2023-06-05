@@ -1,13 +1,13 @@
 import React, {useMemo} from 'react'
 
+import {HomeMainContentItem, MainContentItemType} from 'src/types'
+
 import {
   HorizontalBrandsList,
   HorizontalCategoriesList,
 } from 'ui/horizontal-lists'
 import {FashionList} from 'ui/horizontal-lists'
 import {Spacer, Swiper, Text} from 'ui/index'
-
-import {HomeMainContentItem, MainContentItemType} from 'src/types'
 
 type RenderContentProps = {
   onPressItem?: (contentPart: HomeMainContentItem, item: any) => void

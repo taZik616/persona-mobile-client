@@ -14,6 +14,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+
+import {Color} from 'src/themes'
+import {CARD_ASPECT_RATIO} from 'src/variables'
+
 import {CameraIcon} from 'ui/icons/common'
 import {
   Header,
@@ -22,9 +26,6 @@ import {
   Spacer,
   Text,
 } from 'ui/index'
-
-import {Color} from 'src/themes'
-import {CARD_ASPECT_RATIO} from 'src/variables'
 
 interface LoyaltyCardAddProps {
   onPressScanCard?: () => void

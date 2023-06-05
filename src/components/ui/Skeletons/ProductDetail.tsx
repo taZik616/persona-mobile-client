@@ -1,9 +1,10 @@
 import React, {memo} from 'react'
 
 import {StyleSheet, View} from 'react-native'
-import {Button, Spacer, Swiper, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {Button, Spacer, Swiper, Text} from 'ui/index'
 
 import {BlockSkeleton} from './Block'
 

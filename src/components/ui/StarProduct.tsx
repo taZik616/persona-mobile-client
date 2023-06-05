@@ -1,7 +1,6 @@
 import React, {memo} from 'react'
 
 import {Pressable, StyleProp, ViewStyle} from 'react-native'
-import {StarEmptyIcon, StarFilledIcon} from 'ui/icons/common'
 
 import {selectFavoritesIds, useTypedDispatch, useTypedSelector} from 'src/store'
 import {
@@ -9,6 +8,8 @@ import {
   removeItemFromFavorites,
 } from 'src/store/favoritesSlice'
 import {ProductPreviewInfo} from 'src/types'
+
+import {StarEmptyIcon, StarFilledIcon} from 'ui/icons/common'
 
 interface StarProductProps {
   item: ProductPreviewInfo

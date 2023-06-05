@@ -2,9 +2,10 @@ import React, {memo} from 'react'
 
 import {StyleSheet, TouchableOpacity} from 'react-native'
 import Animated, {FadeIn} from 'react-native-reanimated'
-import {Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {Spacer, Text} from 'ui/index'
 
 interface ConnectionErrorProps {
   onPressRetry?: () => void

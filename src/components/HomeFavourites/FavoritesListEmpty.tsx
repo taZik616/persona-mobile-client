@@ -1,10 +1,11 @@
 import React from 'react'
 
 import {StyleSheet, useWindowDimensions} from 'react-native'
-import {FavoritesEmptyIcon} from 'ui/icons/common'
-import {SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {FavoritesEmptyIcon} from 'ui/icons/common'
+import {SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface FavoritesListEmptyProps {
   isAvailable: boolean

@@ -1,10 +1,11 @@
 import React from 'react'
 
 import {FlatList, StyleSheet} from 'react-native'
-import {CategoryCard} from 'ui/cards/CategoryCard'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {CategoriesListItem} from 'src/types'
+
+import {CategoryCard} from 'ui/cards/CategoryCard'
 
 interface RenderHorizontalListProps {
   onPressItem?: (catId: number, idInList: number) => void

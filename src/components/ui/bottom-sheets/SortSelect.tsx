@@ -9,13 +9,14 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {FlatList, Pressable, StyleSheet, View} from 'react-native'
-import {CheckIcon} from 'ui/icons/common'
-import {Spacer, Text} from 'ui/index'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {OrderingType} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 import {OrderingItemI} from 'src/types'
+
+import {CheckIcon} from 'ui/icons/common'
+import {Spacer, Text} from 'ui/index'
 
 interface SortSelectProps {
   onChangeSort?: (sortValue: OrderingType) => void

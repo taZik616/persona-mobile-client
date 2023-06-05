@@ -2,9 +2,10 @@ import React, {memo} from 'react'
 
 import {StyleSheet} from 'react-native'
 import {WebView} from 'react-native-webview'
-import {Header, Loading, SafeLandscapeView, Spacer} from 'ui/index'
 
 import {useSizeChartQuery} from 'src/store/shopApi'
+
+import {Header, Loading, SafeLandscapeView, Spacer} from 'ui/index'
 
 interface SizeChartProps {
   headerTitle: string

@@ -2,9 +2,10 @@ import React from 'react'
 
 import {ActivityIndicator, StyleProp, StyleSheet, ViewStyle} from 'react-native'
 import Animated, {FadeIn} from 'react-native-reanimated'
-import {Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {Spacer, Text} from 'ui/index'
 
 interface LoadingProps {
   text?: string

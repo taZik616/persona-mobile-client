@@ -10,9 +10,10 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import Feather from 'react-native-vector-icons/Feather'
-import {Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {Spacer, Text} from 'ui/index'
 
 const AnimTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity)
 const AnimFeather = Animated.createAnimatedComponent(Feather)

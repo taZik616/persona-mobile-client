@@ -8,9 +8,10 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {Image, Pressable, StyleSheet, View} from 'react-native'
-import {Button, SafeLandscapeView, Spacer} from 'ui/index'
 
 import {ProductPreviewInfo} from 'src/types'
+
+import {Button, SafeLandscapeView, Spacer} from 'ui/index'
 
 interface AddedToBasketProps {
   onPressGoBasket?: () => void

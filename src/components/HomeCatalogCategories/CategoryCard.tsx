@@ -2,11 +2,12 @@ import React, {memo} from 'react'
 
 import {StyleSheet, TouchableOpacity} from 'react-native'
 import FastImage from 'react-native-fast-image'
-import {Text} from 'ui/index'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {Color} from 'src/themes'
 import {CategoryType} from 'src/types'
+
+import {Text} from 'ui/index'
 
 interface CategoryCardProps extends CategoryType {
   onPress?: (categoryId: number) => void

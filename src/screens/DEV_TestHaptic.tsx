@@ -1,9 +1,10 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
-import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {vibration} from 'src/services/vibration'
+
+import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 export const DEV_TestHapticScreen = () => {
   return (

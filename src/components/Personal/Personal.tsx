@@ -2,11 +2,12 @@ import React from 'react'
 
 import {format} from 'date-fns'
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
-import {ChevronRightIcon} from 'ui/icons/common'
-import {Header, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {selectProfile, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
+
+import {ChevronRightIcon} from 'ui/icons/common'
+import {Header, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {InfoLine} from './InfoLine'
 

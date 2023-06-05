@@ -1,11 +1,12 @@
 import React, {memo, useMemo, useState} from 'react'
 
 import {StyleSheet, View} from 'react-native'
-import {SafeLandscapeView, Spacer, Text, ViewToggler} from 'ui/index'
 
 import {useTypedRoute} from 'src/hooks'
 import {useProductDetailQuery} from 'src/store/shopApi/shopApi'
 import {ProductDetailInfo} from 'src/types'
+
+import {SafeLandscapeView, Spacer, Text, ViewToggler} from 'ui/index'
 
 export const DetailsSection = memo(() => {
   const {productId} = useTypedRoute<'productDetail'>().params ?? {}

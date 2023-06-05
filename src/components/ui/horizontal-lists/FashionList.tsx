@@ -1,10 +1,11 @@
 import React from 'react'
 
 import {FlatList, StyleSheet} from 'react-native'
-import {FashionCard} from 'ui/cards'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {FashionListItemT} from 'src/types'
+
+import {FashionCard} from 'ui/cards'
 
 interface FashionListProps {
   data: FashionListItemT[]

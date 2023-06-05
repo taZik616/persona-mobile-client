@@ -5,9 +5,10 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
 import {RouteProp} from '@react-navigation/native'
-import {TabBar} from 'ui/TabBar'
 
 import {TabParamList} from 'src/types'
+
+import {TabBar} from 'ui/TabBar'
 
 import {HomeBrandsScreen} from './HomeBrands'
 import {HomeCatalogStack} from './HomeCatalogStack'

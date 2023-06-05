@@ -1,12 +1,13 @@
 import React, {memo} from 'react'
 
 import {FlashList} from '@shopify/flash-list'
-import {OrderCard} from 'ui/cards'
-import {Header, Spacer} from 'ui/index'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {useGetOrdersQuery} from 'src/store/shopApi/shopApi'
 import {OrderInfoInterface} from 'src/types'
+
+import {OrderCard} from 'ui/cards'
+import {Header, Spacer} from 'ui/index'
 
 interface OrdersProps {
   onPressProductItem?: (productId: string) => void

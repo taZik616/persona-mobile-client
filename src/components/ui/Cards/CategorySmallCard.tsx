@@ -1,9 +1,10 @@
 import React from 'react'
 
 import {Image, Pressable, StyleSheet, View} from 'react-native'
-import {Spacer, Text} from 'ui/index'
 
 import {CategoryType} from 'src/types'
+
+import {Spacer, Text} from 'ui/index'
 
 interface CategorySmallCardProps extends CategoryType {
   onPress?: (item: CategoryType) => void

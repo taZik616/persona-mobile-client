@@ -1,9 +1,10 @@
 import React, {memo} from 'react'
 
 import {FlatList, StyleSheet, View} from 'react-native'
-import {Spacer} from 'ui/index'
 
 import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
+
+import {Spacer} from 'ui/index'
 
 import {BlockSkeleton} from './Block'
 

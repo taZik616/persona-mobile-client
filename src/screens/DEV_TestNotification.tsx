@@ -1,11 +1,12 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet, View} from 'react-native'
-import {Button, SafeLandscapeView, Spacer} from 'ui/index'
 
 import {useNotifeePermissions} from 'src/hooks/useNotifeePermissions'
 import {notifications} from 'src/services/notifications'
 import {vibration} from 'src/services/vibration'
+
+import {Button, SafeLandscapeView, Spacer} from 'ui/index'
 
 export const DEV_TestNotification = () => {
   const {requestNotification} = useNotifeePermissions()

@@ -2,6 +2,9 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react'
 
 import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
+
+import {Color} from 'src/themes'
+
 import {
   FormTextInput,
   Header,
@@ -10,8 +13,6 @@ import {
   Spacer,
   Text,
 } from 'ui/index'
-
-import {Color} from 'src/themes'
 
 interface RecPassConfirmProps {
   onSubmit?: () => void

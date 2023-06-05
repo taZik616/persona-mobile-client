@@ -1,10 +1,11 @@
 import React, {memo} from 'react'
 
 import {Pressable, StyleSheet, TouchableOpacity} from 'react-native'
-import {CrossIcon} from 'ui/icons/common'
-import {Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {CrossIcon} from 'ui/icons/common'
+import {Spacer, Text} from 'ui/index'
 
 interface FilterItemProps {
   icon?: JSX.Element

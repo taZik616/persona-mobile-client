@@ -2,10 +2,11 @@ import React from 'react'
 
 import {APP_API_URL} from '@env'
 import {FlatList, ScrollView} from 'react-native'
-import {Header, SelectorTwoOptions, Spacer} from 'ui/index'
 
 import {useGender} from 'src/hooks/useGender'
 import {useCategoriesQuery} from 'src/store/shopApi'
+
+import {Header, SelectorTwoOptions, Spacer} from 'ui/index'
 
 import {CategoryCardWHM} from './CategoryCard'
 

@@ -1,12 +1,13 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
+
+import {SCREEN_W} from 'src/variables'
+
 import {SafeLandscapeView, Spacer, Swiper} from 'ui/index'
 import {BlockSkeleton} from 'ui/Skeletons/Block'
 import {ListItemSkeleton} from 'ui/Skeletons/ListItem'
 import {CardSkeleton} from 'ui/Skeletons/Swiper'
-
-import {SCREEN_W} from 'src/variables'
 
 export const LoadingSkeleton = () => {
   return (

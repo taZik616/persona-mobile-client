@@ -3,10 +3,11 @@ import React, {memo} from 'react'
 import {Pressable, StyleSheet, View} from 'react-native'
 import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import {runOnJS} from 'react-native-reanimated'
-import {Text} from 'ui/index'
 
 import {useIsPortrait} from 'src/hooks/useIsPortrait'
 import {Color} from 'src/themes'
+
+import {Text} from 'ui/index'
 
 interface AlphabetVerticalSelectorProps {
   onChangeLetter: (id: number) => () => void

@@ -6,9 +6,10 @@ import blockEmbedPlugin from 'markdown-it-block-embed'
 import {StyleProp, StyleSheet, TextStyle} from 'react-native'
 import {MarkdownIt, RenderRules} from 'react-native-markdown-display'
 import {ms, mvs, s, vs} from 'react-native-size-matters'
-import {Img} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {Img} from 'ui/index'
 
 const markdownItInstance = MarkdownIt({typographer: true, breaks: true}).use(
   blockEmbedPlugin,

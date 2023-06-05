@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {Header} from 'ui/index'
-import {ProductList} from 'ui/product-list'
-
 import {useTypedRouteCatalogStack} from 'src/hooks'
 import {ProductPreviewInfo} from 'src/types'
+
+import {Header} from 'ui/index'
+import {ProductList} from 'ui/product-list'
 
 interface HomeCatalogProductsProps {
   onPressProduct?: (categoryId: ProductPreviewInfo) => void

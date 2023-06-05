@@ -9,9 +9,10 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {useFormContext} from 'react-hook-form'
-import {Button, FormTextInput, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 import {Color} from 'src/themes'
+
+import {Button, FormTextInput, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface PromoCodeEntryProps {
   onSubmit?: () => void

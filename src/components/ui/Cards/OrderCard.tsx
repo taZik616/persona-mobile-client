@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {ProgressIcon, RejectedIcon, SuccessIcon} from 'ui/icons/common'
-import {Spacer, Text} from 'ui/index'
 
 import {cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
 import {OrderInfoInterface} from 'src/types'
+
+import {ProgressIcon, RejectedIcon, SuccessIcon} from 'ui/icons/common'
+import {Spacer, Text} from 'ui/index'
 
 interface OrderCardProps extends OrderInfoInterface {
   onPressProductItem?: (productId: string) => void

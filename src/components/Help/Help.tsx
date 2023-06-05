@@ -1,6 +1,9 @@
 import React from 'react'
 
 import {ScrollView, StyleSheet} from 'react-native'
+
+import {helpfulInfoKey} from 'src/types'
+
 import {
   ContactsIcon,
   DeliveryIcon,
@@ -10,8 +13,6 @@ import {
   SellConditionIcon,
 } from 'ui/icons/common'
 import {Header, MenuButton, SafeLandscapeView, Spacer} from 'ui/index'
-
-import {helpfulInfoKey} from 'src/types'
 
 interface HelpProps {
   onPressDetail?: (key: helpfulInfoKey, title: string) => void
