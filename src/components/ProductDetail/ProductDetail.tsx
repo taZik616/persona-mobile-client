@@ -81,16 +81,18 @@ export const ProductDetail = memo(
                 <View style={styles.flexRow}>
                   {discountPercent ? (
                     <>
-                      <Text gp5>{cleanNumber(price, ' ', 0)} ₽</Text>
+                      <Text
+                        color={Color.primaryGray}
+                        style={styles.priceWithoutDiscount}
+                        gp5>
+                        {cleanNumber(price, ' ', 0)} ₽
+                      </Text>
                       <Spacer width={16} />
                     </>
                   ) : (
                     <></>
                   )}
-                  <Text
-                    color={Color.primaryGray}
-                    style={styles.priceWithoutDiscount}
-                    gp5>
+                  <Text gp5>
                     {cleanNumber(price, ' ', 0, discountPercent)} ₽
                   </Text>
                 </View>

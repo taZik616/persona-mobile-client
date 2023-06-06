@@ -76,7 +76,9 @@ export const useProductsList = ({
 
   useEffect(() => {
     pageNumberRef.current = page
+    maxPageRef.current = 1
     setProducts(undefined)
+    setIsLoad(false)
     loadNext()
   }, [
     brandIds,
