@@ -579,7 +579,7 @@
 				DEVELOPMENT_TEAM = 4S8QPU747F;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PersonaMobileClient/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PERSONA;
+				INFOPLIST_KEY_CFBundleDisplayName = "Persona Shop";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -615,7 +615,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4S8QPU747F;
 				INFOPLIST_FILE = PersonaMobileClient/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PERSONA;
+				INFOPLIST_KEY_CFBundleDisplayName = "Persona Shop";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
