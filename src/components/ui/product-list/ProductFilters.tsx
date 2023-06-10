@@ -56,7 +56,7 @@ export const Filter = memo(
       const [filtersFirst, setFiltersFirst] = useState<FilterItemType[]>(
         FILTERS_FIRST_DEFAULT,
       )
-      const {paddingHorizontal} = useHorizontalMargins()
+      const {paddingHorizontal} = useHorizontalMargins({safeArea: true})
       const [filtersSecond, setFiltersSecond] = useState<FilterItemType[]>(
         FILTERS_SECOND_DEFAULT,
       )

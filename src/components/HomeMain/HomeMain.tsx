@@ -44,11 +44,22 @@ export const HomeMain = ({
   const onPressSwiperImage = useCallback(
     (index: number) => {
       const {productFilters} = curData?.mainSwiperImages[index] || {}
-      if (productFilters?.gender) {
-        navigate('allProducts', {...productFilters, genderIgnore: true})
-      } else {
-        navigate('allProducts', productFilters)
-      }
+      const showFilter = !productFilters?.brandIds
+      const showCategoriesFilter = !(
+        productFilters?.categoryId || productFilters?.subcategoryId
+      )
+      const genderIgnore = !!(
+        productFilters?.categoryId ||
+        productFilters?.subcategoryId ||
+        productFilters?.gender
+      )
+
+      navigate('allProducts', {
+        ...productFilters,
+        showFilter,
+        showCategoriesFilter,
+        genderIgnore,
+      })
     },
     [curData],
   )

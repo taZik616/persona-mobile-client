@@ -145,7 +145,7 @@ export const ProductList = memo(
               <Filter
                 key={isMenSelected ? 'men' : 'women'}
                 ref={filterRef}
-                showCategories={showCategoriesFilter && !genderIgnore}
+                showCategories={showCategoriesFilter}
                 onPressSize={onPressSize}
                 onPressSort={onPressSort}
                 onPressBrands={onPressBrands}
