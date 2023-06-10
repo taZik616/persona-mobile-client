@@ -60,6 +60,8 @@ export const selectGender = (state: StoreStateType) => state.gender.gender
 export const selectIsAuthenticated = (state: StoreStateType) =>
   state.profile.isAuthenticated
 export const selectProfile = (state: StoreStateType) => state.profile
+export const selectDiscountCardInfo = (state: StoreStateType) =>
+  state.profile.discountCard
 
 export const selectBasket = (state: StoreStateType) => state.basket.items
 export const selectBasketCounter = (state: StoreStateType) =>

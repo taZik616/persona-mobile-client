@@ -44,7 +44,7 @@ export const RenderContent = ({
         )
       case MainContentItemType.FashionList:
         return (
-          <RenderFashionList
+          <FashionList
             onPressItem={id => onPressItem?.(contentPart, items[id])}
             data={items}
           />

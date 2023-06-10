@@ -8,7 +8,7 @@ import React, {
 
 import {FlatList, SectionList, StyleSheet} from 'react-native'
 
-import {groupByAlphabetical} from 'src/helpers'
+import {captureException, groupByAlphabetical} from 'src/helpers'
 import {useGender} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
 import {useBrandsQuery} from 'src/store/shopApi'
@@ -84,6 +84,7 @@ export const HomeBrands = memo(
         <Spacer height={8} />
         <SectionList
           ref={listRef}
+          onScrollToIndexFailed={captureException}
           removeClippedSubviews
           refreshing={allBrands.isFetching && !!sections}
           onRefresh={() => {

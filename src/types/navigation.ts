@@ -56,3 +56,12 @@ export type CatalogStackParamList = {
     subcategoryId: number
   }
 }
+
+export interface DiscountCardInfoType {
+  cardCode: boolean
+  cardLevel: {
+    discountPercent: number
+    level: number
+  }
+  purchaseTotal: number
+}

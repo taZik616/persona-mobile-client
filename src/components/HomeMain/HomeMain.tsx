@@ -44,7 +44,11 @@ export const HomeMain = ({
   const onPressSwiperImage = useCallback(
     (index: number) => {
       const {productFilters} = curData?.mainSwiperImages[index] || {}
-      navigate('allProducts', productFilters)
+      if (productFilters?.gender) {
+        navigate('allProducts', {...productFilters, genderIgnore: true})
+      } else {
+        navigate('allProducts', productFilters)
+      }
     },
     [curData],
   )
@@ -91,7 +95,7 @@ export const HomeMain = ({
               onPress={onPressGiftCard}
               borderRadius={CARD_BORDER_RADIUS}
               uri={
-                'http://89.108.71.146:2006/media/another-images/PersonaCard.png'
+                'http://89.108.71.146:2006/media/another-images/PersonaCard.jpg'
               }
             />
           </>

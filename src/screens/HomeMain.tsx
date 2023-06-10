@@ -23,10 +23,18 @@ export const HomeMainScreen = () => {
       switch (contentPart.type) {
         case MainContentItemType.BrandsList:
         case MainContentItemType.BrandsSwiper:
-          navigate('allProducts', item.queryFilters)
+          if (item.queryFilters?.gender) {
+            navigate('allProducts', {...item.queryFilters, genderIgnore: true})
+          } else {
+            navigate('allProducts', item.queryFilters)
+          }
           break
         case MainContentItemType.CategoriesList:
-          navigate('allProducts', item.queryFilters)
+          if (item.queryFilters?.gender) {
+            navigate('allProducts', {...item.queryFilters, genderIgnore: true})
+          } else {
+            navigate('allProducts', item.queryFilters)
+          }
           break
         case MainContentItemType.FashionList:
         case MainContentItemType.FashionSwiper:

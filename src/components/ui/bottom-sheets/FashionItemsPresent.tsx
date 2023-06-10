@@ -33,7 +33,7 @@ export const FashionItemsPresent = memo(
   forwardRef<FashionItemsPresentRefType, FashionItemsPresentProps>(
     ({onPressProduct}, ref) => {
       const [productIds, setProductIds] = useState<string[]>([])
-      const {curData} = useProductsList({
+      const {products} = useProductsList({
         productId: productIds.join(','),
         page_size: 80,
       })
@@ -48,9 +48,9 @@ export const FashionItemsPresent = memo(
       }))
 
       const content = useMemo(() => {
-        return curData?.products.length ? (
+        return products?.products.length ? (
           <FlatList
-            data={curData.products}
+            data={products.products}
             contentContainerStyle={[styles.listContainer, paddingHorizontal]}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -62,7 +62,7 @@ export const FashionItemsPresent = memo(
         ) : (
           <FashionItemsPresentSkeleton />
         )
-      }, [curData?.products, paddingHorizontal])
+      }, [products?.products, paddingHorizontal])
       return (
         <BottomSheet
           fixAndroidHorizontalList={IS_ANDROID}

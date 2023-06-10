@@ -1,8 +1,18 @@
 import React from 'react'
 
-import {Image, ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
-import {selectIsAuthenticated, useTypedSelector} from 'src/store'
+import {
+  selectDiscountCardInfo,
+  selectIsAuthenticated,
+  useTypedSelector,
+} from 'src/store'
 import {Color} from 'src/themes'
 import {ProductPreviewInfo} from 'src/types'
 
@@ -46,7 +56,7 @@ export const HomeProfile = ({
   onPressRecoverPassword,
 }: HomeProfileProps) => {
   const isAuthenticated = useTypedSelector(selectIsAuthenticated)
-
+  const discountCard = useTypedSelector(selectDiscountCardInfo)
   return (
     <>
       <Header hideSearch />
@@ -54,20 +64,39 @@ export const HomeProfile = ({
         <ScrollView nestedScrollEnabled>
           <Spacer height={20} />
           <SafeLandscapeView safeArea>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={onPressAddCard}
               style={styles.addCardContainer}>
               <Image
                 style={styles.personaCardImage}
                 source={{
-                  uri: 'http://89.108.71.146:2006/media/another-images/PersonaCard.png',
+                  uri: 'http://89.108.71.146:2006/media/another-images/PersonaCard.jpg',
                 }}
               />
               <Spacer width={12} />
               <Text numberOfLines={1} gp4>
                 Добавить карту лояльности
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {discountCard ? (
+              <View style={styles.discountCardInfoBlock}>
+                <Text>
+                  <Text gp4>Личная скидка: </Text>
+                  <Text color={Color.primary} gp4>
+                    {discountCard.cardLevel.discountPercent}%
+                  </Text>
+                </Text>
+                <Text>
+                  <Text gp4>Уровень покупок: </Text>
+                  <Text color={Color.primary} gp4>
+                    {discountCard.cardLevel.level}
+                  </Text>
+                </Text>
+              </View>
+            ) : (
+              <></>
+            )}
+
             <Spacer height={32} />
             <MenuButton
               onPress={onPressPersonal}
@@ -124,5 +153,9 @@ const styles = StyleSheet.create({
     width: 55,
     height: 33,
     borderRadius: 4,
+  },
+  discountCardInfoBlock: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 })

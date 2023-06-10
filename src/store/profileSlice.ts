@@ -5,6 +5,7 @@ import {getGenericPassword, resetGenericPassword} from 'react-native-keychain'
 
 import {captureException} from 'src/helpers'
 import {storePassword} from 'src/helpers/keychain'
+import {DiscountCardInfoType} from 'src/types'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
 import {loadItemsToBasket, setBasketItems} from './basketSlice'
@@ -24,6 +25,7 @@ interface initialStateType {
   subEmail: boolean
   allowAppNotification: boolean
   authToken: string | undefined
+  discountCard?: DiscountCardInfoType
 }
 
 const initialState: initialStateType = {
@@ -38,6 +40,7 @@ const initialState: initialStateType = {
   subEmail: false,
   allowAppNotification: false,
   authToken: undefined,
+  discountCard: undefined,
 }
 type UpdatableInfo = {
   firstName: string
@@ -72,6 +75,9 @@ export const profileSlice = createSlice({
       state.email = undefined
       state.authToken = undefined
     },
+    setDiscountCard: (state, action: PayloadAction<DiscountCardInfoType>) => {
+      state.discountCard = action.payload
+    },
     setSubSms: (state, action: PayloadAction<boolean>) => {
       state.subSms = action.payload
     },
@@ -98,6 +104,7 @@ export const onSuccessfulLogin =
     dispatch(setIsAuthenticated(true))
     dispatch(setAuthToken(token))
     dispatch(getUserData)
+    dispatch(getDiscountCardData)
     if (user && password) {
       await storePassword({user, password})
     }
@@ -115,6 +122,7 @@ export const whenExitHandler = async (dispatch: any) => {
   dispatch(setBasketItems([]))
   await resetGenericPassword()
 }
+const {setDiscountCard} = profileSlice.actions
 
 export const getUserData = async (dispatch: any) => {
   const token = store.getState().profile.authToken
@@ -135,6 +143,19 @@ export const getUserData = async (dispatch: any) => {
         }),
       )
       dispatch(setPhoneNumber(data.phoneNumber))
+    }
+  } catch (error) {
+    captureException(error)
+  }
+}
+export const getDiscountCardData = async (dispatch: any) => {
+  try {
+    const token = store.getState().profile.authToken
+    const req = await axios.get(`${APP_API_URL}/api/v1/discount-card-info`, {
+      headers: {Authorization: token ? `Token ${token}` : ''},
+    })
+    if (req.data) {
+      dispatch(setDiscountCard(req.data))
     }
   } catch (error) {
     captureException(error)

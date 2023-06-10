@@ -123,26 +123,6 @@ export const shopApi = createApi({
         params,
       }),
     }),
-    // loyaltyCodeSend: build.mutation({
-    //   query: ({userPhone}: Omit<LoyaltyCodeValidateBody, 'code'>) => ({
-    //     url: 'loyaltycard/',
-    //     method: 'POST',
-    //     body: {
-    //       UserPhone: userPhone, // Тут по номеру карты должно быть и данные о юззере беруться по токену
-    //     },
-    //   }),
-    // }),
-    // loyaltyCodeValidate: build.mutation({
-    //   query: ({userPhone, code}: LoyaltyCodeValidateBody) => ({
-    //     url: 'loyaltycardvalidate/',
-    //     method: 'PUT',
-    //     body: {
-    //       UserPhone: userPhone,
-    //       code,
-    //     },
-    //   }),
-    // }),
-
     // getOrders: build.query({
     //   query: () => ({
     //     url: 'order/',
