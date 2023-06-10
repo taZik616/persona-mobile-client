@@ -94,9 +94,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.personamobileclient"
+    namespace "com.personashop.persona"
     defaultConfig {
-        applicationId "com.personamobileclient"
+        applicationId "com.personashop.persona"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

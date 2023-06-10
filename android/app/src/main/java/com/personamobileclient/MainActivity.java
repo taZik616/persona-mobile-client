@@ -1,4 +1,4 @@
-package com.personamobileclient;
+package com.personashop.persona;
 
 import android.os.Bundle;
 import org.devio.rn.splashscreen.SplashScreen;

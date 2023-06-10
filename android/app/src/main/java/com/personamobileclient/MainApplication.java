@@ -1,4 +1,4 @@
-package com.personamobileclient;
+package com.personashop.persona;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
