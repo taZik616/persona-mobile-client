@@ -18,7 +18,11 @@ export const BrandCard = memo(
     return (
       <Pressable onPress={() => onPress?.(brandId, idInList)}>
         <View style={styles.containerForHorizontalScroll}>
-          <Image style={styles.img} source={{uri: imgUri}} />
+          <Image
+            style={styles.img}
+            resizeMode="contain"
+            source={{uri: imgUri}}
+          />
           <Spacer height={8} />
           <View style={styles.brandContainer}>
             <Image
@@ -43,6 +47,7 @@ const styles = StyleSheet.create({
   },
   img: {
     flex: 1,
+    margin: 6,
   },
   logoImage: {
     width: '100%',

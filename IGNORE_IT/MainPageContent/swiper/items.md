@@ -28,6 +28,7 @@
 {
   "imgUrl": "http://89.108.71.146:2006/media/another-images/women_bags.jpg",
   "productFilters": {
+    "gender": "women",
     "subcategoryId": "229"
   }
 }
