@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {NavigationContainer} from '@react-navigation/native'
+import {LinkingOptions, NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {useColorScheme} from 'react-native'
 
@@ -58,6 +58,7 @@ export const App = () => {
           notification: Color.primary,
         },
       }}
+      linking={LINKING}
       ref={navigator}>
       <Stack.Navigator
         initialRouteName="home" // haptic|notification|test
@@ -116,4 +117,8 @@ export const App = () => {
       </Stack.Navigator>
     </NavigationContainer>
   )
+}
+
+const LINKING: LinkingOptions<RootStackParamList> = {
+  prefixes: ['personashop://'],
 }
