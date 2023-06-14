@@ -64,6 +64,8 @@ export const selectDiscountCardInfo = (state: StoreStateType) =>
   state.profile.discountCard
 
 export const selectBasket = (state: StoreStateType) => state.basket.items
+export const selectBasketPromocode = (state: StoreStateType) =>
+  state.basket.promocode
 export const selectBasketCounter = (state: StoreStateType) =>
   state.basket.counter
 export const selectBasketIds = (state: StoreStateType) =>

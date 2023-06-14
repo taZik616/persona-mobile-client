@@ -7,7 +7,7 @@ import {Color} from 'src/themes'
 import {Spacer, Text} from 'ui/index'
 
 interface ButtonT {
-  children: string
+  children: string | JSX.Element
   style?: StyleProp<ViewStyle>
   disabled?: boolean
   fullWidth?: boolean

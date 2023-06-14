@@ -66,6 +66,7 @@ export interface ProductsDataI {
 }
 export interface ProductInBasketI extends ProductPreviewInfo {
   variant: ProductVariant
+  personalDiscountInRub?: number
 }
 
 export interface ProductInFavoritesI extends ProductPreviewInfo {}

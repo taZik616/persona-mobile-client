@@ -48,6 +48,7 @@ export const BasketCard = memo(
       brand,
       discountPercent,
       isAvailable,
+      personalDiscountInRub,
       variant: {colorHex, size},
     } = item
     const swipeableRef = useRef<any>(null)
@@ -105,9 +106,31 @@ export const BasketCard = memo(
                 ) : (
                   <></>
                 )}
-                <Text numberOfLines={1} gp5>
+                <Text
+                  style={
+                    personalDiscountInRub
+                      ? styles.priceWithoutDiscount
+                      : undefined
+                  }
+                  numberOfLines={1}
+                  color={personalDiscountInRub ? Color.primaryGray : undefined}
+                  gp5>
                   {cleanNumber(price, ' ', 0, discountPercent)} ₽
                 </Text>
+                <Spacer height={8} />
+                {personalDiscountInRub ? (
+                  <Text numberOfLines={1} gp5>
+                    {cleanNumber(
+                      price - (personalDiscountInRub || 0),
+                      ' ',
+                      0,
+                      discountPercent,
+                    )}{' '}
+                    ₽
+                  </Text>
+                ) : (
+                  <></>
+                )}
               </Pressable>
             </View>
             <Pressable onPress={handlePress}>

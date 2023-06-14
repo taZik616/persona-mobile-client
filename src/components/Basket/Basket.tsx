@@ -5,6 +5,7 @@ import {FlashList} from '@shopify/flash-list'
 import {cleanNumber, getProductsCountString} from 'src/helpers'
 import {
   selectBasket,
+  selectBasketPromocode,
   selectBasketSelectedIds,
   useTypedDispatch,
   useTypedSelector,
@@ -27,13 +28,20 @@ interface BasketProps {
   onPressPromoEntry?: () => void
   onPressBuy?: () => void
   onPressBasketItem?: (item: ProductPreviewInfo) => void
+  onPressRemovePromo?: () => void
 }
 
 export const Basket = memo(
-  ({onPressBasketItem, onPressBuy, onPressPromoEntry}: BasketProps) => {
+  ({
+    onPressBasketItem,
+    onPressBuy,
+    onPressRemovePromo,
+    onPressPromoEntry,
+  }: BasketProps) => {
     const [filter, setFilter] = useState(options[0].value)
     const dispatch = useTypedDispatch()
     const items = useTypedSelector(selectBasket)
+    const promocode = useTypedSelector(selectBasketPromocode)
 
     const isAvailable = options[0].value === filter
 
@@ -78,8 +86,21 @@ export const Basket = memo(
               <SafeLandscapeView safeArea>
                 <Spacer height={16} />
                 <Button gp5 onPress={onPressPromoEntry} variant="outline">
-                  Добавить промокод
+                  {promocode ? 'Сменить промокод' : 'Добавить  промокод'}
                 </Button>
+                {promocode ? (
+                  <>
+                    <Spacer height={16} />
+                    <Button
+                      gp5
+                      onPress={onPressRemovePromo}
+                      variant="secondaryFilled">
+                      Отменить промокод
+                    </Button>
+                  </>
+                ) : (
+                  <></>
+                )}
                 <Spacer height={16} />
                 <BuyBtn onPress={onPressBuy} />
                 <Spacer withBottomInsets height={28} />

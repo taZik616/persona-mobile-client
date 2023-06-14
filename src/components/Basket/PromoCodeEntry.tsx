@@ -9,6 +9,7 @@ import React, {
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
 import {useFormContext} from 'react-hook-form'
+import {StyleSheet} from 'react-native'
 
 import {Color} from 'src/themes'
 
@@ -36,7 +37,7 @@ export const PromoCodeEntry = memo(
     useImperativeHandle(ref, () => ({
       open: bottomSheetRef.current?.open,
       close: bottomSheetRef.current?.close,
-      setError,
+      setError: (err: string) => setError(err),
     }))
 
     const content = useMemo(() => {
@@ -44,8 +45,9 @@ export const PromoCodeEntry = memo(
         <SafeLandscapeView maxWidth={600} safeArea>
           <Spacer height={16} />
           <FormTextInput placeholder="Введите промокод" name="promo" />
+          <Spacer height={4} />
           {error ? (
-            <Text color={Color.textRed1} gp1>
+            <Text style={styles.error} color={Color.textRed1} gp1>
               {error}
             </Text>
           ) : (
@@ -58,7 +60,7 @@ export const PromoCodeEntry = memo(
           <Spacer withBottomInsets height={56} />
         </SafeLandscapeView>
       )
-    }, [onSubmit, isValid])
+    }, [onSubmit, isValid, error])
 
     return (
       <BottomSheet
@@ -73,3 +75,7 @@ export const PromoCodeEntry = memo(
     )
   }),
 )
+
+const styles = StyleSheet.create({
+  error: {marginLeft: 8},
+})
