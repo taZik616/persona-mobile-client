@@ -121,10 +121,11 @@ export const BasketCard = memo(
                 {personalDiscountInRub ? (
                   <Text numberOfLines={1} gp5>
                     {cleanNumber(
-                      price - (personalDiscountInRub || 0),
+                      price -
+                        price * (discountPercent / 100) -
+                        (personalDiscountInRub || 0),
                       ' ',
                       0,
-                      discountPercent,
                     )}{' '}
                     ₽
                   </Text>

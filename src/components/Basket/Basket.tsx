@@ -147,9 +147,14 @@ const WrappedHeader = memo(() => {
     .reduce((acc, el) => {
       const {price} = el.variant
 
-      return acc + (price - price * (el.variant.discountPercent / 100))
+      return (
+        acc +
+        (price -
+          price * (el.variant.discountPercent / 100) -
+          (el.personalDiscountInRub || 0))
+      )
     }, 0)
-  console.log('🚀 - total:', total)
+
   return (
     <Header
       title="Корзина"
