@@ -33,7 +33,6 @@ export const basketSlice = createSlice({
       state.items = items
       state.counter = items.length
       state.productIds = getArrayOfField(items, 'productId')
-      state.selectedItemIds = []
     },
     addItem: (state, action: PayloadAction<ProductInBasketI>) => {
       const newItem = action.payload

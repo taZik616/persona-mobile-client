@@ -7,6 +7,8 @@ import {helpfulInfoKey} from 'src/types'
 import {
   CategoriesParams,
   ChangePasswordBody,
+  CreateFastOrderBody,
+  CreateOrderBody,
   CreateUserAndSendCodeBody,
   GetBrandsBody,
   LoginBody,
@@ -123,12 +125,58 @@ export const shopApi = createApi({
         params,
       }),
     }),
-    // getOrders: build.query({
-    //   query: () => ({
-    //     url: 'order/',
-    //     method: 'PATCH',
-    //   }),
-    // }),
+    deliveryPrice: build.query({
+      query: () => ({
+        url: 'delivery-price',
+        method: 'GET',
+      }),
+    }),
+    createOrder: build.mutation({
+      query: (body: CreateOrderBody) => ({
+        url: 'create-order',
+        method: 'POST',
+        body,
+      }),
+    }),
+    createFastOrder: build.mutation({
+      query: (body: CreateFastOrderBody) => ({
+        url: 'create-fast-order',
+        method: 'POST',
+        body,
+      }),
+    }),
+    myOrders: build.query({
+      query: () => ({
+        url: 'my-orders',
+        method: 'GET',
+      }),
+      transformResponse(orders: any) {
+        return orders
+          ?.map((order: any) => ({
+            ...order,
+            productsInfo: order.productsInfo.map(
+              ({product, ...other}: any) => ({
+                ...product,
+                ...other,
+              }),
+            ),
+          }))
+          .reverse()
+      },
+    }),
+    updateMyOrderStatuses: build.mutation({
+      query: () => ({
+        url: 'update-all-order-statuses',
+        method: 'POST',
+      }),
+    }),
+    updateAndCheckOrderStatus: build.mutation({
+      query: (orderId: string) => ({
+        url: 'check-order-status',
+        method: 'POST',
+        body: {orderId},
+      }),
+    }),
   }),
 })
 
@@ -140,6 +188,8 @@ export const {
   useSizeChartQuery,
   useProductDetailQuery,
   useMightBeInterestedQuery,
+  useDeliveryPriceQuery,
+  useMyOrdersQuery,
   useRecoveryPasswordCheckMutation,
   useRecoveryPasswordCompleteMutation,
   useLoginMutation,
@@ -147,4 +197,8 @@ export const {
   useChangePasswordMutation,
   useCreateUserAndSendCodeMutation,
   useResendRegistryCodeMutation,
+  useCreateOrderMutation,
+  useCreateFastOrderMutation,
+  useUpdateMyOrderStatusesMutation,
+  useUpdateAndCheckOrderStatusMutation,
 } = shopApi

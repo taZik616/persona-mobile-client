@@ -18,18 +18,19 @@ import {Spacer, Text} from 'ui/index'
 
 interface OrderCardProps extends OrderInfoInterface {
   onPressProductItem?: (productId: string) => void
-  onPress?: (orderId: string) => void
+  onPress?: (orderId: number) => void
 }
 export const OrderCard = memo(
   ({onPressProductItem, onPress, ...item}: OrderCardProps) => {
-    const {id, totalPrice, status, items} = item
+    const {orderId, totalSum, status, productsInfo} = item
 
     const statusObj = statusMap[status]
+    if (!statusObj) return <></>
 
     return (
-      <Pressable style={styles.container} onPress={() => onPress?.(id)}>
+      <Pressable style={styles.container} onPress={() => onPress?.(orderId)}>
         <Text gp3>
-          Заказ {id} на сумму {cleanNumber(totalPrice, ' ', 0)} руб
+          Заказ {orderId} на сумму {cleanNumber(totalSum, ' ', 0)} руб
         </Text>
         <Spacer height={12} />
         <View style={styles.statusContainer}>
@@ -41,25 +42,25 @@ export const OrderCard = memo(
         </View>
         <Spacer height={10} />
         <FlashList
-          data={items}
+          data={productsInfo}
           estimatedItemSize={100}
           ItemSeparatorComponent={() => <Spacer height={8} />}
           keyExtractor={(it, index) => String(index)}
-          renderItem={({item: {image, title, category, productId}}) => {
+          renderItem={({item: {images, productName, brand, productId}}) => {
             return (
               <TouchableOpacity
                 onPress={() => onPressProductItem?.(productId)}
                 style={styles.productCard}>
                 <Image
-                  source={{uri: image}}
+                  source={{uri: images[0].compressedImage}}
                   resizeMode="contain"
                   style={styles.productImg}
                 />
-                <Spacer width={8} />
+                <Spacer width={10} />
                 <View style={styles.productContent}>
-                  <Text gp2>{title}</Text>
+                  <Text gp2>{productName}</Text>
                   <Spacer height={5} />
-                  <Text gp4>{category}</Text>
+                  {brand && <Text gp4>{brand.name}</Text>}
                 </View>
               </TouchableOpacity>
             )
@@ -71,19 +72,29 @@ export const OrderCard = memo(
 )
 
 const statusMap = {
-  rejected: {
+  AlreadyPaid: {
     icon: <SuccessIcon />,
     title: 'Оплачен',
     color: Color.primary,
   },
-  progress: {
+  Received: {
+    icon: <SuccessIcon />,
+    title: 'Получен',
+    color: Color.primary,
+  },
+  Delivery: {
     icon: <ProgressIcon />,
-    title: 'Оформлен',
+    title: 'Доставляется',
     color: Color.primaryGray,
   },
-  completed: {
+  Mistaken: {
     icon: <RejectedIcon />,
-    title: 'Отменен',
+    title: 'Отклонен',
+    color: Color.textRed1,
+  },
+  NotPaid: {
+    icon: <RejectedIcon />,
+    title: 'Не оплачен',
     color: Color.textRed1,
   },
 }

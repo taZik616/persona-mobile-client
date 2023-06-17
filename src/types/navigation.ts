@@ -35,7 +35,10 @@ export type RootStackParamList = {
   subscriptions: undefined
   basket: undefined
   sizeChart: undefined
-  buy: undefined
+  buy: {
+    priceWithoutPersonalDiscount: number
+    priceWithPersonalDiscount: number
+  }
   fastBuy: {product: ProductInBasketI}
   giftCard: undefined
   allProducts?: ProductsParams & {

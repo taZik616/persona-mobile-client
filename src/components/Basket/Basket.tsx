@@ -1,16 +1,26 @@
 import React, {memo, useCallback, useState} from 'react'
 
+import {APP_API_URL} from '@env'
 import {FlashList} from '@shopify/flash-list'
+import axios, {AxiosError} from 'axios'
 
-import {cleanNumber, getProductsCountString} from 'src/helpers'
+import {
+  captureException,
+  cleanNumber,
+  getProductsCountString,
+} from 'src/helpers'
+import {useTypedNavigation} from 'src/hooks'
+import {vibration} from 'src/services/vibration'
 import {
   selectBasket,
   selectBasketPromocode,
   selectBasketSelectedIds,
+  store,
   useTypedDispatch,
   useTypedSelector,
 } from 'src/store'
 import {deselectBasketItem, selectBasketItem} from 'src/store/basketSlice'
+import {Color} from 'src/themes'
 import {ProductInBasketI, ProductPreviewInfo} from 'src/types'
 
 import {BasketCardWHM} from 'ui/cards/BasketCard'
@@ -19,6 +29,7 @@ import {
   Header,
   SafeLandscapeView,
   Spacer,
+  Text,
   ViewTogglerWHM,
 } from 'ui/index'
 
@@ -26,18 +37,12 @@ import {BasketListEmpty} from './BasketListEmpty'
 
 interface BasketProps {
   onPressPromoEntry?: () => void
-  onPressBuy?: () => void
   onPressBasketItem?: (item: ProductPreviewInfo) => void
   onPressRemovePromo?: () => void
 }
 
 export const Basket = memo(
-  ({
-    onPressBasketItem,
-    onPressBuy,
-    onPressRemovePromo,
-    onPressPromoEntry,
-  }: BasketProps) => {
+  ({onPressBasketItem, onPressRemovePromo, onPressPromoEntry}: BasketProps) => {
     const [filter, setFilter] = useState(options[0].value)
     const dispatch = useTypedDispatch()
     const items = useTypedSelector(selectBasket)
@@ -102,7 +107,7 @@ export const Basket = memo(
                   <></>
                 )}
                 <Spacer height={16} />
-                <BuyBtn onPress={onPressBuy} />
+                <BuyBtn />
                 <Spacer withBottomInsets height={28} />
               </SafeLandscapeView>
             ) : (
@@ -122,12 +127,64 @@ export const Basket = memo(
     )
   },
 )
-const BuyBtn = memo(({onPress}: {onPress?: () => void}) => {
+const BuyBtn = memo(() => {
   const disabled = useTypedSelector(selectBasketSelectedIds).length < 1
+  const {navigate} = useTypedNavigation()
+  const [purchaseError, setPurchaseError] = useState('')
+
+  const onPressBuy = async () => {
+    const {selectedItemIds, promocode} = store.getState().basket
+    const productVariantIds = selectedItemIds
+      .map(a => a.split('-')[1])
+      .join(',')
+    const token = store.getState().profile.authToken ?? ''
+    try {
+      const res = await axios.get(
+        `${APP_API_URL}/api/v1/order-personal-discount-calc`,
+        {
+          params: {
+            productVariantIds,
+            promocode,
+          },
+          headers: {Authorization: token ? `Token ${token}` : ''},
+        },
+      )
+      const {priceWithoutPersonalDiscount, priceWithPersonalDiscount} =
+        res.data || {}
+      if (priceWithoutPersonalDiscount && priceWithPersonalDiscount) {
+        vibration.success()
+        setPurchaseError('')
+        navigate('buy', {
+          priceWithoutPersonalDiscount,
+          priceWithPersonalDiscount,
+        })
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError
+        const errorMessage = (axiosError.response?.data as any)?.error
+        setPurchaseError(errorMessage)
+      } else {
+        captureException(error)
+      }
+    }
+  }
   return (
-    <Button disabled={disabled} onPress={onPress} gp5>
-      Купить
-    </Button>
+    <>
+      <Button disabled={disabled} onPress={onPressBuy} gp5>
+        Купить
+      </Button>
+      {purchaseError ? (
+        <>
+          <Spacer height={8} />
+          <Text color={Color.textRed1} gp1>
+            {purchaseError}
+          </Text>
+        </>
+      ) : (
+        <></>
+      )}
+    </>
   )
 })
 const WrappedHeader = memo(() => {

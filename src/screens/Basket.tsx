@@ -104,11 +104,7 @@ export const BasketScreen = () => {
   const onPressPromoEntry = useCallback(() => {
     promoCodeEntryRef.current?.open?.()
   }, [])
-  const onPressBuy = useCallback(() => {
-    const {selectedItemIds} = store.getState().basket
-    console.log('🚀 - selectedItemIds:', selectedItemIds)
-    navigate('buy')
-  }, [])
+
   const onPressRemovePromo = useCallback(() => {
     dispatch(setBasketPromocode(undefined))
   }, [])
@@ -116,7 +112,6 @@ export const BasketScreen = () => {
   return (
     <>
       <Basket
-        onPressBuy={onPressBuy}
         onPressPromoEntry={onPressPromoEntry}
         onPressBasketItem={onPressBasketItem}
         onPressRemovePromo={onPressRemovePromo}

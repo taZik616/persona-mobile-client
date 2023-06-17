@@ -1,17 +1,12 @@
 import {OrderingType} from 'src/store/shopApi'
 
 export interface OrderInfoInterface {
-  id: string
-  status: 'rejected' | 'progress' | 'completed'
-  totalPrice: number
-  items: OrderItemInterface[]
-}
-
-export interface OrderItemInterface {
-  productId: string
-  title: string
-  category: string
-  image: string
+  orderId: number
+  totalSum: number
+  status: 'NotPaid' | 'AlreadyPaid' | 'Mistaken' | 'Delivery' | 'Received'
+  orderSberId: number
+  address: string
+  productsInfo: ProductInBasketI[]
 }
 
 export interface BrandType {

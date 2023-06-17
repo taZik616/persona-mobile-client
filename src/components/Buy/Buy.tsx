@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {forwardRef, memo, useImperativeHandle, useState} from 'react'
 
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {ScrollView, StyleSheet, View} from 'react-native'
 
-import {useScreenBlockPortrait} from 'src/hooks'
-import {selectBasketSelectedItems, useTypedSelector} from 'src/store'
+import {useScreenBlockPortrait, useTypedRoute} from 'src/hooks'
+import {useDeliveryPriceQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 
 import {
@@ -13,85 +13,101 @@ import {
   SafeLandscapeView,
   Spacer,
   Text,
-  ViewToggler,
 } from 'ui/index'
 
 import {CostLine} from './CostLine'
 
 interface BuyProps {
-  onPressAddCard?: () => void
   onSubmit?: () => void
 }
 
-export const Buy = ({onPressAddCard, onSubmit}: BuyProps) => {
-  useScreenBlockPortrait()
-  const products = useTypedSelector(selectBasketSelectedItems)
+export const Buy = memo(
+  forwardRef<any, BuyProps>(({onSubmit}, ref) => {
+    useScreenBlockPortrait()
+    const {priceWithPersonalDiscount, priceWithoutPersonalDiscount} =
+      useTypedRoute<'buy'>().params
+    const [requestError, setRequestError] = useState('')
 
-  const orderPrice = products.reduce((acc, it) => acc + it.price, 0)
-  const deliveryPrice = 500
-  const discount = 200
-  const totalPrice = orderPrice + deliveryPrice - discount
+    useImperativeHandle(ref, () => ({
+      setRequestError,
+    }))
 
-  return (
-    <>
-      <Header title="Оформление" showBack hideSearch hideBasket />
-      <ScrollView style={styles.scrollContainer}>
-        <SafeLandscapeView safeArea>
-          <Spacer height={20} />
-          <ViewToggler options={options} />
-          <Spacer height={16} />
-          <FormTextInput placeholder="Адрес доставки" name="address" />
-          <Spacer height={16} />
-          <TouchableOpacity
+    const {currentData: deliveryPrice} = useDeliveryPriceQuery({})
+
+    return (
+      <>
+        <Header title="Оформление" showBack hideSearch hideBasket />
+        <ScrollView style={styles.scrollContainer}>
+          <SafeLandscapeView safeArea>
+            <Spacer height={20} />
+            {/* <ViewToggler options={options} /> */}
+            <Spacer height={16} />
+            <FormTextInput placeholder="Адрес доставки" name="address" />
+            <Spacer height={16} />
+            {requestError ? (
+              <Text color={Color.textRed1} gp1>
+                {requestError}
+              </Text>
+            ) : (
+              <></>
+            )}
+            {/* <TouchableOpacity
             onPress={onPressAddCard}
             style={styles.borderedContainer}>
             <Text numberOfLines={1} gp4>
               Добавить карту лояльности или подарочную карту
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          </SafeLandscapeView>
+        </ScrollView>
+        <SafeLandscapeView safeArea>
+          {deliveryPrice && <CostLine name="Доставка" cost={deliveryPrice} />}
+          <CostLine name="Итого" cost={priceWithoutPersonalDiscount} />
+          <CostLine
+            name="Скидка"
+            cost={priceWithoutPersonalDiscount - priceWithPersonalDiscount}
+          />
+          <CostLine
+            name="Итого к оплате"
+            cost={priceWithPersonalDiscount + (deliveryPrice || 0)}
+          />
+          <Spacer height={12} />
+          <View style={styles.flexRow}>
+            <Button onPress={onSubmit}>Оплатить по карте</Button>
+            {/* <Spacer width={16} />
+          <Button variant="outline">Another</Button> */}
+          </View>
         </SafeLandscapeView>
-      </ScrollView>
-      <SafeLandscapeView safeArea>
-        <CostLine name="Доставка" cost={deliveryPrice} />
-        <CostLine name="Итого" cost={orderPrice} />
-        <CostLine name="Скидка" cost={discount} />
-        <CostLine name="Итого к оплате" cost={totalPrice} />
-        <Spacer height={12} />
-        <View style={styles.flexRow}>
-          <Button onPress={onSubmit}>Банковская карта</Button>
-          <Spacer width={16} />
-          <Button variant="outline">Another</Button>
-        </View>
-      </SafeLandscapeView>
-      <Spacer withBottomInsets height={28} />
-    </>
-  )
-}
+        <Spacer withBottomInsets height={28} />
+      </>
+    )
+  }),
+)
 
-const options = [
-  {
-    value: 'delivery',
-    title: 'В наличии',
-  },
-  {
-    value: '?',
-    title: '?????',
-  },
-]
+// const options = [
+//   {
+//     value: 'delivery',
+//     title: 'В наличии',
+//   },
+//   {
+//     value: '?',
+//     title: '?????',
+//   },
+// ]
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
-  borderedContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderWidth: 1,
-    borderColor: Color.primaryGray,
-    borderRadius: 8,
-  },
+  // borderedContainer: {
+  //   flex: 1,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   padding: 16,
+  //   borderWidth: 1,
+  //   borderColor: Color.primaryGray,
+  //   borderRadius: 8,
+  // },
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',

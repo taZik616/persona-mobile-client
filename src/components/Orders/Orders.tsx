@@ -3,7 +3,10 @@ import React, {memo} from 'react'
 import {FlashList} from '@shopify/flash-list'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
-import {useGetOrdersQuery} from 'src/store/shopApi/shopApi'
+import {
+  useMyOrdersQuery,
+  useUpdateMyOrderStatusesMutation,
+} from 'src/store/shopApi/shopApi'
 import {OrderInfoInterface} from 'src/types'
 
 import {OrderCard} from 'ui/cards'
@@ -11,21 +14,27 @@ import {Header, Spacer} from 'ui/index'
 
 interface OrdersProps {
   onPressProductItem?: (productId: string) => void
-  onPressOrder?: (orderId: string) => void
-  orders?: OrderInfoInterface[]
+  onPressOrder?: (orderId: number) => void
 }
 
 export const Orders = memo(
-  ({onPressProductItem, orders, onPressOrder}: OrdersProps) => {
-    const data = useGetOrdersQuery({})
-    console.log('🚀 - data:', data.currentData)
+  ({onPressProductItem, onPressOrder}: OrdersProps) => {
+    const data = useMyOrdersQuery({})
+    const [updateStatuses, updateHelper] = useUpdateMyOrderStatusesMutation()
+    const orders = data.currentData as OrderInfoInterface[] | undefined
+
     return (
       <>
         <Header title="Ваши заказы" showBack hideSearch hideBasket />
         <FlashList
-          data={orders}
+          data={orders ?? []}
+          onRefresh={async () => {
+            await updateStatuses({})
+            data.refetch()
+          }}
+          refreshing={data.isLoading || updateHelper.isLoading}
           estimatedItemSize={250}
-          keyExtractor={it => it.id}
+          keyExtractor={it => String(it.orderId)}
           ListHeaderComponent={<Spacer height={20} />}
           ListFooterComponent={<Spacer withBottomInsets height={20} />}
           ItemSeparatorComponent={() => <Spacer height={12} />}

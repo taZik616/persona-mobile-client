@@ -4,6 +4,18 @@ export interface GetBrandsBody {
   isTop?: 'True' | 'False'
 }
 
+export interface CreateOrderBody {
+  productVariantIds: string
+  promocode?: string
+  address: string
+}
+
+export interface CreateFastOrderBody {
+  productVariantId: string
+  address: string
+  phoneNumber: string
+  name: string
+}
 export interface RecoveryPasswordSendCodeBody {
   phoneNumber: string
 }

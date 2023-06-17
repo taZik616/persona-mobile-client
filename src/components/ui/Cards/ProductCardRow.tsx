@@ -18,6 +18,7 @@ export const ProductCardRow = memo(
       images,
       variant: {size, colorHex},
       price,
+      discountPercent,
       brand,
       productName,
     } = item
@@ -46,7 +47,7 @@ export const ProductCardRow = memo(
         <View style={styles.infoRight}>
           <Spacer height={2} />
           <Text numberOfLines={2} right gp4>
-            {cleanNumber(price, ' ', 0)} ₽
+            {cleanNumber(price, ' ', 0, discountPercent)} ₽
           </Text>
           <Spacer height={2} />
           {colorHex && (

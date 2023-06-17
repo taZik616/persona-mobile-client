@@ -2,7 +2,7 @@ import React from 'react'
 
 import {LinkingOptions, NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {useColorScheme} from 'react-native'
+import {Linking, useColorScheme} from 'react-native'
 
 import {useAutoLogin} from 'src/hooks'
 import {navigator} from 'src/navigator'
@@ -121,4 +121,19 @@ export const App = () => {
 
 const LINKING: LinkingOptions<RootStackParamList> = {
   prefixes: ['personashop://'],
+  subscribe(listener) {
+    const sub = Linking.addEventListener('url', ({url}) => {
+      listener(url)
+      console.log('🚀 - url:', url)
+    })
+
+    return () => {
+      sub.remove()
+    }
+  },
+  config: {
+    screens: {
+      orders: 'orders',
+    },
+  },
 }

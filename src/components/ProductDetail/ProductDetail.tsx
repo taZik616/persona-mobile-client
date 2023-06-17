@@ -32,7 +32,6 @@ export const ProductDetail = memo(
   ({onPressFastBuy, onPressAddToBasket, ...item}: ProductDetailProps) => {
     const {
       images,
-      priceGroup,
       collection,
       brand,
       productName,
@@ -63,9 +62,9 @@ export const ProductDetail = memo(
           )}
           <Spacer height={8} />
           <SafeLandscapeView safeArea>
-            <Text center color={Color.primary} gp1>{`${priceGroup ?? ''}${
-              collection ? ' | ' + collection : ''
-            }`}</Text>
+            <Text center color={Color.primary} gp1>
+              {collection}
+            </Text>
             <Spacer height={8} />
             <View style={styles.row}>
               <Spacer width={24} />

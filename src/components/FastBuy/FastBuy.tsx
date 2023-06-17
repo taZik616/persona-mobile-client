@@ -4,6 +4,7 @@ import {useFormContext} from 'react-hook-form'
 import {ScrollView} from 'react-native'
 
 import {useTypedRoute} from 'src/hooks'
+import {useDeliveryPriceQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 
 import {ProductCardRow} from 'ui/cards'
@@ -17,6 +18,8 @@ import {
   Text,
 } from 'ui/index'
 
+import {CostLine} from '../Buy/CostLine'
+
 interface FastBuyProps {
   onSubmit?: () => void
 }
@@ -29,6 +32,7 @@ export const FastBuy = memo(
   forwardRef<FastBuyRefType, FastBuyProps>(({onSubmit}, ref) => {
     const {product} = useTypedRoute<'fastBuy'>().params
     const [error, setError] = useState('')
+    const {currentData: deliveryPrice} = useDeliveryPriceQuery({})
 
     const {
       formState: {isValid},
@@ -57,9 +61,28 @@ export const FastBuy = memo(
             <FormTextInput
               keyboardType="phone-pad"
               placeholder="Телефон"
+              nextField="address"
               name="telephone"
             />
             <Spacer height={16} />
+            <FormTextInput placeholder="Адрес" name="address" />
+            <Spacer height={16} />
+            {deliveryPrice && (
+              <>
+                <CostLine name="Доставка" cost={deliveryPrice} />
+                <CostLine
+                  name="Итого к оплате"
+                  cost={
+                    product.variant.price -
+                    (product.variant.price / 100) *
+                      (product.variant.discountPercent || 0) +
+                    (deliveryPrice || 0)
+                  }
+                />
+                <Spacer height={8} />
+              </>
+            )}
+
             <Button disabled={!isValid} onPress={onSubmit} gp5>
               Купить
             </Button>
