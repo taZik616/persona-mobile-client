@@ -56,7 +56,23 @@ export const basketSlice = createSlice({
       )
       state.counter = state.items.length
       state.productIds = getArrayOfField(state.items, 'productId')
-      state.selectedItemIds = state.selectedItemIds.filter(a => a !== productId)
+      state.selectedItemIds = state.selectedItemIds.filter(
+        a => a !== `${productId}-${variantId}`,
+      )
+    },
+    removeItemByIds: (
+      state,
+      action: PayloadAction<{productId: string; variantId: string}>,
+    ) => {
+      const {productId, variantId} = action.payload
+      state.items = state.items.filter(
+        it => it.productId !== productId && it.variant.uniqueId !== variantId,
+      )
+      state.counter = state.items.length
+      state.productIds = getArrayOfField(state.items, 'productId')
+      state.selectedItemIds = state.selectedItemIds.filter(
+        a => a !== `${productId}-${variantId}`,
+      )
     },
     selectItem: (state, action: PayloadAction<SelectionIds>) => {
       const {productId, variantId} = action.payload
@@ -81,7 +97,7 @@ export const basketSlice = createSlice({
   },
 })
 
-const {removeItem, addItem} = basketSlice.actions
+const {removeItem, addItem, removeItemByIds} = basketSlice.actions
 
 export const {
   setItems: setBasketItems,
@@ -152,7 +168,7 @@ export const loadItemsToBasket = async (dispatch: any) => {
   }
 }
 /**
- * Удалить элемент по productId из корзины
+ * Удалить элемент из корзины
  */
 export const removeItemFromBasket =
   (item: ProductInBasketI) => async (dispatch: any) => {
@@ -165,6 +181,22 @@ export const removeItemFromBasket =
       headers: {Authorization: token ? `Token ${token}` : ''},
     })
     dispatch(removeItem(item))
+  }
+
+/**
+ * Удалить элемент из корзины по selectedId
+ */
+export const removeItemFromBasketByIds =
+  (ids: string[]) => async (dispatch: any) => {
+    const token = store.getState().profile.authToken ?? ''
+    ids.forEach(id => {
+      const [productId, variantId] = id.split('-')
+      axios.delete(`${APP_API_URL}/api/v1/basket`, {
+        data: {productId, variantId},
+        headers: {Authorization: token ? `Token ${token}` : ''},
+      })
+      dispatch(removeItemByIds({productId, variantId}))
+    })
   }
 
 export const basketReducer = basketSlice.reducer

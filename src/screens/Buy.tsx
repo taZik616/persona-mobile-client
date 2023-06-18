@@ -6,8 +6,10 @@ import {Linking} from 'react-native'
 import * as yup from 'yup'
 
 import {Buy} from 'src/components/Buy'
+import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
-import {store} from 'src/store'
+import {store, useTypedDispatch} from 'src/store'
+import {removeItemFromBasketByIds} from 'src/store/basketSlice'
 import {useCreateOrderMutation} from 'src/store/shopApi'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
@@ -22,6 +24,8 @@ type AddressSchemaType = yup.InferType<typeof addressSchema>
 export const BuyScreen = () => {
   const [createOrder] = useCreateOrderMutation()
   const componentRef = useRef<any>(null)
+  const {navigate, ...nav} = useTypedNavigation()
+  const dispatch = useTypedDispatch()
 
   const form = useForm<AddressSchemaType>({
     mode: 'onChange',
@@ -33,6 +37,20 @@ export const BuyScreen = () => {
     const sub = Linking.addEventListener('url', ({url}) => {
       if (url.split('://')[1].includes('order-pay-failed')) {
         componentRef.current?.setRequestError('Оплата заказа не прошла')
+      } else if (url.split('://')[1].includes('order-pay-success')) {
+        const {selectedItemIds} = store.getState().basket
+        dispatch(removeItemFromBasketByIds(selectedItemIds))
+        nav.reset({
+          routes: [
+            {
+              name: 'home',
+              params: {
+                screen: 'homeProfile',
+              },
+            },
+          ],
+        })
+        navigate('orders')
       }
     })
     return sub.remove
