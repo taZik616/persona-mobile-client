@@ -1,12 +1,6 @@
 import React from 'react'
 
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import {ScrollView, StyleSheet, View} from 'react-native'
 
 import {
   selectDiscountCardInfo,
@@ -18,6 +12,7 @@ import {ProductPreviewInfo} from 'src/types'
 
 import {
   CartLightIcon,
+  GiftCardIcon,
   InfoLightIcon,
   MailLightIcon,
   ProfileLightIcon,
@@ -40,6 +35,7 @@ export type HomeProfileProps = {
   onPressPersonal?: () => void
   onPressOrders?: () => void
   onPressSubscription?: () => void
+  onPressMyGiftCards?: () => void
   onPressHelp?: () => void
   onPressRecentlyItem?: (item: ProductPreviewInfo) => void
   onPressRecoverPassword?: () => void
@@ -47,6 +43,7 @@ export type HomeProfileProps = {
 
 export const HomeProfile = ({
   onPressAddCard,
+  onPressMyGiftCards,
   onPressExit,
   onPressPersonal,
   onPressOrders,
@@ -96,7 +93,6 @@ export const HomeProfile = ({
             ) : (
               <></>
             )}
-
             <Spacer height={32} />
             <MenuButton
               onPress={onPressPersonal}
@@ -107,6 +103,11 @@ export const HomeProfile = ({
               onPress={onPressOrders}
               leftIcon={<CartLightIcon />}
               title="Ваши заказы"
+            />
+            <MenuButton
+              onPress={onPressMyGiftCards}
+              leftIcon={<GiftCardIcon />}
+              title="Ваши подарочные карты"
             />
             <MenuButton
               onPress={onPressSubscription}
@@ -140,20 +141,20 @@ export const HomeProfile = ({
 }
 
 const styles = StyleSheet.create({
-  addCardContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderWidth: 1,
-    borderColor: Color.primaryGray,
-    borderRadius: 8,
-  },
-  personaCardImage: {
-    width: 55,
-    height: 33,
-    borderRadius: 4,
-  },
+  // addCardContainer: {
+  //   flex: 1,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   padding: 16,
+  //   borderWidth: 1,
+  //   borderColor: Color.primaryGray,
+  //   borderRadius: 8,
+  // },
+  // personaCardImage: {
+  //   width: 55,
+  //   height: 33,
+  //   borderRadius: 4,
+  // },
   discountCardInfoBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',

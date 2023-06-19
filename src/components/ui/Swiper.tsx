@@ -5,6 +5,7 @@ import Animated, {
   Extrapolate,
   SharedValue,
   interpolate,
+  runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -25,6 +26,7 @@ interface SwiperProps {
   horizontalMargins?: number
   borderRadius?: number
   onPress?: (id: number) => void
+  onChangeImage?: (id: number) => void
   hasVibration?: boolean
 }
 
@@ -33,6 +35,7 @@ export const Swiper = memo(
     images,
     type = 'card-image',
     onPress,
+    onChangeImage,
     hasVibration,
     horizontalMargins = 24,
     borderRadius,
@@ -45,8 +48,12 @@ export const Swiper = memo(
     const activeWidth = width - horizontalMargins * 2
 
     const handleScroll = useAnimatedScrollHandler(event => {
+      const prevValue = Math.round(currentIndex.value)
       currentIndex.value =
         event.contentOffset.x / (activeWidth + horizontalMargins)
+      if (prevValue !== Math.round(currentIndex.value)) {
+        onChangeImage && runOnJS(onChangeImage)(Math.round(currentIndex.value))
+      }
     })
 
     useEffect(() => {

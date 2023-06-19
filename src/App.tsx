@@ -21,6 +21,7 @@ import {GiftCardScreen} from './screens/GiftCard'
 import {HelpScreen} from './screens/Help'
 import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
+import {MyGiftCardsScreen} from './screens/MyGiftCards'
 import {OrdersScreen} from './screens/Orders'
 import {PersonalScreen} from './screens/Personal'
 import {PersonalEditScreen} from './screens/PersonalEdit'
@@ -98,6 +99,7 @@ export const App = () => {
           <Stack.Screen name="fastBuy" component={FastBuyScreen} />
           <Stack.Screen name="giftCard" component={GiftCardScreen} />
           <Stack.Screen name="allProducts" component={AllProductsScreen} />
+          <Stack.Screen name="myGiftCards" component={MyGiftCardsScreen} />
           {__DEV__ ? (
             <>
               {/* @ts-ignore */}

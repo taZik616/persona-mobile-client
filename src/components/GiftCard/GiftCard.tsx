@@ -1,38 +1,42 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-import {APP_API_URL} from '@env'
 import {ScrollView} from 'react-native'
 
+import {useGiftCardTypesQuery} from 'src/store/shopApi'
 import {Color} from 'src/themes'
+import {GiftCardTypeI} from 'src/types'
 import {CARD_BORDER_RADIUS} from 'src/variables'
 
-import {
-  Button,
-  Header,
-  SafeLandscapeView,
-  Spacer,
-  Swiper,
-  Text,
-  ViewToggler,
-} from 'ui/index'
+import {Button, Header, SafeLandscapeView, Spacer, Swiper, Text} from 'ui/index'
 
 interface GiftCardProps {
   onPressSelectNominal?: () => void
+  onChangeCardType?: (id: number) => void
 }
 
-export const GiftCard = ({onPressSelectNominal}: GiftCardProps) => {
+export const GiftCard = ({
+  onPressSelectNominal,
+  onChangeCardType,
+}: GiftCardProps) => {
+  const cardTypes = useGiftCardTypesQuery({})
+  const [swiperIndex, setSwiperIndex] = useState(0)
+
+  const onChangeImage = (id: number) => {
+    setSwiperIndex(id)
+    onChangeCardType?.(id)
+  }
+
+  const data = cardTypes.currentData as GiftCardTypeI[]
+
   return (
     <>
       <Header showBack hideSearch />
       <ScrollView>
         <Spacer height={20} />
         <Swiper
+          onChangeImage={onChangeImage}
           borderRadius={CARD_BORDER_RADIUS}
-          images={[
-            `${APP_API_URL}/another_images/PersonaCard.jpg`,
-            `${APP_API_URL}/another_images/PersonaCard.jpg`,
-            `${APP_API_URL}/another_images/PersonaCard.jpg`,
-          ]}
+          images={data?.map(a => a.image) ?? []}
         />
         <SafeLandscapeView safeArea>
           <Spacer height={18} />
@@ -40,23 +44,19 @@ export const GiftCard = ({onPressSelectNominal}: GiftCardProps) => {
             ПОДАРОЧНАЯ КАРТА
           </Text>
           <Spacer height={4} />
-          <Text gp1 color={Color.primaryGray} center>
-            Классическая
-          </Text>
+          {data?.[swiperIndex] && (
+            <Text gp1 color={Color.primaryGray} center>
+              {data[swiperIndex].title}
+            </Text>
+          )}
+          {/* <Spacer height={16} />
+          <ViewToggler options={options} /> */}
           <Spacer height={16} />
-          <ViewToggler options={options} />
-          <Spacer height={16} />
-          <Text lineHeight={20} gp4>
-            Виртуальная карта Persona принимается к оплате как в
-            интернет-магазине, так и в Person’e. После внесения предоплаты на
-            ваш номер телефона придет sms с PIN-кодом, а на почту - письмо с
-            номером карты и штрих-кодом. Сразу после этого карту можно
-            использовать. Подарочная карта действует на все бренды кроме: Apple,
-            Chanel, S.T.Dupont, Dior, Fendi, Gucci, Prada, Miu Miu, Louis
-            Vuitton, также действие карты не распространяется на ювелирные
-            украшения и часы. Вы можете воспользоваться картой в течение года с
-            момента активации.
-          </Text>
+          {data?.[swiperIndex] && (
+            <Text lineHeight={20} gp4>
+              {data[swiperIndex].description}
+            </Text>
+          )}
           <Spacer height={16} />
           <Button onPress={onPressSelectNominal} gp5>
             Выбрать номинал карты
@@ -68,13 +68,13 @@ export const GiftCard = ({onPressSelectNominal}: GiftCardProps) => {
   )
 }
 
-const options = [
-  {
-    value: 'virtual',
-    title: 'Вирутальная',
-  },
-  {
-    value: 'plastic',
-    title: 'Пластиковая',
-  },
-]
+// const options = [
+//   {
+//     value: 'virtual',
+//     title: 'Вирутальная',
+//   },
+//   {
+//     value: 'plastic',
+//     title: 'Пластиковая',
+//   },
+// ]

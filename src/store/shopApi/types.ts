@@ -10,6 +10,11 @@ export interface CreateOrderBody {
   address: string
 }
 
+export interface MintGiftCardBody {
+  cardTypeId: number
+  amount: number
+}
+
 export interface CreateFastOrderBody {
   productVariantId: string
   address: string

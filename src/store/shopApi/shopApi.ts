@@ -13,6 +13,7 @@ import {
   GetBrandsBody,
   LoginBody,
   MightBeInterestedParams,
+  MintGiftCardBody,
   RecoveryPasswordCheckBody,
   RecoveryPasswordCompleteBody,
   RecoveryPasswordSendCodeBody,
@@ -49,10 +50,87 @@ export const shopApi = createApi({
         method: 'GET',
       }),
     }),
+    helpfulInfo: build.query({
+      query: (infoName: helpfulInfoKey) => ({
+        url: `info/${infoName}`,
+        method: 'GET',
+      }),
+    }),
+    mainContent: build.query({
+      query: (gender: 'men' | 'women') => ({
+        url: 'main-content',
+        method: 'GET',
+        params: {gender},
+      }),
+    }),
+    categories: build.query({
+      query: (params: CategoriesParams) => ({
+        url: 'categories',
+        method: 'GET',
+        params,
+      }),
+    }),
+    mightBeInterested: build.query({
+      query: (params: MightBeInterestedParams) => ({
+        url: 'might-be-interested',
+        method: 'GET',
+        params,
+      }),
+    }),
+    deliveryPrice: build.query({
+      query: () => ({
+        url: 'delivery-price',
+        method: 'GET',
+      }),
+    }),
+    myOrders: build.query({
+      query: () => ({
+        url: 'my-orders',
+        method: 'GET',
+      }),
+      transformResponse(orders: any) {
+        return orders
+          ?.map((order: any) => ({
+            ...order,
+            productsInfo: order.productsInfo.map(
+              ({product, ...other}: any) => ({
+                ...product,
+                ...other,
+              }),
+            ),
+          }))
+          .reverse()
+      },
+    }),
+    myGiftedCards: build.query({
+      query: () => ({
+        url: 'own-minted-gift-cards',
+        method: 'GET',
+      }),
+    }),
+    giftCardTypes: build.query({
+      query: () => ({
+        url: 'gift-card-types',
+        method: 'GET',
+      }),
+    }),
     createUserAndSendCode: build.mutation({
       query: (body: CreateUserAndSendCodeBody) => ({
         url: 'registry-send-code',
         method: 'PUT',
+        body,
+      }),
+    }),
+    updateMyGiftCardStatuses: build.mutation({
+      query: () => ({
+        url: 'update-my-gift-card-statuses',
+        method: 'POST',
+      }),
+    }),
+    mintGiftCard: build.mutation({
+      query: (body: MintGiftCardBody) => ({
+        url: 'mint-gift-card',
+        method: 'POST',
         body,
       }),
     }),
@@ -98,39 +176,6 @@ export const shopApi = createApi({
         body,
       }),
     }),
-    helpfulInfo: build.query({
-      query: (infoName: helpfulInfoKey) => ({
-        url: `info/${infoName}`,
-        method: 'GET',
-      }),
-    }),
-    mainContent: build.query({
-      query: (gender: 'men' | 'women') => ({
-        url: 'main-content',
-        method: 'GET',
-        params: {gender},
-      }),
-    }),
-    categories: build.query({
-      query: (params: CategoriesParams) => ({
-        url: 'categories',
-        method: 'GET',
-        params,
-      }),
-    }),
-    mightBeInterested: build.query({
-      query: (params: MightBeInterestedParams) => ({
-        url: 'might-be-interested',
-        method: 'GET',
-        params,
-      }),
-    }),
-    deliveryPrice: build.query({
-      query: () => ({
-        url: 'delivery-price',
-        method: 'GET',
-      }),
-    }),
     createOrder: build.mutation({
       query: (body: CreateOrderBody) => ({
         url: 'create-order',
@@ -144,25 +189,6 @@ export const shopApi = createApi({
         method: 'POST',
         body,
       }),
-    }),
-    myOrders: build.query({
-      query: () => ({
-        url: 'my-orders',
-        method: 'GET',
-      }),
-      transformResponse(orders: any) {
-        return orders
-          ?.map((order: any) => ({
-            ...order,
-            productsInfo: order.productsInfo.map(
-              ({product, ...other}: any) => ({
-                ...product,
-                ...other,
-              }),
-            ),
-          }))
-          .reverse()
-      },
     }),
     updateMyOrderStatuses: build.mutation({
       query: () => ({
@@ -190,6 +216,10 @@ export const {
   useMightBeInterestedQuery,
   useDeliveryPriceQuery,
   useMyOrdersQuery,
+  useMyGiftedCardsQuery,
+  useGiftCardTypesQuery,
+  useUpdateMyGiftCardStatusesMutation,
+  useMintGiftCardMutation,
   useRecoveryPasswordCheckMutation,
   useRecoveryPasswordCompleteMutation,
   useLoginMutation,

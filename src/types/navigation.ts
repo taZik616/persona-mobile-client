@@ -46,6 +46,7 @@ export type RootStackParamList = {
     showCategoriesFilter?: boolean
     showFilter?: boolean
   }
+  myGiftCards: undefined
 }
 
 export type CatalogStackParamList = {

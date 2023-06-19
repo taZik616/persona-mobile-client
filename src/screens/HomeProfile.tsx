@@ -15,6 +15,7 @@ export const HomeProfileScreen = () => {
   const onPressPersonal = () => navigate('personal')
   const onPressRecoverPassword = () => navigate('recoveryPasswordEnterPhone')
   const onPressOrders = () => navigate('orders')
+  const onPressMyGiftCards = () => navigate('myGiftCards')
   const onPressSubscription = () => navigate('subscriptions')
   const onPressRecentlyItem = (product: ProductPreviewInfo) =>
     navigate('productDetail', {product, productId: product.productId})
@@ -25,6 +26,7 @@ export const HomeProfileScreen = () => {
   return (
     <HomeProfile
       onPressExit={onPressExit}
+      onPressMyGiftCards={onPressMyGiftCards}
       onPressRecentlyItem={onPressRecentlyItem}
       onPressPersonal={onPressPersonal}
       onPressHelp={onPressHelp}

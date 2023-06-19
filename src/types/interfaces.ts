@@ -18,6 +18,21 @@ export interface BrandType {
   isTop: boolean
 }
 
+export interface GiftCardTypeI {
+  id: number
+  image: string
+  title: string
+  description: string
+  amountVariants: number[]
+}
+
+export interface GiftCardInterface {
+  balance: number
+  cardType: GiftCardTypeI
+  promocode: string
+  isActive: boolean
+}
+
 export interface CategoryType {
   categoryId: number
   name: string
