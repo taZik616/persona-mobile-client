@@ -48,6 +48,7 @@ export const ChangePasswordScreen = () => {
             vibration.error()
             changePasswordRef.current?.setError('Пароли не совпадают')
           } else {
+            changePasswordRef.current?.setIsLoading(true)
             const error = await updateUserPassword(currentPassword, newPassword)
             if (error) {
               vibration.error()
@@ -56,6 +57,7 @@ export const ChangePasswordScreen = () => {
               vibration.success()
               goBack()
             }
+            changePasswordRef.current?.setIsLoading(false)
           }
         },
         (error: any) => {

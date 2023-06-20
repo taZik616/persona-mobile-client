@@ -28,8 +28,10 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
   const enterPhoneRef = useRef<any>()
   const otpRef = useRef<OTPModalRefType>(null)
 
-  const [sendCode] = useRecoveryPasswordSendCodeMutation()
-  const [checkCode] = useRecoveryPasswordCheckMutation()
+  const [sendCode, {isLoading: isLoadingSendCode}] =
+    useRecoveryPasswordSendCodeMutation()
+  const [checkCode, {isLoading: isLoadingCheckCode}] =
+    useRecoveryPasswordCheckMutation()
 
   const {phoneNumber: profilePhoneNumber} = useTypedSelector(selectProfile)
 
@@ -119,11 +121,13 @@ export const RecoveryPasswordEnterPhoneScreen = () => {
       <FormProvider {...form}>
         <RecoveryPasswordEnterPhone
           ref={enterPhoneRef}
+          isLoading={isLoadingSendCode}
           disablePhoneInput={!!profilePhoneNumber}
           onSubmit={onSubmitForm}
         />
       </FormProvider>
       <OTPModal
+        isLoading={isLoadingCheckCode}
         onSubmit={submitOtpCode}
         sendVerifySms={resendCode}
         onCloseModal={onCloseModal}

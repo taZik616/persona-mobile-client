@@ -1,7 +1,15 @@
 import React from 'react'
 
-import {StyleProp, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native'
+import {
+  ActivityIndicator,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
 
+import {hexColorWithOpacity} from 'src/helpers'
 import {Color} from 'src/themes'
 
 import {Spacer, Text} from 'ui/index'
@@ -16,6 +24,7 @@ interface ButtonT {
   onPress?: () => void
   gp4?: boolean
   gp5?: boolean
+  isLoading?: boolean
 }
 /**
  * @param gp4 - fontSize: 13
@@ -31,33 +40,45 @@ export const Button = ({
   onPress,
   rightIcon,
   disabled,
+  isLoading,
 }: ButtonT) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.6}
-      disabled={disabled}
+      disabled={isLoading || disabled}
       style={[
         styles.container,
         styles[variant],
         fullWidth ? styles.widthFull : styles.flexOne,
         disabled && styles.disabled,
+        isLoading && styles[`${variant}_loading`],
         style,
       ]}>
-      <Text
-        gp4={gp4 && !gp5}
-        gp5={gp5}
-        center
-        numberOfLines={2}
-        color={
-          variant === 'outline'
-            ? Color.primaryBlack
-            : variant === 'secondaryFilled'
-            ? Color.primaryBlack
-            : Color.white
-        }>
-        {children}
-      </Text>
+      {isLoading ? (
+        <View style={styles.centered}>
+          <ActivityIndicator
+            style={{transform: [{scale: 1.25}]}}
+            size="small"
+            color={Color.white}
+          />
+        </View>
+      ) : (
+        <Text
+          gp4={gp4 && !gp5}
+          gp5={gp5}
+          center
+          numberOfLines={2}
+          color={
+            variant === 'outline'
+              ? Color.primaryBlack
+              : variant === 'secondaryFilled'
+              ? Color.primaryBlack
+              : Color.white
+          }>
+          {children}
+        </Text>
+      )}
       {rightIcon ? (
         <>
           <Spacer width={8} />
@@ -70,9 +91,10 @@ export const Button = ({
   )
 }
 
+const BTN_H = 55
 const styles = StyleSheet.create({
   container: {
-    height: 55,
+    height: BTN_H,
     borderRadius: 10,
     paddingHorizontal: 18,
     alignItems: 'center',
@@ -90,15 +112,33 @@ const styles = StyleSheet.create({
     backgroundColor: Color.secondaryGray,
   },
   // eslint-disable-next-line react-native/no-unused-styles
+  secondaryFilled_loading: {
+    backgroundColor: hexColorWithOpacity(Color.secondaryGray, 0.7),
+  },
+  // eslint-disable-next-line react-native/no-unused-styles
   filled: {
     backgroundColor: Color.primary,
+  },
+  // eslint-disable-next-line react-native/no-unused-styles
+  filled_loading: {
+    backgroundColor: hexColorWithOpacity(Color.primary, 0.7),
   },
   // eslint-disable-next-line react-native/no-unused-styles
   outline: {
     borderColor: Color.primaryBlack,
     borderWidth: 1,
   },
+  // eslint-disable-next-line react-native/no-unused-styles
+  outline_loading: {
+    borderColor: hexColorWithOpacity(Color.primaryBlack, 0.8),
+  },
   disabled: {
     opacity: 0.6,
+  },
+  centered: {
+    height: BTN_H,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

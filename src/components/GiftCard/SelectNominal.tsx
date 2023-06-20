@@ -18,6 +18,7 @@ import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface SelectNominalProps {
   onSubmit?: (cost: number) => void
+  isLoading?: boolean
 }
 
 export interface SelectNominalRefType {
@@ -29,53 +30,58 @@ export interface SelectNominalRefType {
 }
 
 export const SelectNominal = memo(
-  forwardRef<SelectNominalRefType, SelectNominalProps>(({onSubmit}, ref) => {
-    const bottomSheetRef = useRef<BottomSheetRefType>(null)
-    const [amountVariants, setAmountVariants] = useState<number[]>([])
-    const [requestError, setRequestError] = useState('')
+  forwardRef<SelectNominalRefType, SelectNominalProps>(
+    ({onSubmit, isLoading}, ref) => {
+      const bottomSheetRef = useRef<BottomSheetRefType>(null)
+      const [amountVariants, setAmountVariants] = useState<number[]>([])
+      const [requestError, setRequestError] = useState('')
 
-    useImperativeHandle(ref, () => ({
-      open: bottomSheetRef.current?.open,
-      close: bottomSheetRef.current?.close,
-      setAmountVariants,
-      setRequestError,
-      amountVariants,
-    }))
+      useImperativeHandle(ref, () => ({
+        open: bottomSheetRef.current?.open,
+        close: bottomSheetRef.current?.close,
+        setAmountVariants,
+        setRequestError,
+        amountVariants,
+      }))
 
-    const content = useMemo(() => {
+      const content = useMemo(() => {
+        return (
+          <Content
+            isLoading={isLoading}
+            requestError={requestError}
+            amountVariants={amountVariants}
+            onSubmit={onSubmit}
+          />
+        )
+      }, [onSubmit, requestError, amountVariants, isLoading])
+
       return (
-        <Content
-          requestError={requestError}
-          amountVariants={amountVariants}
-          onSubmit={onSubmit}
-        />
+        <BottomSheet
+          hasBottomTabs={false}
+          title="ТИП ПОДАРОЧНОЙ КАРТЫ"
+          closeDistance={100}
+          showClose
+          keyboardInsets={38}
+          ref={bottomSheetRef}>
+          {content}
+        </BottomSheet>
       )
-    }, [onSubmit, requestError, amountVariants])
-
-    return (
-      <BottomSheet
-        hasBottomTabs={false}
-        title="ТИП ПОДАРОЧНОЙ КАРТЫ"
-        closeDistance={100}
-        showClose
-        keyboardInsets={38}
-        ref={bottomSheetRef}>
-        {content}
-      </BottomSheet>
-    )
-  }),
+    },
+  ),
 )
 
 interface SelectNominalContentProps {
   onSubmit?: (cost: number) => void
   amountVariants: number[]
   requestError: string
+  isLoading?: boolean
 }
 
 const Content = ({
   onSubmit,
   requestError,
   amountVariants,
+  isLoading,
 }: SelectNominalContentProps) => {
   const [cost, setCost] = useState(amountVariants[0])
   // const [count, setCount] = useState(countVariants[0])
@@ -135,7 +141,7 @@ const Content = ({
         </>
       )}
       <Spacer height={16} />
-      <Button gp5 onPress={() => onSubmit?.(cost)}>
+      <Button isLoading={isLoading} gp5 onPress={() => onSubmit?.(cost)}>
         Продолжить
       </Button>
       <Spacer withBottomInsets height={56} />

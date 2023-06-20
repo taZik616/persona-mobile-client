@@ -23,12 +23,15 @@ export interface PromoCodeEntryRefType {
   open?: () => void
   close?: () => void
   setError: (err: string) => void
+  setIsLoading: (loading: boolean) => void
+  isLoading?: boolean
 }
 
 export const PromoCodeEntry = memo(
   forwardRef<PromoCodeEntryRefType, PromoCodeEntryProps>(({onSubmit}, ref) => {
     const bottomSheetRef = useRef<BottomSheetRefType>(null)
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const {
       formState: {isValid},
@@ -37,7 +40,8 @@ export const PromoCodeEntry = memo(
     useImperativeHandle(ref, () => ({
       open: bottomSheetRef.current?.open,
       close: bottomSheetRef.current?.close,
-      setError: (err: string) => setError(err),
+      setError,
+      setIsLoading,
     }))
 
     const content = useMemo(() => {
@@ -54,13 +58,17 @@ export const PromoCodeEntry = memo(
             <></>
           )}
           <Spacer height={16} />
-          <Button disabled={!isValid} gp5 onPress={onSubmit}>
+          <Button
+            isLoading={isLoading}
+            disabled={!isValid}
+            gp5
+            onPress={onSubmit}>
             Продолжить
           </Button>
           <Spacer withBottomInsets height={56} />
         </SafeLandscapeView>
       )
-    }, [onSubmit, isValid, error])
+    }, [onSubmit, isValid, error, isLoading])
 
     return (
       <BottomSheet

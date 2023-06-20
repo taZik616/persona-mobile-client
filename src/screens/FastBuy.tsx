@@ -33,7 +33,7 @@ export const FastBuyScreen = () => {
   })
   const {navigate} = useTypedNavigation()
 
-  const [createFastOrder] = useCreateFastOrderMutation()
+  const [createFastOrder, {isLoading}] = useCreateFastOrderMutation()
   const {product} = useTypedRoute<'fastBuy'>().params
 
   const onSubmit = useMemo(
@@ -74,7 +74,7 @@ export const FastBuyScreen = () => {
 
   return (
     <FormProvider {...form}>
-      <FastBuy ref={fastBuyRef} onSubmit={onSubmit} />
+      <FastBuy isLoading={isLoading} ref={fastBuyRef} onSubmit={onSubmit} />
     </FormProvider>
   )
 }

@@ -22,12 +22,14 @@ interface ChangePasswordProps {
 
 export const ChangePassword = forwardRef<any, ChangePasswordProps>(
   ({onPressRecovery, onSubmit}, ref) => {
+    const [isLoading, setIsLoading] = useState(false)
     const {
       formState: {isValid},
     } = useFormContext()
     const [error, setError] = useState('')
     useImperativeHandle(ref, () => ({
       setError,
+      setIsLoading,
     }))
 
     return (
@@ -78,7 +80,11 @@ export const ChangePassword = forwardRef<any, ChangePasswordProps>(
                 </>
               )}
               <Spacer height={16} />
-              <Button gp5 disabled={!isValid} onPress={onSubmit}>
+              <Button
+                isLoading={isLoading}
+                gp5
+                disabled={!isValid}
+                onPress={onSubmit}>
                 Изменить
               </Button>
               <Spacer height={20} withBottomInsets />

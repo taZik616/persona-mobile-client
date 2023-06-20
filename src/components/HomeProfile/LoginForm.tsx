@@ -24,60 +24,64 @@ export type LoginFormType = yup.InferType<typeof loginSchema>
 interface LoginFormProps {
   requestError?: string
   onSubmit?: (formData: LoginFormType) => void
+  isLoading?: boolean
 }
 
-export const LoginForm = memo(({onSubmit, requestError}: LoginFormProps) => {
-  const form = useForm<LoginFormType>({
-    resolver: yupResolver(loginSchema),
-    defaultValues: {
-      telephone: __DEV__ ? TELEPHONE_FAST_DEV_LOGIN : undefined,
-      password: __DEV__ ? PASSWORD_FAST_DEV_LOGIN : undefined,
-    },
-  })
-  const onSubmitForm = async (data: LoginFormType) => {
-    onSubmit?.(data)
-  }
-  const onInvalid = async (e: any) => {
-    vibration.error()
-    console.log('😭 - error:', e)
-  }
+export const LoginForm = memo(
+  ({onSubmit, isLoading, requestError}: LoginFormProps) => {
+    const form = useForm<LoginFormType>({
+      resolver: yupResolver(loginSchema),
+      defaultValues: {
+        telephone: __DEV__ ? TELEPHONE_FAST_DEV_LOGIN : undefined,
+        password: __DEV__ ? PASSWORD_FAST_DEV_LOGIN : undefined,
+      },
+    })
+    const onSubmitForm = async (data: LoginFormType) => {
+      onSubmit?.(data)
+    }
+    const onInvalid = async (e: any) => {
+      vibration.error()
+      console.log('😭 - error:', e)
+    }
 
-  return (
-    <Animated.View
-      entering={FadeIn}
-      exiting={FadeOut}
-      style={[styles.formContainer]}>
-      <FormProvider {...form}>
-        <FormTextInput
-          name="telephone"
-          keyboardType="phone-pad"
-          placeholder="Номер телефона"
-        />
-        <Spacer height={16} />
-        <FormTextInput
-          name="password"
-          autoCorrect={false}
-          placeholder="Пароль"
-        />
-        <Spacer height={16} />
-        <Button
-          gp5
-          fullWidth
-          onPress={form.handleSubmit(onSubmitForm, onInvalid)}>
-          Войти
-        </Button>
-        {requestError && (
-          <>
-            <Spacer height={8} />
-            <Text gp1 center style={styles.errorText} color={Color.textRed1}>
-              {requestError}
-            </Text>
-          </>
-        )}
-      </FormProvider>
-    </Animated.View>
-  )
-})
+    return (
+      <Animated.View
+        entering={FadeIn}
+        exiting={FadeOut}
+        style={[styles.formContainer]}>
+        <FormProvider {...form}>
+          <FormTextInput
+            name="telephone"
+            keyboardType="phone-pad"
+            placeholder="Номер телефона"
+          />
+          <Spacer height={16} />
+          <FormTextInput
+            name="password"
+            autoCorrect={false}
+            placeholder="Пароль"
+          />
+          <Spacer height={16} />
+          <Button
+            gp5
+            isLoading={isLoading}
+            fullWidth
+            onPress={form.handleSubmit(onSubmitForm, onInvalid)}>
+            Войти
+          </Button>
+          {requestError && (
+            <>
+              <Spacer height={8} />
+              <Text gp1 center style={styles.errorText} color={Color.textRed1}>
+                {requestError}
+              </Text>
+            </>
+          )}
+        </FormProvider>
+      </Animated.View>
+    )
+  },
+)
 
 const styles = StyleSheet.create({
   formContainer: {

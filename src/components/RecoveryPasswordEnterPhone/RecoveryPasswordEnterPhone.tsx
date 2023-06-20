@@ -19,12 +19,13 @@ import {
 interface RecoveryPasswordEnterPhoneProps {
   onSubmit?: () => void
   disablePhoneInput?: boolean
+  isLoading?: boolean
 }
 
 export const RecoveryPasswordEnterPhone = forwardRef<
   any,
   RecoveryPasswordEnterPhoneProps
->(({onSubmit, disablePhoneInput}, ref) => {
+>(({onSubmit, isLoading, disablePhoneInput}, ref) => {
   const {
     formState: {isValid},
   } = useFormContext()
@@ -53,7 +54,11 @@ export const RecoveryPasswordEnterPhone = forwardRef<
               name="phoneNumber"
             />
             <Spacer height={16} />
-            <Button gp5 disabled={!isValid} onPress={onSubmit}>
+            <Button
+              isLoading={isLoading}
+              gp5
+              disabled={!isValid}
+              onPress={onSubmit}>
               Продолжить
             </Button>
             {error && (

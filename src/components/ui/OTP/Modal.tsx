@@ -25,6 +25,7 @@ interface OTPModalProps {
   onCloseModal?: () => void
   sendVerifySms?: (phone: string) => () => void
   onSubmit?: (code: string, phone: string) => void
+  isLoading?: boolean
 }
 
 export interface OTPModalRefType {
@@ -39,7 +40,7 @@ export interface OTPModalRefType {
 
 export const OTPModal = memo(
   forwardRef<OTPModalRefType, OTPModalProps>(
-    ({onCloseModal, sendVerifySms, onSubmit}, ref) => {
+    ({onCloseModal, isLoading, sendVerifySms, onSubmit}, ref) => {
       const [otpCode, setOtpCode] = useState('')
       const [phone, setPhone] = useState('')
       const [textInfo, setTextInfo] = useState<string | undefined>(undefined)
@@ -114,7 +115,10 @@ export const OTPModal = memo(
                       <Spacer height={16} />
                     </>
                   )}
-                  <Button gp5 onPress={() => onSubmit?.(otpCode, phone)}>
+                  <Button
+                    isLoading={isLoading}
+                    gp5
+                    onPress={() => onSubmit?.(otpCode, phone)}>
                     Подтвердить
                   </Button>
                   <Spacer height={16} />

@@ -22,6 +22,7 @@ import {CostLine} from '../Buy/CostLine'
 
 interface FastBuyProps {
   onSubmit?: () => void
+  isLoading?: boolean
 }
 
 export interface FastBuyRefType {
@@ -29,7 +30,7 @@ export interface FastBuyRefType {
 }
 
 export const FastBuy = memo(
-  forwardRef<FastBuyRefType, FastBuyProps>(({onSubmit}, ref) => {
+  forwardRef<FastBuyRefType, FastBuyProps>(({onSubmit, isLoading}, ref) => {
     const {product} = useTypedRoute<'fastBuy'>().params
     const [error, setError] = useState('')
     const {currentData: deliveryPrice} = useDeliveryPriceQuery({})
@@ -83,7 +84,11 @@ export const FastBuy = memo(
               </>
             )}
 
-            <Button disabled={!isValid} onPress={onSubmit} gp5>
+            <Button
+              isLoading={isLoading}
+              disabled={!isValid}
+              onPress={onSubmit}
+              gp5>
               Купить
             </Button>
             <Spacer height={8} />

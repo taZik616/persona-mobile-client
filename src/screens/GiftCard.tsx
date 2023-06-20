@@ -18,7 +18,7 @@ export const GiftCardScreen = () => {
   }
   const cardTypeId = useRef(0)
   const cardTypes = useGiftCardTypesQuery({})
-  const [mintGiftCard] = useMintGiftCardMutation()
+  const [mintGiftCard, {isLoading}] = useMintGiftCardMutation()
   const {navigate} = useTypedNavigation()
 
   useEffect(() => {
@@ -66,7 +66,11 @@ export const GiftCardScreen = () => {
         onChangeCardType={onChangeCardType}
         onPressSelectNominal={onPressSelectNominal}
       />
-      <SelectNominal onSubmit={onContinue} ref={selectNominalRef} />
+      <SelectNominal
+        isLoading={isLoading}
+        onSubmit={onContinue}
+        ref={selectNominalRef}
+      />
     </>
   )
 }

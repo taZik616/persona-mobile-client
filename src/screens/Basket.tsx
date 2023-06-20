@@ -65,6 +65,7 @@ export const BasketScreen = () => {
           try {
             const {items} = store.getState().basket
             const token = store.getState().profile.authToken ?? ''
+            promoCodeEntryRef.current?.setIsLoading(true)
             const res = await axios.get(
               `${APP_API_URL}/api/v1/order-personal-discount-calc`,
               {
@@ -93,6 +94,7 @@ export const BasketScreen = () => {
               captureException(error)
             }
           }
+          promoCodeEntryRef.current?.setIsLoading(false)
         },
         (error: any) => {
           vibration.error()

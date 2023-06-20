@@ -42,9 +42,10 @@ export const HomeAuth = ({
   const [requestError, setRequestError] = useState('')
 
   const otpModalRef = useRef<OTPModalRefType>(null)
-  const [createUserSendCode] = useCreateUserAndSendCodeMutation()
+  const [createUserSendCode, {isLoading: isRegistryLoading}] =
+    useCreateUserAndSendCodeMutation()
   const [resendRegistryCode] = useResendRegistryCodeMutation()
-  const [login] = useLoginMutation()
+  const [login, {isLoading: isLoginLoading}] = useLoginMutation()
 
   const dispatch = useTypedDispatch()
 
@@ -164,11 +165,16 @@ export const HomeAuth = ({
         <SafeLandscapeView center safeArea>
           {authOption === 'registry' ? (
             <RegistryForm
+              isLoading={isRegistryLoading}
               requestError={requestError}
               onSubmit={onRegistryStartVerification}
             />
           ) : (
-            <LoginForm requestError={requestError} onSubmit={onLogin} />
+            <LoginForm
+              isLoading={isLoginLoading}
+              requestError={requestError}
+              onSubmit={onLogin}
+            />
           )}
           <Spacer height={16} />
           <Animated.View
@@ -201,6 +207,7 @@ export const HomeAuth = ({
         <Spacer height={20} />
       </ScrollView>
       <OTPModal
+        isLoading={isLoginLoading}
         ref={otpModalRef}
         sendVerifySms={resendVerifySms}
         onSubmit={onRegistryCheckOtp}

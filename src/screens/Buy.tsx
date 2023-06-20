@@ -20,7 +20,7 @@ const addressSchema = yup
 type AddressSchemaType = yup.InferType<typeof addressSchema>
 
 export const BuyScreen = () => {
-  const [createOrder] = useCreateOrderMutation()
+  const [createOrder, {isLoading}] = useCreateOrderMutation()
   const componentRef = useRef<any>(null)
   const {navigate} = useTypedNavigation()
   const form = useForm<AddressSchemaType>({
@@ -68,7 +68,7 @@ export const BuyScreen = () => {
 
   return (
     <FormProvider {...form}>
-      <Buy ref={componentRef} onSubmit={onSubmit} />
+      <Buy isLoading={isLoading} ref={componentRef} onSubmit={onSubmit} />
     </FormProvider>
   )
 }

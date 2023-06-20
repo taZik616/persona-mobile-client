@@ -35,13 +35,15 @@ export type RegistryFormType = yup.InferType<typeof registrySchema>
 interface RegistryFormProps {
   requestError?: string
   onSubmit?: (formData: RegistryFormType) => void
+  isLoading?: boolean
 }
 
 export const RegistryForm = memo(
-  ({onSubmit, requestError}: RegistryFormProps) => {
+  ({onSubmit, isLoading, requestError}: RegistryFormProps) => {
     const form = useForm<RegistryFormType>({
       resolver: yupResolver(registrySchema),
     })
+
     const onSubmitForm = async (data: RegistryFormType) => {
       onSubmit?.(data)
     }
@@ -76,6 +78,7 @@ export const RegistryForm = memo(
           <Spacer height={16} />
           <Button
             gp5
+            isLoading={isLoading}
             fullWidth
             onPress={form.handleSubmit(onSubmitForm, onInvalid)}>
             Подтвердить телефон

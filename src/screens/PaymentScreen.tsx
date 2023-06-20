@@ -9,7 +9,7 @@ import {removeItemFromBasketByIds} from 'src/store/basketSlice'
 import {useUpdateAndCheckOrderStatusMutation} from 'src/store/shopApi'
 import {Color} from 'src/themes'
 
-import {Header, Text} from 'ui/index'
+import {Header, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 export const PaymentScreen = () => {
   const {formUrl, orderFastBuyId} = useTypedRoute<'payment'>().params
@@ -80,9 +80,12 @@ export const PaymentScreen = () => {
         onNavigationStateChange={handleWebViewNavigationStateChange}
       />
       {requestError && (
-        <Text gp1 center color={Color.textRed1}>
-          {requestError}
-        </Text>
+        <SafeLandscapeView safeArea={true}>
+          <Text gp5 center color={Color.textRed1}>
+            {requestError}
+          </Text>
+          <Spacer height={30} withBottomInsets />
+        </SafeLandscapeView>
       )}
     </>
   )

@@ -19,10 +19,11 @@ import {CostLine} from './CostLine'
 
 interface BuyProps {
   onSubmit?: () => void
+  isLoading?: boolean
 }
 
 export const Buy = memo(
-  forwardRef<any, BuyProps>(({onSubmit}, ref) => {
+  forwardRef<any, BuyProps>(({onSubmit, isLoading}, ref) => {
     useScreenBlockPortrait()
     const {priceWithPersonalDiscount, priceWithoutPersonalDiscount} =
       useTypedRoute<'buy'>().params
@@ -73,7 +74,9 @@ export const Buy = memo(
           />
           <Spacer height={12} />
           <View style={styles.flexRow}>
-            <Button onPress={onSubmit}>Оплатить по карте</Button>
+            <Button isLoading={isLoading} onPress={onSubmit}>
+              Оплатить по карте
+            </Button>
             {/* <Spacer width={16} />
           <Button variant="outline">Another</Button> */}
           </View>

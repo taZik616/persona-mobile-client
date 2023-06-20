@@ -1,4 +1,4 @@
-![PERSONA women](http://89.108.71.146:8000/another_images/pwoman.png)
+![PERSONA women](http://89.108.71.146:2006/media/another-images/pwoman.png)
 
 #### Адрес: РФ, РТ,г.Набережные Челны, проспект Хасана Туфана, д. 29В(14/05В)
 
@@ -16,7 +16,7 @@
 
 ---
 
-![PERSONA men](http://89.108.71.146:8000/another_images/pman.png)
+![PERSONA men](http://89.108.71.146:2006/media/another-images/pman.png)
 
 #### Адрес: РФ, РТ, г. Набережные Челны, пр-кт Хасана Туфана, д 26.
 
@@ -28,7 +28,7 @@
 
 ---
 
-![PERSONA outlet](http://89.108.71.146:8000/another_images/poutlet.png)
+![PERSONA outlet](http://89.108.71.146:2006/media/another-images/poutlet.png)
 
 #### Адрес: РФ, РТ, г. Набережные Челны, Пр-кт Чулман, д 89/57
 
