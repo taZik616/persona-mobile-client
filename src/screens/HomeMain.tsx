@@ -24,14 +24,22 @@ export const HomeMainScreen = () => {
         case MainContentItemType.BrandsList:
         case MainContentItemType.BrandsSwiper:
           if (item.queryFilters?.gender) {
-            navigate('allProducts', {...item.queryFilters, genderIgnore: true})
+            navigate('allProducts', {
+              ...item.queryFilters,
+              hideGenderSelect: true,
+              genderIgnore: true,
+            })
           } else {
             navigate('allProducts', item.queryFilters)
           }
           break
         case MainContentItemType.CategoriesList:
           if (item.queryFilters?.gender) {
-            navigate('allProducts', {...item.queryFilters, genderIgnore: true})
+            navigate('allProducts', {
+              ...item.queryFilters,
+              hideGenderSelect: true,
+              genderIgnore: true,
+            })
           } else {
             navigate('allProducts', item.queryFilters)
           }

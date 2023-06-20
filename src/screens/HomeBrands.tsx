@@ -12,7 +12,7 @@ export const HomeBrandsScreen = () => {
   const {navigate} = useTypedNavigation()
 
   const onSelectBrand = useCallback((brandIds: string) => {
-    navigate('allProducts', {brandIds, genderIgnore: true})
+    navigate('allProducts', {brandIds, hideGenderSelect: true})
     brandSearchingRef.current?.close?.()
     brandSearchingRef.current?.cleanSelections()
   }, [])

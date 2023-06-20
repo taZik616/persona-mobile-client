@@ -15,6 +15,7 @@ export const AllProducts = memo(({onPressProduct}: AllProductsProps) => {
   const dispatch = useTypedDispatch()
   const listRef = useRef<ProductListRef>(null)
   const {
+    hideGenderSelect,
     genderIgnore,
     showCategoriesFilter,
     showFilter,
@@ -35,7 +36,7 @@ export const AllProducts = memo(({onPressProduct}: AllProductsProps) => {
   return (
     <>
       <Header showBack onSearchSubmit={onChangeSearch} />
-      {!genderIgnore ? (
+      {!hideGenderSelect ? (
         <>
           <SelectorTwoOptionsGender />
           <Spacer height={8} />
@@ -47,7 +48,7 @@ export const AllProducts = memo(({onPressProduct}: AllProductsProps) => {
         {...queryParams}
         ref={listRef}
         showCategoriesFilter={showCategoriesFilter ?? true}
-        genderIgnore
+        genderIgnore={genderIgnore}
         showCounter
         onPressProduct={onPressProduct}
         showFilter={showFilter}

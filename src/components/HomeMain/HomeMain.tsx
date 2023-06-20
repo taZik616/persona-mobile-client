@@ -48,7 +48,7 @@ export const HomeMain = ({
       const showCategoriesFilter = !(
         productFilters?.categoryId || productFilters?.subcategoryId
       )
-      const genderIgnore = !!(
+      const hideGenderSelect = !!(
         productFilters?.categoryId ||
         productFilters?.subcategoryId ||
         productFilters?.gender
@@ -58,7 +58,7 @@ export const HomeMain = ({
         ...productFilters,
         showFilter,
         showCategoriesFilter,
-        genderIgnore,
+        hideGenderSelect,
       })
     },
     [curData],

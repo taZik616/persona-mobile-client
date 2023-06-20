@@ -65,6 +65,7 @@ export const Header = memo(
           onSearchSubmit(text)
         } else {
           navigate('allProducts', {
+            hideGenderSelect: true,
             genderIgnore: true,
             search: text,
             showFilter: true,

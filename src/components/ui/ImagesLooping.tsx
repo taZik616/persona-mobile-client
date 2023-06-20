@@ -31,6 +31,7 @@ export const ImagesLooping = memo(({width, images}: ImagesLoopingProps) => {
     images.length > 4 ? images.length : 4,
     curId,
   )
+  console.log('🚀 - curData:', curData)
 
   useAnimatedReaction(
     () => {
@@ -112,6 +113,10 @@ const Item = ({item, offsetX, width}: ItemProps) => {
         resizeMode="contain"
         source={{
           uri: item.item,
+          priority:
+            item.index >= -3 && item.index <= 0
+              ? FastImage.priority.high
+              : FastImage.priority.low,
         }}
       />
     </Animated.View>

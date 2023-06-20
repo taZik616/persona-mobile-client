@@ -45,6 +45,7 @@ export type RootStackParamList = {
   giftCard: undefined
   allProducts?: ProductsParams & {
     genderIgnore?: boolean
+    hideGenderSelect?: boolean
     showCategoriesFilter?: boolean
     showFilter?: boolean
   }

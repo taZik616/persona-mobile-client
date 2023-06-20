@@ -69,7 +69,7 @@ export const ProductList = memo(
         useProductListHelper()
       const {products, loadNext, isLoad} = useProductsList({
         ...params,
-        gender: isMenSelected ? 'men' : 'women',
+        gender: genderIgnore ? undefined : isMenSelected ? 'men' : 'women',
       })
 
       const onChangeSort = useCallback((ordering: OrderingType) => {

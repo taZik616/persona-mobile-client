@@ -99,6 +99,8 @@ export interface ProductDetailInfo {
   country: string
   podklad: string
   sostav: string
+
+  article: string
 }
 
 export interface OrderingItemI {

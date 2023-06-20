@@ -110,28 +110,30 @@ export const {
 export const personalDiscountBasketCalc = async (dispatch: any) => {
   const token = store.getState().profile.authToken ?? ''
   const {items, promocode} = store.getState().basket
-  const res = await axios.get(
-    `${APP_API_URL}/api/v1/order-personal-discount-calc`,
-    {
-      params: {
-        productVariantIds: items.map(a => a.variant.uniqueId).join(','),
-        promocode,
+  if (items.length) {
+    const res = await axios.get(
+      `${APP_API_URL}/api/v1/order-personal-discount-calc`,
+      {
+        params: {
+          productVariantIds: items.map(a => a.variant.uniqueId).join(','),
+          promocode,
+        },
+        headers: {Authorization: token ? `Token ${token}` : ''},
       },
-      headers: {Authorization: token ? `Token ${token}` : ''},
-    },
-  )
-  const products = res.data?.products
-
-  if (products) {
-    dispatch(
-      setBasketItems(
-        products.map((a: any) => ({
-          ...a.product,
-          variant: a.variant,
-          personalDiscountInRub: a.personalDiscountInRub,
-        })),
-      ),
     )
+    const products = res.data?.products
+
+    if (products) {
+      dispatch(
+        setBasketItems(
+          products.map((a: any) => ({
+            ...a.product,
+            variant: a.variant,
+            personalDiscountInRub: a.personalDiscountInRub,
+          })),
+        ),
+      )
+    }
   }
 }
 /**

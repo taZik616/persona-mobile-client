@@ -2,8 +2,13 @@ import React, {memo, useMemo, useState} from 'react'
 
 import {StyleSheet, View} from 'react-native'
 
+import {cleanNumber} from 'src/helpers'
 import {useTypedRoute} from 'src/hooks'
-import {useProductDetailQuery} from 'src/store/shopApi/shopApi'
+import {
+  useDeliveryPriceQuery,
+  useProductDetailQuery,
+} from 'src/store/shopApi/shopApi'
+import {Color} from 'src/themes'
 import {ProductDetailInfo} from 'src/types'
 
 import {SafeLandscapeView, Spacer, Text, ViewToggler} from 'ui/index'
@@ -13,8 +18,9 @@ export const DetailsSection = memo(() => {
   const {currentData, isLoading} = useProductDetailQuery(productId)
   const [tab, setTab] = useState(options[0].value)
   const detailsData = currentData as ProductDetailInfo
-  const {description, podklad, brand, manufacturer, country, sostav} =
+  const {description, podklad, article, brand, manufacturer, country, sostav} =
     detailsData || {}
+  const {currentData: deliveryPrice} = useDeliveryPriceQuery({})
 
   const content = useMemo(() => {
     switch (tab) {
@@ -38,12 +44,34 @@ export const DetailsSection = memo(() => {
               <></>
             )}
             {podklad ? <Text gp4>Подклад: {podklad}</Text> : <></>}
+            {article ? (
+              <View style={styles.articleContainer}>
+                <Text gp4>Артикул: </Text>
+                <Text color={Color.primary} selectable gp4>
+                  {article}
+                </Text>
+              </View>
+            ) : (
+              <></>
+            )}
+          </View>
+        )
+      case 'delivery':
+        return (
+          <View style={styles.gap}>
+            {deliveryPrice ? (
+              <Text gp4>
+                Цена доставки: {cleanNumber(deliveryPrice, ' ', 0)} ₽
+              </Text>
+            ) : (
+              <></>
+            )}
           </View>
         )
       default:
         return <></>
     }
-  }, [tab, isLoading])
+  }, [tab, isLoading, deliveryPrice])
 
   return (
     <SafeLandscapeView safeArea>
@@ -57,6 +85,9 @@ export const DetailsSection = memo(() => {
 const styles = StyleSheet.create({
   gap: {
     rowGap: 6,
+  },
+  articleContainer: {
+    flexDirection: 'row',
   },
 })
 
@@ -72,9 +103,5 @@ const options = [
   {
     title: 'Доставка',
     value: 'delivery',
-  },
-  {
-    title: 'Возврат',
-    value: 'return',
   },
 ]
