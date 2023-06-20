@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 
+import {useFocusEffect} from '@react-navigation/native'
 import {FlashList} from '@shopify/flash-list'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
+import {useTypedRoute} from 'src/hooks'
 import {
   useMyGiftedCardsQuery,
   useUpdateMyGiftCardStatusesMutation,
@@ -20,9 +22,21 @@ interface MyGiftCardsProps {
 
 export const MyGiftCards = ({onPressGiftCard}: MyGiftCardsProps) => {
   const data = useMyGiftedCardsQuery({})
+  const {needUpdateStatuses} = useTypedRoute<'myGiftCards'>().params ?? {}
   const [updateStatuses, updateHelper] = useUpdateMyGiftCardStatusesMutation()
   const giftCards = data.currentData as GiftCardInterface[] | undefined
 
+  useFocusEffect(
+    useCallback(() => {
+      const refreshList = async () => {
+        if (needUpdateStatuses) {
+          await updateStatuses({})
+          data.refetch()
+        }
+      }
+      refreshList()
+    }, [needUpdateStatuses]),
+  )
   return (
     <>
       <Header showBack hideBasket hideSearch title="Подарочные карты" />

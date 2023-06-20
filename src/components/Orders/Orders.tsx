@@ -1,8 +1,10 @@
-import React, {memo} from 'react'
+import React, {memo, useCallback} from 'react'
 
+import {useFocusEffect} from '@react-navigation/native'
 import {FlashList} from '@shopify/flash-list'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
+import {useTypedRoute} from 'src/hooks'
 import {
   useMyOrdersQuery,
   useUpdateMyOrderStatusesMutation,
@@ -20,8 +22,21 @@ interface OrdersProps {
 export const Orders = memo(
   ({onPressProductItem, onPressOrder}: OrdersProps) => {
     const data = useMyOrdersQuery({})
+    const {needUpdateStatuses} = useTypedRoute<'orders'>().params ?? {}
     const [updateStatuses, updateHelper] = useUpdateMyOrderStatusesMutation()
     const orders = data.currentData as OrderInfoInterface[] | undefined
+
+    useFocusEffect(
+      useCallback(() => {
+        const refreshList = async () => {
+          if (needUpdateStatuses) {
+            await updateStatuses({})
+            data.refetch()
+          }
+        }
+        refreshList()
+      }, [needUpdateStatuses]),
+    )
 
     return (
       <>

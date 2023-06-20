@@ -31,7 +31,9 @@ export type RootStackParamList = {
     phoneNumber: string
     code: string
   }
-  orders: undefined
+  orders?: {
+    needUpdateStatuses?: boolean
+  }
   subscriptions: undefined
   basket: undefined
   sizeChart: undefined
@@ -46,7 +48,13 @@ export type RootStackParamList = {
     showCategoriesFilter?: boolean
     showFilter?: boolean
   }
-  myGiftCards: undefined
+  myGiftCards?: {
+    needUpdateStatuses?: boolean
+  }
+  payment: {
+    formUrl: string
+    orderFastBuyId?: string
+  }
 }
 
 export type CatalogStackParamList = {

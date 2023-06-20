@@ -1,17 +1,13 @@
-import React, {useEffect, useMemo, useRef} from 'react'
+import React, {useMemo, useRef} from 'react'
 
 import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
-import {Linking} from 'react-native'
 import * as yup from 'yup'
 
 import {FastBuy, FastBuyRefType} from 'src/components/FastBuy'
 import {useTypedNavigation, useTypedRoute} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
-import {
-  useCreateFastOrderMutation,
-  useUpdateAndCheckOrderStatusMutation,
-} from 'src/store/shopApi'
+import {useCreateFastOrderMutation} from 'src/store/shopApi'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
 const fastBuySchema = yup
@@ -35,24 +31,10 @@ export const FastBuyScreen = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(fastBuySchema),
   })
-  const orderId = useRef('')
   const {navigate} = useTypedNavigation()
-  const [updateStatus] = useUpdateAndCheckOrderStatusMutation()
+
   const [createFastOrder] = useCreateFastOrderMutation()
   const {product} = useTypedRoute<'fastBuy'>().params
-
-  useEffect(() => {
-    const sub = Linking.addEventListener('url', ({url}) => {
-      if (url.split('://')[1].includes('fast-order-pay-failed')) {
-        fastBuyRef.current?.setError('Оплата заказа не прошла')
-      } else if (url.split('://')[1].includes('success-fast-payment')) {
-        setTimeout(() => updateStatus(orderId.current), 1000)
-        navigate('home')
-      }
-    })
-
-    return sub.remove
-  }, [])
 
   const onSubmit = useMemo(
     () =>
@@ -65,13 +47,15 @@ export const FastBuyScreen = () => {
             phoneNumber: telephone,
           })
           const error = order?.error?.data?.error || order?.data?.errorMessage
-          const url = order?.data?.formUrl
-          if (url) {
-            orderId.current = order?.data?.orderId
+          const formUrl = order?.data?.formUrl
+          if (formUrl) {
             vibration.success()
             form.reset()
             fastBuyRef.current?.setError('')
-            Linking.openURL(url)
+            navigate('payment', {
+              formUrl,
+              orderFastBuyId: order?.data?.orderId,
+            })
           } else if (error && String(error).toLowerCase() !== 'success') {
             vibration.error()
             fastBuyRef.current?.setError(error)

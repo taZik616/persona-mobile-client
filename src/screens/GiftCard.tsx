@@ -1,7 +1,5 @@
 import React, {useEffect, useRef} from 'react'
 
-import {Linking} from 'react-native'
-
 import {
   GiftCard,
   SelectNominal,
@@ -21,7 +19,7 @@ export const GiftCardScreen = () => {
   const cardTypeId = useRef(0)
   const cardTypes = useGiftCardTypesQuery({})
   const [mintGiftCard] = useMintGiftCardMutation()
-  const {reset, navigate} = useTypedNavigation()
+  const {navigate} = useTypedNavigation()
 
   useEffect(() => {
     if (cardTypes.currentData) {
@@ -33,25 +31,6 @@ export const GiftCardScreen = () => {
     }
   }, [cardTypes.currentData])
 
-  useEffect(() => {
-    const sub = Linking.addEventListener('url', ({url}) => {
-      if (url.split('://')[1].includes('gift-card-pay-success')) {
-        reset({
-          routes: [
-            {
-              name: 'home',
-              params: {
-                screen: 'homeProfile',
-              },
-            },
-          ],
-        })
-        navigate('myGiftCards')
-      }
-    })
-    return sub.remove
-  }, [])
-
   const onContinue = async (amount: number) => {
     const response: any = await mintGiftCard({
       cardTypeId: cardTypes.currentData[cardTypeId.current].id,
@@ -59,12 +38,12 @@ export const GiftCardScreen = () => {
     })
 
     const error = response?.error?.data?.error || response?.data?.errorMessage
-    const url = response?.data?.formUrl
-    if (url) {
+    const formUrl = response?.data?.formUrl
+    if (formUrl) {
       vibration.success()
       selectNominalRef.current?.setRequestError('')
-      Linking.openURL(url)
       selectNominalRef.current?.close?.()
+      navigate('payment', {formUrl})
     } else if (error && String(error).toLowerCase() !== 'success') {
       vibration.error()
       selectNominalRef.current?.setRequestError(error)

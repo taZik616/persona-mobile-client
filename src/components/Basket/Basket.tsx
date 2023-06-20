@@ -149,9 +149,9 @@ const BuyBtn = memo(() => {
           headers: {Authorization: token ? `Token ${token}` : ''},
         },
       )
-      const {priceWithoutPersonalDiscount, priceWithPersonalDiscount} =
-        res.data || {}
-      if (priceWithoutPersonalDiscount && priceWithPersonalDiscount) {
+      if (res.data) {
+        const {priceWithoutPersonalDiscount, priceWithPersonalDiscount} =
+          res.data
         vibration.success()
         setPurchaseError('')
         navigate('buy', {

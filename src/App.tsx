@@ -23,6 +23,7 @@ import {HelpDetailScreen} from './screens/HelpDetail'
 import {LoyaltyCardAddScreen} from './screens/LoyaltyCardAdd'
 import {MyGiftCardsScreen} from './screens/MyGiftCards'
 import {OrdersScreen} from './screens/Orders'
+import {PaymentScreen} from './screens/PaymentScreen'
 import {PersonalScreen} from './screens/Personal'
 import {PersonalEditScreen} from './screens/PersonalEdit'
 import {ProductDetailScreen} from './screens/ProductDetail'
@@ -100,6 +101,7 @@ export const App = () => {
           <Stack.Screen name="giftCard" component={GiftCardScreen} />
           <Stack.Screen name="allProducts" component={AllProductsScreen} />
           <Stack.Screen name="myGiftCards" component={MyGiftCardsScreen} />
+          <Stack.Screen name="payment" component={PaymentScreen} />
           {__DEV__ ? (
             <>
               {/* @ts-ignore */}

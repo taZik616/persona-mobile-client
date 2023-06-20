@@ -1,15 +1,13 @@
-import React, {useEffect, useMemo, useRef} from 'react'
+import React, {useMemo, useRef} from 'react'
 
 import {yupResolver} from '@hookform/resolvers/yup'
 import {FormProvider, useForm} from 'react-hook-form'
-import {Linking} from 'react-native'
 import * as yup from 'yup'
 
 import {Buy} from 'src/components/Buy'
 import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
-import {store, useTypedDispatch} from 'src/store'
-import {removeItemFromBasketByIds} from 'src/store/basketSlice'
+import {store} from 'src/store'
 import {useCreateOrderMutation} from 'src/store/shopApi'
 import {UNKNOWN_ERROR_MSG} from 'src/variables'
 
@@ -24,37 +22,12 @@ type AddressSchemaType = yup.InferType<typeof addressSchema>
 export const BuyScreen = () => {
   const [createOrder] = useCreateOrderMutation()
   const componentRef = useRef<any>(null)
-  const {navigate, ...nav} = useTypedNavigation()
-  const dispatch = useTypedDispatch()
-
+  const {navigate} = useTypedNavigation()
   const form = useForm<AddressSchemaType>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(addressSchema),
   })
-
-  useEffect(() => {
-    const sub = Linking.addEventListener('url', ({url}) => {
-      if (url.split('://')[1].includes('order-pay-failed')) {
-        componentRef.current?.setRequestError('Оплата заказа не прошла')
-      } else if (url.split('://')[1].includes('order-pay-success')) {
-        const {selectedItemIds} = store.getState().basket
-        dispatch(removeItemFromBasketByIds(selectedItemIds))
-        nav.reset({
-          routes: [
-            {
-              name: 'home',
-              params: {
-                screen: 'homeProfile',
-              },
-            },
-          ],
-        })
-        navigate('orders')
-      }
-    })
-    return sub.remove
-  }, [])
 
   const onSubmit = useMemo(
     () =>
@@ -71,12 +44,12 @@ export const BuyScreen = () => {
           })
 
           const error = order?.error?.data?.error || order?.data?.errorMessage
-          const url = order?.data?.formUrl
-          if (url) {
+          const formUrl = order?.data?.formUrl
+          if (formUrl) {
             vibration.success()
             form.reset()
             componentRef.current?.setRequestError('')
-            Linking.openURL(url)
+            navigate('payment', {formUrl})
           } else if (error && String(error).toLowerCase() !== 'success') {
             vibration.error()
             componentRef.current?.setRequestError(error)
