@@ -16,11 +16,11 @@ interface BrandRowItemProps extends BrandType {
 }
 
 export const BrandRowItem = memo(
-  ({isLoading, onPress, isSelected, ...brand}: BrandRowItemProps) => {
+  ({onPress, isSelected, ...brand}: BrandRowItemProps) => {
     return (
       <SafeLandscapeView safeArea>
         <Pressable
-          onPress={() => !isLoading && onPress?.(brand)}
+          onPress={() => onPress?.(brand)}
           style={styles.brandItemContainer}>
           <Text numberOfLines={1} gp4>
             {brand.name}
@@ -42,5 +42,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
+    zIndex: 1,
   },
 })

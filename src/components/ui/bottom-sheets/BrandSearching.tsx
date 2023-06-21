@@ -34,31 +34,123 @@ export interface BrandSearchingRefType {
 export const BrandSearching = memo(
   forwardRef<BrandSearchingRefType, BrandSearchingProps>(
     ({onCompleteSelect}, ref) => {
-      const [searchText, setSearchText] = useState('')
-      const [selectedIds, setSelectedIds] = useState<string[]>([])
       const bottomSheetRef = useRef<BottomSheetRefType>(null)
-      const {
-        currentData: temp,
-        isFetching,
-        isLoading,
-        refetch,
-      } = useBrandsQuery({})
-      const brands = temp as BrandType[] | undefined
+      const submitButtonRef = useRef<SubmitButtonRefType>(null)
+      const contentRef = useRef<BottomSheetContentRefType>(null)
 
       useImperativeHandle(ref, () => ({
         open: bottomSheetRef.current?.open,
         close: bottomSheetRef.current?.close,
-        cleanSelections: () => setSelectedIds([]),
+        cleanSelections: () => {
+          submitButtonRef.current?.setSelectedIds([])
+          contentRef.current?.setSelectedIds([])
+        },
       }))
+
+      const onChangeSelect = useCallback((ids: string[]) => {
+        submitButtonRef.current?.setSelectedIds(ids)
+      }, [])
+
+      const onClose = useCallback(
+        () => contentRef.current?.setSearchText(''),
+        [],
+      )
+
+      return (
+        <BottomSheet
+          closeDistance={80}
+          showClose
+          onClose={onClose}
+          title="БРЕНДЫ"
+          fillMax
+          stickyComponent={
+            <SubmitButton
+              ref={submitButtonRef}
+              onCompleteSelect={onCompleteSelect}
+            />
+          }
+          ref={bottomSheetRef}>
+          <BottomSheetContent
+            onChangeSelect={onChangeSelect}
+            ref={contentRef}
+          />
+        </BottomSheet>
+      )
+    },
+  ),
+)
+const _brandKeyExtractor = (item: BrandType, id: number) => item?.brandId ?? id
+
+interface SubmitButtonRefType {
+  setSelectedIds: (ids: string[]) => void
+}
+
+interface SubmitButtonProps {
+  onCompleteSelect?: (brandIds: string, brands: BrandType[]) => void
+}
+
+const SubmitButton = memo(
+  forwardRef<SubmitButtonRefType, SubmitButtonProps>(
+    ({onCompleteSelect}, ref) => {
+      const [selectedIds, setSelectedIds] = useState<string[]>([])
+      const {currentData: temp} = useBrandsQuery({})
+      const brands = temp as BrandType[] | undefined
+
+      const onSubmit = () => {
+        if (brands)
+          onCompleteSelect?.(
+            selectedIds.join(','),
+            selectedIds
+              .map(a => brands.find(b => b.brandId === a))
+              .filter(Boolean) as BrandType[],
+          )
+      }
+
+      useImperativeHandle(ref, () => ({
+        setSelectedIds,
+      }))
+
+      return (
+        <SafeLandscapeView safeArea style={styles.button}>
+          <Button disabled={!selectedIds.length} onPress={onSubmit}>
+            Показать
+          </Button>
+        </SafeLandscapeView>
+      )
+    },
+  ),
+)
+
+interface BottomSheetContentRefType {
+  setSearchText: (text: string) => void
+  setSelectedIds: (ids: string[]) => void
+}
+
+interface BottomSheetContentProps {
+  onChangeSelect: (ids: string[]) => void
+}
+
+const BottomSheetContent = memo(
+  forwardRef<BottomSheetContentRefType, BottomSheetContentProps>(
+    ({onChangeSelect}, ref) => {
+      const [selectedIds, setSelectedIds] = useState<string[]>([])
+      const [searchText, setSearchText] = useState('')
+
+      const {currentData: temp, isFetching, refetch} = useBrandsQuery({})
 
       useEffect(() => {
         return () => setSearchText('')
       }, [])
 
-      const onClose = useCallback(() => setSearchText(''), [])
+      useImperativeHandle(ref, () => ({
+        setSearchText,
+        setSelectedIds,
+      }))
 
-      const content = useMemo(() => {
-        const sections = groupByAlphabetical(brands ?? [], 'name')
+      const brands = temp as BrandType[] | undefined
+
+      const sections = useMemo(() => {
+        return groupByAlphabetical(brands ?? [], 'name')
           .map(a => {
             return {
               title: a.title,
@@ -68,101 +160,72 @@ export const BrandSearching = memo(
             }
           })
           .filter(a => a.data.length > 0)
-        const onPressItem = ({brandId}: BrandType) => {
-          vibration.selection()
-          setSelectedIds(pr => {
-            if (pr.includes(brandId)) return pr.filter(a => a !== brandId)
-            return [...pr, brandId]
-          })
-        }
+      }, [brands, searchText])
 
-        return (
-          <View>
-            <Spacer height={16} />
-            <SafeLandscapeView safeArea>
-              <TextInput
-                value={searchText}
-                placeholderTextColor={Color.primaryGray}
-                selectionColor={Color.primary}
-                blurOnSubmit
-                autoFocus
-                placeholder="Укажите название бренда"
-                onChangeText={setSearchText}
-                style={styles.search}
-              />
-            </SafeLandscapeView>
-            <Spacer height={16} />
-            <SectionList
-              ListEmptyComponent={
-                <SafeLandscapeView safeArea>
-                  <Spacer height={32} />
-                  <Text gp4 center>
-                    По введенному запросу ничего не найдено.
-                  </Text>
-                </SafeLandscapeView>
-              }
-              scrollEnabled={false}
-              removeClippedSubviews
-              refreshing={isFetching && !!brands}
-              onRefresh={() => {
-                refetch()
-              }}
-              renderItem={({item}) => (
-                <BrandRowItem
-                  isSelected={selectedIds.includes(item.brandId)}
-                  onPress={onPressItem}
-                  isLoading={isLoading}
-                  {...item}
-                />
-              )}
-              showsVerticalScrollIndicator={false}
-              renderSectionHeader={({section: {title}}) => (
-                <BrandGroupTitle title={title} />
-              )}
-              keyExtractor={_brandKeyExtractor}
-              sections={sections || []}
-            />
-            <Spacer height={100} />
-          </View>
-        )
-      }, [brands, selectedIds, searchText, isLoading])
-
-      const button = useMemo(() => {
-        const onSubmit = () => {
-          if (brands)
-            onCompleteSelect?.(
-              selectedIds.join(','),
-              selectedIds
-                .map(a => brands.find(b => b.brandId === a))
-                .filter(Boolean) as BrandType[],
-            )
-        }
-
-        return (
-          <SafeLandscapeView safeArea style={styles.button}>
-            <Button disabled={!selectedIds.length} onPress={onSubmit}>
-              Показать
-            </Button>
-          </SafeLandscapeView>
-        )
-      }, [brands, selectedIds, onCompleteSelect])
+      const onPressItem = useCallback(({brandId}: BrandType) => {
+        vibration.selection()
+        setSelectedIds(pr => {
+          if (pr.includes(brandId)) {
+            const newState = pr.filter(a => a !== brandId)
+            onChangeSelect(newState)
+            return newState
+          }
+          const newState = [...pr, brandId]
+          onChangeSelect(newState)
+          return newState
+        })
+      }, [])
 
       return (
-        <BottomSheet
-          closeDistance={80}
-          showClose
-          onClose={onClose}
-          title="БРЕНДЫ"
-          fillMax
-          stickyComponent={button}
-          ref={bottomSheetRef}>
-          {content}
-        </BottomSheet>
+        <View>
+          <Spacer height={16} />
+          <SafeLandscapeView safeArea>
+            <TextInput
+              value={searchText}
+              placeholderTextColor={Color.primaryGray}
+              selectionColor={Color.primary}
+              blurOnSubmit
+              autoFocus
+              placeholder="Укажите название бренда"
+              onChangeText={setSearchText}
+              style={styles.search}
+            />
+          </SafeLandscapeView>
+          <Spacer height={16} />
+          <SectionList
+            ListEmptyComponent={
+              <SafeLandscapeView safeArea>
+                <Spacer height={32} />
+                <Text gp4 center>
+                  По введенному запросу ничего не найдено.
+                </Text>
+              </SafeLandscapeView>
+            }
+            scrollEnabled={false}
+            refreshing={isFetching && !!brands}
+            onRefresh={() => {
+              refetch()
+            }}
+            renderItem={({item}) => (
+              <BrandRowItem
+                isSelected={selectedIds.includes(item.brandId)}
+                onPress={onPressItem}
+                {...item}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+            renderSectionHeader={({section: {title}}) => (
+              <BrandGroupTitle title={title} />
+            )}
+            keyExtractor={_brandKeyExtractor}
+            sections={sections || []}
+          />
+          <Spacer height={100} />
+        </View>
       )
     },
   ),
 )
-const _brandKeyExtractor = (item: BrandType, id: number) => item?.brandId ?? id
 
 const styles = StyleSheet.create({
   search: {

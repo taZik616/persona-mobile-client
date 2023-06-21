@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import {SafeLandscapeView, Spacer, Text} from 'ui/index'
 
@@ -6,7 +6,7 @@ interface BrandGroupTitleProps {
   title: string
 }
 
-export const BrandGroupTitle = ({title}: BrandGroupTitleProps) => {
+export const BrandGroupTitle = memo(({title}: BrandGroupTitleProps) => {
   return (
     <SafeLandscapeView safeArea>
       <Spacer height={20} />
@@ -14,4 +14,4 @@ export const BrandGroupTitle = ({title}: BrandGroupTitleProps) => {
       <Spacer height={10} />
     </SafeLandscapeView>
   )
-}
+})

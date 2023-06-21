@@ -14,7 +14,7 @@ import {
 import {CARD_BORDER_RADIUS} from 'src/variables'
 
 import {CardWithImageWHM} from 'ui/cards/CardWithImage'
-import {Header, SelectorTwoOptions, Spacer, Swiper} from 'ui/index'
+import {Header, SelectorTwoOptions, Spacer, Swiper, Text} from 'ui/index'
 
 import {LoadingSkeleton} from './LoadingSkeleton'
 import {RenderContent} from './RenderContent'
@@ -101,6 +101,10 @@ export const HomeMain = ({
               data={curData.otherContent}
             />
             <Spacer height={28} />
+            <Text center cg2>
+              {'Подарочные карты'.toUpperCase()}
+            </Text>
+            <Spacer height={12} />
             <CardWithImageWHM
               autoWidth
               onPress={onPressGiftCard}

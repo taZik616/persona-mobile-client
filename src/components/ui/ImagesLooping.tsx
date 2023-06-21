@@ -31,7 +31,6 @@ export const ImagesLooping = memo(({width, images}: ImagesLoopingProps) => {
     images.length > 4 ? images.length : 4,
     curId,
   )
-  console.log('🚀 - curData:', curData)
 
   useAnimatedReaction(
     () => {

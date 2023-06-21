@@ -38,5 +38,7 @@ export function groupByAlphabetical<T>(
     })
   }
 
+  result.sort((a, b) => a.title.localeCompare(b.title))
+
   return result as any
 }
