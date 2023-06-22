@@ -33,13 +33,13 @@ export const Subscriptions = ({
             <Spacer width={8} />
             <Switch initialValue={subs.subEmail} onChange={onChangeEmailSub} />
           </View>
-          <View style={styles.itemContainer}>
+          {/* <View style={styles.itemContainer}>
             <Text style={styles.text} numberOfLines={2} gp4>
               Получать уведомления по SMS
             </Text>
             <Spacer width={8} />
             <Switch initialValue={subs.subSms} onChange={onChangeSmsSub} />
-          </View>
+          </View> */}
           <View style={styles.itemContainer}>
             <Text style={styles.text} numberOfLines={2} gp4>
               Получать Push-уведомления
