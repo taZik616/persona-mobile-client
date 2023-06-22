@@ -1,7 +1,9 @@
 import React, {useCallback, useRef} from 'react'
 
 import {HomeMain} from 'src/components/HomeMain'
+import {showAlertGiftCardLocked} from 'src/helpers/showAlertGiftCardLocked'
 import {useTypedNavigation} from 'src/hooks'
+import {selectIsAuthenticated, useTypedSelector} from 'src/store'
 import {
   AnyContentPartItem,
   HomeMainContentItem,
@@ -17,7 +19,7 @@ import {
 export const HomeMainScreen = () => {
   const fashionPresentRef = useRef<FashionItemsPresentRefType>(null)
   const {navigate} = useTypedNavigation()
-
+  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
   const onPressContentItem = useCallback(
     (contentPart: HomeMainContentItem, item: AnyContentPartItem) => {
       switch (contentPart.type) {
@@ -61,7 +63,7 @@ export const HomeMainScreen = () => {
   }, [])
 
   const onPressGiftCard = () => {
-    navigate('giftCard')
+    isAuthenticated ? navigate('giftCard') : showAlertGiftCardLocked()
   }
 
   return (
