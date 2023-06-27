@@ -23,6 +23,7 @@ import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface BrandSearchingProps {
   onCompleteSelect?: (brandIds: string, brands: BrandType[]) => void
+  gender?: 'men' | 'women' | 'both'
 }
 
 export interface BrandSearchingRefType {
@@ -33,7 +34,7 @@ export interface BrandSearchingRefType {
 
 export const BrandSearching = memo(
   forwardRef<BrandSearchingRefType, BrandSearchingProps>(
-    ({onCompleteSelect}, ref) => {
+    ({onCompleteSelect, gender = 'both'}, ref) => {
       const bottomSheetRef = useRef<BottomSheetRefType>(null)
       const submitButtonRef = useRef<SubmitButtonRefType>(null)
       const contentRef = useRef<BottomSheetContentRefType>(null)
@@ -73,6 +74,7 @@ export const BrandSearching = memo(
           <BottomSheetContent
             onChangeSelect={onChangeSelect}
             ref={contentRef}
+            gender={gender}
           />
         </BottomSheet>
       )
@@ -128,15 +130,22 @@ interface BottomSheetContentRefType {
 
 interface BottomSheetContentProps {
   onChangeSelect: (ids: string[]) => void
+  gender: 'men' | 'women' | 'both'
 }
 
 const BottomSheetContent = memo(
   forwardRef<BottomSheetContentRefType, BottomSheetContentProps>(
-    ({onChangeSelect}, ref) => {
+    ({onChangeSelect, gender}, ref) => {
       const [selectedIds, setSelectedIds] = useState<string[]>([])
       const [searchText, setSearchText] = useState('')
 
-      const {currentData: temp, isFetching, refetch} = useBrandsQuery({})
+      const {
+        currentData: temp,
+        isFetching,
+        refetch,
+      } = useBrandsQuery({
+        gender: gender === 'both' ? undefined : gender,
+      })
 
       useEffect(() => {
         return () => setSearchText('')

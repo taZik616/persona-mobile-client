@@ -201,6 +201,7 @@ export const ProductList = memo(
           <BrandSearching
             ref={brandSelectRef}
             onCompleteSelect={onChangeBrand}
+            gender={genderIgnore ? undefined : isMenSelected ? 'men' : 'women'}
           />
           <SizeSelect
             sizes={[...new Set(products?.filters.sizes)].filter(Boolean)}

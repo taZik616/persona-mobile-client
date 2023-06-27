@@ -107,20 +107,8 @@ const ContentView = memo(
         wheelPickerRef.current?.getSelected().label ?? sizes[0]
 
       colorVariants.current = variants.filter(a => a.size === selectedSize)
-      if (colorVariants.current.length === 1) {
-        onContinue?.(colorVariants.current[0])
-      } else {
-        setPage('colors')
-      }
+      setPage('colors')
     }
-
-    useEffect(() => {
-      if (variants.length === 1) {
-        onContinue?.(variants[0])
-      } else if (sizes.length === 1) {
-        goColorSelect()
-      }
-    }, [])
 
     return (
       <SafeLandscapeView>
