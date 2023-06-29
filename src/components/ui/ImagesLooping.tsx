@@ -83,6 +83,7 @@ export const ImagesLooping = memo(({width, images}: ImagesLoopingProps) => {
               width={width}
               item={item}
               offsetX={offsetX}
+              isFirst={item.item === images[0]}
             />
           )
         })}
@@ -95,29 +96,44 @@ interface ItemProps {
   item: any
   offsetX: SharedValue<number>
   width: number
+  isFirst: boolean
 }
 
-const Item = ({item, offsetX, width}: ItemProps) => {
+const Item = ({item, offsetX, width, isFirst}: ItemProps) => {
   const anim = useAnimatedStyle(() => ({
     transform: [{translateX: offsetX.value}],
     marginLeft: item.index * width,
   }))
+  const [needLoadAll, setNeedLoadAll] = useState(false)
+  // 🤯
+  useAnimatedReaction(
+    () => {
+      const id = -Math.round(offsetX.value / width)
+      return id
+    },
+    (id, previous) => {
+      if (id !== previous && previous !== null) {
+        runOnJS(setNeedLoadAll)(true)
+      }
+    },
+  )
 
   return (
     <Animated.View
       // onPress={() => handleItemClick(index)}
       style={[styles.imageContainer, {width}, anim]}>
-      <FastImage
-        style={styles.image}
-        resizeMode="contain"
-        source={{
-          uri: item.item,
-          priority:
-            item.index >= -3 && item.index <= 0
-              ? FastImage.priority.high
-              : FastImage.priority.low,
-        }}
-      />
+      {needLoadAll || isFirst ? (
+        <FastImage
+          style={styles.image}
+          resizeMode="contain"
+          source={{
+            uri: item.item,
+            priority: FastImage.priority.low,
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </Animated.View>
   )
 }

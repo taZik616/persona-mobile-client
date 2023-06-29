@@ -13,7 +13,6 @@ import axios from 'axios'
 import {StyleSheet} from 'react-native'
 
 import {useGender} from 'src/hooks/useGender'
-import {useHorizontalMargins} from 'src/hooks/useHorizontalMargins'
 import {BrandType} from 'src/types'
 
 import {SortIcon} from 'ui/icons/common'
@@ -56,7 +55,6 @@ export const Filter = memo(
       const [filtersFirst, setFiltersFirst] = useState<FilterItemType[]>(
         FILTERS_FIRST_DEFAULT,
       )
-      const {paddingHorizontal} = useHorizontalMargins({safeArea: true})
       const [filtersSecond, setFiltersSecond] = useState<FilterItemType[]>(
         FILTERS_SECOND_DEFAULT,
       )
@@ -169,7 +167,6 @@ export const Filter = memo(
           <Spacer height={8} />
           <FlashList
             horizontal
-            contentContainerStyle={paddingHorizontal}
             bounces={false}
             estimatedItemSize={114}
             showsHorizontalScrollIndicator={false}
@@ -188,7 +185,6 @@ export const Filter = memo(
           <Spacer height={10} />
           <FlashList
             horizontal
-            contentContainerStyle={paddingHorizontal}
             bounces={false}
             estimatedItemSize={114}
             showsHorizontalScrollIndicator={false}

@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -130,69 +131,73 @@ export const ProductList = memo(
         sizeSelectRef.current?.open?.()
       }, [])
 
+      const onScroll = useCallback(
+        ({nativeEvent}: any) => {
+          const {layoutMeasurement, contentOffset, contentSize} = nativeEvent
+          const isScrolledToEnd =
+            layoutMeasurement.height + contentOffset.y >= contentSize.height
+
+          if (isScrolledToEnd && products?.products.length) loadNext()
+        },
+        [loadNext, products?.products.length],
+      )
+
+      const sizes = useMemo(() => {
+        return [...new Set(products?.filters.sizes)].filter(Boolean)
+      }, [products?.filters.sizes])
+
       return (
         <>
-          <ScrollView
-            onScroll={({nativeEvent}) => {
-              const {layoutMeasurement, contentOffset, contentSize} =
-                nativeEvent
-              const isScrolledToEnd =
-                layoutMeasurement.height + contentOffset.y >= contentSize.height
-
-              if (isScrolledToEnd && products?.products.length) loadNext()
-            }}>
-            {showFilter && (
-              <Filter
-                key={isMenSelected ? 'men' : 'women'}
-                ref={filterRef}
-                showCategories={showCategoriesFilter}
-                onPressSize={onPressSize}
-                onPressSort={onPressSort}
-                onPressBrands={onPressBrands}
-                onChangeCategory={onChangeCategory}
-                onRemoveBrand={onRemoveBrandFilter}
-                onRemoveSize={onRemoveSizeFilter}
+          <FlashList
+            removeClippedSubviews
+            key={numColumns}
+            onScroll={onScroll}
+            numColumns={numColumns}
+            estimatedItemSize={351}
+            contentContainerStyle={contentPaddingsStyle}
+            renderItem={({item}) => (
+              <ProductCard
+                width={cardWidth}
+                topRightIcon="star"
+                onPress={onPressProduct}
+                {...item}
               />
             )}
-            <FlashList
-              scrollEnabled={false}
-              key={numColumns}
-              numColumns={numColumns}
-              estimatedItemSize={351}
-              contentContainerStyle={contentPaddingsStyle}
-              renderItem={({item}) => (
-                <ProductCard
-                  width={cardWidth}
-                  topRightIcon="star"
-                  onPress={onPressProduct}
-                  {...item}
-                />
-              )}
-              ListHeaderComponent={
-                <>
-                  {showCounter && products && (
-                    <Counter count={products.count} />
-                  )}
-                  {!showCounter && products && !showFilter ? (
-                    <Spacer height={20} />
-                  ) : (
-                    <></>
-                  )}
-                </>
-              }
-              ListEmptyComponent={
-                isLoad ? (
-                  <LoadingProductListSkeleton
-                    width={cardWidth}
-                    numColumns={numColumns}
+            ListHeaderComponent={
+              <>
+                {showFilter && (
+                  <Filter
+                    key={isMenSelected ? 'men' : 'women'}
+                    ref={filterRef}
+                    showCategories={showCategoriesFilter}
+                    onPressSize={onPressSize}
+                    onPressSort={onPressSort}
+                    onPressBrands={onPressBrands}
+                    onChangeCategory={onChangeCategory}
+                    onRemoveBrand={onRemoveBrandFilter}
+                    onRemoveSize={onRemoveSizeFilter}
                   />
-                ) : undefined
-              }
-              keyExtractor={(_, id) => String(id)}
-              data={products?.products ?? []}
-            />
-            <Spacer height={16} />
-          </ScrollView>
+                )}
+                {showCounter && products && <Counter count={products.count} />}
+                {!showCounter && products && !showFilter ? (
+                  <Spacer height={20} />
+                ) : (
+                  <></>
+                )}
+              </>
+            }
+            ListEmptyComponent={
+              isLoad ? (
+                <LoadingProductListSkeleton
+                  width={cardWidth}
+                  numColumns={numColumns}
+                />
+              ) : undefined
+            }
+            keyExtractor={(_, id) => String(id)}
+            data={products?.products ?? []}
+          />
+          <Spacer height={16} />
           <SortSelect
             ref={sortSelectRef}
             onChangeSort={onChangeSort}
@@ -204,7 +209,7 @@ export const ProductList = memo(
             gender={genderIgnore ? undefined : isMenSelected ? 'men' : 'women'}
           />
           <SizeSelect
-            sizes={[...new Set(products?.filters.sizes)].filter(Boolean)}
+            sizes={sizes}
             onChangeSizes={onChangeSize}
             ref={sizeSelectRef}
           />

@@ -68,7 +68,6 @@ export const ProductCard = memo(
                   images={images.map(a => a.compressedImage)}
                 />
               )}
-
               <Spacer height={6} />
               {brand?.logo ? (
                 <FastImage
