@@ -69,11 +69,19 @@ export const ProductDetail = memo(
             <View style={styles.row}>
               <Spacer width={24} />
               <View style={styles.headInfoContainer}>
-                {brand?.logo && (
+                {brand?.logo ? (
                   <>
                     <Img maxHeight={35} uri={brand.logo} />
                     <Spacer height={10} />
                   </>
+                ) : brand?.name ? (
+                  <View style={styles.brandName}>
+                    <Text numberOfLines={1} center gp1>
+                      {brand?.name?.toUpperCase()}
+                    </Text>
+                  </View>
+                ) : (
+                  <Spacer height={8} />
                 )}
                 <Text gp4>{productName}</Text>
                 <Spacer height={6} />
@@ -149,5 +157,11 @@ const styles = StyleSheet.create({
   priceWithoutDiscount: {
     textDecorationLine: 'line-through',
     textDecorationColor: Color.textBase1,
+  },
+  brandName: {
+    width: '100%',
+    height: 35,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
   },
 })
