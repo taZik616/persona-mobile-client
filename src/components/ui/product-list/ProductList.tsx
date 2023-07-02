@@ -10,7 +10,6 @@ import React, {
 } from 'react'
 
 import {FlashList} from '@shopify/flash-list'
-import {ScrollView} from 'react-native'
 
 import {useGender, useProductListHelper, useScreenBlockCurrent} from 'src/hooks'
 import {OrderingType, ProductsParams, useProductsList} from 'src/store/shopApi'
@@ -194,10 +193,10 @@ export const ProductList = memo(
                 />
               ) : undefined
             }
+            ListFooterComponent={<Spacer height={16} />}
             keyExtractor={(_, id) => String(id)}
             data={products?.products ?? []}
           />
-          <Spacer height={16} />
           <SortSelect
             ref={sortSelectRef}
             onChangeSort={onChangeSort}

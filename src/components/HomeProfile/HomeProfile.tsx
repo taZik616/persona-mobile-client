@@ -20,6 +20,7 @@ import {
 import {
   Button,
   Header,
+  Hint,
   MenuButton,
   SafeLandscapeView,
   Spacer,
@@ -76,20 +77,27 @@ export const HomeProfile = ({
               </Text>
             </TouchableOpacity> */}
             {discountCard ? (
-              <View style={styles.discountCardInfoBlock}>
-                <Text>
-                  <Text gp4>Личная скидка: </Text>
-                  <Text color={Color.primary} gp4>
-                    {discountCard.cardLevel.discountPercent}%
+              <>
+                <View style={styles.discountCardInfoBlock}>
+                  <Text>
+                    <Text gp4>Личная скидка: </Text>
+                    <Text color={Color.primary} gp4>
+                      {discountCard.cardLevel.discountPercent}%
+                    </Text>
                   </Text>
-                </Text>
-                <Text>
-                  <Text gp4>Уровень покупок: </Text>
-                  <Text color={Color.primary} gp4>
-                    {discountCard.cardLevel.level}
+                  <Text>
+                    <Text gp4>Уровень покупок: </Text>
+                    <Text color={Color.primary} gp4>
+                      {discountCard.cardLevel.level}
+                    </Text>
                   </Text>
-                </Text>
-              </View>
+                </View>
+                <Hint
+                  id="profile-1"
+                  spaceTop={8}
+                  content="Личная скидка рассчитывается в зависимости от вашего уровня покупателя, для повышения уровня нужно совершать больше покупок"
+                />
+              </>
             ) : (
               <></>
             )}

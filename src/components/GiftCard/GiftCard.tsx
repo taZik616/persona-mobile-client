@@ -7,7 +7,15 @@ import {Color} from 'src/themes'
 import {GiftCardTypeI} from 'src/types'
 import {CARD_BORDER_RADIUS} from 'src/variables'
 
-import {Button, Header, SafeLandscapeView, Spacer, Swiper, Text} from 'ui/index'
+import {
+  Button,
+  Header,
+  Hint,
+  SafeLandscapeView,
+  Spacer,
+  Swiper,
+  Text,
+} from 'ui/index'
 
 interface GiftCardProps {
   onPressSelectNominal?: () => void
@@ -57,6 +65,11 @@ export const GiftCard = ({
               {data[swiperIndex].description}
             </Text>
           )}
+          <Hint
+            id="giftcard-1"
+            spaceTop={16}
+            content="Подарочные карты работают как уникальный бессрочный промокод, который можно вручить кому угодно. Купленные подарочные карты и их остаток отображаются в разделе профиля"
+          />
           <Spacer height={16} />
           <Button onPress={onPressSelectNominal} gp5>
             Выбрать номинал карты

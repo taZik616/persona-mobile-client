@@ -20,6 +20,7 @@ import {ProductInBasketI} from 'src/types'
 import {basketReducer} from './basketSlice'
 import {persistedFavoritesReducer} from './favoritesSlice'
 import {persistedGenderReducer} from './genderSlice'
+import {persistedHintReducer} from './hintSlice'
 import {profileReducer} from './profileSlice'
 import {persistedRecentlyWatchedReducer} from './recentlyWatchedSlice'
 import {shopApi} from './shopApi'
@@ -28,6 +29,7 @@ export const store = configureStore({
   reducer: {
     [shopApi.reducerPath]: shopApi.reducer,
     gender: persistedGenderReducer,
+    hint: persistedHintReducer,
     recentlyWatched: persistedRecentlyWatchedReducer,
     favorites: persistedFavoritesReducer,
     profile: profileReducer,

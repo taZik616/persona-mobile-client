@@ -1,17 +1,27 @@
 import React, {memo, useMemo, useState} from 'react'
 
 import {StyleSheet, View} from 'react-native'
+import Markdown from 'react-native-markdown-display'
 
 import {cleanNumber} from 'src/helpers'
 import {useTypedRoute} from 'src/hooks'
+import {useMarkdownProps} from 'src/hooks'
 import {
   useDeliveryPriceQuery,
+  useHelpfulInfoQuery,
   useProductDetailQuery,
 } from 'src/store/shopApi/shopApi'
 import {Color} from 'src/themes'
 import {ProductDetailInfo} from 'src/types'
 
-import {SafeLandscapeView, Spacer, Text, ViewToggler} from 'ui/index'
+import {
+  ConnectionError,
+  Loading,
+  SafeLandscapeView,
+  Spacer,
+  Text,
+  ViewToggler,
+} from 'ui/index'
 
 export const DetailsSection = memo(() => {
   const {productId} = useTypedRoute<'productDetail'>().params ?? {}
@@ -21,7 +31,16 @@ export const DetailsSection = memo(() => {
   const {description, podklad, article, brand, manufacturer, country, sostav} =
     detailsData || {}
   const {currentData: deliveryPrice} = useDeliveryPriceQuery({})
+  const {
+    isLoading: isLoadingReturn,
+    isError: isErrorReturn,
+    error,
+    refetch: refetchReturn,
+    currentData: exchangeAndReturn,
+  } = useHelpfulInfoQuery('exchange_and_return')
+  const returnError = (error as any)?.data?.error
 
+  const mdProps = useMarkdownProps(0.3)
   const content = useMemo(() => {
     switch (tab) {
       case 'desc':
@@ -68,10 +87,34 @@ export const DetailsSection = memo(() => {
             )}
           </View>
         )
+      case 'return':
+        return isLoadingReturn ? (
+          <>
+            <Spacer height={120} />
+            <Loading />
+          </>
+        ) : !isErrorReturn ? (
+          <>
+            <Markdown {...mdProps}>{exchangeAndReturn.data}</Markdown>
+            <Spacer withBottomInsets height={48} />
+          </>
+        ) : (
+          <ConnectionError error={returnError} onPressRetry={refetchReturn} />
+        )
       default:
         return <></>
     }
-  }, [tab, isLoading, deliveryPrice])
+  }, [
+    tab,
+    isLoading,
+    deliveryPrice,
+    refetchReturn,
+    returnError,
+    exchangeAndReturn,
+    isErrorReturn,
+    isLoadingReturn,
+    mdProps,
+  ])
 
   return (
     <SafeLandscapeView safeArea>
@@ -103,5 +146,9 @@ const options = [
   {
     title: 'Доставка',
     value: 'delivery',
+  },
+  {
+    title: 'Возврат',
+    value: 'return',
   },
 ]

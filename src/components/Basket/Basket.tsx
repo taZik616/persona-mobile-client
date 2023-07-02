@@ -27,10 +27,11 @@ import {BasketCardWHM} from 'ui/cards/BasketCard'
 import {
   Button,
   Header,
+  Hint,
   SafeLandscapeView,
   Spacer,
   Text,
-  ViewTogglerWHM,
+  ViewToggler,
 } from 'ui/index'
 
 import {BasketListEmpty} from './BasketListEmpty'
@@ -76,15 +77,30 @@ export const Basket = memo(
           keyExtractor={it => it.productId + it.variant.uniqueId + filter}
           ListEmptyComponent={<BasketListEmpty isAvailable={isAvailable} />}
           ListHeaderComponent={
-            <>
+            <SafeLandscapeView safeArea>
               <Spacer height={20} />
-              <ViewTogglerWHM
+              <ViewToggler
                 initialValue={filter}
                 onEndToggle={setFilter}
                 options={options}
               />
-              <Spacer height={16} />
-            </>
+              <Spacer height={8} />
+              <Hint
+                id="basket-1f"
+                spaceBottom={8}
+                content="Перед тем, как купить товары из корзины, вы должны выбрать их. Для этого следует нажать на круглую кнопку слева от товара."
+              />
+              <Hint
+                id="basket-2f"
+                spaceBottom={8}
+                content="Если вам нужно удалить товар из корзины, проведите пальцем справа налево и нажмите появившуюся кнопку удаления."
+              />
+              <Hint
+                id="basket-3f"
+                content="Если вы хотите добавить товар в избранное, проведите пальцем слева направо и нажмите появившуюся кнопку добавления в избранное."
+              />
+              <Spacer height={8} />
+            </SafeLandscapeView>
           }
           ListFooterComponent={
             curData.length ? (
