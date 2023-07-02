@@ -25,6 +25,7 @@ interface initialStateType {
   subEmail: boolean
   allowAppNotification: boolean
   authToken: string | undefined
+  hasFirstBuyInApp: boolean
   discountCard?: DiscountCardInfoType
 }
 
@@ -40,6 +41,7 @@ const initialState: initialStateType = {
   subEmail: false,
   allowAppNotification: false,
   authToken: undefined,
+  hasFirstBuyInApp: false,
   discountCard: undefined,
 }
 type UpdatableInfo = {
@@ -47,6 +49,10 @@ type UpdatableInfo = {
   lastName: string
   birthday?: string
   email?: string
+  hasFirstBuyInApp?: boolean
+  subEmail?: boolean
+  subPush?: boolean
+  subSms?: boolean
 }
 
 export const profileSlice = createSlice({
@@ -66,6 +72,17 @@ export const profileSlice = createSlice({
       state.birthday = data.birthday
       state.email = data.email
       state.lastName = data.lastName
+      if (
+        typeof data.hasFirstBuyInApp !== 'undefined' &&
+        data.hasFirstBuyInApp !== null
+      )
+        state.hasFirstBuyInApp = data.hasFirstBuyInApp
+      if (typeof data.subEmail !== 'undefined' && data.subEmail !== null)
+        state.subEmail = data.subEmail
+      if (typeof data.subPush !== 'undefined' && data.subPush !== null)
+        state.subPush = data.subPush
+      if (typeof data.subSms !== 'undefined' && data.subSms !== null)
+        state.subSms = data.subSms
     },
     cleanUpUserInfo: state => {
       state.firstName = ''
@@ -140,6 +157,10 @@ export const getUserData = async (dispatch: any) => {
           lastName: data.lastName,
           birthday: data.birthday,
           email: data.email,
+          hasFirstBuyInApp: data.hasFirstBuyInApp,
+          subEmail: data.subEmail,
+          subPush: data.subPush,
+          subSms: data.subSms,
         }),
       )
       dispatch(setPhoneNumber(data.phoneNumber))

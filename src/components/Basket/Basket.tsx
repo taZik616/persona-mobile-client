@@ -26,6 +26,7 @@ import {ProductInBasketI, ProductPreviewInfo} from 'src/types'
 import {BasketCardWHM} from 'ui/cards/BasketCard'
 import {
   Button,
+  FirstBuyInAppBanner,
   Header,
   Hint,
   SafeLandscapeView,
@@ -109,6 +110,7 @@ export const Basket = memo(
                 <Button gp5 onPress={onPressPromoEntry} variant="outline">
                   {promocode ? 'Сменить промокод' : 'Добавить  промокод'}
                 </Button>
+                <FirstBuyInAppBanner spaceTop={16} />
                 {promocode ? (
                   <>
                     <Spacer height={16} />

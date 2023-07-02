@@ -12,6 +12,7 @@ import {HorizontalProductsList} from 'ui/horizontal-lists'
 import {ShopBagLightIcon} from 'ui/icons/common'
 import {
   Button,
+  FirstBuyInAppBanner,
   Header,
   Img,
   SafeLandscapeView,
@@ -107,6 +108,7 @@ export const ProductDetail = memo(
               <StarProduct item={item} />
             </View>
             <Spacer height={16} />
+            <FirstBuyInAppBanner spaceBottom={16} />
           </SafeLandscapeView>
           <DetailsSection />
           <Spacer height={22} />
