@@ -6,7 +6,7 @@
 
 ```json
 {
-  "imgUrl": "http://89.108.71.146:2006/media/another-images/Fay.jpg",
+  "imgUrl": "http://89.108.71.146:2006/media/another-images/MarcCain.jpg",
   "productFilters": {
     "gender": "women",
     "brandIds": "606"
