@@ -5,6 +5,8 @@ import {FlashList} from '@shopify/flash-list'
 
 import {withHorizontalMargins} from 'src/hoc/withHorizontalMargins'
 import {useTypedRoute} from 'src/hooks'
+import {useTypedDispatch} from 'src/store'
+import {getUserData} from 'src/store/profileSlice'
 import {
   useMyOrdersQuery,
   useUpdateMyOrderStatusesMutation,
@@ -25,6 +27,7 @@ export const Orders = memo(
     const {needUpdateStatuses} = useTypedRoute<'orders'>().params ?? {}
     const [updateStatuses, updateHelper] = useUpdateMyOrderStatusesMutation()
     const orders = data.currentData as OrderInfoInterface[] | undefined
+    const dispatch = useTypedDispatch()
 
     useFocusEffect(
       useCallback(() => {
@@ -32,6 +35,7 @@ export const Orders = memo(
           if (needUpdateStatuses) {
             await updateStatuses({})
             data.refetch()
+            dispatch(getUserData)
           }
         }
         refreshList()
