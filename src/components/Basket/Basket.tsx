@@ -125,7 +125,7 @@ export const Basket = memo(
                   <></>
                 )}
                 <Spacer height={16} />
-                <BuyBtn />
+                <BuyBtn onRemovePromo={onPressRemovePromo} />
                 <Spacer withBottomInsets height={28} />
               </SafeLandscapeView>
             ) : (
@@ -145,7 +145,12 @@ export const Basket = memo(
     )
   },
 )
-const BuyBtn = memo(() => {
+
+interface BuyBtnProps {
+  onRemovePromo?: () => void
+}
+
+const BuyBtn = memo(({onRemovePromo}: BuyBtnProps) => {
   const disabled = useTypedSelector(selectBasketSelectedIds).length < 1
   const {navigate} = useTypedNavigation()
   const [purchaseError, setPurchaseError] = useState('')
@@ -176,6 +181,7 @@ const BuyBtn = memo(() => {
           priceWithoutPersonalDiscount,
           priceWithPersonalDiscount,
         })
+        onRemovePromo?.()
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
