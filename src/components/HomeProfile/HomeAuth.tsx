@@ -4,6 +4,7 @@ import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated'
 
 import {captureException} from 'src/helpers'
+import {useTypedNavigation, useTypedRouteHome} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
 import {useTypedDispatch} from 'src/store'
 import {onSuccessfulLogin, setIsAuthenticated} from 'src/store/profileSlice'
@@ -40,6 +41,8 @@ export const HomeAuth = ({
 }: HomeAuthProps) => {
   const [authOption, setAuthOption] = useState(options[0].value)
   const [requestError, setRequestError] = useState('')
+  const {whenLoginGoToBasket} = useTypedRouteHome<'homeProfile'>().params ?? {}
+  const {navigate} = useTypedNavigation()
 
   const otpModalRef = useRef<OTPModalRefType>(null)
   const [createUserSendCode, {isLoading: isRegistryLoading}] =
@@ -95,34 +98,38 @@ export const HomeAuth = ({
     [],
   )
 
-  const onLogin = useCallback(async ({telephone, password}: LoginFormType) => {
-    try {
-      const res: any = await login({
-        username: telephone,
-        password,
-      })
-      const error = res?.error?.data?.error
-      const token = res?.data?.token
-      if (error) {
-        vibration.error()
-        setRequestError(error)
-      } else if (token) {
-        vibration.success()
-        dispatch(
-          onSuccessfulLogin({
-            token,
-            user: telephone,
-            password,
-          }),
-        )
-      } else {
-        vibration.error()
-        setRequestError(UNKNOWN_ERROR_MSG)
+  const onLogin = useCallback(
+    async ({telephone, password}: LoginFormType) => {
+      try {
+        const res: any = await login({
+          username: telephone,
+          password,
+        })
+        const error = res?.error?.data?.error
+        const token = res?.data?.token
+        if (error) {
+          vibration.error()
+          setRequestError(error)
+        } else if (token) {
+          vibration.success()
+          dispatch(
+            onSuccessfulLogin({
+              token,
+              user: telephone,
+              password,
+            }),
+          )
+          whenLoginGoToBasket && navigate('basket')
+        } else {
+          vibration.error()
+          setRequestError(UNKNOWN_ERROR_MSG)
+        }
+      } catch (error) {
+        captureException(error)
       }
-    } catch (error) {
-      captureException(error)
-    }
-  }, [])
+    },
+    [whenLoginGoToBasket],
+  )
 
   const onCloseModal = useCallback(() => {
     otpModalRef.current?.closeModal()
@@ -146,6 +153,7 @@ export const HomeAuth = ({
             password: code,
           }),
         )
+        whenLoginGoToBasket && navigate('basket')
         onCloseModal()
       }
     },

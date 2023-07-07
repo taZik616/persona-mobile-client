@@ -1,11 +1,14 @@
 import {APP_API_URL} from '@env'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {PayloadAction, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
+import {persistReducer} from 'redux-persist'
 
 import {getArrayOfField} from 'src/helpers'
 import {ProductInBasketI} from 'src/types'
 
 import {store} from '.'
+
 interface BasketSliceState {
   items: ProductInBasketI[]
   counter: number
@@ -33,6 +36,7 @@ export const basketSlice = createSlice({
       state.items = items
       state.counter = items.length
       state.productIds = getArrayOfField(items, 'productId')
+      state.selectedItemIds = []
     },
     addItem: (state, action: PayloadAction<ProductInBasketI>) => {
       const newItem = action.payload
@@ -142,14 +146,16 @@ export const personalDiscountBasketCalc = async (dispatch: any) => {
 export const addItemToBasket =
   (item: ProductInBasketI) => async (dispatch: any) => {
     const token = store.getState().profile.authToken ?? ''
-    axios.put(
-      `${APP_API_URL}/api/v1/basket`,
-      {
-        productId: item.productId,
-        variantId: item.variant.uniqueId,
-      },
-      {headers: {Authorization: token ? `Token ${token}` : ''}},
-    )
+    if (token) {
+      axios.put(
+        `${APP_API_URL}/api/v1/basket`,
+        {
+          productId: item.productId,
+          variantId: item.variant.uniqueId,
+        },
+        {headers: {Authorization: token ? `Token ${token}` : ''}},
+      )
+    }
     dispatch(addItem(item))
   }
 /**
@@ -157,16 +163,34 @@ export const addItemToBasket =
  */
 export const loadItemsToBasket = async (dispatch: any) => {
   const token = store.getState().profile.authToken ?? ''
-  const res = await axios.get(`${APP_API_URL}/api/v1/basket`, {
-    headers: {Authorization: token ? `Token ${token}` : ''},
-  })
+  const localBasketItems = store.getState().basket.items
+  console.log('🚀 - localBasketItems.length > 0:', localBasketItems.length > 0)
+  if (localBasketItems.length > 0) {
+    await axios.post(`${APP_API_URL}/api/v1/clear-basket`, undefined, {
+      headers: {Authorization: token ? `Token ${token}` : ''},
+    })
+    localBasketItems.forEach(item => {
+      axios.put(
+        `${APP_API_URL}/api/v1/basket`,
+        {
+          productId: item.productId,
+          variantId: item.variant.uniqueId,
+        },
+        {headers: {Authorization: token ? `Token ${token}` : ''}},
+      )
+    })
+  } else {
+    const res = await axios.get(`${APP_API_URL}/api/v1/basket`, {
+      headers: {Authorization: token ? `Token ${token}` : ''},
+    })
 
-  if (Array.isArray(res.data.items)) {
-    const data = res.data.items.map((a: any) => ({
-      ...a.product,
-      variant: a.variant,
-    }))
-    dispatch(setBasketItems(data))
+    if (Array.isArray(res.data.items)) {
+      const data = res.data.items.map((a: any) => ({
+        ...a.product,
+        variant: a.variant,
+      }))
+      dispatch(setBasketItems(data))
+    }
   }
 }
 /**
@@ -175,13 +199,15 @@ export const loadItemsToBasket = async (dispatch: any) => {
 export const removeItemFromBasket =
   (item: ProductInBasketI) => async (dispatch: any) => {
     const token = store.getState().profile.authToken ?? ''
-    axios.delete(`${APP_API_URL}/api/v1/basket`, {
-      data: {
-        productId: item.productId,
-        variantId: item.variant.uniqueId,
-      },
-      headers: {Authorization: token ? `Token ${token}` : ''},
-    })
+    if (token) {
+      axios.delete(`${APP_API_URL}/api/v1/basket`, {
+        data: {
+          productId: item.productId,
+          variantId: item.variant.uniqueId,
+        },
+        headers: {Authorization: token ? `Token ${token}` : ''},
+      })
+    }
     dispatch(removeItem(item))
   }
 
@@ -193,12 +219,25 @@ export const removeItemFromBasketByIds =
     const token = store.getState().profile.authToken ?? ''
     ids.forEach(id => {
       const [productId, variantId] = id.split('-')
-      axios.delete(`${APP_API_URL}/api/v1/basket`, {
-        data: {productId, variantId},
-        headers: {Authorization: token ? `Token ${token}` : ''},
-      })
+      if (token) {
+        axios.delete(`${APP_API_URL}/api/v1/basket`, {
+          data: {productId, variantId},
+          headers: {Authorization: token ? `Token ${token}` : ''},
+        })
+      }
       dispatch(removeItemByIds({productId, variantId}))
     })
   }
 
 export const basketReducer = basketSlice.reducer
+
+const basketPersistConfig = {
+  key: 'basket',
+  version: 1,
+  storage: AsyncStorage,
+}
+
+export const persistedBasketReducer = persistReducer(
+  basketPersistConfig,
+  basketReducer,
+)

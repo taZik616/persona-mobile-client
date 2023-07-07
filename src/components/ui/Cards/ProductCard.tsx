@@ -142,33 +142,6 @@ export const ProductCard = memo(
   },
 )
 
-// interface AddBasketButtonProps {
-//   item: ProductPreviewInfo
-//   width: number
-// }
-
-// const AddBasketButton = memo(({item, width}: AddBasketButtonProps) => {
-//   const dispatch = useTypedDispatch()
-//   const isAuthenticated = useTypedSelector(selectIsAuthenticated)
-//   const inBasket = useTypedSelector(selectBasketIds).includes(item.productId)
-
-//   const handlePress = () => {
-//     if (isAuthenticated) {
-//       dispatch(addItemToBasket(item))
-//     } else {
-//       showAlertBasketLocked()
-//     }
-//   }
-//   return (
-//     <TouchableOpacity
-//       disabled={inBasket}
-//       onPress={handlePress}
-//       style={[styles.addToCartButton, {width}]}>
-//       <Text gp1>{inBasket ? 'Уже в корзине' : 'Добавить в корзину'}</Text>
-//     </TouchableOpacity>
-//   )
-// })
-
 interface RemoveProps {
   productId: string
 }

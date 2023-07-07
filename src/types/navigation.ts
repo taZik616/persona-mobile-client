@@ -11,7 +11,9 @@ export type TabParamList = {
   homeBrands: undefined
   homeCatalog: NavigatorScreenParams<CatalogStackParamList>
   homeFavourites: undefined
-  homeProfile: undefined
+  homeProfile?: {
+    whenLoginGoToBasket?: boolean
+  }
 }
 
 export type RootStackParamList = {

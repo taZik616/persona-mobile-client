@@ -3,6 +3,7 @@ import React, {memo, useCallback, useState} from 'react'
 import {APP_API_URL} from '@env'
 import {FlashList} from '@shopify/flash-list'
 import axios, {AxiosError} from 'axios'
+import {Alert} from 'react-native'
 
 import {
   captureException,
@@ -15,6 +16,7 @@ import {
   selectBasket,
   selectBasketPromocode,
   selectBasketSelectedIds,
+  selectIsAuthenticated,
   store,
   useTypedDispatch,
   useTypedSelector,
@@ -152,10 +154,36 @@ interface BuyBtnProps {
 
 const BuyBtn = memo(({onRemovePromo}: BuyBtnProps) => {
   const disabled = useTypedSelector(selectBasketSelectedIds).length < 1
+  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
   const {navigate} = useTypedNavigation()
   const [purchaseError, setPurchaseError] = useState('')
 
   const onPressBuy = async () => {
+    if (!isAuthenticated) {
+      Alert.alert(
+        'Действие не доступно',
+        'Для того чтобы совершить покупку нужно войти в аккаунт',
+        [
+          {
+            onPress: () =>
+              navigate('home', {
+                screen: 'homeProfile',
+                params: {
+                  whenLoginGoToBasket: true,
+                },
+              }),
+            style: 'default',
+            text: 'Войти',
+          },
+          {
+            text: 'Отмена',
+            style: 'destructive',
+          },
+        ],
+        {cancelable: true},
+      )
+      return
+    }
     const {selectedItemIds, promocode} = store.getState().basket
     const productVariantIds = selectedItemIds
       .map(a => a.split('-')[1])

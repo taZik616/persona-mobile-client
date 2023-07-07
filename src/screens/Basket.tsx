@@ -5,6 +5,7 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {useFocusEffect} from '@react-navigation/native'
 import axios, {AxiosError} from 'axios'
 import {FormProvider, useForm} from 'react-hook-form'
+import {Alert} from 'react-native'
 import * as yup from 'yup'
 
 import {
@@ -17,6 +18,7 @@ import {useTypedNavigation} from 'src/hooks'
 import {vibration} from 'src/services/vibration'
 import {
   selectBasketPromocode,
+  selectIsAuthenticated,
   store,
   useTypedDispatch,
   useTypedSelector,
@@ -39,6 +41,7 @@ export const BasketScreen = () => {
   const {navigate} = useTypedNavigation()
   const dispatch = useTypedDispatch()
   const promocode = useTypedSelector(selectBasketPromocode)
+  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
 
   const promoCodeEntryRef = useRef<PromoCodeEntryRefType>(null)
   const form = useForm<PromoCodeType>({
@@ -104,7 +107,32 @@ export const BasketScreen = () => {
     [],
   )
   const onPressPromoEntry = useCallback(() => {
-    promoCodeEntryRef.current?.open?.()
+    if (isAuthenticated) {
+      promoCodeEntryRef.current?.open?.()
+    } else {
+      Alert.alert(
+        'Действие не доступно',
+        'Для того чтобы использовать промокоды нужно войти в аккаунт',
+        [
+          {
+            onPress: () =>
+              navigate('home', {
+                screen: 'homeProfile',
+                params: {
+                  whenLoginGoToBasket: true,
+                },
+              }),
+            style: 'default',
+            text: 'Войти',
+          },
+          {
+            text: 'Отмена',
+            style: 'destructive',
+          },
+        ],
+        {cancelable: true},
+      )
+    }
   }, [])
 
   const onPressRemovePromo = useCallback(() => {

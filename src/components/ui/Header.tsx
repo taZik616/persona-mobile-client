@@ -2,13 +2,8 @@ import React, {memo, useCallback, useState} from 'react'
 
 import {StyleSheet, TouchableOpacity, View} from 'react-native'
 
-import {showAlertBasketLocked} from 'src/helpers/showAlertBasketLocked'
 import {useTypedNavigation} from 'src/hooks'
-import {
-  selectBasketCounter,
-  selectIsAuthenticated,
-  useTypedSelector,
-} from 'src/store'
+import {selectBasketCounter, useTypedSelector} from 'src/store'
 import {Color} from 'src/themes'
 
 import {BackArrowIcon} from 'ui/icons/common'
@@ -174,13 +169,12 @@ interface BasketBtnProps {
 const BasketBtn = memo(({onPressBasket}: BasketBtnProps) => {
   const {navigate} = useTypedNavigation()
   const basketCount = useTypedSelector(selectBasketCounter)
-  const isAuthenticated = useTypedSelector(selectIsAuthenticated)
 
   const handlePressBasket = () => {
     if (onPressBasket) {
       onPressBasket()
     } else {
-      isAuthenticated ? navigate('basket') : showAlertBasketLocked()
+      navigate('basket')
     }
   }
   return (

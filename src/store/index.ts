@@ -17,7 +17,7 @@ import {
 
 import {ProductInBasketI} from 'src/types'
 
-import {basketReducer} from './basketSlice'
+import {persistedBasketReducer} from './basketSlice'
 import {persistedFavoritesReducer} from './favoritesSlice'
 import {persistedGenderReducer} from './genderSlice'
 import {persistedHintReducer} from './hintSlice'
@@ -33,7 +33,7 @@ export const store = configureStore({
     recentlyWatched: persistedRecentlyWatchedReducer,
     favorites: persistedFavoritesReducer,
     profile: profileReducer,
-    basket: basketReducer,
+    basket: persistedBasketReducer,
   },
   middleware: getMiddleware =>
     getMiddleware({
