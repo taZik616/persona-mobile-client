@@ -8,13 +8,13 @@ import React, {
 } from 'react'
 
 import {BottomSheet, BottomSheetRefType} from 'components/bottom-sheet'
-import {StyleSheet, TouchableOpacity, View} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 
 import {cleanNumber} from 'src/helpers'
 import {Color} from 'src/themes'
 
-import {CheckIcon, CircleCheckmarkIcon} from 'ui/icons/common'
-import {Button, SafeLandscapeView, Spacer, Text} from 'ui/index'
+import {CheckIcon} from 'ui/icons/common'
+import {Button, RadioSelect, SafeLandscapeView, Spacer, Text} from 'ui/index'
 
 interface SelectNominalProps {
   onSubmit?: (cost: number) => void
@@ -84,7 +84,6 @@ const Content = ({
   isLoading,
 }: SelectNominalContentProps) => {
   const [cost, setCost] = useState(amountVariants[0])
-  // const [count, setCount] = useState(countVariants[0])
 
   return (
     <SafeLandscapeView maxWidth={600} safeArea>
@@ -104,33 +103,13 @@ const Content = ({
       </View>
       <Spacer height={20} />
       {amountVariants.map(item => (
-        <>
-          <Spacer height={16} />
-          <View style={styles.rowContainer} key={item}>
-            <TouchableOpacity
-              onPress={() => setCost(item)}
-              style={styles.subItem}>
-              <CircleCheckmarkIcon
-                color={cost === item ? Color.primary : Color.secondaryGray}
-              />
-              <Spacer width={8} />
-              <Text gp5>{cleanNumber(item, ' ', 0)}</Text>
-            </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => setCount(countVariants[id])}
-              style={styles.subItem}>
-              <CircleCheckmarkIcon
-                color={
-                  count === countVariants[id]
-                    ? Color.primary
-                    : Color.secondaryGray
-                }
-              />
-              <Spacer width={8} />
-              <Text gp5>{cleanNumber(countVariants[id], ' ', 0)}</Text>
-            </TouchableOpacity> */}
-          </View>
-        </>
+        <RadioSelect
+          value={item}
+          text={cleanNumber(item, ' ', 0)}
+          isSelected={item === cost}
+          // @ts-ignore
+          onPress={setCost}
+        />
       ))}
       {requestError && (
         <>
@@ -157,9 +136,5 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: Color.border,
-  },
-  subItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 })

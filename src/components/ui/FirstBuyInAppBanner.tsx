@@ -24,9 +24,9 @@ export const FirstBuyInAppBanner = memo(
           {marginBottom: spaceBottom, marginTop: spaceTop},
         ]}>
         <Text>
-          <Text gp4>-20% на первый заказ через приложение по промокоду: </Text>
+          <Text gp4>-10% на первый заказ через приложение по промокоду: </Text>
           <Text color={Color.primary} selectable gp4>
-            YOUR20
+            10
           </Text>
         </Text>
       </View>

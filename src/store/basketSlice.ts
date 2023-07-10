@@ -164,7 +164,6 @@ export const addItemToBasket =
 export const loadItemsToBasket = async (dispatch: any) => {
   const token = store.getState().profile.authToken ?? ''
   const localBasketItems = store.getState().basket.items
-  console.log('🚀 - localBasketItems.length > 0:', localBasketItems.length > 0)
   if (localBasketItems.length > 0) {
     await axios.post(`${APP_API_URL}/api/v1/clear-basket`, undefined, {
       headers: {Authorization: token ? `Token ${token}` : ''},

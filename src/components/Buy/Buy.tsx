@@ -10,6 +10,7 @@ import {
   Button,
   FormTextInput,
   Header,
+  RadioSelect,
   SafeLandscapeView,
   Spacer,
   Text,
@@ -18,7 +19,7 @@ import {
 import {CostLine} from './CostLine'
 
 interface BuyProps {
-  onSubmit?: () => void
+  onSubmit?: (isPaymentOnline: boolean) => void
   isLoading?: boolean
 }
 
@@ -28,6 +29,9 @@ export const Buy = memo(
     const {priceWithPersonalDiscount, priceWithoutPersonalDiscount} =
       useTypedRoute<'buy'>().params
     const [requestError, setRequestError] = useState('')
+    const [paymentMethod, setPaymentMethod] = useState<
+      'payment-upon-delivery' | 'online-payment'
+    >('online-payment')
 
     useImperativeHandle(ref, () => ({
       setRequestError,
@@ -52,13 +56,25 @@ export const Buy = memo(
             ) : (
               <></>
             )}
-            {/* <TouchableOpacity
-            onPress={onPressAddCard}
-            style={styles.borderedContainer}>
-            <Text numberOfLines={1} gp4>
-              Добавить карту лояльности или подарочную карту
-            </Text>
-          </TouchableOpacity> */}
+            <RadioSelect
+              disableTopMargin
+              hideLine
+              text="Оплатить онлайн"
+              value="online-payment"
+              // @ts-ignore
+              onPress={setPaymentMethod}
+              isSelected={paymentMethod === 'online-payment'}
+            />
+            <Spacer height={4} />
+            <RadioSelect
+              disableTopMargin
+              hideLine
+              text="Оплата при получении курьеру"
+              value="payment-upon-delivery"
+              // @ts-ignore
+              onPress={setPaymentMethod}
+              isSelected={paymentMethod === 'payment-upon-delivery'}
+            />
           </SafeLandscapeView>
         </ScrollView>
         <SafeLandscapeView safeArea>
@@ -74,7 +90,9 @@ export const Buy = memo(
           />
           <Spacer height={12} />
           <View style={styles.flexRow}>
-            <Button isLoading={isLoading} onPress={onSubmit}>
+            <Button
+              isLoading={isLoading}
+              onPress={() => onSubmit?.(paymentMethod === 'online-payment')}>
               Оплатить по карте
             </Button>
             {/* <Spacer width={16} />

@@ -8,6 +8,7 @@ export interface CreateOrderBody {
   productVariantIds: string
   promocode?: string
   address: string
+  isPaymentOnline?: boolean
 }
 
 export interface MintGiftCardBody {
