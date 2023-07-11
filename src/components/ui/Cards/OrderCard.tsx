@@ -92,6 +92,11 @@ const statusMap = {
     title: 'Отклонен',
     color: Color.textRed1,
   },
+  PaymentUponDelivery: {
+    icon: <ProgressIcon />,
+    title: 'Оплата при получении, заказ обрабатывается',
+    color: Color.primary,
+  },
   NotPaid: {
     icon: <RejectedIcon />,
     title: 'Не оплачен',

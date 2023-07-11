@@ -8,10 +8,11 @@ import {Spacer, Text} from 'ui/index'
 
 interface CostLineProps {
   cost: string | number
+  isFree?: boolean
   name: string
 }
 
-export const CostLine = ({cost, name}: CostLineProps) => {
+export const CostLine = ({cost, isFree, name}: CostLineProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.nameText} numberOfLines={1} gp5>
@@ -19,7 +20,9 @@ export const CostLine = ({cost, name}: CostLineProps) => {
       </Text>
       <Spacer width={12} />
       <Text right style={styles.costText} numberOfLines={1} gp2>
-        {Number(cost) > 0 ? cleanNumber(Number(cost), ' ', 0) : 0} ₽
+        {isFree
+          ? 'Бесплатно'
+          : `${Number(cost) > 0 ? cleanNumber(Number(cost), ' ', 0) : 0} ₽`}
       </Text>
     </View>
   )

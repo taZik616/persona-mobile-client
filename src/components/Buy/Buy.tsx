@@ -37,7 +37,9 @@ export const Buy = memo(
       setRequestError,
     }))
 
-    const {currentData: deliveryPrice} = useDeliveryPriceQuery({})
+    const {currentData: deliveryPrice} = useDeliveryPriceQuery(
+      Math.round(priceWithPersonalDiscount),
+    )
 
     return (
       <>
@@ -56,6 +58,7 @@ export const Buy = memo(
             ) : (
               <></>
             )}
+            <Spacer height={6} />
             <RadioSelect
               disableTopMargin
               hideLine
@@ -78,7 +81,13 @@ export const Buy = memo(
           </SafeLandscapeView>
         </ScrollView>
         <SafeLandscapeView safeArea>
-          {deliveryPrice && <CostLine name="Доставка" cost={deliveryPrice} />}
+          {deliveryPrice !== null && (
+            <CostLine
+              isFree={!deliveryPrice}
+              name="Доставка"
+              cost={deliveryPrice}
+            />
+          )}
           <CostLine name="Итого" cost={priceWithoutPersonalDiscount} />
           <CostLine
             name="Скидка"

@@ -78,9 +78,10 @@ export const shopApi = createApi({
       }),
     }),
     deliveryPrice: build.query({
-      query: () => ({
+      query: (orderPrice?: number) => ({
         url: 'delivery-price',
         method: 'GET',
+        params: {orderPrice},
       }),
     }),
     myOrders: build.query({
