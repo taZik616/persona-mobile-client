@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* PersonaMobileClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PersonaMobileClientTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-PersonaMobileClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-PersonaMobileClient.a */; };
+		0755CAB9DA75E87675132162 /* libPods-PersonaMobileClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE1920DF5364F51E5EC68FAA /* libPods-PersonaMobileClient.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -16,9 +16,9 @@
 		251210A4CF174D05BC3A290B /* GothamPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F8E0576864E4A378E78E762 /* GothamPro-LightItalic.ttf */; };
 		3609B4C2D9B54FADB6B5C4BF /* GothamPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6F51BC7FB724EE79F1BAC39 /* GothamPro.ttf */; };
 		37C76009843344B5ADB82311 /* CormorantGaramond-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BCA9BD72B1E4171ADFEE009 /* CormorantGaramond-Light.ttf */; };
-		7699B88040F8A987B510C191 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a */; };
 		7C0FA59FDCFB48CDAE11886D /* CormorantGaramond-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01BC4342F0854F2F9CBBCBAE /* CormorantGaramond-LightItalic.ttf */; };
 		7E030C3768A840529DF79230 /* GothamPro-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F59651BE7044CEAA5B27970 /* GothamPro-BlackItalic.ttf */; };
+		7E5EE8329B12742434491277 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95F67C65C7E70C9A6FDB5762 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		942ED5B5296C45DF899C5F71 /* GothamPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5A1224FA1EB40DCA6822B2F /* GothamPro-Italic.ttf */; };
 		97D8B2BE09984C688845D52D /* GothamPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E641F7D879F498D9455FD9F /* GothamPro-Medium.ttf */; };
@@ -57,28 +57,28 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PersonaMobileClient/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PersonaMobileClient/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PersonaMobileClient/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PersonaMobileClient-PersonaMobileClientTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		264996EFE22C445391FAC144 /* GothamPro-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-MediumItalic.ttf"; path = "../assets/fonts/GothamPro-MediumItalic.ttf"; sourceTree = "<group>"; };
 		2E296EB1E52A45EAA7519F6A /* CormorantGaramond-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-SemiBold.ttf"; path = "../assets/fonts/CormorantGaramond-SemiBold.ttf"; sourceTree = "<group>"; };
 		2F59651BE7044CEAA5B27970 /* GothamPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-BlackItalic.ttf"; path = "../assets/fonts/GothamPro-BlackItalic.ttf"; sourceTree = "<group>"; };
 		30B756F5FB8F449D985E7033 /* CormorantGaramond-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-MediumItalic.ttf"; path = "../assets/fonts/CormorantGaramond-MediumItalic.ttf"; sourceTree = "<group>"; };
 		35ACC6A3510549B4A8B7E63B /* GothamPro-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-Black.ttf"; path = "../assets/fonts/GothamPro-Black.ttf"; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-PersonaMobileClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient.debug.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient.debug.xcconfig"; sourceTree = "<group>"; };
+		375BC856DC5113C71A442DBB /* Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig"; sourceTree = "<group>"; };
 		42516446513A430EA9B214E9 /* CormorantGaramond-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-SemiBoldItalic.ttf"; path = "../assets/fonts/CormorantGaramond-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		49E226B46DB245D197F87418 /* GothamPro-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-Light.ttf"; path = "../assets/fonts/GothamPro-Light.ttf"; sourceTree = "<group>"; };
 		4E641F7D879F498D9455FD9F /* GothamPro-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-Medium.ttf"; path = "../assets/fonts/GothamPro-Medium.ttf"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-PersonaMobileClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient.release.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-PersonaMobileClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PersonaMobileClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5110EB73EE1821570E128022 /* Pods-PersonaMobileClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient.debug.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient.debug.xcconfig"; sourceTree = "<group>"; };
+		55BCA1B63824B27D1A4E8CA6 /* Pods-PersonaMobileClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient.release.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient.release.xcconfig"; sourceTree = "<group>"; };
+		65BA50BBE197ACD6ECDCF228 /* Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		78EDB4EF62074553A0CBA7E3 /* CormorantGaramond-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-Italic.ttf"; path = "../assets/fonts/CormorantGaramond-Italic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PersonaMobileClient/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig"; path = "Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		8B59048D30AF4FB28FBEA1F6 /* CormorantGaramond-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-Regular.ttf"; path = "../assets/fonts/CormorantGaramond-Regular.ttf"; sourceTree = "<group>"; };
 		8FCE4AB0E857440D8E18784D /* CormorantGaramond-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-BoldItalic.ttf"; path = "../assets/fonts/CormorantGaramond-BoldItalic.ttf"; sourceTree = "<group>"; };
+		95F67C65C7E70C9A6FDB5762 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PersonaMobileClient-PersonaMobileClientTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BCA9BD72B1E4171ADFEE009 /* CormorantGaramond-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-Light.ttf"; path = "../assets/fonts/CormorantGaramond-Light.ttf"; sourceTree = "<group>"; };
 		9F8E0576864E4A378E78E762 /* GothamPro-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-LightItalic.ttf"; path = "../assets/fonts/GothamPro-LightItalic.ttf"; sourceTree = "<group>"; };
 		B5A1224FA1EB40DCA6822B2F /* GothamPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-Italic.ttf"; path = "../assets/fonts/GothamPro-Italic.ttf"; sourceTree = "<group>"; };
 		B691F954FB384CD9B7837203 /* CormorantGaramond-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-Medium.ttf"; path = "../assets/fonts/CormorantGaramond-Medium.ttf"; sourceTree = "<group>"; };
+		BE1920DF5364F51E5EC68FAA /* libPods-PersonaMobileClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PersonaMobileClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6F51BC7FB724EE79F1BAC39 /* GothamPro.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GothamPro.ttf; path = ../assets/fonts/GothamPro.ttf; sourceTree = "<group>"; };
 		E8A20529BB614C659422D5CE /* GothamPro-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamPro-Bold.ttf"; path = "../assets/fonts/GothamPro-Bold.ttf"; sourceTree = "<group>"; };
 		E9B6BB6BBA864EE7A358FDF0 /* CormorantGaramond-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "CormorantGaramond-Bold.ttf"; path = "../assets/fonts/CormorantGaramond-Bold.ttf"; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a in Frameworks */,
+				7E5EE8329B12742434491277 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-PersonaMobileClient.a in Frameworks */,
+				0755CAB9DA75E87675132162 /* libPods-PersonaMobileClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,8 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-PersonaMobileClient.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a */,
+				BE1920DF5364F51E5EC68FAA /* libPods-PersonaMobileClient.a */,
+				95F67C65C7E70C9A6FDB5762 /* libPods-PersonaMobileClient-PersonaMobileClientTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -208,10 +208,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-PersonaMobileClient.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-PersonaMobileClient.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig */,
+				5110EB73EE1821570E128022 /* Pods-PersonaMobileClient.debug.xcconfig */,
+				55BCA1B63824B27D1A4E8CA6 /* Pods-PersonaMobileClient.release.xcconfig */,
+				375BC856DC5113C71A442DBB /* Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig */,
+				65BA50BBE197ACD6ECDCF228 /* Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -223,12 +223,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PersonaMobileClientTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				83B6FE022D859BAA7D0DE3ED /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				B7A7B7A8C5BE2AECCABCF1AE /* [CP] Embed Pods Frameworks */,
+				4255AA59A0B844787619D109 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -244,14 +244,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PersonaMobileClient" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				326DFF8A2F1E59C9DE4801B4 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				AB25F3B501D32A7AD1C15E45 /* [CP] Embed Pods Frameworks */,
+				42518DF981321F7DE1D89D04 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -354,46 +354,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PersonaMobileClient-PersonaMobileClientTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		326DFF8A2F1E59C9DE4801B4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -415,24 +376,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+		42518DF981321F7DE1D89D04 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -449,7 +393,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+		4255AA59A0B844787619D109 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -464,6 +408,62 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		83B6FE022D859BAA7D0DE3ED /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PersonaMobileClient-PersonaMobileClientTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB25F3B501D32A7AD1C15E45 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient/Pods-PersonaMobileClient-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B7A7B7A8C5BE2AECCABCF1AE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PersonaMobileClient-PersonaMobileClientTests/Pods-PersonaMobileClient-PersonaMobileClientTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -518,7 +518,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig */;
+			baseConfigurationReference = 375BC856DC5113C71A442DBB /* Pods-PersonaMobileClient-PersonaMobileClientTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -545,7 +545,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig */;
+			baseConfigurationReference = 65BA50BBE197ACD6ECDCF228 /* Pods-PersonaMobileClient-PersonaMobileClientTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -569,7 +569,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-PersonaMobileClient.debug.xcconfig */;
+			baseConfigurationReference = 5110EB73EE1821570E128022 /* Pods-PersonaMobileClient.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -606,7 +606,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-PersonaMobileClient.release.xcconfig */;
+			baseConfigurationReference = 55BCA1B63824B27D1A4E8CA6 /* Pods-PersonaMobileClient.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
