@@ -13,6 +13,14 @@ export const HomeBrandsScreen = () => {
 
   const onSelectBrand = useCallback((brandIds: string) => {
     navigate('allProducts', {brandIds, hideGenderSelect: true})
+  }, [])
+
+  const onSelectBrandInSearch = useCallback((brandIds: string) => {
+    navigate('allProducts', {
+      brandIds,
+      hideGenderSelect: true,
+      genderIgnore: true,
+    })
     brandSearchingRef.current?.close?.()
     brandSearchingRef.current?.cleanSelections()
   }, [])
@@ -25,7 +33,7 @@ export const HomeBrandsScreen = () => {
     <>
       <HomeBrands onPressSearch={onPressSearch} onPressBrand={onSelectBrand} />
       <BrandSearching
-        onCompleteSelect={onSelectBrand}
+        onCompleteSelect={onSelectBrandInSearch}
         ref={brandSearchingRef}
       />
     </>
