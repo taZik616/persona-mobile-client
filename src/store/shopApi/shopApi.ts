@@ -90,17 +90,13 @@ export const shopApi = createApi({
         method: 'GET',
       }),
       transformResponse(orders: any) {
-        return orders
-          ?.map((order: any) => ({
-            ...order,
-            productsInfo: order.productsInfo.map(
-              ({product, ...other}: any) => ({
-                ...product,
-                ...other,
-              }),
-            ),
-          }))
-          .reverse()
+        return orders?.map((order: any) => ({
+          ...order,
+          productsInfo: order.productsInfo.map(({product, ...other}: any) => ({
+            ...product,
+            ...other,
+          })),
+        }))
       },
     }),
     myGiftedCards: build.query({
